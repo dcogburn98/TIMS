@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TIMS
 {
-    class Customer
+    public class Customer
     {
         public string customerName;
         public string customerNumber;

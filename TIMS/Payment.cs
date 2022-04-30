@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TIMS
 {
-    class Payment
+    public class Payment
     {
         public enum PaymentTypes
         {
@@ -15,7 +15,8 @@ namespace TIMS
             PaymentCard,
             Charge,
             CashApp,
-            Venmo
+            Venmo,
+            Paypal
         }
         public PaymentTypes paymentType;
         public float paymentAmount;

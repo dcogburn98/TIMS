@@ -9,26 +9,29 @@ namespace TIMS
     /// <summary>
     ///// Represents a line item in an invoice
     /// </summary>
-    class InvoiceItem
+    public class InvoiceItem
     {
         public string itemNumber;
-        public string description;
+        public string productLine;
+        public string itemName;
+        public string longDescription;
         public float price;
         public float listPrice;
         public float total;
-        public int quantity;
+        public float quantity;
         public string pricingCode;
         public bool serializedItem;
         public string serialNumber;
         public string taxed;
         public string[] codes;
+        public Guid ID;
 
-        public InvoiceItem(string itemNumber, string itemDescription, float price, int quantity, string taxed,
+        public InvoiceItem(string itemNumber, string itemName, float price, int quantity, string taxed,
              float listPrice = 0.00f, string pricingCode = "!", bool serializedItem = false,
              string serialNumber = "")
         {
             this.itemNumber = itemNumber;
-            this.description = itemDescription;
+            this.itemName = itemName;
             this.price = price;
             this.quantity = quantity;
             this.taxed = taxed;
@@ -36,6 +39,11 @@ namespace TIMS
             this.pricingCode = pricingCode;
             this.serializedItem = serializedItem;
             this.serialNumber = serialNumber;
+        }
+
+        public InvoiceItem()
+        {
+
         }
 
         public void AddCode(string code)

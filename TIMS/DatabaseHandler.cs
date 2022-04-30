@@ -14,14 +14,22 @@ namespace TIMS
         public static XDocument customerDB = new XDocument();
         public static XDocument runningInvDB = new XDocument();
         public static XDocument savedInvDB = new XDocument();
-        public static string employeeDBLocation = "C:/Users/Blake/Dropbox/TIMS/Database/Employees.xml";
-        public static string itemDBLocation = "C:/Users/Blake/Dropbox/TIMS/Database/Items.xml";
-        public static string customerDBLocation = "C:/Users/Blake/Dropbox/TIMS/Database/Customers.xml";
-        public static string runningInvDBLocation = "C:/Users/Blake/Dropbox/TIMS/Database/RunningInvoices.xml";
-        public static string savedInvDBLocation = "C:/Users/Blake/Dropbox/TIMS/Database/SavedInvoices.xml";
+        public static XDocument accountsDB = new XDocument();
+        //public static string employeeDBLocation = "C:/Users/Blake/Dropbox/TIMS/Database/Employees.xml";
+        //public static string itemDBLocation = "C:/Users/Blake/Dropbox/TIMS/Database/Items.xml";
+        //public static string customerDBLocation = "C:/Users/Blake/Dropbox/TIMS/Database/Customers.xml";
+        //public static string runningInvDBLocation = "C:/Users/Blake/Dropbox/TIMS/Database/RunningInvoices.xml";
+        //public static string savedInvDBLocation = "C:/Users/Blake/Dropbox/TIMS/Database/SavedInvoices.xml";
+        public static string employeeDBLocation = "Employees.xml";
+        public static string itemDBLocation = "Items.xml";
+        public static string customerDBLocation = "Customers.xml";
+        public static string runningInvDBLocation = "RunningInvoices.xml";
+        public static string savedInvDBLocation = "SavedInvoices.xml";
+        public static string accountsDBLocation = "Accounts.xml";
 
         public static void InitializeDatabases()
         {
+            #region Check if DB Files Exist
             if (!File.Exists(employeeDBLocation))
             {
                 employeeDB = new XDocument(
@@ -66,11 +74,111 @@ namespace TIMS
             }
             else
                 savedInvDB = XDocument.Load(savedInvDBLocation);
+
+            if (!File.Exists(accountsDBLocation))
+            {
+                accountsDB = new XDocument(
+                    new XElement("Accounts"));
+                accountsDB.Save(accountsDBLocation);
+            }
+            else
+                accountsDB = XDocument.Load(accountsDBLocation);
+            #endregion
+
+            #region Default Employee Database Contents
+            if (employeeDB.Root.Elements().FirstOrDefault(el => el.Element("Username").Value == "admin") == null)
+            {
+                employeeDB.Root.Add(
+                new XElement("Employee",
+                    new XElement("EmployeeName", "Administrator"),
+                    new XElement("EmployeeNumber", "0"),
+                    new XElement("Username", "admin"),
+                    new XElement("Password", "admin"),
+                    new XElement("PermissionsProfile", "Administrator"),
+                    new XElement("StartupScreen", "Administrator")));
+                employeeDB.Save(employeeDBLocation);
+            }
+            #endregion
+
+            #region Default Account Database Contents
+            if (accountsDB.Root.Elements().FirstOrDefault(el => el.Name == "Assets") == null)
+                accountsDB.Root.Add(new XElement("Assets"));
+            if (accountsDB.Root.Elements().FirstOrDefault(el => el.Name == "Equity") == null)
+                accountsDB.Root.Add(new XElement("Equity"));
+            if (accountsDB.Root.Elements().FirstOrDefault(el => el.Name == "Liabilities") == null)
+                accountsDB.Root.Add(new XElement("Liabilities"));
+            if (accountsDB.Root.Elements().FirstOrDefault(el => el.Name == "Income") == null)
+                accountsDB.Root.Add(new XElement("Income"));
+            if (accountsDB.Root.Elements().FirstOrDefault(el => el.Name == "Expenses") == null)
+                accountsDB.Root.Add(new XElement("Expenses"));
+
+            if (accountsDB.Root.Element("Assets").Elements().FirstOrDefault(el => el.Element("Name").Value == "Inventory") == null)
+            {
+                accountsDB.Root.Element("Assets").Add(
+                new XElement("Account",
+                    new XElement("Name", "Inventory"),
+                    new XElement("Description", "Physical Inventory"),
+                    new XElement("ID", "1000"),
+                    new XElement("Balance", 0.00d)));
+            }
+
+            accountsDB.Save(accountsDBLocation);
+            #endregion
+
+            #region Default Customer Database Contents
+            if (customerDB.Root.Elements().FirstOrDefault(el => el.Element("CustomerName").Value == "Cash Sale") == null)
+            {
+                customerDB.Root.Add(
+                new XElement("Customer",
+                    new XElement("CustomerName", "Cash Sale"),
+                    new XElement("CustomerNumber", "0")));
+                customerDB.Save(customerDBLocation);
+            }
+            #endregion
+
+            #region Default Item Database Contents
+            if (itemDB.Root.Elements().FirstOrDefault(el => el.Element("ItemName").Value == "Test Item") == null)
+            {
+                itemDB.Root.Add(
+                new XElement("Item",
+                    new XElement("ItemName", "Test Item"),
+                    new XElement("ItemNumber", "TTT"),
+                    new XElement("ProductLine", "TTT"),
+                    new XElement("ItemPrice", 1.00f)));
+                itemDB.Save(itemDBLocation);
+            }
+            if (itemDB.Root.Elements().FirstOrDefault(el => el.Element("ItemName").Value == "Shop Towels") == null)
+            {
+                itemDB.Root.Add(
+                new XElement("Item",
+                    new XElement("ItemName", "Shop Towels"),
+                    new XElement("ItemNumber", "75130"),
+                    new XElement("ProductLine", "NSE"),
+                    new XElement("ItemPrice", 3.49f)));
+                itemDB.Save(itemDBLocation);
+            }
+            if (itemDB.Root.Elements().FirstOrDefault(el => el.Element("ItemName").Value == "NAPA 5w-30 Conventional") == null)
+            {
+                itemDB.Root.Add(
+                new XElement("Item",
+                    new XElement("ItemName", "NAPA 5w-30 Conventional"),
+                    new XElement("ItemNumber", "75130"),
+                    new XElement("ProductLine", "NOL"),
+                    new XElement("ItemPrice", 5.19f)));
+                itemDB.Save(itemDBLocation);
+            }
+            #endregion
         }
 
         public void AddEmployee(string name, string employeeNumber, string[] permissions)
         {
-            
+            employeeDB.Root.Add(
+                new XElement("Employee",
+                    new XElement("Employee Name", "Administrator"),
+                    new XElement("Username", "admin"),
+                    new XElement("Password", "admin"),
+                    new XElement("Permissions Profile", "Administrator"),
+                    new XElement("Startup Screen", "Administrator")));
         }
 
         public static void AddCustomer(Customer customer)
@@ -112,44 +220,64 @@ namespace TIMS
                         new XElement("Black", information[7]))));
         }
         
-        public static string[] CheckEmployee(int employeeNo)
+        public static XElement CheckEmployee(string userornumber)
         {
-            if (employeeNo == 1)
-                return new string[] { "Blake Cogburn", "all" };
-            else if (employeeNo == 2)
-                return new string[] { "Shea Cogburn", "msg", "inv" };
+            XElement e = employeeDB.Root.Elements().FirstOrDefault(el => el.Element("Username").Value == userornumber);
+            if (e == null)
+                e = employeeDB.Root.Elements().FirstOrDefault(el => el.Element("EmployeeNumber").Value == userornumber);
+            if (e == null)
+                return new XElement("Invalid");
+            else
+                return e;
+        }
+
+        public static Employee Login(string userornumber, string password)
+        {
+            XElement e = employeeDB.Root.Elements().FirstOrDefault(el => el.Element("Username").Value == userornumber);
+            if (e == null)
+                e = employeeDB.Root.Elements().FirstOrDefault(el => el.Element("EmployeeNumber").Value == userornumber);
+            if (e == null)
+                return null;
+
+            if (e.Element("Password").Value == password)
+            {
+                Employee em = new Employee(int.Parse(e.Element("EmployeeNumber").Value), e.Element("EmployeeName").Value);
+                return em;
+            }
             else
                 return null;
         }
-
-        public static string[] CheckItemNumber(string itemNo)
+        
+        public static List<InvoiceItem> CheckItemNumber(string itemNo)
         {
-            if (itemNo == "75130")
-                return new string[] { "Shop Towels", "3.49", "srl" };
-            else if (itemNo == "4321")
-                return new string[] { "test Item 2", "19.79" };
-            else
+            List<InvoiceItem> invItems = new List<InvoiceItem>();
+            List<XElement> items = itemDB.Root.Elements().ToList().FindAll(el => el.Element("ItemNumber").Value == itemNo);
+            foreach (XElement item in items)
+            {
+                invItems.Add(new InvoiceItem()
+                {
+                    itemNumber = item.Element("ItemNumber").Value,
+                    productLine = item.Element("ProductLine").Value,
+                    itemName = item.Element("ItemName").Value,
+                    price = float.Parse(item.Element("ItemPrice").Value)
+                });
+            }
+            if (invItems.Count == 0)
                 return null;
+            else
+                return invItems;
         }
 
-        public static string[] CheckCustomerNumber(string custNo)
+        public static Customer CheckCustomerNumber(string custNo)
         {
-            string[] cust = new string[10];
+            Customer cust = new Customer();
             var addresses = from address in customerDB.Root.Elements("Customer")
                             where address.Element("CustomerNumber").Value == custNo
                             select address;
             if (addresses.Count() < 1)
                 return null;
-            cust[0] = addresses.First().Element("CustomerNumber").Value;
-            cust[1] = addresses.First().Element("CustomerName").Value;
-            cust[2] = addresses.First().Element("Phone").Value;
-            cust[3] = addresses.First().Element("Address").Element("Street").Value;
-            cust[4] = addresses.First().Element("Address").Element("City").Value;
-            cust[5] = addresses.First().Element("Address").Element("State").Value;
-            cust[6] = addresses.First().Element("Address").Element("Zip").Value;
-            cust[7] = addresses.First().Element("PriceProfile").Value;
-            cust[8] = addresses.First().Element("TaxExempt").Value;
-            cust[9] = addresses.First().Element("TaxExemptionNumber").Value;
+            cust.customerNumber = addresses.First().Element("CustomerNumber").Value;
+            cust.customerName = addresses.First().Element("CustomerName").Value;
 
             return cust;
         }
