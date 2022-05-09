@@ -981,6 +981,7 @@
             this.priceTB.Name = "priceTB";
             this.priceTB.Size = new System.Drawing.Size(73, 20);
             this.priceTB.TabIndex = 17;
+            this.priceTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.priceTB_KeyDown);
             this.priceTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.priceTB_KeyPress);
             // 
             // pndTB
@@ -1084,7 +1085,7 @@
             // subtotalLabel
             // 
             this.subtotalLabel.AutoSize = true;
-            this.subtotalLabel.Location = new System.Drawing.Point(879, 662);
+            this.subtotalLabel.Location = new System.Drawing.Point(837, 663);
             this.subtotalLabel.Name = "subtotalLabel";
             this.subtotalLabel.Size = new System.Drawing.Size(34, 13);
             this.subtotalLabel.TabIndex = 28;
@@ -1274,6 +1275,7 @@
             this.Taxed.HeaderText = "Tax";
             this.Taxed.Name = "Taxed";
             this.Taxed.ReadOnly = true;
+            this.Taxed.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.Taxed.Width = 35;
             // 
             // Codes

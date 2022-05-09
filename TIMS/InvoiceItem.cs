@@ -22,11 +22,11 @@ namespace TIMS
         public string pricingCode;
         public bool serializedItem;
         public string serialNumber;
-        public string taxed;
+        public bool taxed;
         public string[] codes;
         public Guid ID;
 
-        public InvoiceItem(string itemNumber, string itemName, float price, int quantity, string taxed,
+        public InvoiceItem(string itemNumber, string itemName, float price, int quantity, bool taxed,
              float listPrice = 0.00f, string pricingCode = "!", bool serializedItem = false,
              string serialNumber = "")
         {

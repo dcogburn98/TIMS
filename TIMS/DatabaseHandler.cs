@@ -15,17 +15,14 @@ namespace TIMS
         public static XDocument runningInvDB = new XDocument();
         public static XDocument savedInvDB = new XDocument();
         public static XDocument accountsDB = new XDocument();
-        //public static string employeeDBLocation = "C:/Users/Blake/Dropbox/TIMS/Database/Employees.xml";
-        //public static string itemDBLocation = "C:/Users/Blake/Dropbox/TIMS/Database/Items.xml";
-        //public static string customerDBLocation = "C:/Users/Blake/Dropbox/TIMS/Database/Customers.xml";
-        //public static string runningInvDBLocation = "C:/Users/Blake/Dropbox/TIMS/Database/RunningInvoices.xml";
-        //public static string savedInvDBLocation = "C:/Users/Blake/Dropbox/TIMS/Database/SavedInvoices.xml";
+        public static XDocument invoicesDB = new XDocument();
         public static string employeeDBLocation = "Employees.xml";
         public static string itemDBLocation = "Items.xml";
         public static string customerDBLocation = "Customers.xml";
         public static string runningInvDBLocation = "RunningInvoices.xml";
         public static string savedInvDBLocation = "SavedInvoices.xml";
         public static string accountsDBLocation = "Accounts.xml";
+        public static string invoicesDBLocation = "Invoices.xml";
 
         public static void InitializeDatabases()
         {
@@ -83,6 +80,16 @@ namespace TIMS
             }
             else
                 accountsDB = XDocument.Load(accountsDBLocation);
+
+            if (!File.Exists(invoicesDBLocation))
+            {
+                invoicesDB = new XDocument(
+                    new XElement("Invoices"));
+                invoicesDB.Root.Add(new XElement("NextInvoice", 000001));
+                invoicesDB.Save(invoicesDBLocation);
+            }
+            else
+                invoicesDB = XDocument.Load(invoicesDBLocation);
             #endregion
 
             #region Default Employee Database Contents

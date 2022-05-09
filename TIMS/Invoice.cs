@@ -12,7 +12,7 @@ namespace TIMS
         public Customer customer;
         public Employee employee;
 
-        public InvoiceItem[] items;
+        public List<InvoiceItem> items;
         public float subtotal;
         public float taxRate;
         public float taxAmount;
@@ -27,5 +27,10 @@ namespace TIMS
 
         public bool savedInvoice;
         public DateTime savedInvoiceTime;
+
+        public Invoice()
+        {
+            items = new List<InvoiceItem>();
+        }
     }
 }

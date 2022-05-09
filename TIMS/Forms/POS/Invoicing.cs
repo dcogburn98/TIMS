@@ -12,9 +12,7 @@ namespace TIMS.Forms
 {
     public partial class Invoicing : Form
     {
-        public Customer currentCustomer;
-        public InvoiceItem currentEditingRow;
-        public List<InvoiceItem> items;
+        public Invoice currentInvoice;
         public List<InvoiceItem> addingItems;
         public InvoiceItem workingItem;
 
@@ -39,7 +37,6 @@ namespace TIMS.Forms
             InitializeComponent();
             DatabaseHandler.InitializeDatabases();
             StartPosition = FormStartPosition.CenterScreen;
-            items = new List<InvoiceItem>();
 
             cancelItemButton.Visible = false;
             productLineDropBox.Enabled = false;
@@ -74,9 +71,7 @@ namespace TIMS.Forms
         
         private void CancelInvoice()
         {
-            currentCustomer = null;
-            currentEditingRow = null;
-            items.Clear();
+            currentInvoice = null;
             addingItems = null;
             workingItem = null;
 
@@ -93,90 +88,179 @@ namespace TIMS.Forms
             messagesButton.Enabled = false;
             roaButton.Enabled = false;
             customerInfoLB.Items.Clear();
+            subtotalLabel.Text = "$0.00";
 
             customerNoTB.Clear();
             customerNoTB.Focus();
 
             productLineDropBox.Items.Clear();
+
+            currentState = State.NoCustomer;
+        }
+
+        private void AddCustomer()
+        {
+            currentInvoice = new Invoice();
+            currentInvoice.customer = DatabaseHandler.CheckCustomerNumber(customerNoTB.Text);
+            if (currentInvoice.customer == null)
+            {
+                MessageBox.Show("Invalid customer number!");
+                customerNoTB.SelectAll();
+                return;
+            }
+            customerNoTB.Text = currentInvoice.customer.customerNumber + " " + currentInvoice.customer.customerName;
+            EnableControls();
+            itemNoTB.Focus();
+
+            currentState = State.WaitingItemNumber;
+        }
+
+        private void EnterItemNumber()
+        {
+            addingItems = DatabaseHandler.CheckItemNumber(itemNoTB.Text);
+
+            if (addingItems == null)
+            {
+                MessageBox.Show("Invalid Part Number!");
+                itemNoTB.Clear();
+                return;
+            }
+            else
+            {
+                productLineDropBox.Enabled = true;
+                foreach (InvoiceItem item in addingItems)
+                    productLineDropBox.Items.Add(item.productLine);
+
+                if (addingItems.Count == 1)
+                {
+                    productLineDropBox.SelectedIndex = 0;
+                    SelectProductLine();
+                }
+                else
+                {
+                    productLineDropBox.Enabled = true;
+                    productLineDropBox.Focus();
+                    productLineDropBox.DroppedDown = true;
+                }
+            }
+        }
+
+        private void EditLineItem()
+        {
+            addingLine = true;
+
+            workingItem.quantity = float.Parse(qtyTB.Text);
+            workingItem.price = float.Parse(priceTB.Text);
+            workingItem.total = (float)Math.Round(workingItem.quantity * workingItem.price, 2);
+            workingItem.taxed = taxedCB.Checked;
+
+            dataGridView1.SelectedRows[0].Cells[3].Value = workingItem.quantity;
+            dataGridView1.SelectedRows[0].Cells[4].Value = workingItem.serialNumber;
+            dataGridView1.SelectedRows[0].Cells[6].Value = workingItem.price.ToString("C");
+            dataGridView1.SelectedRows[0].Cells[7].Value = workingItem.total.ToString("C");
+            if (workingItem.taxed)
+                dataGridView1.SelectedRows[0].Cells[8].Value = "Y";
+            else
+                dataGridView1.SelectedRows[0].Cells[8].Value = "N";
+            dataGridView1.SelectedRows[0].Cells[9].Value = workingItem.codes;
+
+            InvoiceItem j = currentInvoice.items.Find(el => el.ID == workingItem.ID);
+            currentInvoice.items.Remove(j);
+            currentInvoice.items.Add(workingItem);
+
+            itemNoTB.Clear();
+            itemNoTB.Enabled = true;
+            productLineDropBox.Items.Clear();
+            productLineDropBox.Text = "";
+            productLineDropBox.Enabled = false;
+            descriptionTB.Clear();
+            descriptionTB.Enabled = false;
+            qtyTB.Clear();
+            qtyTB.Enabled = false;
+            priceCodeTB.Clear();
+            priceCodeTB.Enabled = false;
+            priceTB.Clear();
+            priceTB.Enabled = false;
+            taxedCB.Checked = false;
+            taxedCB.Enabled = false;
+            pndTB.Clear();
+            pndTB.Enabled = false;
+            acceptItemButton.Enabled = false;
+            cancelItemButton.Visible = false;
+
+            itemNoTB.Focus();
+
+            dataGridView1.ClearSelection();
+            dataGridView1.Enabled = true;
+
+            float total = 0.00f;
+            foreach (InvoiceItem i in currentInvoice.items)
+            {
+                total += i.total;
+            }
+            currentInvoice.subtotal = total;
+            subtotalLabel.Text = total.ToString("C");
+
+            addingLine = false;
         }
 
         private void AddLineItem()
         {
-            InvoiceItem newItem = workingItem;
             addingLine = true;
-            int index;
-            if (currentState == State.WaitingItemNumber)
-            {
-                index = dataGridView1.Rows.Add();
 
-                newItem.itemName = descriptionTB.Text;
-                newItem.quantity = float.Parse(qtyTB.Text);
-                newItem.price = float.Parse(priceTB.Text);
-                newItem.total = newItem.price * newItem.quantity;
-                newItem.ID = Guid.NewGuid();
-                items.Add(newItem);
-            }
+            workingItem.quantity = float.Parse(qtyTB.Text);
+            workingItem.price = float.Parse(priceTB.Text);
+            workingItem.taxed = taxedCB.Checked;
+            workingItem.total = (float)Math.Round(workingItem.quantity * workingItem.price, 2);
+
+            currentInvoice.items.Add(workingItem);
+            int row = dataGridView1.Rows.Add();
+            dataGridView1.Rows[row].Cells[0].Value = workingItem.itemNumber;
+            dataGridView1.Rows[row].Cells[1].Value = workingItem.productLine;
+            dataGridView1.Rows[row].Cells[2].Value = workingItem.itemName;
+            dataGridView1.Rows[row].Cells[3].Value = workingItem.quantity;
+            dataGridView1.Rows[row].Cells[4].Value = workingItem.serialNumber;
+            dataGridView1.Rows[row].Cells[5].Value = workingItem.listPrice.ToString("C");
+            dataGridView1.Rows[row].Cells[6].Value = workingItem.price.ToString("C");
+            dataGridView1.Rows[row].Cells[7].Value = workingItem.total.ToString("C");
+            if (workingItem.taxed)
+                dataGridView1.Rows[row].Cells[8].Value = "Y";
             else
-            {
-                index = dataGridView1.SelectedRows[0].Index;
+                dataGridView1.Rows[row].Cells[8].Value = "N";
+            dataGridView1.Rows[row].Cells[9].Value = workingItem.codes;
+            dataGridView1.Rows[row].Cells[10].Value = workingItem.ID;
 
-                newItem.itemName = descriptionTB.Text;
-                newItem.quantity = float.Parse(qtyTB.Text);
-                newItem.price = float.Parse(priceTB.Text);
-                newItem.total = newItem.price * newItem.quantity;
-                newItem.ID = workingItem.ID;
-                items.Remove(items.Find(el => el.ID == newItem.ID));
-                items.Add(newItem);
-            }
-
-            dataGridView1.Rows[index].Cells[10].Value = newItem.ID;
-            dataGridView1.Rows[index].Cells[0].Value = newItem.itemNumber;
-            dataGridView1.Rows[index].Cells[1].Value = newItem.productLine;
-            dataGridView1.Rows[index].Cells[2].Value = newItem.itemName;
-            dataGridView1.Rows[index].Cells[3].Value = newItem.quantity;
-            dataGridView1.Rows[index].Cells[6].Value = newItem.price.ToString("C");
-            dataGridView1.Rows[index].Cells[7].Value = newItem.total.ToString("C");
-            if (taxedCB.Checked)
-                dataGridView1.Rows[index].Cells[8].Value = "Y";
-            else
-                dataGridView1.Rows[index].Cells[8].Value = "N";
-
-            float subtotal = 0.0f;
-            foreach (InvoiceItem i in items)
-            {
-                subtotal += i.total;
-            }
-            subtotalLabel.Text = subtotal.ToString("C");
-
-            cancelItemButton.Enabled = false;
-            cancelItemButton.Visible = false;
-            changeSNButton.Enabled = false;
-            acceptItemButton.Enabled = false;
-            taxedCB.Enabled = false;
-            priceTB.Enabled = false;
-            priceTB.Clear();
-            priceCodeTB.Enabled = false;
-            priceCodeTB.Clear();
-            qtyTB.Enabled = false;
-            qtyTB.Clear();
-            descriptionTB.Enabled = false;
-            descriptionTB.Clear();
-            itemNoTB.Focus();
-            itemNoTB.ReadOnly = false;
             itemNoTB.Clear();
-            extraFunctionsDropBox.Enabled = true;
-            dataGridView1.Enabled = true;
+            productLineDropBox.Items.Clear();
+            productLineDropBox.Text = "";
+            productLineDropBox.Enabled = false;
+            descriptionTB.Clear();
+            descriptionTB.Enabled = false;
+            qtyTB.Clear();
+            qtyTB.Enabled = false;
+            priceCodeTB.Clear();
+            priceCodeTB.Enabled = false;
+            priceTB.Clear();
+            priceTB.Enabled = false;
+            taxedCB.Checked = false;
+            taxedCB.Enabled = false;
+            pndTB.Clear();
+            pndTB.Enabled = false;
+            acceptItemButton.Enabled = false;
+            cancelItemButton.Visible = false;
+
+            itemNoTB.Focus();
 
             dataGridView1.ClearSelection();
 
-            if (currentState == State.EditingLineItem)
+            float total = 0.00f;
+            foreach (InvoiceItem i in currentInvoice.items)
             {
-                itemNoTB.Enabled = true;
-                itemNoTB.ReadOnly = false;
-                itemNoTB.Focus();
+                total += i.total;
             }
+            currentInvoice.subtotal = total;
+            subtotalLabel.Text = total.ToString("C");
 
-            currentState = State.WaitingItemNumber;
             addingLine = false;
         }
 
@@ -184,6 +268,7 @@ namespace TIMS.Forms
         {
             string selectedLine = productLineDropBox.Text;
             workingItem = addingItems.Find(el => el.productLine == selectedLine);
+            workingItem.ID = Guid.NewGuid();
 
             descriptionTB.Enabled = false;
             descriptionTB.Text = workingItem.itemName;
@@ -209,7 +294,8 @@ namespace TIMS.Forms
 
         private void Checkout()
         {
-
+            Checkout checkoutForm = new Checkout(currentInvoice);
+            checkoutForm.ShowDialog();
         }
 
 
@@ -239,54 +325,7 @@ namespace TIMS.Forms
             if (e.KeyCode != Keys.Enter || itemNoTB.Text == "")
                 return;
 
-            currentState = State.WaitingItemNumber;
-            //extraFunctionsDropBox.Enabled = false;
-
-            addingItems = DatabaseHandler.CheckItemNumber(itemNoTB.Text);
-            
-
-            if (addingItems == null)
-            {
-                MessageBox.Show("Invalid Part Number!");
-                itemNoTB.Clear();
-                return;
-            }
-            else
-            {
-                productLineDropBox.Enabled = true;
-                foreach (InvoiceItem item in addingItems)
-                    productLineDropBox.Items.Add(item.productLine);
-
-                if (addingItems.Count == 1)
-                {
-                    //descriptionTB.Enabled = true;
-                    //qtyTB.Enabled = true;
-                    //priceCodeTB.Enabled = true;
-                    //priceTB.Enabled = true;
-                    //taxedCB.Enabled = true;
-                    //acceptItemButton.Enabled = true;
-                    //qtyTB.Text = "1";
-                    //qtyTB.Focus();
-                    //descriptionTB.Text = addingItems.First().itemName;
-                    //priceTB.Text = addingItems.First().price.ToString("0.00");
-                    //itemNoTB.ReadOnly = true;
-                    //descriptionTB.ReadOnly = true;
-                    //priceCodeTB.Text = "!";
-                    //taxedCB.Checked = true;
-                    //cancelItemButton.Visible = true;
-                    //cancelItemButton.Enabled = true;
-                    //cancelItemButton.Text = "Cancel";
-                    productLineDropBox.SelectedIndex = 0;
-                    SelectProductLine();
-                }
-                else
-                {
-                    productLineDropBox.Enabled = true;
-                    productLineDropBox.Focus();
-                    productLineDropBox.DroppedDown = true;
-                }
-            }
-            
+            EnterItemNumber();
         }
 
         private void qtyTB_KeyDown(object sender, KeyEventArgs e)
@@ -300,12 +339,18 @@ namespace TIMS.Forms
             if (e.KeyCode != Keys.Enter)
                 return;
 
-            AddLineItem();
+            if (currentState == State.EditingLineItem)
+                EditLineItem();
+            else
+                AddLineItem();
         }
 
         private void acceptItemButton_Click(object sender, EventArgs e)
         {
-            AddLineItem();
+            if (currentState == State.EditingLineItem)
+                EditLineItem();
+            else
+                AddLineItem();
         }
 
         private void customerNoTB_KeyDown(object sender, KeyEventArgs e)
@@ -313,17 +358,7 @@ namespace TIMS.Forms
             if (e.KeyCode != Keys.Enter)
                 return;
 
-            currentCustomer = DatabaseHandler.CheckCustomerNumber(customerNoTB.Text);
-            if (currentCustomer == null)
-            {
-                MessageBox.Show("Invalid customer number!");
-                customerNoTB.SelectAll();
-                return;
-            }
-
-            customerNoTB.Text = currentCustomer.customerNumber + " " + currentCustomer.customerName;
-            EnableControls();
-            itemNoTB.Focus();
+            AddCustomer();
         }
 
         private void dataGridView1_Paint(object sender, PaintEventArgs e)
@@ -346,16 +381,16 @@ namespace TIMS.Forms
             dataGridView1.Enabled = false;
 
             currentState = State.EditingLineItem;
-            currentEditingRow = items.Find(el => el.ID == (Guid)dataGridView1.SelectedRows[0].Cells[10].Value);
+            workingItem = currentInvoice.items.Find(el => el.ID == (Guid)dataGridView1.SelectedRows[0].Cells[10].Value);
 
-            itemNoTB.Text =         currentEditingRow.itemNumber;
-            descriptionTB.Text =    currentEditingRow.itemName;
-            qtyTB.Text =            currentEditingRow.quantity.ToString();
+            itemNoTB.Text =         workingItem.itemNumber;
+            descriptionTB.Text =    workingItem.itemName;
+            qtyTB.Text =            workingItem.quantity.ToString();
             priceCodeTB.Text =      "!";
-            priceTB.Text =          currentEditingRow.price.ToString();
-            if (currentEditingRow.taxed == "Y")
+            priceTB.Text =          workingItem.price.ToString();
+            if (workingItem.taxed)
                 taxedCB.Checked = true;
-            else if (currentEditingRow.taxed== "N")
+            else if (workingItem.taxed)
                 taxedCB.Checked = false;
 
             itemNoTB.Enabled = false;
@@ -380,8 +415,7 @@ namespace TIMS.Forms
 
         private void checkoutButton_Click(object sender, EventArgs e)
         {
-            Checkout checkoutForm = new Checkout();
-            checkoutForm.ShowDialog();
+            Checkout();
         }
 
         private void Invoicing_FormClosed(object sender, FormClosedEventArgs e)
@@ -458,7 +492,7 @@ namespace TIMS.Forms
             acceptItemButton.Enabled = false;
             cancelItemButton.Visible = false;
 
-            if (items.Count == 0)
+            if (currentInvoice.items.Count == 0)
             {
                 checkoutButton.Enabled = false;
             }
@@ -476,6 +510,7 @@ namespace TIMS.Forms
         {
             if (currentState == State.WaitingItemNumber)
             {
+                workingItem = null;
                 cancelItemButton.Enabled = false;
                 cancelItemButton.Visible = false;
                 changeSNButton.Enabled = false;
@@ -496,7 +531,7 @@ namespace TIMS.Forms
             if (currentState == State.EditingLineItem)
             {
                 lineDeleted = true;
-                items.Remove(items.Find(el => el.ID == (Guid)dataGridView1.SelectedRows[0].Cells["guid"].Value));
+                currentInvoice.items.Remove(currentInvoice.items.Find(el => el.ID == (Guid)dataGridView1.SelectedRows[0].Cells["guid"].Value));
                 dataGridView1.Rows.Remove(dataGridView1.SelectedRows[0]);
                 cancelItemButton.Enabled = false;
                 cancelItemButton.Visible = false;
@@ -517,12 +552,13 @@ namespace TIMS.Forms
                 itemNoTB.Clear();
 
                 float total = 0.00f;
-                foreach (InvoiceItem i in items)
+                foreach (InvoiceItem i in currentInvoice.items)
                 {
                     total += i.total;
                 }
                 subtotalLabel.Text = total.ToString("C");
                 dataGridView1.Enabled = true;
+                dataGridView1.ClearSelection();
             }
         }
 
