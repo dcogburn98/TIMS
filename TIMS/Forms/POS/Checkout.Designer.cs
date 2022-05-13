@@ -1,4 +1,4 @@
-﻿namespace TIMS
+﻿namespace TIMS.Forms
 {
     partial class Checkout
     {
@@ -29,14 +29,16 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
+            this.changeDueLbl = new System.Windows.Forms.Label();
+            this.cancelPaymentBtn = new System.Windows.Forms.Button();
+            this.finalizeBtn = new System.Windows.Forms.Button();
+            this.acceptPaymentBtn = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
-            this.textBox11 = new System.Windows.Forms.TextBox();
-            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.checkNameTB = new System.Windows.Forms.TextBox();
+            this.checkNumberTB = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.paymentAmountTB = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -61,17 +63,17 @@
             this.subtotalTB = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button8 = new System.Windows.Forms.Button();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.paymentIndexTB = new System.Windows.Forms.TextBox();
+            this.deletePaymentBtn = new System.Windows.Forms.Button();
+            this.remainingBalanceTB = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
             this.paymentsLB = new System.Windows.Forms.ListBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.paymentTypeLB = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.returnInvoiceBtn = new System.Windows.Forms.Button();
+            this.printBtn = new System.Windows.Forms.Button();
+            this.closeBtn = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -79,14 +81,16 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button7);
-            this.groupBox1.Controls.Add(this.button6);
+            this.groupBox1.Controls.Add(this.changeDueLbl);
+            this.groupBox1.Controls.Add(this.cancelPaymentBtn);
+            this.groupBox1.Controls.Add(this.finalizeBtn);
+            this.groupBox1.Controls.Add(this.acceptPaymentBtn);
             this.groupBox1.Controls.Add(this.label14);
-            this.groupBox1.Controls.Add(this.textBox11);
-            this.groupBox1.Controls.Add(this.textBox10);
+            this.groupBox1.Controls.Add(this.checkNameTB);
+            this.groupBox1.Controls.Add(this.checkNumberTB);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.textBox9);
+            this.groupBox1.Controls.Add(this.paymentAmountTB);
             this.groupBox1.Location = new System.Drawing.Point(364, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(298, 384);
@@ -94,25 +98,45 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Finalize";
             // 
-            // button7
+            // changeDueLbl
             // 
-            this.button7.Enabled = false;
-            this.button7.Location = new System.Drawing.Point(6, 355);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 7;
-            this.button7.Text = "Finalize";
-            this.button7.UseVisualStyleBackColor = true;
+            this.changeDueLbl.AutoSize = true;
+            this.changeDueLbl.Location = new System.Drawing.Point(87, 360);
+            this.changeDueLbl.Name = "changeDueLbl";
+            this.changeDueLbl.Size = new System.Drawing.Size(70, 13);
+            this.changeDueLbl.TabIndex = 9;
+            this.changeDueLbl.Text = "Change Due:";
             // 
-            // button6
+            // cancelPaymentBtn
             // 
-            this.button6.Enabled = false;
-            this.button6.Location = new System.Drawing.Point(113, 180);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 6;
-            this.button6.Text = "Accept";
-            this.button6.UseVisualStyleBackColor = true;
+            this.cancelPaymentBtn.Location = new System.Drawing.Point(11, 181);
+            this.cancelPaymentBtn.Name = "cancelPaymentBtn";
+            this.cancelPaymentBtn.Size = new System.Drawing.Size(75, 23);
+            this.cancelPaymentBtn.TabIndex = 8;
+            this.cancelPaymentBtn.Text = "Cancel";
+            this.cancelPaymentBtn.UseVisualStyleBackColor = true;
+            this.cancelPaymentBtn.Click += new System.EventHandler(this.cancelPaymentBtn_Click);
+            // 
+            // finalizeBtn
+            // 
+            this.finalizeBtn.Enabled = false;
+            this.finalizeBtn.Location = new System.Drawing.Point(6, 355);
+            this.finalizeBtn.Name = "finalizeBtn";
+            this.finalizeBtn.Size = new System.Drawing.Size(75, 23);
+            this.finalizeBtn.TabIndex = 7;
+            this.finalizeBtn.Text = "Finalize";
+            this.finalizeBtn.UseVisualStyleBackColor = true;
+            this.finalizeBtn.Click += new System.EventHandler(this.finalizeBtn_Click);
+            // 
+            // acceptPaymentBtn
+            // 
+            this.acceptPaymentBtn.Location = new System.Drawing.Point(217, 181);
+            this.acceptPaymentBtn.Name = "acceptPaymentBtn";
+            this.acceptPaymentBtn.Size = new System.Drawing.Size(75, 23);
+            this.acceptPaymentBtn.TabIndex = 12;
+            this.acceptPaymentBtn.Text = "Accept";
+            this.acceptPaymentBtn.UseVisualStyleBackColor = true;
+            this.acceptPaymentBtn.Click += new System.EventHandler(this.acceptPaymentBtn_Click);
             // 
             // label14
             // 
@@ -123,21 +147,22 @@
             this.label14.TabIndex = 5;
             this.label14.Text = "Name On Check:";
             // 
-            // textBox11
+            // checkNameTB
             // 
-            this.textBox11.Enabled = false;
-            this.textBox11.Location = new System.Drawing.Point(103, 154);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(189, 20);
-            this.textBox11.TabIndex = 4;
+            this.checkNameTB.Location = new System.Drawing.Point(103, 154);
+            this.checkNameTB.Name = "checkNameTB";
+            this.checkNameTB.Size = new System.Drawing.Size(189, 20);
+            this.checkNameTB.TabIndex = 11;
+            this.checkNameTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.checkNameTB_KeyDown);
             // 
-            // textBox10
+            // checkNumberTB
             // 
-            this.textBox10.Enabled = false;
-            this.textBox10.Location = new System.Drawing.Point(103, 128);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(189, 20);
-            this.textBox10.TabIndex = 3;
+            this.checkNumberTB.Location = new System.Drawing.Point(103, 128);
+            this.checkNumberTB.Name = "checkNumberTB";
+            this.checkNumberTB.Size = new System.Drawing.Size(189, 20);
+            this.checkNumberTB.TabIndex = 10;
+            this.checkNumberTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.checkNumberTB_KeyDown);
+            this.checkNumberTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.checkNumberTB_KeyPress);
             // 
             // label13
             // 
@@ -157,13 +182,14 @@
             this.label12.TabIndex = 1;
             this.label12.Text = "Payment Amount;";
             // 
-            // textBox9
+            // paymentAmountTB
             // 
-            this.textBox9.Enabled = false;
-            this.textBox9.Location = new System.Drawing.Point(103, 102);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(189, 20);
-            this.textBox9.TabIndex = 0;
+            this.paymentAmountTB.Location = new System.Drawing.Point(103, 102);
+            this.paymentAmountTB.Name = "paymentAmountTB";
+            this.paymentAmountTB.Size = new System.Drawing.Size(189, 20);
+            this.paymentAmountTB.TabIndex = 9;
+            this.paymentAmountTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.paymentAmountTB_KeyDown);
+            this.paymentAmountTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.paymentAmountTB_KeyPress);
             // 
             // groupBox2
             // 
@@ -245,6 +271,7 @@
             this.acceptBtn.TabIndex = 16;
             this.acceptBtn.Text = "Accept";
             this.acceptBtn.UseVisualStyleBackColor = true;
+            this.acceptBtn.Click += new System.EventHandler(this.acceptBtn_Click);
             // 
             // label8
             // 
@@ -401,10 +428,10 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.button8);
-            this.groupBox3.Controls.Add(this.textBox8);
+            this.groupBox3.Controls.Add(this.paymentIndexTB);
+            this.groupBox3.Controls.Add(this.deletePaymentBtn);
+            this.groupBox3.Controls.Add(this.remainingBalanceTB);
             this.groupBox3.Controls.Add(this.label11);
-            this.groupBox3.Controls.Add(this.button5);
             this.groupBox3.Controls.Add(this.paymentsLB);
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.label9);
@@ -416,23 +443,34 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Payment Method";
             // 
-            // button8
+            // paymentIndexTB
             // 
-            this.button8.Location = new System.Drawing.Point(215, 130);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 23);
-            this.button8.TabIndex = 7;
-            this.button8.Text = "Delete";
-            this.button8.UseVisualStyleBackColor = true;
+            this.paymentIndexTB.Location = new System.Drawing.Point(6, 132);
+            this.paymentIndexTB.Name = "paymentIndexTB";
+            this.paymentIndexTB.Size = new System.Drawing.Size(29, 20);
+            this.paymentIndexTB.TabIndex = 8;
+            this.paymentIndexTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.paymentIndexTB_KeyDown);
+            this.paymentIndexTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.paymentIndexTB_KeyPress);
             // 
-            // textBox8
+            // deletePaymentBtn
             // 
-            this.textBox8.Enabled = false;
-            this.textBox8.Location = new System.Drawing.Point(111, 162);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(181, 20);
-            this.textBox8.TabIndex = 6;
-            this.textBox8.Text = "$0.00";
+            this.deletePaymentBtn.Enabled = false;
+            this.deletePaymentBtn.Location = new System.Drawing.Point(215, 130);
+            this.deletePaymentBtn.Name = "deletePaymentBtn";
+            this.deletePaymentBtn.Size = new System.Drawing.Size(75, 23);
+            this.deletePaymentBtn.TabIndex = 7;
+            this.deletePaymentBtn.Text = "Delete";
+            this.deletePaymentBtn.UseVisualStyleBackColor = true;
+            this.deletePaymentBtn.Click += new System.EventHandler(this.deletePaymentBtn_Click);
+            // 
+            // remainingBalanceTB
+            // 
+            this.remainingBalanceTB.Enabled = false;
+            this.remainingBalanceTB.Location = new System.Drawing.Point(111, 162);
+            this.remainingBalanceTB.Name = "remainingBalanceTB";
+            this.remainingBalanceTB.Size = new System.Drawing.Size(181, 20);
+            this.remainingBalanceTB.TabIndex = 6;
+            this.remainingBalanceTB.Text = "$0.00";
             // 
             // label11
             // 
@@ -443,19 +481,8 @@
             this.label11.TabIndex = 5;
             this.label11.Text = "Remaining Balance:";
             // 
-            // button5
-            // 
-            this.button5.Enabled = false;
-            this.button5.Location = new System.Drawing.Point(73, 130);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "Accept";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
             // paymentsLB
             // 
-            this.paymentsLB.Enabled = false;
             this.paymentsLB.FormattingEnabled = true;
             this.paymentsLB.Items.AddRange(new object[] {
             "Cash: $34.00",
@@ -464,6 +491,7 @@
             this.paymentsLB.Name = "paymentsLB";
             this.paymentsLB.Size = new System.Drawing.Size(138, 95);
             this.paymentsLB.TabIndex = 3;
+            this.paymentsLB.SelectedIndexChanged += new System.EventHandler(this.paymentsLB_SelectedIndexChanged);
             // 
             // label10
             // 
@@ -496,44 +524,46 @@
             this.paymentTypeLB.Name = "paymentTypeLB";
             this.paymentTypeLB.Size = new System.Drawing.Size(142, 95);
             this.paymentTypeLB.TabIndex = 0;
+            this.paymentTypeLB.DoubleClick += new System.EventHandler(this.paymentTypeLB_DoubleClick);
             // 
-            // button1
+            // returnInvoiceBtn
             // 
-            this.button1.Location = new System.Drawing.Point(364, 414);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(98, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Return to Invoice";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.returnInvoiceBtn.Location = new System.Drawing.Point(364, 414);
+            this.returnInvoiceBtn.Name = "returnInvoiceBtn";
+            this.returnInvoiceBtn.Size = new System.Drawing.Size(98, 23);
+            this.returnInvoiceBtn.TabIndex = 3;
+            this.returnInvoiceBtn.Text = "Return to Invoice";
+            this.returnInvoiceBtn.UseVisualStyleBackColor = true;
+            this.returnInvoiceBtn.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // printBtn
             // 
-            this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(468, 414);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(99, 23);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Print";
-            this.button2.UseVisualStyleBackColor = true;
+            this.printBtn.Enabled = false;
+            this.printBtn.Location = new System.Drawing.Point(468, 414);
+            this.printBtn.Name = "printBtn";
+            this.printBtn.Size = new System.Drawing.Size(99, 23);
+            this.printBtn.TabIndex = 4;
+            this.printBtn.Text = "Print";
+            this.printBtn.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // closeBtn
             // 
-            this.button3.Location = new System.Drawing.Point(573, 414);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(88, 23);
-            this.button3.TabIndex = 5;
-            this.button3.Text = "Close";
-            this.button3.UseVisualStyleBackColor = true;
+            this.closeBtn.Enabled = false;
+            this.closeBtn.Location = new System.Drawing.Point(573, 414);
+            this.closeBtn.Name = "closeBtn";
+            this.closeBtn.Size = new System.Drawing.Size(88, 23);
+            this.closeBtn.TabIndex = 5;
+            this.closeBtn.Text = "Close";
+            this.closeBtn.UseVisualStyleBackColor = true;
             // 
             // Checkout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(675, 450);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.closeBtn);
+            this.Controls.Add(this.printBtn);
+            this.Controls.Add(this.returnInvoiceBtn);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -571,29 +601,31 @@
         private System.Windows.Forms.TextBox subtotalTB;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox remainingBalanceTB;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Button button5;
         private System.Windows.Forms.ListBox paymentsLB;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ListBox paymentTypeLB;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button returnInvoiceBtn;
+        private System.Windows.Forms.Button printBtn;
+        private System.Windows.Forms.Button closeBtn;
+        private System.Windows.Forms.Button finalizeBtn;
+        private System.Windows.Forms.Button acceptPaymentBtn;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox textBox11;
-        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.TextBox checkNameTB;
+        private System.Windows.Forms.TextBox checkNumberTB;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.TextBox paymentAmountTB;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox poTB;
         private System.Windows.Forms.TextBox attentionTB;
         private System.Windows.Forms.Button saveInvoiceBtn;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button deletePaymentBtn;
+        private System.Windows.Forms.TextBox paymentIndexTB;
+        private System.Windows.Forms.Button cancelPaymentBtn;
+        private System.Windows.Forms.Label changeDueLbl;
     }
 }

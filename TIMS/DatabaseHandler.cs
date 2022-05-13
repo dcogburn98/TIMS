@@ -255,19 +255,24 @@ namespace TIMS
                 return null;
         }
         
-        public static List<InvoiceItem> CheckItemNumber(string itemNo)
+        public static List<Item> CheckItemNumber(string itemNo)
         {
-            List<InvoiceItem> invItems = new List<InvoiceItem>();
+            List<Item> invItems = new List<Item>();
             List<XElement> items = itemDB.Root.Elements().ToList().FindAll(el => el.Element("ItemNumber").Value == itemNo);
             foreach (XElement item in items)
             {
-                invItems.Add(new InvoiceItem()
+                Item i = new Item()
                 {
                     itemNumber = item.Element("ItemNumber").Value,
                     productLine = item.Element("ProductLine").Value,
                     itemName = item.Element("ItemName").Value,
-                    price = float.Parse(item.Element("ItemPrice").Value)
-                });
+                    greenPrice = float.Parse(item.Element("ItemPrice").Value),
+                    ageRestricted = bool.Parse(item.Element("AgeRestricted").Value),
+                    taxed = item.Element("Taxed").Value == "True" ? true : false
+                };
+                if (item.Elements().FirstOrDefault(el => el.Name == "MinimumAge") != null)
+                    i.minimumAge = int.Parse(item.Element("MinimumAge").Value);
+                invItems.Add(i);
             }
             if (invItems.Count == 0)
                 return null;
@@ -283,8 +288,40 @@ namespace TIMS
                             select address;
             if (addresses.Count() < 1)
                 return null;
+
+            List<Payment.PaymentTypes> ptypes = new List<Payment.PaymentTypes>();
+            string[] paymentTypes = addresses.First().Element("PaymentTypes").Value.Split(',');
+            foreach (string p in paymentTypes)
+            {
+                switch (p)
+                {
+                    case "Cash":
+                        ptypes.Add(Payment.PaymentTypes.Cash);
+                        break;
+                    case "Check":
+                        ptypes.Add(Payment.PaymentTypes.Check);
+                        break;
+                    case "PaymentCard":
+                        ptypes.Add(Payment.PaymentTypes.PaymentCard);
+                        break;
+                    case "CashApp":
+                        ptypes.Add(Payment.PaymentTypes.CashApp);
+                        break;
+                    case "Venmo":
+                        ptypes.Add(Payment.PaymentTypes.Venmo);
+                        break;
+                    case "Paypal":
+                        ptypes.Add(Payment.PaymentTypes.Paypal);
+                        break;
+                    case "Charge":
+                        ptypes.Add(Payment.PaymentTypes.Charge);
+                        break;
+                }
+            }
+
             cust.customerNumber = addresses.First().Element("CustomerNumber").Value;
             cust.customerName = addresses.First().Element("CustomerName").Value;
+            cust.availablePaymentTypes = ptypes.ToArray();
 
             return cust;
         }

@@ -22,6 +22,8 @@ namespace TIMS
         public string pricingCode;
         public bool serializedItem;
         public string serialNumber;
+        public bool ageRestricted;
+        public int minimumAge;
         public bool taxed;
         public string[] codes;
         public Guid ID;
@@ -40,10 +42,18 @@ namespace TIMS
             this.serializedItem = serializedItem;
             this.serialNumber = serialNumber;
         }
-
-        public InvoiceItem()
+        
+        public InvoiceItem(Item item)
         {
-
+            itemNumber = item.itemNumber;
+            productLine = item.productLine;
+            itemName = item.itemName;
+            longDescription = item.description;
+            price = item.greenPrice;
+            listPrice = item.listPrice;
+            ageRestricted = item.ageRestricted;
+            minimumAge = item.minimumAge;
+            taxed = item.taxed;
         }
 
         public void AddCode(string code)
@@ -52,5 +62,6 @@ namespace TIMS
             newCodes.Add(code);
             codes = newCodes.ToArray();
         }
+
     }
 }

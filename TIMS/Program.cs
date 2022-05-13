@@ -19,11 +19,20 @@ namespace TIMS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Login login = new Login();
-            OpenForms.Add(login);
-            login.Show();
-            Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
-            Application.Run();
+            //Login login = new Login();
+            //OpenForms.Add(login);
+            //login.Show();
+            //Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
+            //Application.Run();
+            DatabaseHandler.InitializeDatabases();
+            Invoice inv = new Invoice();
+            inv.customer = DatabaseHandler.CheckCustomerNumber("0");
+            inv.subtotal = 3.95f;
+            inv.taxRate = 0.1025f;
+            inv.total = 4.49f;
+            inv.items.Add(new InvoiceItem(DatabaseHandler.CheckItemNumber("75130").ToArray()[1]));
+            ReportViewer v = new ReportViewer(inv);
+            Application.Run(v);
         }
 
         public static void LaunchInvoicing()

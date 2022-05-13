@@ -50,8 +50,7 @@ namespace TIMS
         {
             Weekly,
             Biweekly,
-            Monthly,
-            Yearly
+            Monthly
         }
 
         public bool isCommisioned;

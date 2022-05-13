@@ -13,7 +13,7 @@ namespace TIMS.Forms
     public partial class Invoicing : Form
     {
         public Invoice currentInvoice;
-        public List<InvoiceItem> addingItems;
+        public List<Item> addingItems;
         public InvoiceItem workingItem;
 
         bool addingLine;
@@ -75,6 +75,22 @@ namespace TIMS.Forms
             addingItems = null;
             workingItem = null;
 
+            itemNoTB.Clear();
+            descriptionTB.Clear();
+            qtyTB.Clear();
+            priceCodeTB.Clear();
+            productLineDropBox.Items.Clear();
+            productLineDropBox.Text = "";
+            priceTB.Clear();
+            taxedCB.Checked = false;
+
+            productLineDropBox.Enabled = false;
+            qtyTB.Enabled = false;
+            taxedCB.Enabled = false;
+            priceTB.Enabled = false;
+            priceCodeTB.Enabled = false;
+            acceptItemButton.Enabled = false;
+            cancelItemButton.Visible = false;
             savedInvoiceButton.Enabled = true;
             catalogButton.Enabled = false;
             stockCheckButton.Enabled = false;
@@ -93,21 +109,31 @@ namespace TIMS.Forms
             customerNoTB.Clear();
             customerNoTB.Focus();
 
-            productLineDropBox.Items.Clear();
-
             currentState = State.NoCustomer;
         }
 
         private void AddCustomer()
         {
-            currentInvoice = new Invoice();
-            currentInvoice.customer = DatabaseHandler.CheckCustomerNumber(customerNoTB.Text);
-            if (currentInvoice.customer == null)
+            Customer c = DatabaseHandler.CheckCustomerNumber(customerNoTB.Text);
+            Invoice newInvoice = new Invoice();
+
+            if (c == null)
             {
                 MessageBox.Show("Invalid customer number!");
                 customerNoTB.SelectAll();
                 return;
             }
+
+            if (currentInvoice != null)
+                if (currentInvoice.items.Count > 0)
+                    newInvoice = currentInvoice;
+                else
+                    currentInvoice = newInvoice;
+            else
+                currentInvoice = newInvoice;
+
+            currentInvoice.customer = c;
+            
             customerNoTB.Text = currentInvoice.customer.customerNumber + " " + currentInvoice.customer.customerName;
             EnableControls();
             itemNoTB.Focus();
@@ -128,7 +154,7 @@ namespace TIMS.Forms
             else
             {
                 productLineDropBox.Enabled = true;
-                foreach (InvoiceItem item in addingItems)
+                foreach (Item item in addingItems)
                     productLineDropBox.Items.Add(item.productLine);
 
                 if (addingItems.Count == 1)
@@ -267,7 +293,7 @@ namespace TIMS.Forms
         private void SelectProductLine()
         {
             string selectedLine = productLineDropBox.Text;
-            workingItem = addingItems.Find(el => el.productLine == selectedLine);
+            workingItem = new InvoiceItem(addingItems.Find(el => el.productLine == selectedLine));
             workingItem.ID = Guid.NewGuid();
 
             descriptionTB.Enabled = false;
@@ -285,6 +311,7 @@ namespace TIMS.Forms
             priceTB.Text = workingItem.price.ToString();
 
             taxedCB.Enabled = true;
+            taxedCB.Checked = workingItem.taxed;
 
             acceptItemButton.Enabled = true;
 
@@ -319,6 +346,12 @@ namespace TIMS.Forms
 
         private void itemNoTB_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.F2)
+            {
+                if (checkoutButton.Enabled)
+                    Checkout();
+                return;
+            }
             if (e.Modifiers == Keys.LShiftKey && e.KeyCode == Keys.Tab)
                 extraFunctionsDropBox.Focus();
 
@@ -351,6 +384,8 @@ namespace TIMS.Forms
                 EditLineItem();
             else
                 AddLineItem();
+
+            extraFunctionsDropBox.Enabled = true;
         }
 
         private void customerNoTB_KeyDown(object sender, KeyEventArgs e)
@@ -380,6 +415,7 @@ namespace TIMS.Forms
             }
             dataGridView1.Enabled = false;
 
+            extraFunctionsDropBox.Enabled = false;
             currentState = State.EditingLineItem;
             workingItem = currentInvoice.items.Find(el => el.ID == (Guid)dataGridView1.SelectedRows[0].Cells[10].Value);
 

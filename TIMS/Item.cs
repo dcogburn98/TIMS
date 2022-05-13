@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace TIMS
 {
-    class Item
+    public class Item
     {
-        public string lineCode;
+        public string productLine;
         public string itemNumber;
+        public string itemName;
         public string description;
         public string supplier;
         public int groupCode;
@@ -37,6 +38,9 @@ namespace TIMS
         public float bluePrice;
         public float replacementCost;
         public float averageCost;
+        public bool taxed;
+        public bool ageRestricted;
+        public int minimumAge;
 
         public int locationCode;
     }
