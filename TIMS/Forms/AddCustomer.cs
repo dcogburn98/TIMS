@@ -37,7 +37,7 @@ namespace TIMS
 
             if (!int.TryParse(textBox2.Text, out int val))
             {
-                label6.Text = "Please provide a vlid customer number.";
+                label6.Text = "Please provide a valid customer number.";
                 label6.Visible = true;
                 return;
             }
@@ -46,10 +46,9 @@ namespace TIMS
             customer.customerNumber = textBox2.Text; //Number
             customer.customerName = textBox1.Text; //Name
             customer.phoneNumber = textBox4.Text; //Phone
-            customer.customerStreetAddress = textBox5.Text; //Street
-            customer.customerCity = textBox6.Text; //City
-            customer.customerState = comboBox2.Text; //State
-            customer.customerZip = textBox7.Text; //Zip
+            string address = textBox5.Text + ", " + textBox6.Text + ", " + comboBox2.Text + ", " + comboBox1.Text;
+            customer.mailingAddress = address;
+            customer.shippingAddress = address;
             customer.pricingProfile = comboBox1.Text; //Pricing Profile
             if (checkBox1.Checked) //Tax Exempt
                 customer.taxExempt = true;

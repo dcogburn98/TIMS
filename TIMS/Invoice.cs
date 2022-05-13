@@ -50,9 +50,10 @@ namespace TIMS
             XFont fontItalic = new XFont("Times", 12, XFontStyle.BoldItalic);
             double ls = fontH2.GetHeight();
 
-            #region Rectangle Behind Invoice Header
+            #region Invoice Header
             rect = new XRect(440, 10, 140, 30);
             gfx.DrawRectangle(pen, XBrushes.LightGray, rect);
+            gfx.DrawString("Invoice", fontH1, XBrushes.Black, 483, 30);
             #endregion
 
             #region Employee and Store Information Area
@@ -71,9 +72,12 @@ namespace TIMS
             gfx.DrawString("Phone Number: ", font, XBrushes.Black, 284, 37 + 2 * font.GetHeight());
             #endregion
 
-            #region Invoice Information Area Boundary
+            #region Invoice Information Area
             rect = new XRect(440, 50, 140, 40);
             gfx.DrawRectangle(pen, XBrushes.White, rect);
+            gfx.DrawString("Time: ", font, XBrushes.Black, 444, 60);
+            gfx.DrawString("Date: ", font, XBrushes.Black, 500, 60);
+            gfx.DrawString("Page: 1/1", font, XBrushes.Black, 530, 85);
             #endregion
 
             #region Customer Information Area
@@ -81,12 +85,26 @@ namespace TIMS
             int customerInfoHeight = 60;
             rect = new XRect(customerInfoOrigin, new SizeF(560, customerInfoHeight));
             gfx.DrawRectangle(pen, XBrushes.White, rect);
-            //gfx.DrawString(customer.customerNumber, font, XBrushes.Black, )
+            gfx.DrawString(customer.customerNumber, font, XBrushes.Black, new PointF(customerInfoOrigin.X + 4, customerInfoOrigin.Y + 10));
+            gfx.DrawString(customer.customerName, font, XBrushes.Black, new PointF(customerInfoOrigin.X + 4, customerInfoOrigin.Y + 10 + (float)font.GetHeight()));
+            gfx.DrawString(customer.mailingAddress.Split(',')[0], font, XBrushes.Black, new PointF(customerInfoOrigin.X + 4, customerInfoOrigin.Y + 10 + 2 * (float)font.GetHeight()));
+            gfx.DrawString(
+                customer.mailingAddress.Split(',')[1].Trim() + "," + 
+                customer.mailingAddress.Split(',')[2] + 
+                customer.mailingAddress.Split(',')[3] + "," +
+                customer.mailingAddress.Split(',')[4], font, XBrushes.Black, new PointF(customerInfoOrigin.X + 4, customerInfoOrigin.Y + 10 + 3 * (float)font.GetHeight()));
+            gfx.DrawString("Anticipated Delivery:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 224.5f, customerInfoOrigin.Y + 10));
+            gfx.DrawString("Attention:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 260, customerInfoOrigin.Y + 10 + (float)font.GetHeight()));
+            gfx.DrawString("Tax Exemption:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 241.5f, customerInfoOrigin.Y + 10 + 2*(float)font.GetHeight()));
+            gfx.DrawString("PO#:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 275, customerInfoOrigin.Y + 10 + 3*(float)font.GetHeight()));
+            gfx.DrawString("Terms:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 269.5f, customerInfoOrigin.Y + 10 + 4*(float)font.GetHeight()));
+
+
             #endregion
 
             #region Item Information Area
             PointF itemInfoOrigin = new PointF(20, 170);
-            float itemInfoheight = customerInfoOrigin.Y + customerInfoHeight + 10;
+            float itemInfoheight = 320;
 
             rect = new XRect(itemInfoOrigin, new SizeF(560, itemInfoheight));
             gfx.DrawRectangle(pen, XBrushes.White, rect);
@@ -105,15 +123,30 @@ namespace TIMS
             gfx.DrawString("List",          fontH2, XBrushes.White, itemInfoOrigin.X + 400, itemInfoOrigin.Y + 12);
             gfx.DrawString("Price",         fontH2, XBrushes.White, itemInfoOrigin.X + 459, itemInfoOrigin.Y + 12);
             gfx.DrawString("Total",         fontH2, XBrushes.White, itemInfoOrigin.X + 518, itemInfoOrigin.Y + 12);
+
+            int row = 0;
+            foreach (InvoiceItem item in items)
+            {
+                gfx.DrawString(item.itemNumber, font, XBrushes.Black, itemInfoOrigin.X + 4, itemInfoOrigin.Y + 27 + (row*font.GetHeight()));
+                gfx.DrawString(item.productLine, font, XBrushes.Black, itemInfoOrigin.X + 127, itemInfoOrigin.Y + 27 + (row * font.GetHeight()));
+                gfx.DrawString(item.itemName, font, XBrushes.Black, itemInfoOrigin.X + 165, itemInfoOrigin.Y + 27 + (row * font.GetHeight()));
+                gfx.DrawString(item.quantity.ToString(), font, XBrushes.Black, itemInfoOrigin.X + 355, itemInfoOrigin.Y + 27 + (row * font.GetHeight()));
+                gfx.DrawString(item.listPrice.ToString("C"), font, XBrushes.Black, itemInfoOrigin.X + 390, itemInfoOrigin.Y + 27 + (row * font.GetHeight()));
+                gfx.DrawString(item.price.ToString("C"), font, XBrushes.Black, itemInfoOrigin.X + 450, itemInfoOrigin.Y + 27 + (row * font.GetHeight()));
+                gfx.DrawString(item.total.ToString("C"), font, XBrushes.Black, itemInfoOrigin.X + 510, itemInfoOrigin.Y + 27 + (row * font.GetHeight()));
+
+                row++;
+            }
             #endregion
 
-            #region Payment and Total Information Area Boundary
-            rect = new XRect(350, 730, 150, 75);
+            #region Payment and Total Information Area
+            PointF paymentInformationOrigin = new PointF(300, itemInfoOrigin.Y + itemInfoheight + 10);
+            rect = new XRect(paymentInformationOrigin, new SizeF(280, 150));
             gfx.DrawRectangle(pen, XBrushes.White, rect);
+            gfx.DrawBarCode(PdfSharp.Drawing.BarCodes.BarCode.FromType(PdfSharp.Drawing.BarCodes.CodeType.Code3of9Standard, invoiceNumber.ToString(), new XSize(280, 40)), new XPoint(paymentInformationOrigin.X, paymentInformationOrigin.Y + 160));
+            gfx.DrawString(invoiceNumber.ToString(), font, XBrushes.Black, new PointF(300, paymentInformationOrigin.Y + 210));
             #endregion
 
-
-            gfx.DrawString("Invoice", fontH1, XBrushes.Black, 483, 30);
             y += 200;
 
             // Draw some text

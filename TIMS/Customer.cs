@@ -21,10 +21,8 @@ namespace TIMS
 
         public string phoneNumber;
         public string faxNumber;
-        public string customerStreetAddress;
-        public string customerCity;
-        public string customerState;
-        public string customerZip;
+        public string mailingAddress;
+        public string shippingAddress;
 
         public string invoiceMessage;
 

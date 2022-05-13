@@ -202,11 +202,8 @@ namespace TIMS
                     new XElement("CreditLimit", customer.creditLimit),
                     new XElement("AccountBalance", customer.accountBalance),
                     new XElement("InvoiceMessage", customer.invoiceMessage),
-                    new XElement("Address",
-                        new XElement("Street", customer.customerStreetAddress),
-                        new XElement("City", customer.customerCity),
-                        new XElement("State", customer.customerState),
-                        new XElement("ZipCode", customer.customerZip))));
+                    new XElement("MailingAddress", customer.mailingAddress),
+                    new XElement("ShippingAddress", customer.shippingAddress)));
                     
         }
 
@@ -321,6 +318,8 @@ namespace TIMS
 
             cust.customerNumber = addresses.First().Element("CustomerNumber").Value;
             cust.customerName = addresses.First().Element("CustomerName").Value;
+            cust.mailingAddress = addresses.First().Element("MailingAddress").Value;
+            cust.shippingAddress = addresses.First().Element("ShippingAddress").Value;
             cust.availablePaymentTypes = ptypes.ToArray();
 
             return cust;
