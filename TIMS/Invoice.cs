@@ -81,7 +81,7 @@ namespace TIMS
             int customerInfoHeight = 60;
             rect = new XRect(customerInfoOrigin, new SizeF(560, customerInfoHeight));
             gfx.DrawRectangle(pen, XBrushes.White, rect);
-            gfx.DrawString(customer.customerNumber, font, XBrushes.Black, )
+            //gfx.DrawString(customer.customerNumber, font, XBrushes.Black, )
             #endregion
 
             #region Item Information Area
