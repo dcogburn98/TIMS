@@ -14,7 +14,7 @@ namespace TIMS
         public string taxExemptionNumber;
         public string pricingProfile;
         
-        public Payment.PaymentTypes[] availablePaymentTypes;
+        public List<Payment.PaymentTypes> availablePaymentTypes;
         public bool canCharge;
         public float creditLimit;
         public float accountBalance;

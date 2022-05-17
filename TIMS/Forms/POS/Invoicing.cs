@@ -114,7 +114,7 @@ namespace TIMS.Forms
 
         private void AddCustomer()
         {
-            Customer c = DatabaseHandler.CheckCustomerNumber(customerNoTB.Text);
+            Customer c = DatabaseHandler.SqlCheckCustomerNumber(customerNoTB.Text);
             Invoice newInvoice = new Invoice();
 
             if (c == null)

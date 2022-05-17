@@ -334,7 +334,7 @@ namespace TIMS
             cust.customerName = addresses.First().Element("CustomerName").Value;
             cust.mailingAddress = addresses.First().Element("MailingAddress").Value;
             cust.shippingAddress = addresses.First().Element("ShippingAddress").Value;
-            cust.availablePaymentTypes = ptypes.ToArray();
+            //cust.availablePaymentTypes = ptypes.ToArray();
 
             return cust;
         }
@@ -511,6 +511,72 @@ namespace TIMS
                 return null;
             else
                 return invItems;
+        }
+
+        public static Customer SqlCheckCustomerNumber(string custNo)
+        {
+            Customer cust = new Customer();
+            OpenConnection();
+
+            SQLiteCommand sqlite_cmd;
+            sqlite_cmd = sqlite_conn.CreateCommand();
+
+            sqlite_cmd.CommandText =
+                "SELECT *" + " " +
+                "FROM CUSTOMERS" + " " +
+                "WHERE CUSTOMERNUMBER = $CUSTNO";
+
+            SQLiteParameter itemParam = new SQLiteParameter("$CUSTNO", custNo);
+            sqlite_cmd.Parameters.Add(itemParam);
+            SQLiteDataReader reader = sqlite_cmd.ExecuteReader();
+
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                cust.availablePaymentTypes = new List<Payment.PaymentTypes>();
+                string test = reader.GetString(5);
+                string[] paymentTypes = reader.GetString(5).Split(',');
+                foreach (string p in paymentTypes)
+                {
+                    switch (p)
+                    {
+                        case "Cash":
+                            cust.availablePaymentTypes.Add(Payment.PaymentTypes.Cash);
+                            break;
+                        case "Check":
+                            cust.availablePaymentTypes.Add(Payment.PaymentTypes.Check);
+                            break;
+                        case "PaymentCard":
+                            cust.availablePaymentTypes.Add(Payment.PaymentTypes.PaymentCard);
+                            break;
+                        case "CashApp":
+                            cust.availablePaymentTypes.Add(Payment.PaymentTypes.CashApp);
+                            break;
+                        case "Venmo":
+                            cust.availablePaymentTypes.Add(Payment.PaymentTypes.Venmo);
+                            break;
+                        case "Paypal":
+                            cust.availablePaymentTypes.Add(Payment.PaymentTypes.Paypal);
+                            break;
+                        case "Charge":
+                            cust.availablePaymentTypes.Add(Payment.PaymentTypes.Charge);
+                            break;
+                    }
+                }
+
+                cust.customerNumber = reader.GetInt32(1).ToString();
+                cust.customerName = reader.GetString(0);
+                cust.mailingAddress = reader.GetString(11);
+                cust.shippingAddress = reader.GetString(12);
+            }
+
+            CloseConnection();
+            return cust;
         }
 
         public static void OpenConnection()
