@@ -46,7 +46,7 @@ namespace TIMSServer
                 else
                 {
                     inputLogger.Seek(0, SeekOrigin.End);
-                    inputLogger.Write(System.Text.Encoding.ASCII.GetBytes(input + "\n"));
+                    inputLogger.Write(System.Text.Encoding.ASCII.GetBytes(input + "\n"), (int)inputLogger.Seek(0, SeekOrigin.End), System.Text.Encoding.ASCII.GetBytes(input + "\n").Length);
                 }
                 inputLogger.Close();
                 string[] split = input.Split(' ');
@@ -128,7 +128,7 @@ namespace TIMSServer
                                         }
                                     case "command":
                                         {
-                                            string SplitTemp = input.Split(' ', 3)[2];
+                                            string SplitTemp = input.Split(' ', (char)3)[2];
                                             Database.QueueCommand("server " + SplitTemp);
                                             while (Database.ResponseQueue.Count == 0) { }
                                             Response response = Database.ResponseQueue.Dequeue();

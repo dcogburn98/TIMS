@@ -4,11 +4,18 @@ using System.Web;
 using System.Xml;
 using System.Xml.Linq;
 using System.IO;
+using System.Xml.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System;
+using System.Data.SQLite;
+using System.Security.Cryptography;
 
 namespace TIMS
 {
     class DatabaseHandler
     {
+        public static SQLiteConnection sqlite_conn;
+
         public static XDocument employeeDB = new XDocument();
         public static XDocument itemDB = new XDocument();
         public static XDocument customerDB = new XDocument();
@@ -26,6 +33,11 @@ namespace TIMS
 
         public static void InitializeDatabases()
         {
+            sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Compress = True; ");
+            OpenConnection();
+            CloseConnection();
+
+            #region XML Database Stuff
             #region Check if DB Files Exist
             if (!File.Exists(employeeDBLocation))
             {
@@ -175,8 +187,10 @@ namespace TIMS
                 itemDB.Save(itemDBLocation);
             }
             #endregion
+            #endregion
         }
 
+        #region XML Database Methods
         public void AddEmployee(string name, string employeeNumber, string[] permissions)
         {
             employeeDB.Root.Add(
@@ -323,6 +337,190 @@ namespace TIMS
             cust.availablePaymentTypes = ptypes.ToArray();
 
             return cust;
+        }
+    
+        public static void SaveReleasedInvoice(Invoice inv)
+        {
+            //itemDB.Root.Add(
+            //    new XElement("Invoice",
+            //        new XElement("InvoiceNumber", inv.invoiceNumber),
+            //        new XElement("CustomerNumber", inv.customer.customerNumber),
+            //        new XElement("EmployeeNumber", inv.employee.employeeNumber),
+            //        new XElement("Subtotal", inv.subtotal),
+            //        new XElement("TaxableTotal", inv.taxableTotal),
+            //        new XElement("TaxRate", inv.taxRate),
+            //        new XElement("TaxAmount", inv.taxAmount),
+            //        new XElement("Total", inv.total),
+            //        new XElement("Payments"),
+            //        new XElement("TotalPayments", inv.totalPayments),
+            //        new XElement("ContainsAgeRestrictedItems", inv.containsAgeRestrictedItem),
+            //        new XElement("Customer Birthdate", inv.customerBirthdate),
+            //        new XElement("Attention", inv.attentionLine),
+            //        new XElement("PONumber", inv.PONumber),
+            //        new XElement("Finalized", inv.finalized),
+            //        new XElement("Voided", inv.voided),
+            //        new XElement("Items")));
+
+            //foreach (InvoiceItem item in inv.items)
+            //{
+            //    XElement element = itemDB.Root.Elements().First(el => el.Element("InvoiceNumber").Value == inv.invoiceNumber.ToString()).Element("Items");
+
+            //}
+        }
+        #endregion
+        
+        
+        
+        public static string SqlCheckEmployee(string input)
+        {
+            if (!int.TryParse(input, out int v))
+                input = "'" + input + "'";
+            string value = null;
+            OpenConnection();
+            SQLiteCommand sqlite_cmd;
+            sqlite_cmd = sqlite_conn.CreateCommand();
+
+            sqlite_cmd.CommandText =
+                "SELECT FULLNAME " +
+                "FROM EMPLOYEES " +
+                "WHERE USERNAME = " + input + " " +
+                "OR EMPLOYEENUMBER = " + input;
+
+            SQLiteDataReader rdr = sqlite_cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                value = $"{rdr.GetString(0)}";
+            }
+
+            CloseConnection();
+
+            if (value == null)
+                return null;
+            else
+                return value;
+        }
+
+        public static Employee SqlLogin(string user, byte[] pass)
+        {
+            
+            Employee e = new Employee();
+
+            if (!int.TryParse(user, out int v))
+                user = "'" + user + "'";
+            OpenConnection();
+
+            SQLiteCommand sqlite_cmd;
+            sqlite_cmd = sqlite_conn.CreateCommand();
+
+            sqlite_cmd.CommandText =
+                "SELECT EMPLOYEENUMBER, FULLNAME, USERNAME, POSITION, BIRTHDATE, HIREDATE, TERMINATIONDATE, PERMISSIONS, STARTUPSCREEN, COMMISSIONED, COMMISSIONRATE, WAGED, HOURLYWAGE, PAYPERIOD, PASSWORDHASH" + " " +
+                "FROM EMPLOYEES" + " " +
+                "WHERE (USERNAME = " + user + " " +
+                "OR EMPLOYEENUMBER = " + user + ") " +
+                "AND PASSWORDHASH = $pass";
+
+            SQLiteParameter hash = new SQLiteParameter("$pass", System.Data.DbType.Binary)
+            {
+                Value = pass
+            };
+            sqlite_cmd.Parameters.Add(hash);
+
+            SQLiteDataReader rdr = sqlite_cmd.ExecuteReader(System.Data.CommandBehavior.Default);
+            if (!rdr.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+            while (rdr.Read())
+            {
+                e.employeeNumber = rdr.GetInt32(0);
+                e.fullName = rdr.GetString(1);
+                e.username = rdr.GetString(2);
+                e.position = rdr.GetString(3);
+                DateTime.TryParse(rdr.GetString(4), out e.birthDate);
+                DateTime.TryParse(rdr.GetString(5), out e.hireDate);
+                DateTime.TryParse(rdr.GetString(6), out e.terminationDate);
+                if (rdr.GetString(7) == "ALL")
+                    foreach (string p in Enum.GetNames(typeof(Employee.EmployeePermissions)))
+                        e.employeePermissions.Add((Employee.EmployeePermissions)Enum.Parse(typeof(Employee.EmployeePermissions), p));
+                else
+                    foreach (string p in rdr.GetString(7).Split(','))
+                        e.employeePermissions.Add((Employee.EmployeePermissions)Enum.Parse(typeof(Employee.EmployeePermissions), p));
+                switch (rdr.GetInt32(8))
+                {
+                    case 0:
+                        e.startupScreen = Employee.StartupScreens.Dashboard;
+                        break;
+                    case 1:
+                        e.startupScreen = Employee.StartupScreens.Inbox;
+                        break;
+                    case 2:
+                        e.startupScreen = Employee.StartupScreens.EmployeeManagement;
+                        break;
+                    case 3:
+                        e.startupScreen = Employee.StartupScreens.InventoryManagement;
+                        break;
+                    case 4:
+                        e.startupScreen = Employee.StartupScreens.Invoicing;
+                        break;
+                    default:
+                        e.startupScreen = Employee.StartupScreens.Inbox;
+                        break;
+                }
+            }
+
+            CloseConnection();
+            return e;
+        }
+
+        public static List<Item> SqlCheckItemNumber(string itemNumber)
+        {
+            OpenConnection();
+
+            SQLiteCommand sqlite_cmd;
+            sqlite_cmd = sqlite_conn.CreateCommand();
+
+            sqlite_cmd.CommandText =
+                "SELECT *" + " " +
+                "FROM ITEMS" + " " +
+                "WHERE ITEMNUMBER = $ITEM";
+
+            SQLiteParameter itemParam = new SQLiteParameter("$ITEM", itemNumber);
+            sqlite_cmd.Parameters.Add(itemParam);
+            SQLiteDataReader reader = sqlite_cmd.ExecuteReader();
+
+            List<Item> invItems = new List<Item>();
+
+            while (reader.Read())
+            {
+                Item i = new Item()
+                {
+                    productLine = reader.GetString(0),
+                    itemNumber = reader.GetString(1),
+                    itemName = reader.GetString(2),
+                    greenPrice = reader.GetFloat(23),
+                    ageRestricted = reader.GetBoolean(29),
+                    taxed = reader.GetBoolean(28),
+                    minimumAge = reader.GetInt32(30)
+                };
+                invItems.Add(i);
+            }
+
+            CloseConnection();
+            if (invItems.Count == 0)
+                return null;
+            else
+                return invItems;
+        }
+
+        public static void OpenConnection()
+        {
+            sqlite_conn.Open();
+        }
+
+        public static void CloseConnection()
+        {
+            sqlite_conn.Close();
         }
     }
 }

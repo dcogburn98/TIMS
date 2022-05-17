@@ -434,6 +434,7 @@ namespace TIMS.Forms
             returnInvoiceBtn.Enabled = false;
             finalized = true;
             saveInvoiceBtn.Enabled = false;
+            DatabaseHandler.SaveReleasedInvoice(invoice);
             ReportViewer viewer = new ReportViewer(invoice);
             viewer.ShowDialog();
         }

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
 
+
 using PdfSharp;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
@@ -33,17 +34,22 @@ namespace TIMS
 
         public bool savedInvoice;
         public DateTime savedInvoiceTime;
+        public DateTime invoiceCreationTime;
+        public DateTime invoiceFinalizedTime;
+
+        public bool finalized;
+        public bool voided;
 
         public Invoice()
         {
             items = new List<InvoiceItem>();
+            
         }
 
         public void CreateDocument(XGraphics gfx)
         {
             XRect rect;
             XPen pen = new XPen(XColors.Black, 1);
-            double x = 50, y = 100;
             XFont fontH1 = new XFont("Times", 18, XFontStyle.Bold);
             XFont fontH2 = new XFont("Times", 12);
             XFont font = new XFont("Times", 8);
@@ -147,47 +153,7 @@ namespace TIMS
             gfx.DrawString(invoiceNumber.ToString(), font, XBrushes.Black, new PointF(300, paymentInformationOrigin.Y + 210));
             #endregion
 
-            y += 200;
-
-            // Draw some text
-            //gfx.DrawString("Create PDF on the fly with PDFsharp",
-            //    fontH1, XBrushes.Black, x, x);
-            gfx.DrawString("With PDFsharp you can use the same code to draw graphic, " +
-                "text and images on different targets.", fontH2, XBrushes.Black, x, y);
-            y += ls;
-            gfx.DrawString("The object used for drawing is the XGraphics object.",
-                fontH2, XBrushes.Black, x, y);
-            y += 2 * ls;
-
-            // Draw some more text
-            y += 60 + 2 * ls;
-            gfx.DrawString("With XGraphics you can draw on a PDF page as well as " +
-                "on any System.Drawing.Graphics object.", fontH2, XBrushes.Black, x, y);
-            y += ls * 1.1;
-            gfx.DrawString("Use the same code to", fontH2, XBrushes.Black, x, y);
-            x += 10;
-            y += ls * 1.1;
-            gfx.DrawString("• draw on a newly created PDF page", fontH2, XBrushes.Black, x, y);
-            y += ls;
-            gfx.DrawString("• draw above or beneath of the content of an existing PDF page",
-                fontH2, XBrushes.Black, x, y);
-            y += ls;
-            gfx.DrawString("• draw in a window", fontH2, XBrushes.Black, x, y);
-            y += ls;
-            gfx.DrawString("• draw on a printer", fontH2, XBrushes.Black, x, y);
-            y += ls;
-            gfx.DrawString("• draw in a bitmap image", fontH2, XBrushes.Black, x, y);
-            x -= 10;
-            y += ls * 1.1;
-            gfx.DrawString("You can also import an existing PDF page and use it like " +
-                "an image, e.g. draw it on another PDF page.", fontH2, XBrushes.Black, x, y);
-            y += ls * 1.1 * 2;
-            gfx.DrawString("Imported PDF pages are neither drawn nor printed; create a " +
-                "PDF file to see or print them!", fontItalic, XBrushes.Firebrick, x, y);
-            y += ls * 1.1;
-            gfx.DrawString("Below this text is a PDF form that will be visible when " +
-                "viewed or printed with a PDF viewer.", fontItalic, XBrushes.Firebrick, x, y);
-            y += ls * 1.1;
+            
             XGraphicsState state = gfx.Save();
             gfx.Restore(state);
         }

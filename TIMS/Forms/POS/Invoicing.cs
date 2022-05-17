@@ -143,7 +143,7 @@ namespace TIMS.Forms
 
         private void EnterItemNumber()
         {
-            addingItems = DatabaseHandler.CheckItemNumber(itemNoTB.Text);
+            addingItems = DatabaseHandler.SqlCheckItemNumber(itemNoTB.Text);
 
             if (addingItems == null)
             {

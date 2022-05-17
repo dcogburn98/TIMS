@@ -29,16 +29,18 @@ namespace TIMS
 
         public enum EmployeePermissions
         {
-            Invoice = 1,
-            ViewItemMaintenance = 2,
-            EditItemMaintenance = 4,
-            ViewCustomerInformation = 8,
-            EditCustomerInformation = 16
+            All,
+            Invoice,
+            ViewItemMaintenance,
+            EditItemMaintenance,
+            ViewCustomerInformation,
+            EditCustomerInformation
         }
-        public EmployeePermissions employeePermissions;
+        public List<EmployeePermissions> employeePermissions = new List<EmployeePermissions>();
 
         public enum StartupScreens
         {
+            Dashboard,
             Invoicing,
             EmployeeManagement,
             InventoryManagement,
@@ -57,6 +59,11 @@ namespace TIMS
         public float commisionRate;
         public bool waged;
         public float wage;
+
+        public Employee()
+        {
+
+        }
 
         public Employee(int employeeNo, string fullName)
         {

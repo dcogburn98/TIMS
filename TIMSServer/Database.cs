@@ -99,7 +99,7 @@ namespace TIMSServer
             List<List<string>> data;
 
             OpenConnection();
-            SQLiteDataReader sqlite_datareader = null;
+            SQLiteDataReader sqlite_datareader;
             SQLiteCommand sqlite_cmd;
             sqlite_cmd = sqlite_conn.CreateCommand();
             string[] com_split = ReadCommandQueue.Dequeue().Split(new char[] { ' ' }, 2);

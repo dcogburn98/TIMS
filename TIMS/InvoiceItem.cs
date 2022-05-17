@@ -28,6 +28,11 @@ namespace TIMS
         public string[] codes;
         public Guid ID;
 
+        public InvoiceItem()
+        {
+
+        }
+
         public InvoiceItem(string itemNumber, string itemName, float price, int quantity, bool taxed,
              float listPrice = 0.00f, string pricingCode = "!", bool serializedItem = false,
              string serialNumber = "")
@@ -48,7 +53,7 @@ namespace TIMS
             itemNumber = item.itemNumber;
             productLine = item.productLine;
             itemName = item.itemName;
-            longDescription = item.description;
+            longDescription = item.longDescription;
             price = item.greenPrice;
             listPrice = item.listPrice;
             ageRestricted = item.ageRestricted;

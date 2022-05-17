@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace TIMS
 {
@@ -24,15 +26,18 @@ namespace TIMS
 
         public void TryLogin()
         {
-            Employee e = DatabaseHandler.Login(useroremployeeno, passwordBox.Text);
+            SHA256 encrypt = SHA256.Create();
+            encrypt.Initialize();
+            byte[] hash = encrypt.ComputeHash(Encoding.UTF8.GetBytes(passwordBox.Text));
+            Employee e = DatabaseHandler.SqlLogin(useroremployeeno, hash);
             if (e != null)
             {
                 Program.currentEmployee = e;
-                if (launch == "invoice")
+                if (e.startupScreen == Employee.StartupScreens.Invoicing)
                     Program.LaunchInvoicing();
-                else if (launch == "employees")
+                else if (e.startupScreen == Employee.StartupScreens.EmployeeManagement)
                     Program.LaunchEmployee();
-                else if (launch == "Administrator")
+                else if (e.startupScreen == Employee.StartupScreens.Dashboard)
                     Program.LaunchAlternateFunctions();
             }
             else
@@ -89,8 +94,8 @@ namespace TIMS
                 }
                 else
                 {
-                    XElement response = DatabaseHandler.CheckEmployee(usernameBox.Text);
-                    if (response.Name == "Invalid")
+                    string response = DatabaseHandler.SqlCheckEmployee(usernameBox.Text);
+                    if (response == null)
                     {
                         badLoginLabel.Text = "Invalid username/employee number!";
                         badLoginLabel.Visible = true;
@@ -100,8 +105,7 @@ namespace TIMS
                     else
                     {
                         useroremployeeno = usernameBox.Text;
-                        badLoginLabel.Text = response.Element("EmployeeName").Value;
-                        launch = response.Element("StartupScreen").Value;
+                        badLoginLabel.Text = response;
                         badLoginLabel.Visible = true;
                         passwordBox.Enabled = true;
                         tempKeyBox.Enabled = true;

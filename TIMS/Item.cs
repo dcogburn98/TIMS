@@ -11,7 +11,7 @@ namespace TIMS
         public string productLine;
         public string itemNumber;
         public string itemName;
-        public string description;
+        public string longDescription;
         public string supplier;
         public int groupCode;
         public int velocityCode;
