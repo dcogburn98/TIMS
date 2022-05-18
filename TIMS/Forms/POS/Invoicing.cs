@@ -133,7 +133,9 @@ namespace TIMS.Forms
                 currentInvoice = newInvoice;
 
             currentInvoice.customer = c;
-            
+            currentInvoice.employee = Program.currentEmployee;
+            currentInvoice.invoiceCreationTime = DateTime.Now;
+
             customerNoTB.Text = currentInvoice.customer.customerNumber + " " + currentInvoice.customer.customerName;
             EnableControls();
             itemNoTB.Focus();

@@ -19,24 +19,27 @@ namespace TIMS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Login login = new Login();
-            OpenForms.Add(login);
-            login.Show();
-            Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
-            Application.Run();
-            //DatabaseHandler.InitializeDatabases();
-            //Invoice inv = new Invoice();
-            //inv.customer = DatabaseHandler.CheckCustomerNumber("0");
-            //inv.employee = DatabaseHandler.Login("0", "0");
-            //inv.subtotal = 3.95f;
-            //inv.taxRate = 0.1025f;
-            //inv.total = 4.49f;
-            //inv.items.Add(new InvoiceItem(DatabaseHandler.CheckItemNumber("75130").ToArray()[0]));
-            //inv.items.Add(new InvoiceItem(DatabaseHandler.CheckItemNumber("75130").ToArray()[1]));
-            //inv.items.Add(new InvoiceItem(DatabaseHandler.CheckItemNumber("75130").ToArray()[1]));
-            //inv.invoiceNumber = 75130;
-            //ReportViewer v = new ReportViewer(inv);
-            //Application.Run(v);
+            //Login login = new Login();
+            //OpenForms.Add(login);
+            //login.Show();
+            //Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
+            //Application.Run();
+            DatabaseHandler.InitializeDatabases();
+            Invoice inv = new Invoice();
+            inv.customer = DatabaseHandler.CheckCustomerNumber("0");
+            inv.employee = DatabaseHandler.Login("0", "0");
+            inv.subtotal = 3.95f;
+            inv.taxRate = 0.1025f;
+            inv.total = 4.49f;
+            inv.items.Add(new InvoiceItem(DatabaseHandler.CheckItemNumber("75130").ToArray()[0]));
+            inv.items.Add(new InvoiceItem(DatabaseHandler.CheckItemNumber("75130").ToArray()[1]));
+            inv.items.Add(new InvoiceItem(DatabaseHandler.CheckItemNumber("75130").ToArray()[1]));
+            inv.invoiceNumber = 75130;
+            inv.attentionLine = "Motherfucker";
+            inv.PONumber = "Motherfucking Building";
+            inv.invoiceMessage = "What the fuck?";
+            ReportViewer v = new ReportViewer(inv);
+            Application.Run(v);
         }
 
         public static void LaunchInvoicing()

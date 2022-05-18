@@ -28,9 +28,9 @@ namespace TIMS
 
         public bool containsAgeRestrictedItem;
         public DateTime customerBirthdate;
-        public string attentionLine;
-        public string PONumber;
-        public string invoiceMessage;
+        public string attentionLine = string.Empty;
+        public string PONumber = string.Empty;
+        public string invoiceMessage = string.Empty;
 
         public bool savedInvoice;
         public DateTime savedInvoiceTime;
@@ -104,6 +104,12 @@ namespace TIMS
             gfx.DrawString("Tax Exemption:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 241.5f, customerInfoOrigin.Y + 10 + 2*(float)font.GetHeight()));
             gfx.DrawString("PO#:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 275, customerInfoOrigin.Y + 10 + 3*(float)font.GetHeight()));
             gfx.DrawString("Terms:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 269.5f, customerInfoOrigin.Y + 10 + 4*(float)font.GetHeight()));
+            
+            //gfx.DrawString("Anticipated Delivery:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 224.5f, customerInfoOrigin.Y + 10));
+            gfx.DrawString(attentionLine, font, XBrushes.Black, new PointF(customerInfoOrigin.X + 300, customerInfoOrigin.Y + 10 + (float)font.GetHeight()));
+            gfx.DrawString(customer.taxExempt ? "True" : "False", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 300, customerInfoOrigin.Y + 10 + 2 * (float)font.GetHeight()));
+            gfx.DrawString(PONumber, font, XBrushes.Black, new PointF(customerInfoOrigin.X + 300, customerInfoOrigin.Y + 10 + 3 * (float)font.GetHeight()));
+            //gfx.DrawString("Terms:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 269.5f, customerInfoOrigin.Y + 10 + 4 * (float)font.GetHeight()));
 
 
             #endregion
@@ -149,8 +155,15 @@ namespace TIMS
             PointF paymentInformationOrigin = new PointF(300, itemInfoOrigin.Y + itemInfoheight + 10);
             rect = new XRect(paymentInformationOrigin, new SizeF(280, 150));
             gfx.DrawRectangle(pen, XBrushes.White, rect);
-            gfx.DrawBarCode(PdfSharp.Drawing.BarCodes.BarCode.FromType(PdfSharp.Drawing.BarCodes.CodeType.Code3of9Standard, invoiceNumber.ToString(), new XSize(280, 40)), new XPoint(paymentInformationOrigin.X, paymentInformationOrigin.Y + 160));
-            gfx.DrawString(invoiceNumber.ToString(), font, XBrushes.Black, new PointF(300, paymentInformationOrigin.Y + 210));
+            rect = new XRect(paymentInformationOrigin.X, paymentInformationOrigin.Y + 60, 280, 20);
+            gfx.DrawRectangle(pen, XBrushes.LightGray, rect);
+            gfx.DrawString("Subtotal:", font, XBrushes.Black, new PointF(paymentInformationOrigin.X + 130, paymentInformationOrigin.Y + 10));
+            gfx.DrawString("Tax (" + taxRate.ToString("P") + "):", font, XBrushes.Black, new PointF(paymentInformationOrigin.X + 112, paymentInformationOrigin.Y + 10 + (float)font.GetHeight()));
+            gfx.DrawString("Service Fee:", font, XBrushes.Black, new PointF(paymentInformationOrigin.X + 120, paymentInformationOrigin.Y + 10 + 2*(float)font.GetHeight()));
+            gfx.DrawString("Delivery Fee:", font, XBrushes.Black, new PointF(paymentInformationOrigin.X + 117, paymentInformationOrigin.Y + 10 + 3*(float)font.GetHeight()));
+
+            gfx.DrawBarCode(PdfSharp.Drawing.BarCodes.BarCode.FromType(PdfSharp.Drawing.BarCodes.CodeType.Code3of9Standard, invoiceNumber.ToString(), new XSize(280, 15)), new XPoint(paymentInformationOrigin.X, paymentInformationOrigin.Y + 160));
+            gfx.DrawString(invoiceNumber.ToString(), font, XBrushes.Black, new PointF(300, paymentInformationOrigin.Y + 185));
             #endregion
 
             

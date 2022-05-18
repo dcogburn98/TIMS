@@ -539,7 +539,6 @@ namespace TIMS
             while (reader.Read())
             {
                 cust.availablePaymentTypes = new List<Payment.PaymentTypes>();
-                string test = reader.GetString(5);
                 string[] paymentTypes = reader.GetString(5).Split(',');
                 foreach (string p in paymentTypes)
                 {
@@ -577,6 +576,87 @@ namespace TIMS
 
             CloseConnection();
             return cust;
+        }
+
+        public static void SqlSaveReleasedInvoice(Invoice inv)
+        {
+            OpenConnection();
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+
+            command.CommandText =
+                "INSERT INTO INVOICES (" +
+
+                "INVOICENUMBER,SUBTOTAL,TAXABLETOTAL,TAXRATE,TAXAMOUNT,TOTAL," +
+                "TOTALPAYMENTS,AGERESTRICTED,CUSTOMERBIRTHDATE,ATTENTION,PO,MESSAGE," +
+                "SAVEDINVOICE,SAVEDINVOICETIME,INVOICECREATIONTIME,INVOICEFINALIZEDTIME,FINALIZED,VOIDED,CUSTOMERNUMBER,EMPLOYEENUMBER) " +
+
+                "VALUES ($INVOICENUMBER,$SUBTOTAL,$TAXABLETOTAL,$TAXRATE,$TAXAMOUNT,$TOTAL," +
+                "$TOTALPAYMENTS,$AGERESTRICTED,$CUSTOMERBIRTHDATE,$ATTENTION,$PO,$MESSAGE," +
+                "$SAVEDINVOICE,$SAVEDINVOICETIME,$INVOICECREATIONTIME,$INVOICEFINALIZEDTIME,$FINALIZED,$VOIDED,$CUSTOMERNUMBER,$EMPLOYEENUMBER)";
+
+            SQLiteParameter p1 = new SQLiteParameter("$INVOICENUMBER", inv.invoiceNumber);
+            SQLiteParameter p2 = new SQLiteParameter("$SUBTOTAL", inv.subtotal);
+            SQLiteParameter p3 = new SQLiteParameter("$TAXABLETOTAL", inv.taxableTotal);
+            SQLiteParameter p4 = new SQLiteParameter("$TAXRATE", inv.taxRate);
+            SQLiteParameter p5 = new SQLiteParameter("$TAXAMOUNT", inv.taxAmount);
+            SQLiteParameter p6 = new SQLiteParameter("$TOTAL", inv.total);
+            SQLiteParameter p7 = new SQLiteParameter("$TOTALPAYMENTS", inv.totalPayments);
+            SQLiteParameter p8 = new SQLiteParameter("$AGERESTRICTED", inv.containsAgeRestrictedItem);
+            SQLiteParameter p9 = new SQLiteParameter("$CUSTOMERBIRTHDATE", inv.customerBirthdate.ToString());
+            SQLiteParameter p10 = new SQLiteParameter("$ATTENTION", inv.attentionLine);
+            SQLiteParameter p11 = new SQLiteParameter("$PO", inv.PONumber);
+            SQLiteParameter p12 = new SQLiteParameter("$MESSAGE", inv.invoiceMessage);
+            SQLiteParameter p13 = new SQLiteParameter("$SAVEDINVOICE", inv.savedInvoice);
+            SQLiteParameter p14 = new SQLiteParameter("$SAVEDINVOICETIME", inv.savedInvoiceTime.ToString());
+            SQLiteParameter p15 = new SQLiteParameter("$INVOICECREATIONTIME", inv.invoiceCreationTime.ToString());
+            SQLiteParameter p16 = new SQLiteParameter("$INVOICEFINALIZEDTIME", inv.invoiceFinalizedTime.ToString());
+            SQLiteParameter p17 = new SQLiteParameter("$FINALIZED", inv.finalized);
+            SQLiteParameter p18 = new SQLiteParameter("$VOIDED", inv.voided);
+            SQLiteParameter p19 = new SQLiteParameter("$CUSTOMERNUMBER", inv.customer.customerNumber);
+            SQLiteParameter p20 = new SQLiteParameter("$EMPLOYEENUMBER", inv.employee.employeeNumber);
+
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+            command.Parameters.Add(p3);
+            command.Parameters.Add(p4);
+            command.Parameters.Add(p5);
+            command.Parameters.Add(p6);
+            command.Parameters.Add(p7);
+            command.Parameters.Add(p8);
+            command.Parameters.Add(p9);
+            command.Parameters.Add(p10);
+            command.Parameters.Add(p11);
+            command.Parameters.Add(p12);
+            command.Parameters.Add(p13);
+            command.Parameters.Add(p14);
+            command.Parameters.Add(p15);
+            command.Parameters.Add(p16);
+            command.Parameters.Add(p17);
+            command.Parameters.Add(p18);
+            command.Parameters.Add(p19);
+            command.Parameters.Add(p20);
+
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+            return;
+        }
+
+        public static int SqlRetrieveNextInvoiceNumber()
+        {
+            OpenConnection();
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+
+            command.CommandText = "SELECT MAX(INVOICENUMBER) FROM INVOICES";
+
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            int invNo = 0;
+            while (reader.Read())
+                invNo = reader.GetInt32(0) + 1;
+
+            CloseConnection();
+            return invNo;
         }
 
         public static void OpenConnection()

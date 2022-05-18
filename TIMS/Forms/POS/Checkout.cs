@@ -230,6 +230,7 @@ namespace TIMS.Forms
                     invoice.attentionLine = attentionTB.Text;
                     invoice.PONumber = poTB.Text;
                     invoice.customerBirthdate = customerBirthdaySelector.Value;
+                    invoice.containsAgeRestrictedItem = true;
 
                     paymentTypeLB.Enabled = true;
                     paymentIndexTB.Focus();
@@ -434,7 +435,12 @@ namespace TIMS.Forms
             returnInvoiceBtn.Enabled = false;
             finalized = true;
             saveInvoiceBtn.Enabled = false;
-            DatabaseHandler.SaveReleasedInvoice(invoice);
+
+            invoice.finalized = true;
+            invoice.invoiceFinalizedTime = DateTime.Now;
+            invoice.invoiceNumber = DatabaseHandler.SqlRetrieveNextInvoiceNumber();
+
+            DatabaseHandler.SqlSaveReleasedInvoice(invoice);
             ReportViewer viewer = new ReportViewer(invoice);
             viewer.ShowDialog();
         }
