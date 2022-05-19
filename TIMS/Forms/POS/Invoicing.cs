@@ -69,7 +69,7 @@ namespace TIMS.Forms
             roaButton.Enabled = true;
         }
         
-        private void CancelInvoice()
+        public void CancelInvoice()
         {
             currentInvoice = null;
             addingItems = null;
@@ -83,6 +83,7 @@ namespace TIMS.Forms
             productLineDropBox.Text = "";
             priceTB.Clear();
             taxedCB.Checked = false;
+            dataGridView1.Rows.Clear();
 
             productLineDropBox.Enabled = false;
             qtyTB.Enabled = false;
@@ -107,6 +108,7 @@ namespace TIMS.Forms
             subtotalLabel.Text = "$0.00";
 
             customerNoTB.Clear();
+            System.Threading.Thread.Sleep(500);
             customerNoTB.Focus();
 
             currentState = State.NoCustomer;
@@ -323,7 +325,7 @@ namespace TIMS.Forms
 
         private void Checkout()
         {
-            Checkout checkoutForm = new Checkout(currentInvoice);
+            Checkout checkoutForm = new Checkout(currentInvoice, this);
             checkoutForm.ShowDialog();
         }
 

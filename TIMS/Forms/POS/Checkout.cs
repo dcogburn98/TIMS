@@ -13,12 +13,15 @@ namespace TIMS.Forms
     public partial class Checkout : Form
     {
         Invoice invoice;
+        Invoicing parentWindow;
         bool containsAgeRestrictedItems;
         public bool finalized = false;
         public bool printed = false;
 
-        public Checkout(Invoice invoice)
+        public Checkout(Invoice invoice, Invoicing parentWindow)
         {
+            this.parentWindow = parentWindow;
+
             InitializeComponent();
             this.invoice = invoice;
             PopulateInvoiceInfo();
@@ -268,9 +271,10 @@ namespace TIMS.Forms
 
         private void paymentIndexTB_KeyDown(object sender, KeyEventArgs e)
         {
+            
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
             {
-                if (int.Parse(paymentIndexTB.Text) > paymentTypeLB.Items.Count || int.Parse(paymentIndexTB.Text) == 0)
+                if (paymentIndexTB.Text == String.Empty || int.Parse(paymentIndexTB.Text) > paymentTypeLB.Items.Count || int.Parse(paymentIndexTB.Text) == 0)
                 {
                     paymentIndexTB.SelectAll();
                     return;
@@ -443,6 +447,13 @@ namespace TIMS.Forms
             DatabaseHandler.SqlSaveReleasedInvoice(invoice);
             ReportViewer viewer = new ReportViewer(invoice);
             viewer.ShowDialog();
+        }
+
+        private void closeBtn_Click(object sender, EventArgs e)
+        {
+            Close();
+            parentWindow.Focus();
+            parentWindow.CancelInvoice();
         }
     }
 }

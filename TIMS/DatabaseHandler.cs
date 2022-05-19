@@ -659,6 +659,69 @@ namespace TIMS
             return invNo;
         }
 
+        public static string SqlRetrievePropertyString(string key)
+        {
+            string property = String.Empty;
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText = "SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = $KEY";
+            SQLiteParameter p1 = new SQLiteParameter("$KEY");
+            p1.Value = key;
+            command.Parameters.Add(p1);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while(reader.Read())
+            {
+                property = reader.GetString(0);
+            }
+
+            CloseConnection();
+            return property;
+        }
+
+        public static float SqlRetrievePropertyFloat(string key)
+        {
+            float property = 0;
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText = "SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = $KEY";
+            SQLiteParameter p1 = new SQLiteParameter("$KEY");
+            p1.Value = key;
+            command.Parameters.Add(p1);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                property = reader.GetFloat(0);
+            }
+
+            CloseConnection();
+            return property;
+        }
+
+        public static int SqlRetrievePropertyInt(string key)
+        {
+            int property = 0;
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText = "SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = $KEY";
+            SQLiteParameter p1 = new SQLiteParameter("$KEY");
+            p1.Value = key;
+            command.Parameters.Add(p1);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                property = reader.GetInt32(0);
+            }
+
+            CloseConnection();
+            return property;
+        }
+
         public static void OpenConnection()
         {
             sqlite_conn.Open();

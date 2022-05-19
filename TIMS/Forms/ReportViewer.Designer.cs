@@ -34,6 +34,8 @@
             this.pagePreview1 = new PdfSharp.Forms.PagePreview();
             this.closeButton = new System.Windows.Forms.Button();
             this.printBtn = new System.Windows.Forms.Button();
+            this.prevPageBtn = new System.Windows.Forms.Button();
+            this.nextPageBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // pagePreview1
@@ -70,11 +72,34 @@
             this.printBtn.UseVisualStyleBackColor = true;
             this.printBtn.Click += new System.EventHandler(this.printBtn_Click);
             // 
+            // prevPageBtn
+            // 
+            this.prevPageBtn.Location = new System.Drawing.Point(12, 618);
+            this.prevPageBtn.Name = "prevPageBtn";
+            this.prevPageBtn.Size = new System.Drawing.Size(99, 23);
+            this.prevPageBtn.TabIndex = 3;
+            this.prevPageBtn.Text = "Previous Page";
+            this.prevPageBtn.UseVisualStyleBackColor = true;
+            this.prevPageBtn.Click += new System.EventHandler(this.prevPageBtn_Click);
+            // 
+            // nextPageBtn
+            // 
+            this.nextPageBtn.Enabled = false;
+            this.nextPageBtn.Location = new System.Drawing.Point(117, 618);
+            this.nextPageBtn.Name = "nextPageBtn";
+            this.nextPageBtn.Size = new System.Drawing.Size(99, 23);
+            this.nextPageBtn.TabIndex = 4;
+            this.nextPageBtn.Text = "Next Page";
+            this.nextPageBtn.UseVisualStyleBackColor = true;
+            this.nextPageBtn.Click += new System.EventHandler(this.nextPageBtn_Click);
+            // 
             // ReportViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(948, 653);
+            this.Controls.Add(this.nextPageBtn);
+            this.Controls.Add(this.prevPageBtn);
             this.Controls.Add(this.printBtn);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.pagePreview1);
@@ -91,5 +116,7 @@
         private PdfSharp.Forms.PagePreview pagePreview1;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Button printBtn;
+        private System.Windows.Forms.Button prevPageBtn;
+        private System.Windows.Forms.Button nextPageBtn;
     }
 }

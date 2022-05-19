@@ -40,14 +40,22 @@ namespace TIMS
         public bool finalized;
         public bool voided;
 
+        public int invoicePages;
+        public int currentPage;
+
         public Invoice()
         {
             items = new List<InvoiceItem>();
             
         }
 
-        public void CreateDocument(XGraphics gfx)
+        public void RenderPage(XGraphics gfx)
         {
+            invoicePages = (items.Count / 32 + (items.Count % 32 > 0 ? 1 : 0));
+            bool lastPage = false;
+            if (currentPage == invoicePages)
+                lastPage = true;
+
             XRect rect;
             XPen pen = new XPen(XColors.Black, 1);
             XFont fontH1 = new XFont("Times", 18, XFontStyle.Bold);
@@ -76,14 +84,28 @@ namespace TIMS
             gfx.DrawString("Store Name: ", font, XBrushes.Black, 284, 37);
             gfx.DrawString("Store Number: ", font, XBrushes.Black, 284, 37 + font.GetHeight());
             gfx.DrawString("Phone Number: ", font, XBrushes.Black, 284, 37 + 2 * font.GetHeight());
+            gfx.DrawString(employee.fullName, font, XBrushes.Black, 200, 37);
+            gfx.DrawString(employee.employeeNumber.ToString(), font, XBrushes.Black, 200, 37 + font.GetHeight());
+            gfx.DrawString(employee.position, font, XBrushes.Black, 200, 37 + 2 * font.GetHeight());
+            gfx.DrawString(DatabaseHandler.SqlRetrievePropertyString("Store Name"), font, XBrushes.Black, 340, 37);
+            gfx.DrawString(DatabaseHandler.SqlRetrievePropertyString("Store Number").ToString(), font, XBrushes.Black, 340, 37 + font.GetHeight());
+            gfx.DrawString(DatabaseHandler.SqlRetrievePropertyString("Store Phone Number"), font, XBrushes.Black, 340, 37 + 2 * font.GetHeight());
             #endregion
 
             #region Invoice Information Area
             rect = new XRect(440, 50, 140, 40);
             gfx.DrawRectangle(pen, XBrushes.White, rect);
             gfx.DrawString("Time: ", font, XBrushes.Black, 444, 60);
-            gfx.DrawString("Date: ", font, XBrushes.Black, 500, 60);
-            gfx.DrawString("Page: 1/1", font, XBrushes.Black, 530, 85);
+            //gfx.DrawString("Date: ", font, XBrushes.Black, 500, 60);
+            gfx.DrawString(invoiceFinalizedTime.ToString("hh:mm tt"), font, XBrushes.Black, 465, 60);
+            gfx.DrawString("Date: " + invoiceFinalizedTime.ToString("MM/dd/yyyy"), font, XBrushes.Black, 520, 60);
+            gfx.DrawString("Page: " + currentPage.ToString() + "/" + invoicePages.ToString(), font, XBrushes.Black, 543, 85);
+            gfx.DrawBarCode(PdfSharp.Drawing.BarCodes.BarCode.FromType(
+                PdfSharp.Drawing.BarCodes.CodeType.Code3of9Standard, 
+                invoiceNumber.ToString(), 
+                new XSize(130, 15)), 
+                new XPoint(445, 63));
+            gfx.DrawString("Invoice Number: " + invoiceNumber.ToString(), font, XBrushes.Black, new PointF(444, 85));
             #endregion
 
             #region Customer Information Area
@@ -137,7 +159,14 @@ namespace TIMS
             gfx.DrawString("Total",         fontH2, XBrushes.White, itemInfoOrigin.X + 518, itemInfoOrigin.Y + 12);
 
             int row = 0;
-            foreach (InvoiceItem item in items)
+            List<InvoiceItem> pageItems = new List<InvoiceItem>();
+            for (int i = 0; i != (!lastPage ? 32 : items.Count % 32); i++)
+            {
+                //if ((currentPage - 1) * 32 + i > items.Count - 1)
+                //    break;
+                pageItems.Add(items[(currentPage - 1) * 32 + i]);
+            }
+            foreach (InvoiceItem item in pageItems)
             {
                 gfx.DrawString(item.itemNumber, font, XBrushes.Black, itemInfoOrigin.X + 4, itemInfoOrigin.Y + 27 + (row*font.GetHeight()));
                 gfx.DrawString(item.productLine, font, XBrushes.Black, itemInfoOrigin.X + 127, itemInfoOrigin.Y + 27 + (row * font.GetHeight()));
@@ -157,13 +186,19 @@ namespace TIMS
             gfx.DrawRectangle(pen, XBrushes.White, rect);
             rect = new XRect(paymentInformationOrigin.X, paymentInformationOrigin.Y + 60, 280, 20);
             gfx.DrawRectangle(pen, XBrushes.LightGray, rect);
-            gfx.DrawString("Subtotal:", font, XBrushes.Black, new PointF(paymentInformationOrigin.X + 130, paymentInformationOrigin.Y + 10));
-            gfx.DrawString("Tax (" + taxRate.ToString("P") + "):", font, XBrushes.Black, new PointF(paymentInformationOrigin.X + 112, paymentInformationOrigin.Y + 10 + (float)font.GetHeight()));
-            gfx.DrawString("Service Fee:", font, XBrushes.Black, new PointF(paymentInformationOrigin.X + 120, paymentInformationOrigin.Y + 10 + 2*(float)font.GetHeight()));
-            gfx.DrawString("Delivery Fee:", font, XBrushes.Black, new PointF(paymentInformationOrigin.X + 117, paymentInformationOrigin.Y + 10 + 3*(float)font.GetHeight()));
+            if (lastPage)
+            {
+                gfx.DrawString("Subtotal: " + subtotal.ToString("C"), font, XBrushes.Black, new PointF(paymentInformationOrigin.X + 130, paymentInformationOrigin.Y + 10));
+                gfx.DrawString("Tax (" + taxRate.ToString("P") + "): " + taxAmount.ToString("C"), font, XBrushes.Black, new PointF(paymentInformationOrigin.X + 112, paymentInformationOrigin.Y + 10 + (float)font.GetHeight()));
+                gfx.DrawString("Service Fee:", font, XBrushes.Black, new PointF(paymentInformationOrigin.X + 120, paymentInformationOrigin.Y + 10 + 2 * (float)font.GetHeight()));
+                gfx.DrawString("Delivery Fee:", font, XBrushes.Black, new PointF(paymentInformationOrigin.X + 117, paymentInformationOrigin.Y + 10 + 3 * (float)font.GetHeight()));
 
-            gfx.DrawBarCode(PdfSharp.Drawing.BarCodes.BarCode.FromType(PdfSharp.Drawing.BarCodes.CodeType.Code3of9Standard, invoiceNumber.ToString(), new XSize(280, 15)), new XPoint(paymentInformationOrigin.X, paymentInformationOrigin.Y + 160));
-            gfx.DrawString(invoiceNumber.ToString(), font, XBrushes.Black, new PointF(300, paymentInformationOrigin.Y + 185));
+                gfx.DrawString("TOTAL: " + total.ToString("C"), fontH1, XBrushes.Black, new PointF(paymentInformationOrigin.X + 80, paymentInformationOrigin.Y + 75));
+            }
+            else
+            {
+                gfx.DrawString("CONTINUED ON NEXT PAGE", fontH1, XBrushes.Black, new PointF(paymentInformationOrigin.X + 15, paymentInformationOrigin.Y + 75));
+            }
             #endregion
 
             
