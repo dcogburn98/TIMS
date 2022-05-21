@@ -146,7 +146,44 @@ namespace TIMS.Forms
 
         private void EnterItemNumber()
         {
-            addingItems = DatabaseHandler.SqlCheckItemNumber(itemNoTB.Text);
+            if (itemNoTB.Text.Substring(0, 1) == "@")
+            {
+                InvoiceItem invItem = DatabaseHandler.SqlRetrieveBarcode(itemNoTB.Text);
+                if (invItem == null)
+                {
+                    MessageBox.Show("Barcode does not exist!");
+                }
+                else
+                {
+                    workingItem = invItem;
+                    workingItem.ID = Guid.NewGuid();
+
+                    itemNoTB.Text = workingItem.itemNumber;
+                    descriptionTB.Enabled = false;
+                    descriptionTB.Text = workingItem.itemName;
+
+                    qtyTB.Enabled = true;
+                    qtyTB.Text = workingItem.quantity.ToString();
+                    qtyTB.Focus();
+                    qtyTB.SelectAll();
+
+                    priceCodeTB.Enabled = true;
+                    priceCodeTB.Text = "!";
+
+                    priceTB.Enabled = true;
+                    priceTB.Text = workingItem.price.ToString();
+
+                    taxedCB.Enabled = true;
+                    taxedCB.Checked = workingItem.taxed;
+
+                    acceptItemButton.Enabled = true;
+
+                    cancelItemButton.Enabled = true;
+                    cancelItemButton.Visible = true;
+                }
+                return;
+            }
+            addingItems = DatabaseHandler.SqlCheckItemNumber(itemNoTB.Text, false);
 
             if (addingItems == null)
             {

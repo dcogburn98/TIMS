@@ -473,9 +473,10 @@ namespace TIMS
             return e;
         }
 
-        public static List<Item> SqlCheckItemNumber(string itemNumber)
+        public static List<Item> SqlCheckItemNumber(string itemNumber, bool connectionOpened)
         {
-            OpenConnection();
+            if (!connectionOpened)
+                OpenConnection();
 
             SQLiteCommand sqlite_cmd;
             sqlite_cmd = sqlite_conn.CreateCommand();
@@ -506,7 +507,8 @@ namespace TIMS
                 invItems.Add(i);
             }
 
-            CloseConnection();
+            if (!connectionOpened)
+                CloseConnection();
             if (invItems.Count == 0)
                 return null;
             else
@@ -850,6 +852,57 @@ namespace TIMS
 
             CloseConnection();
             return inv;
+        }
+
+        public static InvoiceItem SqlRetrieveBarcode(string scannedBarcode)
+        {
+            OpenConnection();
+            InvoiceItem item = null;
+            string barcodeType = "UPCA";
+            string barcodeData = String.Empty;
+
+            if (scannedBarcode.Substring(0, 1) == "@")
+            {
+                if (scannedBarcode.Substring(1, 1).ToLower() == "c")
+                {
+                    barcodeType = "UPCA";
+                    barcodeData = scannedBarcode.Substring(2);
+                }
+            }
+            else
+            {
+                barcodeData = scannedBarcode;
+            }
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT SCANNEDITEMNUMBER,SCANNEDPRODUCTLINE,SCANNEDQUANTITY FROM BARCODES " +
+                "WHERE (BARCODETYPE = $TYPE AND BARCODEVALUE = $VALUE)";
+            SQLiteParameter p1 = new SQLiteParameter("$TYPE", barcodeType);
+            SQLiteParameter p2 = new SQLiteParameter("$VALUE", barcodeData);
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                string d1 = reader.GetString(0);
+                string d2 = reader.GetString(1);
+                float d3 = reader.GetFloat(2);
+                List<Item> itemMatches = SqlCheckItemNumber(d1, true);
+                item = new InvoiceItem(itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower()));
+                item.quantity = d3;
+            }
+
+            CloseConnection();
+            return item;
         }
 
         public static void OpenConnection()
