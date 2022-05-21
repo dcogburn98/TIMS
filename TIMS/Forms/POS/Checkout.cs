@@ -432,6 +432,8 @@ namespace TIMS.Forms
 
         private void finalizeBtn_Click(object sender, EventArgs e)
         {
+            CancelButton = closeBtn;
+
             paymentsLB.Enabled = false;
             finalizeBtn.Enabled = false;
             closeBtn.Enabled = true;
@@ -452,8 +454,8 @@ namespace TIMS.Forms
         private void closeBtn_Click(object sender, EventArgs e)
         {
             Close();
-            parentWindow.Focus();
-            parentWindow.CancelInvoice();
+            //parentWindow.Focus();
+            //parentWindow.CancelInvoice();
         }
     }
 }

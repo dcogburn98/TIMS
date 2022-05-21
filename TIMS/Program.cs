@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using TIMS.Forms;
+using TIMS.Forms.POS;
 
 namespace TIMS
 {
@@ -38,7 +39,7 @@ namespace TIMS
             //for (int i = 0; i != 10; i++)
             //{
             //    inv.items.Add(new InvoiceItem(DatabaseHandler.SqlCheckItemNumber("75130").ToArray()[1])
-            //    { quantity = 3, total = 10.50f});
+            //    { quantity = 3, total = 10.50f });
             //}
             //for (int i = 0; i != 10; i++)
             //{
@@ -48,7 +49,7 @@ namespace TIMS
             //for (int i = 0; i != 10; i++)
             //{
             //    inv.items.Add(new InvoiceItem(DatabaseHandler.SqlCheckItemNumber("MBR100").ToArray()[0])
-            //    { quantity = 3, total = 10.50f});
+            //    { quantity = 3, total = 10.50f });
             //}
             //for (int i = 0; i != 10; i++)
             //{
@@ -64,7 +65,7 @@ namespace TIMS
             //inv.PONumber = "Motherfucking Building";
             //inv.invoiceMessage = "What the fuck?";
             //inv.invoiceFinalizedTime = DateTime.Now;
-            //ReportViewer v = new ReportViewer(inv);
+            //InvoiceViewer v = new InvoiceViewer(inv);
             //Application.Run(v);
             #endregion
         }

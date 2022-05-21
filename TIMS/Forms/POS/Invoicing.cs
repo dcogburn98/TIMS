@@ -108,7 +108,6 @@ namespace TIMS.Forms
             subtotalLabel.Text = "$0.00";
 
             customerNoTB.Clear();
-            System.Threading.Thread.Sleep(500);
             customerNoTB.Focus();
 
             currentState = State.NoCustomer;
@@ -327,6 +326,11 @@ namespace TIMS.Forms
         {
             Checkout checkoutForm = new Checkout(currentInvoice, this);
             checkoutForm.ShowDialog();
+            if (currentInvoice.finalized)
+            {
+                CancelInvoice();
+                customerNoTB.Focus();
+            }
         }
 
 

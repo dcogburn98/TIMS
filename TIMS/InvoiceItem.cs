@@ -19,7 +19,7 @@ namespace TIMS
         public float listPrice;
         public float total;
         public float quantity;
-        public string pricingCode;
+        public string pricingCode = "!";
         public bool serializedItem;
         public string serialNumber;
         public bool ageRestricted;

@@ -20,5 +20,6 @@ namespace TIMS
         }
         public PaymentTypes paymentType;
         public float paymentAmount;
+        public Guid ID = Guid.NewGuid();
     }
 }

@@ -583,6 +583,7 @@ namespace TIMS
             OpenConnection();
             SQLiteCommand command = sqlite_conn.CreateCommand();
 
+            #region Add General Invoice Information to INVOICES tables
             command.CommandText =
                 "INSERT INTO INVOICES (" +
 
@@ -637,6 +638,88 @@ namespace TIMS
             command.Parameters.Add(p20);
 
             command.ExecuteNonQuery();
+            #endregion
+
+            #region Add Invoice Item information to INVOICEITEMS table
+            foreach (InvoiceItem item in inv.items)
+            {
+                command.CommandText =
+                    "INSERT INTO INVOICEITEMS (" +
+
+                    "INVOICENUMBER,ITEMNUMBER,PRODUCTLINE,ITEMDESCRIPTION,PRICE,LISTPRICE," +
+                    "QUANTITY,TOTAL,PRICECODE,SERIALIZED,SERIALNUMBER,AGERESTRICTED," +
+                    "MINIMUMAGE,TAXED,INVOICECODES,GUID) " +
+
+                    "VALUES ($INVOICENUMBER,$ITEMNUMBER,$PRODUCTLINE,$ITEMDESCRIPTION,$PRICE,$LISTPRICE," +
+                    "$QUANTITY,$TOTAL,$PRICECODE,$SERIALIZED,$SERIALNUMBER,$AGERESTRICTED," +
+                    "$MINIMUMAGE,$TAXED,$INVOICECODES,$GUID)";
+
+                SQLiteParameter pp1 = new SQLiteParameter("$INVOICENUMBER", inv.invoiceNumber);
+                SQLiteParameter pp2 = new SQLiteParameter("$ITEMNUMBER", item.itemNumber);
+                SQLiteParameter pp3 = new SQLiteParameter("$PRODUCTLINE", item.productLine);
+                SQLiteParameter pp4 = new SQLiteParameter("$ITEMDESCRIPTION", item.itemName);
+                SQLiteParameter pp5 = new SQLiteParameter("$PRICE", item.price);
+                SQLiteParameter pp6 = new SQLiteParameter("$LISTPRICE", item.listPrice);
+                SQLiteParameter pp7 = new SQLiteParameter("$QUANTITY", item.quantity);
+                SQLiteParameter pp8 = new SQLiteParameter("$TOTAL", item.total);
+                SQLiteParameter pp9 = new SQLiteParameter("$PRICECODE", item.pricingCode);
+                SQLiteParameter pp10 = new SQLiteParameter("$SERIALIZED", item.serializedItem);
+                SQLiteParameter pp11 = new SQLiteParameter("$SERIALNUMBER", item.serialNumber);
+                SQLiteParameter pp12 = new SQLiteParameter("$AGERESTRICTED", item.ageRestricted);
+                SQLiteParameter pp13 = new SQLiteParameter("$MINIMUMAGE", item.minimumAge);
+                SQLiteParameter pp14 = new SQLiteParameter("$TAXED", item.taxed);
+                string invCodes = string.Empty;
+                if (item.codes != null)
+                    foreach (string code in item.codes)
+                        invCodes += code + ",";
+                invCodes = invCodes.Trim(',');
+                SQLiteParameter pp15 = new SQLiteParameter("$INVOICECODES", invCodes);
+                SQLiteParameter pp16 = new SQLiteParameter("$GUID", item.ID);
+
+                command.Parameters.Add(pp1);
+                command.Parameters.Add(pp2);
+                command.Parameters.Add(pp3);
+                command.Parameters.Add(pp4);
+                command.Parameters.Add(pp5);
+                command.Parameters.Add(pp6);
+                command.Parameters.Add(pp7);
+                command.Parameters.Add(pp8);
+                command.Parameters.Add(pp9);
+                command.Parameters.Add(pp10);
+                command.Parameters.Add(pp11);
+                command.Parameters.Add(pp12);
+                command.Parameters.Add(pp13);
+                command.Parameters.Add(pp14);
+                command.Parameters.Add(pp15);
+                command.Parameters.Add(pp16);
+
+                command.ExecuteNonQuery();
+            }
+            #endregion
+
+            #region Add Invoice Payment Information to INVOICEPAYMENTS table
+            foreach (Payment pay in inv.payments)
+            {
+                command.CommandText =
+                    "INSERT INTO PAYMENTS (" +
+                    
+                    "INVOICENUMBER,ID,PAYMENTTYPE,PAYMENTAMOUNT) " +
+
+                    "VALUES ($INVOICENUMBER,$ID,$PAYMENTTYPE,$PAYMENTAMOUNT)";
+
+                SQLiteParameter ppp1 = new SQLiteParameter("$INVOICENUMBER", inv.invoiceNumber);
+                SQLiteParameter ppp2 = new SQLiteParameter("$ID", pay.ID);
+                SQLiteParameter ppp3 = new SQLiteParameter("$PAYMENTTYPE", pay.paymentType.ToString());
+                SQLiteParameter ppp4 = new SQLiteParameter("$PAYMENTAMOUNT", pay.paymentAmount);
+
+                command.Parameters.Add(ppp1);
+                command.Parameters.Add(ppp2);
+                command.Parameters.Add(ppp3);
+                command.Parameters.Add(ppp4);
+
+                command.ExecuteNonQuery();
+            }
+            #endregion
 
             CloseConnection();
             return;
@@ -720,6 +803,53 @@ namespace TIMS
 
             CloseConnection();
             return property;
+        }
+
+        public static Invoice SqlRetrieveInvoice(int invNumber)
+        {
+            Invoice inv = new Invoice();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+
+            command.CommandText =
+                "SELECT * FROM INVOICES WHERE INVOICENUMBER = $INVOICENUMBER";
+
+            SQLiteParameter p1 = new SQLiteParameter("$INVOICENUMBER", invNumber);
+            command.Parameters.Add(p1);
+            SQLiteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                inv.invoiceNumber = reader.GetInt32(0);
+                inv.subtotal = reader.GetFloat(1);
+                //TODO: FINISH ADDING GENERAL INVOICE DATA FROM DATABASE
+            }
+
+            command.CommandText =
+                "SELECT * FROM PAYMENTS WHERE INVOICENUMBER = $INVOICENUMBER";
+            reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                inv.payments.Add(new Payment() { 
+                    paymentAmount = reader.GetFloat(3), 
+                    paymentType = (Payment.PaymentTypes)Enum.Parse(typeof(Payment.PaymentTypes), reader.GetString(2)) });
+            }
+
+
+            CloseConnection();
+            return inv;
         }
 
         public static void OpenConnection()
