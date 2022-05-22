@@ -22,51 +22,51 @@ namespace TIMS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Login login = new Login();
-            OpenForms.Add(login);
-            login.Show();
-            Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
-            Application.Run();
+            //Login login = new Login();
+            //OpenForms.Add(login);
+            //login.Show();
+            //Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
+            //Application.Run();
 
             #region Invoice Viewer Test Code
-            //SHA256 encrypt = SHA256.Create();
-            //byte[] hash = encrypt.ComputeHash(Encoding.UTF8.GetBytes("0"));
-            //DatabaseHandler.InitializeDatabases();
-            //Invoice inv = new Invoice();
-            //inv.customer = DatabaseHandler.SqlCheckCustomerNumber("0");
-            //inv.employee = DatabaseHandler.SqlLogin("0", hash);
-            //inv.taxRate = 0.1025f;
-            //for (int i = 0; i != 10; i++)
-            //{
-            //    inv.items.Add(new InvoiceItem(DatabaseHandler.SqlCheckItemNumber("75130").ToArray()[1])
-            //    { quantity = 3, total = 10.50f });
-            //}
-            //for (int i = 0; i != 10; i++)
-            //{
-            //    inv.items.Add(new InvoiceItem(DatabaseHandler.SqlCheckItemNumber("75130").ToArray()[0])
-            //    { quantity = 3, total = 10.50f });
-            //}
-            //for (int i = 0; i != 10; i++)
-            //{
-            //    inv.items.Add(new InvoiceItem(DatabaseHandler.SqlCheckItemNumber("MBR100").ToArray()[0])
-            //    { quantity = 3, total = 10.50f });
-            //}
-            //for (int i = 0; i != 10; i++)
-            //{
-            //    inv.items.Add(new InvoiceItem(DatabaseHandler.SqlCheckItemNumber("75130").ToArray()[0])
-            //    { quantity = 3, total = 10.50f });
-            //}
-            //foreach (InvoiceItem item in inv.items)
-            //    inv.subtotal += item.total;
-            //inv.taxAmount = inv.subtotal * inv.taxRate;
-            //inv.total = inv.subtotal + inv.taxAmount;
-            //inv.invoiceNumber = 75130;
-            //inv.attentionLine = "Motherfucker";
-            //inv.PONumber = "Motherfucking Building";
-            //inv.invoiceMessage = "What the fuck?";
-            //inv.invoiceFinalizedTime = DateTime.Now;
-            //InvoiceViewer v = new InvoiceViewer(inv);
-            //Application.Run(v);
+            SHA256 encrypt = SHA256.Create();
+            byte[] hash = encrypt.ComputeHash(Encoding.UTF8.GetBytes("0"));
+            DatabaseHandler.InitializeDatabases();
+            Invoice inv = new Invoice();
+            inv.customer = DatabaseHandler.SqlCheckCustomerNumber("0");
+            inv.employee = DatabaseHandler.SqlLogin("0", hash);
+            inv.taxRate = 0.1025f;
+            for (int i = 0; i != 10; i++)
+            {
+                inv.items.Add(new InvoiceItem(DatabaseHandler.SqlCheckItemNumber("75130", false).ToArray()[1])
+                { quantity = 3, total = 10.50f });
+            }
+            for (int i = 0; i != 10; i++)
+            {
+                inv.items.Add(new InvoiceItem(DatabaseHandler.SqlCheckItemNumber("75130", false).ToArray()[0])
+                { quantity = 3, total = 10.50f });
+            }
+            for (int i = 0; i != 10; i++)
+            {
+                inv.items.Add(new InvoiceItem(DatabaseHandler.SqlCheckItemNumber("MBR100", false).ToArray()[0])
+                { quantity = 3, total = 10.50f });
+            }
+            for (int i = 0; i != 10; i++)
+            {
+                inv.items.Add(new InvoiceItem(DatabaseHandler.SqlCheckItemNumber("75130", false).ToArray()[0])
+                { quantity = 3, total = 10.50f });
+            }
+            foreach (InvoiceItem item in inv.items)
+                inv.subtotal += item.total;
+            inv.taxAmount = inv.subtotal * inv.taxRate;
+            inv.total = inv.subtotal + inv.taxAmount;
+            inv.invoiceNumber = 2113095551;
+            inv.attentionLine = "Motherfucker";
+            inv.PONumber = "Motherfucking Building";
+            inv.invoiceMessage = "What the fuck?";
+            inv.invoiceFinalizedTime = DateTime.Now;
+            InvoiceViewer v = new InvoiceViewer(inv);
+            Application.Run(v);
             #endregion
         }
 

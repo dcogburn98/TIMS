@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing.Printing;
 
 
 using PdfSharp;
@@ -205,5 +206,16 @@ namespace TIMS
             XGraphicsState state = gfx.Save();
             gfx.Restore(state);
         }
+
+        //public PrintDocument CreateDocument()
+        //{
+        //    PdfDocument doc = new PdfDocument();
+        //    for (int i = 0; i != invoicePages; i++)
+        //    {
+        //        PdfPage page = doc.Pages.Add();
+        //        XGraphics gfx = XGraphics.FromPdfPage(page);
+        //        RenderPage(gfx);
+        //    }
+        //}
     }
 }

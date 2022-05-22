@@ -24,6 +24,7 @@ namespace TIMS.Forms
         {
             InitializeComponent();
             CancelButton = closeButton;
+            inv.invoicePages = inv.items.Count % 32 != 0 ? inv.items.Count / 32 + 1 : inv.items.Count / 32;
             if (inv.invoicePages > 1)
                 nextPageBtn.Enabled = true;
             prevPageBtn.Enabled = false;
@@ -41,10 +42,20 @@ namespace TIMS.Forms
 
         private void printBtn_Click(object sender, EventArgs e)
         {
-            PrintDocument pd = new PrintDocument();
-            pd.PrintPage += new PrintPageEventHandler(PrintPage);
-            pd.Print();
-            printed = true;
+            PrintDialog pd = new PrintDialog();
+            pd.Document = new PrintDocument();
+            pd.Document.PrintPage += new PrintPageEventHandler(PrintPage);
+            DialogResult result = pd.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                pd.Document.Print();
+                printed = true;
+            }
+            else
+            {
+                printed = false;
+            }
         }
 
         private void PrintPage(object sender, PrintPageEventArgs ev)
@@ -54,7 +65,11 @@ namespace TIMS.Forms
             XGraphics gfx = XGraphics.FromGraphics(graphics, PageSizeConverter.ToSize(PageSize.A4));
             inv.RenderPage(gfx);
 
-            ev.HasMorePages = false;
+            if (inv.currentPage != inv.invoicePages)
+            {
+                ev.HasMorePages = true;
+                inv.currentPage++;
+            }
         }
 
         private void nextPageBtn_Click(object sender, EventArgs e)
