@@ -15,7 +15,7 @@ namespace TIMS.Forms.POS
         public ReviewInvoices()
         {
             InitializeComponent();
-            tabControl1.TabPages[1].Enabled = false;
+            tabControl1.Controls.Remove(tabPage2);
         }
     }
 }
