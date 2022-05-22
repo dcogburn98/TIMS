@@ -34,6 +34,75 @@ namespace TIMS.Forms.POS
                 dataGridView1.Rows[row].Cells[8].Value = item.taxed;
                 dataGridView1.Rows[row].Cells[9].Value = item.codes;
             }
+            foreach (Payment pay in inv.payments)
+            {
+                paymentsListBox.Items.Add(pay.paymentType + ": " + pay.paymentAmount.ToString("C"));
+            }
+
+            #region Invoice Information Section
+            invNoLabel.Text = inv.invoiceNumber.ToString();
+            dateLabel.Text = inv.invoiceFinalizedTime.ToString("MM/dd/yyyy");
+            timeLabel.Text = inv.invoiceFinalizedTime.ToString("hh:mm tt");
+            subtotalLabel.Text = inv.subtotal.ToString("C");
+            taxableTotalLabel.Text = inv.taxableTotal.ToString("C");
+            taxRateLabel.Text = inv.taxRate.ToString("P");
+            taxAmountLabel.Text = inv.taxAmount.ToString("C");
+            totalLabel.Text = inv.total.ToString("C");
+
+            if (inv.payments.Count > 1)
+                paymentTypeLabel.Text = "MULTIPLE";
+            else
+                paymentTypeLabel.Text = inv.payments[0].paymentType + " (" + inv.payments[0].paymentAmount.ToString("C") + ")";
+
+            if (inv.containsAgeRestrictedItem)
+                ageRestrictedLabel.Text = "True (" + inv.items.OrderByDescending(el => el.minimumAge).FirstOrDefault().minimumAge + ")";
+            else
+                ageRestrictedLabel.Text = "False";
+
+            attentionLabel.Text = inv.attentionLine;
+            poLabel.Text = inv.PONumber;
+            messageLabel.Text = inv.invoiceMessage;
+            voidLabel.Text = inv.voided.ToString();
+            #endregion
+
+            #region Customer Information Section
+            customerNoLabel.Text = inv.customer.customerNumber;
+            customerNameLabel.Text = inv.customer.customerName;
+            if (inv.customer.taxExempt)
+                taxExemptionLabel.Text = "True (" + inv.customer.taxExemptionNumber + ")";
+            else
+                taxExemptionLabel.Text = "False";
+            pricingProfileLabel.Text = inv.customer.pricingProfile;
+            if (inv.customer.canCharge)
+            {
+                allowChargingLabel.Text = "True";
+                creditLimitLabel.Text = inv.customer.creditLimit.ToString("C");
+                newBalanceLabel.Text = inv.customer.accountBalance.ToString("C");
+            }
+            else
+            {
+                allowChargingLabel.Text = "False";
+                creditLimitLabel.Text = 0.00f.ToString("C");
+                newBalanceLabel.Text = inv.customer.accountBalance.ToString("C");
+            }
+            if (inv.containsAgeRestrictedItem)
+                birthdateLabel.Text = inv.customerBirthdate.ToString("MM/dd/yyyy");
+            else
+                birthdateLabel.Text = "N/A";
+            contactPhoneLabel.Text = inv.customer.phoneNumber;
+            faxLabel.Text = inv.customer.faxNumber;
+            string[] mailing = inv.customer.mailingAddress.Split(',');
+            mailingAddressLn1Label.Text = mailing[0].Trim();
+            mailingAddressLn2Label.Text = mailing[1].Trim() + "," + mailing[2] + mailing[3] + "," + mailing[4];
+            string[] shipping = inv.customer.shippingAddress.Split(',');
+            shippingAddressLn1Label.Text = shipping[0].Trim();
+            shippingAddressLn2Label.Text = shipping[1].Trim() + "," + shipping[2] + shipping[3] + "," + shipping[4];
+
+            #endregion
+
+            employeeNumberLabel.Text = inv.employee.employeeNumber.ToString();
+            employeeNameLabel.Text = inv.employee.fullName;
+            employeePosLabel.Text = inv.employee.position;
         }
 
         private void printButton_Click(object sender, EventArgs e)

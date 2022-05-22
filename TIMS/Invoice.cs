@@ -47,7 +47,7 @@ namespace TIMS
         public Invoice()
         {
             items = new List<InvoiceItem>();
-            
+            payments = new List<Payment>();
         }
 
         public void RenderPage(XGraphics gfx)

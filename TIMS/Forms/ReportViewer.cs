@@ -35,6 +35,12 @@ namespace TIMS.Forms
             pagePreview1.SetRenderFunction(inv.RenderPage);
         }
 
+        public ReportViewer(DataGridView reportData)
+        {
+            InitializeComponent();
+            CancelButton = closeButton;
+        }
+
         private void closeButton_Click(object sender, EventArgs e)
         {
             Close();
