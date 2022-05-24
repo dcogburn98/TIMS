@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TIMS
 {
@@ -47,7 +45,7 @@ namespace TIMS
             this.serializedItem = serializedItem;
             this.serialNumber = serialNumber;
         }
-        
+
         public InvoiceItem(Item item)
         {
             itemNumber = item.itemNumber;

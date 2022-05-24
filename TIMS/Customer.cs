@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace TIMS
 {
@@ -13,7 +9,7 @@ namespace TIMS
         public bool taxExempt;
         public string taxExemptionNumber;
         public string pricingProfile;
-        
+
         public List<Payment.PaymentTypes> availablePaymentTypes;
         public bool canCharge;
         public float creditLimit;

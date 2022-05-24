@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Text;
 
 namespace TIMSServer
 {
     public class Database
     {
-        
+
         public static Queue<string> ModifyCommandQueue = new Queue<string>();
         public static Queue<string> ReadCommandQueue = new Queue<string>();
         public static Queue<Response> ResponseQueue = new Queue<Response>();
@@ -36,7 +35,7 @@ namespace TIMSServer
                     if (r == null)
                         continue;
                     else
-                    ResponseQueue.Enqueue(r);
+                        ResponseQueue.Enqueue(r);
                 }
                 if (ResponseQueue.Count > 0)
                     continue; //Send responses to appropriate terminals
@@ -68,7 +67,7 @@ namespace TIMSServer
             OpenConnection();
             SQLiteCommand sqlite_cmd;
             sqlite_cmd = sqlite_conn.CreateCommand();
-            string[] com_split = ModifyCommandQueue.Dequeue().Split(new char[] {' '}, 2);
+            string[] com_split = ModifyCommandQueue.Dequeue().Split(new char[] { ' ' }, 2);
             if (com_split.Length < 2)
             {
                 Console.WriteLine("Unknown input from sender: {0}", com_split.ToString());
@@ -90,7 +89,7 @@ namespace TIMSServer
             }
             CloseConnection();
         }
-    
+
         public static Response ExecuteNextReadCommand()
         {
             if (ReadCommandQueue.Count < 1)
@@ -116,7 +115,7 @@ namespace TIMSServer
                 ResponseQueue.Enqueue(new Response(com_split[0], new List<List<string>> { new List<string> { e.Message } }));
                 return null;
             }
-            
+
             data = new List<List<string>>();
             while (sqlite_datareader.Read())
             {

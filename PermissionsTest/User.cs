@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PermissionsTest
 {
     class User
     {
-        public static List<User> Users = new List<User>() 
-        { 
+        public static List<User> Users = new List<User>()
+        {
             new User() {
                 username = "blake",
                 password = "highlydedicated",
@@ -71,7 +68,7 @@ namespace PermissionsTest
             else
                 return false;
         }
-        
+
         public static int PermissionComparison(Permission p1, Permission p2)
         {
             if (p1.code > p2.code)

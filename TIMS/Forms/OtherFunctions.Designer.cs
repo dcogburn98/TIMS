@@ -243,6 +243,7 @@ namespace TIMS.Forms
             this.reviewChangeTransactionsToolStripMenuItem.Name = "reviewChangeTransactionsToolStripMenuItem";
             this.reviewChangeTransactionsToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.reviewChangeTransactionsToolStripMenuItem.Text = "Review/Change Transactions";
+            this.reviewChangeTransactionsToolStripMenuItem.Click += new System.EventHandler(this.reviewChangeTransactionsToolStripMenuItem_Click);
             // 
             // archiveTransactionsToolStripMenuItem
             // 

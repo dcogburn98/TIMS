@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Security.Cryptography;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
-using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace TIMSServer
 {
@@ -138,7 +132,7 @@ namespace TIMSServer
                                                 break;
                                             }
                                             string[] rows = response.responseText.Split('\n');
-                                            
+
                                             int i = 0;
                                             foreach (string col in rows)
                                             {
@@ -147,7 +141,7 @@ namespace TIMSServer
                                                     Console.WriteLine("Origin: " + rows[0]);
                                                     i++;
                                                     continue;
-                                                }    
+                                                }
                                                 string[] cols = col.Split('`');
                                                 foreach (string c in cols)
                                                     Console.Write("[{0}]", c);

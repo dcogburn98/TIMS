@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 
 namespace ClientTest
 {
@@ -20,7 +18,7 @@ namespace ClientTest
         {
             try
             {
-                TcpClient client = new(server, port);
+                TcpClient client = new TcpClient(server, port);
 
                 Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
 

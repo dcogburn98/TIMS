@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TIMS.Forms
@@ -80,7 +74,7 @@ namespace TIMS.Forms
             invoice.taxRate = 0.1025f;
             invoice.taxAmount = invoice.taxableTotal * invoice.taxRate;
             invoice.total = (float)Math.Round(invoice.subtotal + invoice.taxAmount, 2);
-            
+
             subtotalTB.Text = invoice.subtotal.ToString("C");
             itemCountTB.Text = itemCount.ToString();
             taxableTB.Text = invoice.taxableTotal.ToString("C");
@@ -150,7 +144,7 @@ namespace TIMS.Forms
             float amt = float.Parse(paymentAmountTB.Text);
             switch ((string)paymentTypeLB.SelectedItem)
             {
-                
+
                 case "Cash":
                     paymentsLB.Items.Add("Cash: " + amt.ToString("C"));
                     invoice.payments.Add(new Payment() { paymentAmount = amt, paymentType = Payment.PaymentTypes.Cash });
@@ -271,7 +265,7 @@ namespace TIMS.Forms
 
         private void paymentIndexTB_KeyDown(object sender, KeyEventArgs e)
         {
-            
+
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
             {
                 if (paymentIndexTB.Text == String.Empty || int.Parse(paymentIndexTB.Text) > paymentTypeLB.Items.Count || int.Parse(paymentIndexTB.Text) == 0)

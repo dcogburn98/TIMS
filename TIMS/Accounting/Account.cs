@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Xml.Linq;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TIMS.Accounting
 {
@@ -86,7 +82,7 @@ namespace TIMS.Accounting
                     newAccount.Type = AccountTypes.Income;
                 else if (type == "Expense")
                     newAccount.Type = AccountTypes.Expense;
-                
+
                 Accounts.Add(newAccount);
             }
         }

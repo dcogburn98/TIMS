@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Security.Cryptography;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using TIMS.Forms;
@@ -22,11 +18,11 @@ namespace TIMS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Login login = new Login();
-            //OpenForms.Add(login);
-            //login.Show();
-            //Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
-            //Application.Run();
+            Login login = new Login();
+            OpenForms.Add(login);
+            login.Show();
+            Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
+            Application.Run();
 
             #region Invoice Viewer Test Code
             //SHA256 encrypt = SHA256.Create();
@@ -71,9 +67,10 @@ namespace TIMS
             //Application.Run(v);
             #endregion
             #region Invoice Review Window Test Code
-            ReviewInvoices rev = new ReviewInvoices();
-            Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
-            Application.Run(rev);
+            //DatabaseHandler.InitializeDatabases();
+            //ReviewInvoices rev = new ReviewInvoices();
+            //Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
+            //Application.Run(rev);
             #endregion
         }
 
@@ -129,7 +126,7 @@ namespace TIMS
             }
             return false;
         }
-    
+
         public static bool IsStringNumeric(string input)
         {
             char[] a = input.ToCharArray();
@@ -157,7 +154,7 @@ namespace TIMS
             }
             return true;
         }
-    
+
         public static string FormatCurrency(float amount)
         {
             return amount.ToString("C");

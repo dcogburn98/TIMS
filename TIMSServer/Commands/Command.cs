@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace TIMSServer.Commands
 {
@@ -15,7 +13,7 @@ namespace TIMSServer.Commands
         public abstract void callCommand(string[] args);
     }
 
-    
+
     public class Commands
     {
         public static List<Command> availableCommands = new List<Command>();

@@ -1,14 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Xml;
-using System.Xml.Linq;
-using System.IO;
-using System.Xml.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Security.Cryptography;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace TIMS
 {
@@ -218,7 +213,7 @@ namespace TIMS
                     new XElement("InvoiceMessage", customer.invoiceMessage),
                     new XElement("MailingAddress", customer.mailingAddress),
                     new XElement("ShippingAddress", customer.shippingAddress)));
-                    
+
         }
 
         public static void AddItem(string[] information)
@@ -237,7 +232,7 @@ namespace TIMS
                         new XElement("White", information[6]),
                         new XElement("Black", information[7]))));
         }
-        
+
         public static XElement CheckEmployee(string userornumber)
         {
             XElement e = employeeDB.Root.Elements().FirstOrDefault(el => el.Element("Username").Value == userornumber);
@@ -265,7 +260,7 @@ namespace TIMS
             else
                 return null;
         }
-        
+
         public static List<Item> CheckItemNumber(string itemNo)
         {
             List<Item> invItems = new List<Item>();
@@ -338,7 +333,7 @@ namespace TIMS
 
             return cust;
         }
-    
+
         public static void SaveReleasedInvoice(Invoice inv)
         {
             //itemDB.Root.Add(
@@ -368,9 +363,9 @@ namespace TIMS
             //}
         }
         #endregion
-        
-        
-        
+
+
+
         public static string SqlCheckEmployee(string input)
         {
             if (!int.TryParse(input, out int v))
@@ -402,7 +397,7 @@ namespace TIMS
 
         public static Employee SqlLogin(string user, byte[] pass)
         {
-            
+            //System.Threading.Thread.Sleep(1000); Uncomment before release
             Employee e = new Employee();
 
             if (!int.TryParse(user, out int v))
@@ -513,6 +508,29 @@ namespace TIMS
                 return null;
             else
                 return invItems;
+        }
+
+        public static bool SqlCheckProductLine(string productLine)
+        {
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT * FROM PRODUCTLINES WHERE PRODUCTLINE = $LINE";
+            SQLiteParameter p1 = new SQLiteParameter("$LINE", productLine);
+            command.Parameters.Add(p1);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return false;
+            }
+            else
+            {
+                CloseConnection();
+                return true;
+            }
         }
 
         public static Customer SqlCheckCustomerNumber(string custNo)
@@ -704,7 +722,7 @@ namespace TIMS
             {
                 command.CommandText =
                     "INSERT INTO PAYMENTS (" +
-                    
+
                     "INVOICENUMBER,ID,PAYMENTTYPE,PAYMENTAMOUNT) " +
 
                     "VALUES ($INVOICENUMBER,$ID,$PAYMENTTYPE,$PAYMENTAMOUNT)";
@@ -756,7 +774,7 @@ namespace TIMS
             command.Parameters.Add(p1);
             SQLiteDataReader reader = command.ExecuteReader();
 
-            while(reader.Read())
+            while (reader.Read())
             {
                 property = reader.GetString(0);
             }
@@ -830,27 +848,44 @@ namespace TIMS
             {
                 inv.invoiceNumber = reader.GetInt32(0);
                 inv.subtotal = reader.GetFloat(1);
+                inv.taxableTotal = reader.GetFloat(2);
+                inv.taxRate = reader.GetFloat(3);
+                inv.taxAmount = reader.GetFloat(4);
+                inv.total = reader.GetFloat(5);
+                inv.totalPayments = reader.GetFloat(6);
+                inv.containsAgeRestrictedItem = reader.GetBoolean(7);
+                inv.customerBirthdate = DateTime.Parse(reader.GetString(8));
+                inv.attentionLine = reader.GetString(9);
+                inv.PONumber = reader.GetString(10);
+                inv.invoiceMessage = reader.GetString(11);
+                inv.savedInvoice = reader.GetBoolean(12);
+                inv.savedInvoiceTime = DateTime.Parse(reader.GetString(13));
+                inv.invoiceCreationTime = DateTime.Parse(reader.GetString(14));
+                inv.invoiceFinalizedTime = DateTime.Parse(reader.GetString(15));
+                inv.finalized = reader.GetBoolean(16);
+                inv.voided = reader.GetBoolean(17);
+                inv.customer = new Customer() { customerNumber = reader.GetInt32(18).ToString() };
+                inv.employee = new Employee() { employeeNumber = reader.GetInt32(19) };
                 //TODO: FINISH ADDING GENERAL INVOICE DATA FROM DATABASE
             }
 
+            reader.Close();
             command.CommandText =
                 "SELECT * FROM PAYMENTS WHERE INVOICENUMBER = $INVOICENUMBER";
             reader = command.ExecuteReader();
-            if (!reader.HasRows)
-            {
-                CloseConnection();
-                return null;
-            }
 
             while (reader.Read())
             {
-                inv.payments.Add(new Payment() { 
-                    paymentAmount = reader.GetFloat(3), 
-                    paymentType = (Payment.PaymentTypes)Enum.Parse(typeof(Payment.PaymentTypes), reader.GetString(2)) });
+                inv.payments.Add(new Payment()
+                {
+                    paymentAmount = reader.GetFloat(3),
+                    paymentType = (Payment.PaymentTypes)Enum.Parse(typeof(Payment.PaymentTypes), reader.GetString(2))
+                });
             }
 
-
             CloseConnection();
+
+            inv.customer = SqlCheckCustomerNumber(inv.customer.customerNumber);
             return inv;
         }
 
@@ -905,6 +940,38 @@ namespace TIMS
             return item;
         }
 
+        public static List<Invoice> SqlRetrieveInvoicesByCriteria(string[] criteria)
+        {
+            List<Invoice> invoices = new List<Invoice>();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText = "SELECT INVOICENUMBER FROM INVOICES";
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            List<int> invNumbers = new List<int>();
+
+            while (reader.Read())
+            {
+                invNumbers.Add(reader.GetInt32(0));
+            }
+
+            CloseConnection();
+
+            foreach (int number in invNumbers)
+            {
+                invoices.Add(SqlRetrieveInvoice(number));
+            }
+
+            return invoices;
+        }
+
         public static void OpenConnection()
         {
             sqlite_conn.Open();
@@ -914,5 +981,7 @@ namespace TIMS
         {
             sqlite_conn.Close();
         }
+    
+    
     }
 }

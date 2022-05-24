@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TIMS.Forms
@@ -68,7 +62,7 @@ namespace TIMS.Forms
             messagesButton.Enabled = true;
             roaButton.Enabled = true;
         }
-        
+
         public void CancelInvoice()
         {
             currentInvoice = null;
@@ -464,11 +458,11 @@ namespace TIMS.Forms
             currentState = State.EditingLineItem;
             workingItem = currentInvoice.items.Find(el => el.ID == (Guid)dataGridView1.SelectedRows[0].Cells[10].Value);
 
-            itemNoTB.Text =         workingItem.itemNumber;
-            descriptionTB.Text =    workingItem.itemName;
-            qtyTB.Text =            workingItem.quantity.ToString();
-            priceCodeTB.Text =      "!";
-            priceTB.Text =          workingItem.price.ToString();
+            itemNoTB.Text = workingItem.itemNumber;
+            descriptionTB.Text = workingItem.itemName;
+            qtyTB.Text = workingItem.quantity.ToString();
+            priceCodeTB.Text = "!";
+            priceTB.Text = workingItem.price.ToString();
             if (workingItem.taxed)
                 taxedCB.Checked = true;
             else if (workingItem.taxed)
@@ -542,7 +536,7 @@ namespace TIMS.Forms
                         return;
                     else
                     {
-                        productLineDropBox.SelectedIndex = i-1;
+                        productLineDropBox.SelectedIndex = i - 1;
                         SelectProductLine();
                     }
                 }

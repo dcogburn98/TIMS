@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TIMS.Forms
@@ -92,7 +86,7 @@ namespace TIMS.Forms
                 }
 
             //If all siblings are checked, check the parent as well
-            suppressNextCheckEvent = true;   
+            suppressNextCheckEvent = true;
             if (allSiblingsChecked)
                 e.Node.Parent.Checked = true;
             else

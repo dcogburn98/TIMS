@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TIMS
@@ -41,7 +34,7 @@ namespace TIMS
                 label6.Visible = true;
                 return;
             }
-            
+
             Customer customer = new Customer();
             customer.customerNumber = textBox2.Text; //Number
             customer.customerName = textBox1.Text; //Name

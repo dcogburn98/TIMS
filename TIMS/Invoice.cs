@@ -1,14 +1,7 @@
-﻿using System;
+﻿using PdfSharp.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing.Printing;
-
-
-using PdfSharp;
-using PdfSharp.Pdf;
-using PdfSharp.Drawing;
 
 namespace TIMS
 {
@@ -102,9 +95,9 @@ namespace TIMS
             gfx.DrawString("Date: " + invoiceFinalizedTime.ToString("MM/dd/yyyy"), font, XBrushes.Black, 520, 60);
             gfx.DrawString("Page: " + currentPage.ToString() + "/" + invoicePages.ToString(), font, XBrushes.Black, 543, 85);
             gfx.DrawBarCode(PdfSharp.Drawing.BarCodes.BarCode.FromType(
-                PdfSharp.Drawing.BarCodes.CodeType.Code3of9Standard, 
-                invoiceNumber.ToString(), 
-                new XSize(130, 15)), 
+                PdfSharp.Drawing.BarCodes.CodeType.Code3of9Standard,
+                invoiceNumber.ToString(),
+                new XSize(130, 15)),
                 new XPoint(445, 63));
             gfx.DrawString("Invoice Number: " + invoiceNumber.ToString(), font, XBrushes.Black, new PointF(444, 85));
             #endregion
@@ -118,16 +111,16 @@ namespace TIMS
             gfx.DrawString(customer.customerName, font, XBrushes.Black, new PointF(customerInfoOrigin.X + 4, customerInfoOrigin.Y + 10 + (float)font.GetHeight()));
             gfx.DrawString(customer.mailingAddress.Split(',')[0], font, XBrushes.Black, new PointF(customerInfoOrigin.X + 4, customerInfoOrigin.Y + 10 + 2 * (float)font.GetHeight()));
             gfx.DrawString(
-                customer.mailingAddress.Split(',')[1].Trim() + "," + 
-                customer.mailingAddress.Split(',')[2] + 
+                customer.mailingAddress.Split(',')[1].Trim() + "," +
+                customer.mailingAddress.Split(',')[2] +
                 customer.mailingAddress.Split(',')[3] + "," +
                 customer.mailingAddress.Split(',')[4], font, XBrushes.Black, new PointF(customerInfoOrigin.X + 4, customerInfoOrigin.Y + 10 + 3 * (float)font.GetHeight()));
             gfx.DrawString("Anticipated Delivery:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 224.5f, customerInfoOrigin.Y + 10));
             gfx.DrawString("Attention:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 260, customerInfoOrigin.Y + 10 + (float)font.GetHeight()));
-            gfx.DrawString("Tax Exemption:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 241.5f, customerInfoOrigin.Y + 10 + 2*(float)font.GetHeight()));
-            gfx.DrawString("PO#:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 275, customerInfoOrigin.Y + 10 + 3*(float)font.GetHeight()));
-            gfx.DrawString("Terms:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 269.5f, customerInfoOrigin.Y + 10 + 4*(float)font.GetHeight()));
-            
+            gfx.DrawString("Tax Exemption:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 241.5f, customerInfoOrigin.Y + 10 + 2 * (float)font.GetHeight()));
+            gfx.DrawString("PO#:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 275, customerInfoOrigin.Y + 10 + 3 * (float)font.GetHeight()));
+            gfx.DrawString("Terms:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 269.5f, customerInfoOrigin.Y + 10 + 4 * (float)font.GetHeight()));
+
             //gfx.DrawString("Anticipated Delivery:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 224.5f, customerInfoOrigin.Y + 10));
             gfx.DrawString(attentionLine, font, XBrushes.Black, new PointF(customerInfoOrigin.X + 300, customerInfoOrigin.Y + 10 + (float)font.GetHeight()));
             gfx.DrawString(customer.taxExempt ? "True" : "False", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 300, customerInfoOrigin.Y + 10 + 2 * (float)font.GetHeight()));
@@ -151,13 +144,13 @@ namespace TIMS
             gfx.DrawLine(pen, new PointF(itemInfoOrigin.X + 380, itemInfoOrigin.Y), new PointF(itemInfoOrigin.X + 380, itemInfoOrigin.Y + itemInfoheight));
             gfx.DrawLine(pen, new PointF(itemInfoOrigin.X + 440, itemInfoOrigin.Y), new PointF(itemInfoOrigin.X + 440, itemInfoOrigin.Y + itemInfoheight));
             gfx.DrawLine(pen, new PointF(itemInfoOrigin.X + 500, itemInfoOrigin.Y), new PointF(itemInfoOrigin.X + 500, itemInfoOrigin.Y + itemInfoheight));
-            gfx.DrawString("Item Number",   fontH2, XBrushes.White, itemInfoOrigin.X + 22,  itemInfoOrigin.Y + 12);
-            gfx.DrawString("Line",          fontH2, XBrushes.White, itemInfoOrigin.X + 124, itemInfoOrigin.Y + 12);
-            gfx.DrawString("Description",   fontH2, XBrushes.White, itemInfoOrigin.X + 222, itemInfoOrigin.Y + 12);
-            gfx.DrawString("Qty",           fontH2, XBrushes.White, itemInfoOrigin.X + 351, itemInfoOrigin.Y + 12);
-            gfx.DrawString("List",          fontH2, XBrushes.White, itemInfoOrigin.X + 400, itemInfoOrigin.Y + 12);
-            gfx.DrawString("Price",         fontH2, XBrushes.White, itemInfoOrigin.X + 459, itemInfoOrigin.Y + 12);
-            gfx.DrawString("Total",         fontH2, XBrushes.White, itemInfoOrigin.X + 518, itemInfoOrigin.Y + 12);
+            gfx.DrawString("Item Number", fontH2, XBrushes.White, itemInfoOrigin.X + 22, itemInfoOrigin.Y + 12);
+            gfx.DrawString("Line", fontH2, XBrushes.White, itemInfoOrigin.X + 124, itemInfoOrigin.Y + 12);
+            gfx.DrawString("Description", fontH2, XBrushes.White, itemInfoOrigin.X + 222, itemInfoOrigin.Y + 12);
+            gfx.DrawString("Qty", fontH2, XBrushes.White, itemInfoOrigin.X + 351, itemInfoOrigin.Y + 12);
+            gfx.DrawString("List", fontH2, XBrushes.White, itemInfoOrigin.X + 400, itemInfoOrigin.Y + 12);
+            gfx.DrawString("Price", fontH2, XBrushes.White, itemInfoOrigin.X + 459, itemInfoOrigin.Y + 12);
+            gfx.DrawString("Total", fontH2, XBrushes.White, itemInfoOrigin.X + 518, itemInfoOrigin.Y + 12);
 
             int row = 0;
             List<InvoiceItem> pageItems = new List<InvoiceItem>();
@@ -169,7 +162,7 @@ namespace TIMS
             }
             foreach (InvoiceItem item in pageItems)
             {
-                gfx.DrawString(item.itemNumber, font, XBrushes.Black, itemInfoOrigin.X + 4, itemInfoOrigin.Y + 27 + (row*font.GetHeight()));
+                gfx.DrawString(item.itemNumber, font, XBrushes.Black, itemInfoOrigin.X + 4, itemInfoOrigin.Y + 27 + (row * font.GetHeight()));
                 gfx.DrawString(item.productLine, font, XBrushes.Black, itemInfoOrigin.X + 127, itemInfoOrigin.Y + 27 + (row * font.GetHeight()));
                 gfx.DrawString(item.itemName, font, XBrushes.Black, itemInfoOrigin.X + 165, itemInfoOrigin.Y + 27 + (row * font.GetHeight()));
                 gfx.DrawString(item.quantity.ToString(), font, XBrushes.Black, itemInfoOrigin.X + 355, itemInfoOrigin.Y + 27 + (row * font.GetHeight()));
@@ -202,7 +195,7 @@ namespace TIMS
             }
             #endregion
 
-            
+
             XGraphicsState state = gfx.Save();
             gfx.Restore(state);
         }
