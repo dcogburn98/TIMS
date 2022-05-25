@@ -472,6 +472,39 @@ namespace TIMS
             return e;
         }
 
+        public static Employee SqlRetrieveEmployee(string employeeNumber)
+        {
+            Employee e = new Employee();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT * FROM EMPLOYEES WHERE EMPLOYEENUMBER = $NUMBER";
+            SQLiteParameter p1 = new SQLiteParameter("$NUMBER", employeeNumber);
+            command.Parameters.Add(p1);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                e.employeeNumber = reader.GetInt32(0);
+                e.fullName = reader.GetString(1);
+                e.username = reader.GetString(2);
+                e.position = reader.GetString(3);
+                e.birthDate = DateTime.Parse(reader.GetString(4));
+                e.hireDate = DateTime.Parse(reader.GetString(5));
+                e.terminationDate = DateTime.Parse(reader.GetString(6));
+            }
+
+            CloseConnection();
+            return e;
+        }
+
         public static List<Item> SqlCheckItemNumber(string itemNumber, bool connectionOpened)
         {
             if (!connectionOpened)
@@ -922,6 +955,7 @@ namespace TIMS
             CloseConnection();
 
             inv.customer = SqlCheckCustomerNumber(inv.customer.customerNumber);
+            inv.employee = SqlRetrieveEmployee(inv.employee.employeeNumber.ToString());
             return inv;
         }
 
