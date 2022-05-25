@@ -44,7 +44,9 @@ namespace TIMS.Forms.POS
             taxAmountLabel.Text = inv.taxAmount.ToString("C");
             totalLabel.Text = inv.total.ToString("C");
 
-            if (inv.payments.Count > 1)
+            if (inv.payments.Count == 0)
+                paymentTypeLabel.Text = "NONE";
+            else if (inv.payments.Count > 1)
                 paymentTypeLabel.Text = "MULTIPLE";
             else
                 paymentTypeLabel.Text = inv.payments[0].paymentType + " (" + inv.payments[0].paymentAmount.ToString("C") + ")";
@@ -109,6 +111,12 @@ namespace TIMS.Forms.POS
         private void closeButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void InvoiceViewer_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Program.OpenForms.Remove(this);
+            Program.CheckOpenForms();
         }
     }
 }

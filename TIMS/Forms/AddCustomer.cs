@@ -49,7 +49,7 @@ namespace TIMS
                 customer.taxExempt = false;
             customer.taxExemptionNumber = textBox3.Text; //Tax Exempt Number
 
-            DatabaseHandler.AddCustomer(customer);
+            //DatabaseHandler.AddCustomer(customer);
 
             Close();
         }

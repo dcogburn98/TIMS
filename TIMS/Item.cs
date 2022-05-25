@@ -17,12 +17,12 @@ namespace TIMS
 
         public DateTime dateStocked;
         public DateTime dateLastReceipt;
-        public int minimum;
-        public int maximum;
-        public int onHandQty;
-        public int WIPQty;
-        public int onOrderQty;
-        public int onBackorderQty;
+        public float minimum;
+        public float maximum;
+        public float onHandQty;
+        public float WIPQty;
+        public float onOrderQty;
+        public float onBackorderQty;
         public int daysOnOrder;
         public int daysOnBackorder;
 

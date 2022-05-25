@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.taxAmountLabel = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label59 = new System.Windows.Forms.Label();
+            this.paymentsListBox = new System.Windows.Forms.ListBox();
             this.voidLabel = new System.Windows.Forms.Label();
             this.messageLabel = new System.Windows.Forms.Label();
             this.poLabel = new System.Windows.Forms.Label();
@@ -90,12 +94,6 @@
             this.label27 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.closeButton = new System.Windows.Forms.Button();
-            this.printButton = new System.Windows.Forms.Button();
-            this.paymentsListBox = new System.Windows.Forms.ListBox();
-            this.label59 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.taxAmountLabel = new System.Windows.Forms.Label();
             this.itemNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.productLine = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -107,6 +105,8 @@
             this.Taxed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Codes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.guid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.closeButton = new System.Windows.Forms.Button();
+            this.printButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -151,6 +151,41 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Invoice Information";
+            // 
+            // taxAmountLabel
+            // 
+            this.taxAmountLabel.AutoSize = true;
+            this.taxAmountLabel.Location = new System.Drawing.Point(97, 94);
+            this.taxAmountLabel.Name = "taxAmountLabel";
+            this.taxAmountLabel.Size = new System.Drawing.Size(41, 13);
+            this.taxAmountLabel.TabIndex = 30;
+            this.taxAmountLabel.Text = "label30";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(24, 94);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(67, 13);
+            this.label29.TabIndex = 29;
+            this.label29.Text = "Tax Amount:";
+            // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.Location = new System.Drawing.Point(230, 22);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(56, 13);
+            this.label59.TabIndex = 28;
+            this.label59.Text = "Payments:";
+            // 
+            // paymentsListBox
+            // 
+            this.paymentsListBox.FormattingEnabled = true;
+            this.paymentsListBox.Location = new System.Drawing.Point(233, 38);
+            this.paymentsListBox.Name = "paymentsListBox";
+            this.paymentsListBox.Size = new System.Drawing.Size(120, 173);
+            this.paymentsListBox.TabIndex = 27;
             // 
             // voidLabel
             // 
@@ -754,61 +789,6 @@
             this.dataGridView1.TabIndex = 12;
             this.dataGridView1.TabStop = false;
             // 
-            // closeButton
-            // 
-            this.closeButton.Location = new System.Drawing.Point(836, 446);
-            this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(75, 23);
-            this.closeButton.TabIndex = 13;
-            this.closeButton.Text = "Close";
-            this.closeButton.UseVisualStyleBackColor = true;
-            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
-            // 
-            // printButton
-            // 
-            this.printButton.Location = new System.Drawing.Point(755, 446);
-            this.printButton.Name = "printButton";
-            this.printButton.Size = new System.Drawing.Size(75, 23);
-            this.printButton.TabIndex = 14;
-            this.printButton.Text = "Print";
-            this.printButton.UseVisualStyleBackColor = true;
-            this.printButton.Click += new System.EventHandler(this.printButton_Click);
-            // 
-            // paymentsListBox
-            // 
-            this.paymentsListBox.FormattingEnabled = true;
-            this.paymentsListBox.Location = new System.Drawing.Point(233, 38);
-            this.paymentsListBox.Name = "paymentsListBox";
-            this.paymentsListBox.Size = new System.Drawing.Size(120, 173);
-            this.paymentsListBox.TabIndex = 27;
-            // 
-            // label59
-            // 
-            this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(230, 22);
-            this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(56, 13);
-            this.label59.TabIndex = 28;
-            this.label59.Text = "Payments:";
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(24, 94);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(67, 13);
-            this.label29.TabIndex = 29;
-            this.label29.Text = "Tax Amount:";
-            // 
-            // taxAmountLabel
-            // 
-            this.taxAmountLabel.AutoSize = true;
-            this.taxAmountLabel.Location = new System.Drawing.Point(97, 94);
-            this.taxAmountLabel.Name = "taxAmountLabel";
-            this.taxAmountLabel.Size = new System.Drawing.Size(41, 13);
-            this.taxAmountLabel.TabIndex = 30;
-            this.taxAmountLabel.Text = "label30";
-            // 
             // itemNo
             // 
             this.itemNo.FillWeight = 150F;
@@ -891,6 +871,26 @@
             this.guid.Name = "guid";
             this.guid.Visible = false;
             // 
+            // closeButton
+            // 
+            this.closeButton.Location = new System.Drawing.Point(836, 446);
+            this.closeButton.Name = "closeButton";
+            this.closeButton.Size = new System.Drawing.Size(75, 23);
+            this.closeButton.TabIndex = 13;
+            this.closeButton.Text = "Close";
+            this.closeButton.UseVisualStyleBackColor = true;
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+            // 
+            // printButton
+            // 
+            this.printButton.Location = new System.Drawing.Point(755, 446);
+            this.printButton.Name = "printButton";
+            this.printButton.Size = new System.Drawing.Size(75, 23);
+            this.printButton.TabIndex = 14;
+            this.printButton.Text = "Print";
+            this.printButton.UseVisualStyleBackColor = true;
+            this.printButton.Click += new System.EventHandler(this.printButton_Click);
+            // 
             // InvoiceViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -904,6 +904,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "InvoiceViewer";
             this.Text = "InvoiceViewer";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.InvoiceViewer_FormClosed);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

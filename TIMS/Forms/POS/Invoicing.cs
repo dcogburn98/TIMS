@@ -639,13 +639,19 @@ namespace TIMS.Forms
 
         private void qtyTB_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.') && (e.KeyChar != '-'))
             {
                 e.Handled = true;
             }
 
             // only allow one decimal point
             if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+
+            // only allow one minus sign
+            if ((e.KeyChar == '-') && ((sender as TextBox).Text.IndexOf('-') > -1))
             {
                 e.Handled = true;
             }
@@ -669,6 +675,17 @@ namespace TIMS.Forms
         {
             if (e.KeyCode == Keys.Enter)
                 acceptItemButton.Focus();
+        }
+
+        private void qtyTB_Leave(object sender, EventArgs e)
+        {
+            if (!float.TryParse(qtyTB.Text, out float i))
+            {
+                MessageBox.Show("Invalid quantity!");
+                qtyTB.Focus();
+                qtyTB.SelectAll();
+                return;
+            }
         }
     }
 }

@@ -33,6 +33,7 @@ namespace TIMS
             CloseConnection();
 
             #region XML Database Stuff
+            /*
             #region Check if DB Files Exist
             if (!File.Exists(employeeDBLocation))
             {
@@ -182,10 +183,12 @@ namespace TIMS
                 itemDB.Save(itemDBLocation);
             }
             #endregion
+            */
             #endregion
         }
 
         #region XML Database Methods
+        /*
         public void AddEmployee(string name, string employeeNumber, string[] permissions)
         {
             employeeDB.Root.Add(
@@ -362,6 +365,7 @@ namespace TIMS
 
             //}
         }
+        */
         #endregion
 
 
@@ -883,6 +887,38 @@ namespace TIMS
                 });
             }
 
+            reader.Close();
+            command.CommandText =
+                "SELECT * FROM INVOICEITEMS WHERE INVOICENUMBER = $INVOICENUMBER";
+            reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                InvoiceItem item = new InvoiceItem()
+                {
+                    itemNumber = reader.GetString(1),
+                    productLine = reader.GetString(2),
+                    longDescription = reader.GetString(3),
+                    price = reader.GetFloat(4),
+                    listPrice = reader.GetFloat(5),
+                    quantity = reader.GetFloat(6),
+                    total = reader.GetFloat(7),
+                    pricingCode = reader.GetString(8),
+                    serializedItem = reader.GetBoolean(9),
+                    //serialNumber = reader.GetString(10),
+                    ageRestricted = reader.GetBoolean(11),
+                    minimumAge = reader.GetInt32(12),
+                    taxed = reader.GetBoolean(13),
+                    codes = reader.GetString(14).Split(','),
+                    ID = reader.GetGuid(15)
+                };
+
+                if (item.serializedItem)
+                    item.serialNumber = reader.GetString(10);
+
+                inv.items.Add(item);
+            }
+
             CloseConnection();
 
             inv.customer = SqlCheckCustomerNumber(inv.customer.customerNumber);
@@ -970,6 +1006,157 @@ namespace TIMS
             }
 
             return invoices;
+        }
+
+        public static Item SqlRetrieveItem(string itemNumber, string productLine)
+        {
+            Item item = new Item();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT * FROM ITEMS WHERE (ITEMNUMBER = $ITEMNO AND PRODUCTLINE = $LINE)";
+            SQLiteParameter p1 = new SQLiteParameter("$ITEMNO", itemNumber);
+            SQLiteParameter p2 = new SQLiteParameter("$LINE", productLine);
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+            SQLiteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                item.productLine = reader.GetString(0);
+                item.itemNumber = reader.GetString(1);
+                item.itemName = reader.GetString(2);
+                item.longDescription = reader.GetString(3);
+                item.supplier = reader.GetString(4);
+                item.groupCode = reader.GetInt32(5);
+                item.velocityCode = reader.GetInt32(6);
+                item.previousYearVelocityCode = reader.GetInt32(7);
+                item.itemsPerContainer = reader.GetInt32(8);
+                item.standardPackage = reader.GetInt32(9);
+                item.dateStocked = DateTime.Parse(reader.GetString(10));
+                item.dateLastReceipt = DateTime.Parse(reader.GetString(11));
+                item.minimum = reader.GetFloat(12);
+                item.maximum = reader.GetFloat(13);
+                item.onHandQty = reader.GetFloat(14);
+                item.WIPQty = reader.GetFloat(15);
+                item.onOrderQty = reader.GetFloat(16);
+                item.onBackorderQty = reader.GetFloat(17);
+                item.daysOnOrder = reader.GetInt32(18);
+                item.daysOnBackorder = reader.GetInt32(19);
+                item.listPrice = reader.GetFloat(20);
+                item.redPrice = reader.GetFloat(21);
+                item.yellowPrice = reader.GetFloat(22);
+                item.greenPrice = reader.GetFloat(23);
+                item.pinkPrice = reader.GetFloat(24);
+                item.bluePrice = reader.GetFloat(25);
+                item.replacementCost = reader.GetFloat(26);
+                item.averageCost = reader.GetFloat(27);
+                item.taxed = reader.GetBoolean(28);
+                item.ageRestricted = reader.GetBoolean(29);
+                item.minimumAge = reader.GetInt32(30);
+                item.locationCode = reader.GetInt32(31);
+            }
+
+            CloseConnection();
+            return item;
+        }
+
+        public static void SqlUpdateItem(Item newItem)
+        {
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "UPDATE ITEMS SET " +
+                "ITEMNAME = $ITEMNAME, LONGDESCRIPTION = $LONGDESCRIPTION, " +
+                "SUPPLIER = $SUPPLIER, GROUPCODE = $GROUPCODE, " +
+                "VELOCITYCODE = $VELOCITYCODE, PREVIOUSYEARVELOCITYCODE = $PREVIOUSVELOCITYCODE, " +
+                "ITEMSPERCONTAINER = $ITEMSPERCONTAINER, STANDARDPACKAGE = $STANDARDPACKAGE, " +
+                "DATESTOCKED = $DATESTOCKED, DATELASTRECEIPT = $DATELASTRECEIPT, " +
+                "MINIMUM = $MIN, MAXIMUM = $MAX, ONHANDQUANTITY = $ONHANDQTY, WIPQUANTITY = $WIPQTY, " +
+                "ONORDERQUANTITY = $ONORDERQTY, BACKORDERQUANTITY = $BACKORDERQTY, " +
+                "DAYSONORDER = $DAYSONORDER, DAYSONBACKORDER = $DAYSONBACKORDER, LISTPRICE = $LIST, " +
+                "REDPRICE = $RED, YELLOWPRICE = $YELLOW, GREENPRICE = $GREEN, PINKPRICE = $PINK, " +
+                "BLUEPRICE = $BLUE, REPLACEMENTCOST = $COST, AVERAGECOST = $AVERAGECOST, " +
+                "TAXED = $TAXED, AGERESTRICTED = $RESTRICTED, MINIMUMAGE = $MINAGE, LOCATIONCODE = $LOCATION " +
+                "WHERE (ITEMNUMBER = $ITEMNUMBER AND PRODUCTLINE = $PRODUCTLINE)";
+
+            SQLiteParameter p1 = new SQLiteParameter("$ITEMNAME", newItem.itemName);
+            SQLiteParameter p2 = new SQLiteParameter("$LONGDESCRIPTION", newItem.longDescription);
+            SQLiteParameter p3 = new SQLiteParameter("$SUPPLIER", newItem.supplier);
+            SQLiteParameter p4 = new SQLiteParameter("$GROUPCODE", newItem.groupCode);
+            SQLiteParameter p5 = new SQLiteParameter("$VELOCITYCODE", newItem.velocityCode);
+            SQLiteParameter p6 = new SQLiteParameter("$PREVIOUSVELOCITYCODE", newItem.previousYearVelocityCode);
+            SQLiteParameter p7 = new SQLiteParameter("$ITEMSPERCONTAINER", newItem.itemsPerContainer);
+            SQLiteParameter p8 = new SQLiteParameter("$STANDARDPACKAGE", newItem.standardPackage);
+            SQLiteParameter p9 = new SQLiteParameter("$DATESTOCKED", newItem.dateStocked.ToString());
+            SQLiteParameter p10 = new SQLiteParameter("$DATELASTRECEIPT", newItem.dateLastReceipt.ToString());
+            SQLiteParameter p11 = new SQLiteParameter("$MIN", newItem.minimum);
+            SQLiteParameter p12 = new SQLiteParameter("$MAX", newItem.maximum);
+            SQLiteParameter p13 = new SQLiteParameter("$ONHANDQTY", newItem.onHandQty);
+            SQLiteParameter p14 = new SQLiteParameter("$WIPQTY", newItem.WIPQty);
+            SQLiteParameter p15 = new SQLiteParameter("$ONORDERQTY", newItem.onOrderQty);
+            SQLiteParameter p16 = new SQLiteParameter("$BACKORDERQTY", newItem.onBackorderQty);
+            SQLiteParameter p17 = new SQLiteParameter("$DAYSONORDER", newItem.daysOnOrder);
+            SQLiteParameter p18 = new SQLiteParameter("$DAYSONBACKORDER", newItem.daysOnBackorder);
+            SQLiteParameter p19 = new SQLiteParameter("$LIST", newItem.listPrice);
+            SQLiteParameter p20 = new SQLiteParameter("$RED", newItem.redPrice);
+            SQLiteParameter p21 = new SQLiteParameter("$YELLOW", newItem.yellowPrice);
+            SQLiteParameter p22 = new SQLiteParameter("$GREEN", newItem.greenPrice);
+            SQLiteParameter p23 = new SQLiteParameter("$PINK", newItem.pinkPrice);
+            SQLiteParameter p24 = new SQLiteParameter("$BLUE", newItem.bluePrice);
+            SQLiteParameter p25 = new SQLiteParameter("$COST", newItem.replacementCost);
+            SQLiteParameter p26 = new SQLiteParameter("$AVERAGECOST", newItem.averageCost);
+            SQLiteParameter p27 = new SQLiteParameter("$TAXED", newItem.taxed);
+            SQLiteParameter p28 = new SQLiteParameter("$RESTRICTED", newItem.ageRestricted);
+            SQLiteParameter p29 = new SQLiteParameter("$MINAGE", newItem.minimumAge);
+            SQLiteParameter p30 = new SQLiteParameter("$LOCATION", newItem.locationCode);
+            SQLiteParameter p31 = new SQLiteParameter("$ITEMNUMBER", newItem.itemNumber);
+            SQLiteParameter p32 = new SQLiteParameter("$PRODUCTLINE", newItem.productLine);
+
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+            command.Parameters.Add(p3);
+            command.Parameters.Add(p4);
+            command.Parameters.Add(p5);
+            command.Parameters.Add(p6);
+            command.Parameters.Add(p7);
+            command.Parameters.Add(p8);
+            command.Parameters.Add(p9);
+            command.Parameters.Add(p10);
+            command.Parameters.Add(p11);
+            command.Parameters.Add(p12);
+            command.Parameters.Add(p13);
+            command.Parameters.Add(p14);
+            command.Parameters.Add(p15);
+            command.Parameters.Add(p16);
+            command.Parameters.Add(p17);
+            command.Parameters.Add(p18);
+            command.Parameters.Add(p19);
+            command.Parameters.Add(p20);
+            command.Parameters.Add(p21);
+            command.Parameters.Add(p22);
+            command.Parameters.Add(p23);
+            command.Parameters.Add(p24);
+            command.Parameters.Add(p25);
+            command.Parameters.Add(p26);
+            command.Parameters.Add(p27);
+            command.Parameters.Add(p28);
+            command.Parameters.Add(p29);
+            command.Parameters.Add(p30);
+            command.Parameters.Add(p31);
+            command.Parameters.Add(p32);
+
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+            return;
         }
 
         public static void OpenConnection()

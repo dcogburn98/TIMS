@@ -113,6 +113,17 @@
             this.authorizedBuyerDropBox = new System.Windows.Forms.ComboBox();
             this.label21 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.itemNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.productLine = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.serialNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ListPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Price = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Total = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Taxed = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Codes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.guid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.itemNoTB = new System.Windows.Forms.TextBox();
             this.descriptionTB = new System.Windows.Forms.TextBox();
             this.qtyTB = new System.Windows.Forms.TextBox();
@@ -141,17 +152,6 @@
             this.productLineDropBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.itemNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.productLine = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.serialNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ListPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Price = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Total = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Taxed = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Codes = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.guid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -937,6 +937,87 @@
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             this.dataGridView1.Paint += new System.Windows.Forms.PaintEventHandler(this.dataGridView1_Paint);
             // 
+            // itemNo
+            // 
+            this.itemNo.FillWeight = 150F;
+            this.itemNo.HeaderText = "Item #";
+            this.itemNo.Name = "itemNo";
+            // 
+            // productLine
+            // 
+            this.productLine.HeaderText = "Product Line";
+            this.productLine.Name = "productLine";
+            // 
+            // Description
+            // 
+            this.Description.FillWeight = 350F;
+            this.Description.HeaderText = "Description";
+            this.Description.Name = "Description";
+            this.Description.ReadOnly = true;
+            this.Description.Width = 233;
+            // 
+            // Qty
+            // 
+            this.Qty.FillWeight = 25F;
+            this.Qty.HeaderText = "Quantity";
+            this.Qty.Name = "Qty";
+            this.Qty.ReadOnly = true;
+            this.Qty.Width = 50;
+            // 
+            // serialNumber
+            // 
+            this.serialNumber.FillWeight = 15F;
+            this.serialNumber.HeaderText = "Serial Number";
+            this.serialNumber.Name = "serialNumber";
+            this.serialNumber.ReadOnly = true;
+            // 
+            // ListPrice
+            // 
+            this.ListPrice.FillWeight = 75F;
+            this.ListPrice.HeaderText = "List";
+            this.ListPrice.Name = "ListPrice";
+            this.ListPrice.ReadOnly = true;
+            this.ListPrice.Width = 75;
+            // 
+            // Price
+            // 
+            this.Price.FillWeight = 68F;
+            this.Price.HeaderText = "Price";
+            this.Price.Name = "Price";
+            this.Price.ReadOnly = true;
+            this.Price.Width = 75;
+            // 
+            // Total
+            // 
+            this.Total.FillWeight = 68F;
+            this.Total.HeaderText = "Total";
+            this.Total.Name = "Total";
+            this.Total.ReadOnly = true;
+            this.Total.Width = 75;
+            // 
+            // Taxed
+            // 
+            this.Taxed.FillWeight = 15F;
+            this.Taxed.HeaderText = "Tax";
+            this.Taxed.Name = "Taxed";
+            this.Taxed.ReadOnly = true;
+            this.Taxed.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Taxed.Width = 35;
+            // 
+            // Codes
+            // 
+            this.Codes.FillWeight = 50F;
+            this.Codes.HeaderText = "Codes";
+            this.Codes.Name = "Codes";
+            this.Codes.ReadOnly = true;
+            this.Codes.Width = 50;
+            // 
+            // guid
+            // 
+            this.guid.HeaderText = "GUID";
+            this.guid.Name = "guid";
+            this.guid.Visible = false;
+            // 
             // itemNoTB
             // 
             this.itemNoTB.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
@@ -965,6 +1046,7 @@
             this.qtyTB.TabIndex = 15;
             this.qtyTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.qtyTB_KeyDown);
             this.qtyTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.qtyTB_KeyPress);
+            this.qtyTB.Leave += new System.EventHandler(this.qtyTB_Leave);
             // 
             // priceCodeTB
             // 
@@ -1210,87 +1292,6 @@
             // programBindingSource
             // 
             this.programBindingSource.DataSource = typeof(TIMS.Program);
-            // 
-            // itemNo
-            // 
-            this.itemNo.FillWeight = 150F;
-            this.itemNo.HeaderText = "Item #";
-            this.itemNo.Name = "itemNo";
-            // 
-            // productLine
-            // 
-            this.productLine.HeaderText = "Product Line";
-            this.productLine.Name = "productLine";
-            // 
-            // Description
-            // 
-            this.Description.FillWeight = 350F;
-            this.Description.HeaderText = "Description";
-            this.Description.Name = "Description";
-            this.Description.ReadOnly = true;
-            this.Description.Width = 233;
-            // 
-            // Qty
-            // 
-            this.Qty.FillWeight = 25F;
-            this.Qty.HeaderText = "Quantity";
-            this.Qty.Name = "Qty";
-            this.Qty.ReadOnly = true;
-            this.Qty.Width = 50;
-            // 
-            // serialNumber
-            // 
-            this.serialNumber.FillWeight = 15F;
-            this.serialNumber.HeaderText = "Serial Number";
-            this.serialNumber.Name = "serialNumber";
-            this.serialNumber.ReadOnly = true;
-            // 
-            // ListPrice
-            // 
-            this.ListPrice.FillWeight = 75F;
-            this.ListPrice.HeaderText = "List";
-            this.ListPrice.Name = "ListPrice";
-            this.ListPrice.ReadOnly = true;
-            this.ListPrice.Width = 75;
-            // 
-            // Price
-            // 
-            this.Price.FillWeight = 68F;
-            this.Price.HeaderText = "Price";
-            this.Price.Name = "Price";
-            this.Price.ReadOnly = true;
-            this.Price.Width = 75;
-            // 
-            // Total
-            // 
-            this.Total.FillWeight = 68F;
-            this.Total.HeaderText = "Total";
-            this.Total.Name = "Total";
-            this.Total.ReadOnly = true;
-            this.Total.Width = 75;
-            // 
-            // Taxed
-            // 
-            this.Taxed.FillWeight = 15F;
-            this.Taxed.HeaderText = "Tax";
-            this.Taxed.Name = "Taxed";
-            this.Taxed.ReadOnly = true;
-            this.Taxed.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Taxed.Width = 35;
-            // 
-            // Codes
-            // 
-            this.Codes.FillWeight = 50F;
-            this.Codes.HeaderText = "Codes";
-            this.Codes.Name = "Codes";
-            this.Codes.ReadOnly = true;
-            this.Codes.Width = 50;
-            // 
-            // guid
-            // 
-            this.guid.HeaderText = "GUID";
-            this.guid.Name = "guid";
-            this.guid.Visible = false;
             // 
             // Invoicing
             // 

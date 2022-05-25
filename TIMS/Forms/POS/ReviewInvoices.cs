@@ -275,5 +275,15 @@ namespace TIMS.Forms.POS
                 dataGridView1.Rows[row].Cells[5].Value = payments;
             }
         }
+
+        private void dataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count != 1)
+                return;
+
+            int invNumber = (int)dataGridView1.SelectedRows[0].Cells[1].Value;
+            InvoiceViewer viewer = new InvoiceViewer(DatabaseHandler.SqlRetrieveInvoice(invNumber));
+            Program.OpenForm(viewer);
+        }
     }
 }

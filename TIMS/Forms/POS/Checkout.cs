@@ -440,6 +440,13 @@ namespace TIMS.Forms
             invoice.invoiceFinalizedTime = DateTime.Now;
             invoice.invoiceNumber = DatabaseHandler.SqlRetrieveNextInvoiceNumber();
 
+            foreach (InvoiceItem invItem in invoice.items)
+            {
+                Item newItem = DatabaseHandler.SqlRetrieveItem(invItem.itemNumber, invItem.productLine);
+                newItem.onHandQty -= invItem.quantity;
+                DatabaseHandler.SqlUpdateItem(newItem);
+            }
+
             DatabaseHandler.SqlSaveReleasedInvoice(invoice);
             ReportViewer viewer = new ReportViewer(invoice);
             viewer.ShowDialog();
