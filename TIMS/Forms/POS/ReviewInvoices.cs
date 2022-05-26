@@ -282,7 +282,7 @@ namespace TIMS.Forms.POS
                 return;
 
             int invNumber = (int)dataGridView1.SelectedRows[0].Cells[1].Value;
-            InvoiceViewer viewer = new InvoiceViewer(DatabaseHandler.SqlRetrieveInvoice(invNumber));
+            InvoiceViewer viewer = new InvoiceViewer(invoices, dataGridView1.SelectedRows[0].Index);
             Program.OpenForm(viewer);
         }
     }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
+using TIMS.Forms.POS;
+
 namespace TIMS.Forms
 {
     public partial class Invoicing : Form
@@ -268,6 +270,12 @@ namespace TIMS.Forms
         {
             addingLine = true;
 
+            if (workingItem.serializedItem)
+            {
+                SerialNumberPicker picker = new SerialNumberPicker(workingItem);
+                picker.ShowDialog();
+            }
+
             workingItem.quantity = float.Parse(qtyTB.Text);
             workingItem.price = float.Parse(priceTB.Text);
             workingItem.taxed = taxedCB.Checked;
@@ -351,6 +359,8 @@ namespace TIMS.Forms
 
             cancelItemButton.Enabled = true;
             cancelItemButton.Visible = true;
+
+            
         }
 
         private void Checkout()

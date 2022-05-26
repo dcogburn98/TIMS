@@ -37,6 +37,7 @@ namespace TIMS
         public bool taxed;
         public bool ageRestricted;
         public int minimumAge;
+        public bool serialized;
 
         public int locationCode;
     }

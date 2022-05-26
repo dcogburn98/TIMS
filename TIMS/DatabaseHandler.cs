@@ -370,6 +370,7 @@ namespace TIMS
 
 
 
+        //Used at login to verify a correct username or employee number has been supplied
         public static string SqlCheckEmployee(string input)
         {
             if (!int.TryParse(input, out int v))
@@ -399,6 +400,7 @@ namespace TIMS
                 return value;
         }
 
+        //Used at login to verify password is correct for specified username or employee number
         public static Employee SqlLogin(string user, byte[] pass)
         {
             //System.Threading.Thread.Sleep(1000); Uncomment before release
@@ -472,6 +474,7 @@ namespace TIMS
             return e;
         }
 
+        //Used when viewing invoices to retrieve employee information
         public static Employee SqlRetrieveEmployee(string employeeNumber)
         {
             Employee e = new Employee();
@@ -496,9 +499,9 @@ namespace TIMS
                 e.fullName = reader.GetString(1);
                 e.username = reader.GetString(2);
                 e.position = reader.GetString(3);
-                e.birthDate = DateTime.Parse(reader.GetString(4));
-                e.hireDate = DateTime.Parse(reader.GetString(5));
-                e.terminationDate = DateTime.Parse(reader.GetString(6));
+                e.birthDate = DateTime.TryParse(reader.GetString(4), out DateTime n) ? n : DateTime.MinValue;
+                e.hireDate = DateTime.TryParse(reader.GetString(5), out DateTime o) ? o : DateTime.MinValue;
+                e.terminationDate = DateTime.TryParse(reader.GetString(6), out DateTime p) ? p : DateTime.MinValue;
             }
 
             CloseConnection();
@@ -534,7 +537,8 @@ namespace TIMS
                     greenPrice = reader.GetFloat(23),
                     ageRestricted = reader.GetBoolean(29),
                     taxed = reader.GetBoolean(28),
-                    minimumAge = reader.GetInt32(30)
+                    minimumAge = reader.GetInt32(30),
+                    serialized = reader.GetBoolean(32)
                 };
                 invItems.Add(i);
             }
@@ -931,7 +935,7 @@ namespace TIMS
                 {
                     itemNumber = reader.GetString(1),
                     productLine = reader.GetString(2),
-                    longDescription = reader.GetString(3),
+                    itemName = reader.GetString(3),
                     price = reader.GetFloat(4),
                     listPrice = reader.GetFloat(5),
                     quantity = reader.GetFloat(6),
@@ -1191,6 +1195,34 @@ namespace TIMS
 
             CloseConnection();
             return;
+        }
+
+        public static List<string> SqlRetrieveItemSerialNumbers(string productLine, string itemNumber)
+        {
+            List<string> serialNumbers = new List<string>();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT SERIALNUMBER FROM SERIALNUMBERS WHERE ITEMNUMBER = $ITEM AND PRODUCTLINE = $LINE";
+            SQLiteParameter p1 = new SQLiteParameter("$ITEM", itemNumber);
+            SQLiteParameter p2 = new SQLiteParameter("$LINE", productLine);
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+            SQLiteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                serialNumbers.Add(reader.GetString(0));
+            }
+
+            CloseConnection();
+            return serialNumbers;
         }
 
         public static void OpenConnection()

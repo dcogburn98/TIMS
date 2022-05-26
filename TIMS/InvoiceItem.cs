@@ -57,6 +57,7 @@ namespace TIMS
             ageRestricted = item.ageRestricted;
             minimumAge = item.minimumAge;
             taxed = item.taxed;
+            serializedItem = item.serialized;
         }
 
         public void AddCode(string code)

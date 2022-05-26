@@ -125,6 +125,12 @@
     <Compile Include="Forms\POS\ReviewInvoices.Designer.cs">
       <DependentUpon>ReviewInvoices.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\POS\SerialNumberPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\POS\SerialNumberPicker.Designer.cs">
+      <DependentUpon>SerialNumberPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ReportViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -215,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\POS\ReviewInvoices.resx">
       <DependentUpon>ReviewInvoices.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\POS\SerialNumberPicker.resx">
+      <DependentUpon>SerialNumberPicker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ReportViewer.resx">
       <DependentUpon>ReportViewer.cs</DependentUpon>

@@ -107,6 +107,9 @@
             this.guid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.closeButton = new System.Windows.Forms.Button();
             this.printButton = new System.Windows.Forms.Button();
+            this.voidButton = new System.Windows.Forms.Button();
+            this.prevButton = new System.Windows.Forms.Button();
+            this.nextButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -891,11 +894,43 @@
             this.printButton.UseVisualStyleBackColor = true;
             this.printButton.Click += new System.EventHandler(this.printButton_Click);
             // 
+            // voidButton
+            // 
+            this.voidButton.Location = new System.Drawing.Point(674, 446);
+            this.voidButton.Name = "voidButton";
+            this.voidButton.Size = new System.Drawing.Size(75, 23);
+            this.voidButton.TabIndex = 15;
+            this.voidButton.Text = "Void";
+            this.voidButton.UseVisualStyleBackColor = true;
+            // 
+            // prevButton
+            // 
+            this.prevButton.Location = new System.Drawing.Point(12, 446);
+            this.prevButton.Name = "prevButton";
+            this.prevButton.Size = new System.Drawing.Size(75, 23);
+            this.prevButton.TabIndex = 16;
+            this.prevButton.Text = "Previous";
+            this.prevButton.UseVisualStyleBackColor = true;
+            this.prevButton.Click += new System.EventHandler(this.prevButton_Click);
+            // 
+            // nextButton
+            // 
+            this.nextButton.Location = new System.Drawing.Point(93, 446);
+            this.nextButton.Name = "nextButton";
+            this.nextButton.Size = new System.Drawing.Size(75, 23);
+            this.nextButton.TabIndex = 17;
+            this.nextButton.Text = "Next";
+            this.nextButton.UseVisualStyleBackColor = true;
+            this.nextButton.Click += new System.EventHandler(this.nextButton_Click);
+            // 
             // InvoiceViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(920, 472);
+            this.Controls.Add(this.nextButton);
+            this.Controls.Add(this.prevButton);
+            this.Controls.Add(this.voidButton);
             this.Controls.Add(this.printButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.dataGridView1);
@@ -997,5 +1032,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Taxed;
         private System.Windows.Forms.DataGridViewTextBoxColumn Codes;
         private System.Windows.Forms.DataGridViewTextBoxColumn guid;
+        private System.Windows.Forms.Button voidButton;
+        private System.Windows.Forms.Button prevButton;
+        private System.Windows.Forms.Button nextButton;
     }
 }

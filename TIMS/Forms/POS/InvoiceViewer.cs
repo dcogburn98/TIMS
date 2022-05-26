@@ -2,18 +2,35 @@
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace TIMS.Forms.POS
 {
     public partial class InvoiceViewer : Form
     {
         Invoice inv;
-        public InvoiceViewer(Invoice inv)
+        List<Invoice> invoices = new List<Invoice>();
+        int currentIndex;
+
+        public InvoiceViewer(List<Invoice> invoices, int index)
         {
             InitializeComponent();
             CancelButton = closeButton;
 
-            this.inv = inv;
+            this.invoices = invoices;
+            currentIndex = index;
+            inv = DatabaseHandler.SqlRetrieveInvoice(invoices[index].invoiceNumber);
+            PopulateInformationFields();
+
+            if (index == 0)
+                prevButton.Enabled = false;
+
+            if (index == invoices.Count - 1)
+                nextButton.Enabled = false;
+        }
+
+        private void PopulateInformationFields()
+        {
             foreach (InvoiceItem item in inv.items)
             {
                 int row = dataGridView1.Rows.Add();
@@ -97,9 +114,11 @@ namespace TIMS.Forms.POS
 
             #endregion
 
+            #region Employee Information Section
             employeeNumberLabel.Text = inv.employee.employeeNumber.ToString();
             employeeNameLabel.Text = inv.employee.fullName;
             employeePosLabel.Text = inv.employee.position;
+            #endregion
         }
 
         private void printButton_Click(object sender, EventArgs e)
@@ -117,6 +136,44 @@ namespace TIMS.Forms.POS
         {
             Program.OpenForms.Remove(this);
             Program.CheckOpenForms();
+        }
+
+        private void prevButton_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Rows.Clear();
+            paymentsListBox.Items.Clear();
+            currentIndex--;
+            inv = DatabaseHandler.SqlRetrieveInvoice(invoices[currentIndex].invoiceNumber);
+            PopulateInformationFields();
+
+            if (currentIndex == 0)
+                prevButton.Enabled = false;
+            else
+                prevButton.Enabled = true;
+
+            if (currentIndex == invoices.Count - 1)
+                nextButton.Enabled = false;
+            else
+                nextButton.Enabled = true;
+        }
+
+        private void nextButton_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Rows.Clear();
+            paymentsListBox.Items.Clear();
+            currentIndex++;
+            inv = DatabaseHandler.SqlRetrieveInvoice(invoices[currentIndex].invoiceNumber);
+            PopulateInformationFields();
+
+            if (currentIndex == 0)
+                prevButton.Enabled = false;
+            else
+                prevButton.Enabled = true;
+
+            if (currentIndex == invoices.Count - 1)
+                nextButton.Enabled = false;
+            else
+                nextButton.Enabled = true;
         }
     }
 }
