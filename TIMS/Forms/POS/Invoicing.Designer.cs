@@ -1223,7 +1223,7 @@
             // availabilityLabel
             // 
             this.availabilityLabel.AutoSize = true;
-            this.availabilityLabel.Location = new System.Drawing.Point(14, 636);
+            this.availabilityLabel.Location = new System.Drawing.Point(19, 636);
             this.availabilityLabel.Name = "availabilityLabel";
             this.availabilityLabel.Size = new System.Drawing.Size(68, 13);
             this.availabilityLabel.TabIndex = 33;
@@ -1232,7 +1232,7 @@
             // velocityCodeLabel
             // 
             this.velocityCodeLabel.AutoSize = true;
-            this.velocityCodeLabel.Location = new System.Drawing.Point(88, 636);
+            this.velocityCodeLabel.Location = new System.Drawing.Point(108, 636);
             this.velocityCodeLabel.Name = "velocityCodeLabel";
             this.velocityCodeLabel.Size = new System.Drawing.Size(57, 13);
             this.velocityCodeLabel.TabIndex = 34;

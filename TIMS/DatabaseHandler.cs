@@ -529,18 +529,41 @@ namespace TIMS
 
             while (reader.Read())
             {
-                Item i = new Item()
-                {
-                    productLine = reader.GetString(0),
-                    itemNumber = reader.GetString(1),
-                    itemName = reader.GetString(2),
-                    greenPrice = reader.GetFloat(23),
-                    ageRestricted = reader.GetBoolean(29),
-                    taxed = reader.GetBoolean(28),
-                    minimumAge = reader.GetInt32(30),
-                    serialized = reader.GetBoolean(32)
-                };
-                invItems.Add(i);
+                Item item = new Item();
+                item.productLine = reader.GetString(0);
+                item.itemNumber = reader.GetString(1);
+                item.itemName = reader.GetString(2);
+                item.longDescription = reader.GetString(3);
+                item.supplier = reader.GetString(4);
+                item.groupCode = reader.GetInt32(5);
+                item.velocityCode = reader.GetInt32(6);
+                item.previousYearVelocityCode = reader.GetInt32(7);
+                item.itemsPerContainer = reader.GetInt32(8);
+                item.standardPackage = reader.GetInt32(9);
+                item.dateStocked = DateTime.Parse(reader.GetString(10));
+                item.dateLastReceipt = DateTime.Parse(reader.GetString(11));
+                item.minimum = reader.GetFloat(12);
+                item.maximum = reader.GetFloat(13);
+                item.onHandQty = reader.GetFloat(14);
+                item.WIPQty = reader.GetFloat(15);
+                item.onOrderQty = reader.GetFloat(16);
+                item.onBackorderQty = reader.GetFloat(17);
+                item.daysOnOrder = reader.GetInt32(18);
+                item.daysOnBackorder = reader.GetInt32(19);
+                item.listPrice = reader.GetFloat(20);
+                item.redPrice = reader.GetFloat(21);
+                item.yellowPrice = reader.GetFloat(22);
+                item.greenPrice = reader.GetFloat(23);
+                item.pinkPrice = reader.GetFloat(24);
+                item.bluePrice = reader.GetFloat(25);
+                item.replacementCost = reader.GetFloat(26);
+                item.averageCost = reader.GetFloat(27);
+                item.taxed = reader.GetBoolean(28);
+                item.ageRestricted = reader.GetBoolean(29);
+                item.minimumAge = reader.GetInt32(30);
+                item.locationCode = reader.GetInt32(31);
+                item.serialized = reader.GetBoolean(32);
+                invItems.Add(item);
             }
 
             if (!connectionOpened)
@@ -1099,6 +1122,7 @@ namespace TIMS
                 item.ageRestricted = reader.GetBoolean(29);
                 item.minimumAge = reader.GetInt32(30);
                 item.locationCode = reader.GetInt32(31);
+                item.serialized = reader.GetBoolean(32);
             }
 
             CloseConnection();

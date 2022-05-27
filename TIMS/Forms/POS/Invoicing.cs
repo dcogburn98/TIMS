@@ -34,6 +34,8 @@ namespace TIMS.Forms
             DatabaseHandler.InitializeDatabases();
             StartPosition = FormStartPosition.CenterScreen;
 
+            availabilityLabel.Visible = false;
+            velocityCodeLabel.Visible = false;
             cancelItemButton.Visible = false;
             productLineDropBox.Enabled = false;
             extraFunctionsDropBox.SelectedIndex = 0;
@@ -249,6 +251,8 @@ namespace TIMS.Forms
             pndTB.Enabled = false;
             acceptItemButton.Enabled = false;
             cancelItemButton.Visible = false;
+            velocityCodeLabel.Visible = false;
+            availabilityLabel.Visible = false;
 
             itemNoTB.Focus();
 
@@ -316,6 +320,8 @@ namespace TIMS.Forms
             pndTB.Enabled = false;
             acceptItemButton.Enabled = false;
             cancelItemButton.Visible = false;
+            velocityCodeLabel.Visible = false;
+            availabilityLabel.Visible = false;
 
             itemNoTB.Focus();
 
@@ -335,7 +341,8 @@ namespace TIMS.Forms
         private void SelectProductLine()
         {
             string selectedLine = productLineDropBox.Text;
-            workingItem = new InvoiceItem(addingItems.Find(el => el.productLine == selectedLine));
+            Item item = addingItems.Find(el => el.productLine == selectedLine);
+            workingItem = new InvoiceItem(item);
             workingItem.ID = Guid.NewGuid();
 
             descriptionTB.Enabled = false;
@@ -360,7 +367,10 @@ namespace TIMS.Forms
             cancelItemButton.Enabled = true;
             cancelItemButton.Visible = true;
 
-            
+            availabilityLabel.Visible = true;
+            velocityCodeLabel.Visible = true;
+            availabilityLabel.Text = "Available: " + item.onHandQty.ToString();
+            velocityCodeLabel.Text = "Velocity: " + item.velocityCode.ToString();
         }
 
         private void Checkout()
