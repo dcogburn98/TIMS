@@ -44,15 +44,15 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
             this.listBox2 = new System.Windows.Forms.ListBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.button4 = new System.Windows.Forms.Button();
             this.listBox3 = new System.Windows.Forms.ListBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.comboBox5 = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -74,6 +74,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(176, 21);
             this.comboBox1.TabIndex = 1;
+            this.comboBox1.Leave += new System.EventHandler(this.comboBox1_Leave);
             // 
             // label1
             // 
@@ -215,22 +216,13 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Report Fields:";
             // 
-            // comboBox4
+            // listBox2
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(44, 19);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(172, 21);
-            this.comboBox4.TabIndex = 0;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 22);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(32, 13);
-            this.label6.TabIndex = 1;
-            this.label6.Text = "Field:";
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.Location = new System.Drawing.Point(44, 46);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(172, 95);
+            this.listBox2.TabIndex = 3;
             // 
             // button3
             // 
@@ -241,13 +233,22 @@
             this.button3.Text = "Add Field";
             this.button3.UseVisualStyleBackColor = true;
             // 
-            // listBox2
+            // label6
             // 
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(44, 46);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(172, 95);
-            this.listBox2.TabIndex = 3;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 22);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(32, 13);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "Field:";
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Location = new System.Drawing.Point(44, 19);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(172, 21);
+            this.comboBox4.TabIndex = 0;
             // 
             // groupBox3
             // 
@@ -262,22 +263,13 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Totals";
             // 
-            // label7
+            // listBox3
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 22);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(34, 13);
-            this.label7.TabIndex = 0;
-            this.label7.Text = "Total:";
-            // 
-            // comboBox5
-            // 
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(46, 19);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(170, 21);
-            this.comboBox5.TabIndex = 1;
+            this.listBox3.FormattingEnabled = true;
+            this.listBox3.Location = new System.Drawing.Point(46, 46);
+            this.listBox3.Name = "listBox3";
+            this.listBox3.Size = new System.Drawing.Size(170, 69);
+            this.listBox3.TabIndex = 3;
             // 
             // button4
             // 
@@ -288,13 +280,22 @@
             this.button4.Text = "Add Total";
             this.button4.UseVisualStyleBackColor = true;
             // 
-            // listBox3
+            // comboBox5
             // 
-            this.listBox3.FormattingEnabled = true;
-            this.listBox3.Location = new System.Drawing.Point(46, 46);
-            this.listBox3.Name = "listBox3";
-            this.listBox3.Size = new System.Drawing.Size(170, 69);
-            this.listBox3.TabIndex = 3;
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Location = new System.Drawing.Point(46, 19);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(170, 21);
+            this.comboBox5.TabIndex = 1;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 22);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(34, 13);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "Total:";
             // 
             // ReportCreator
             // 

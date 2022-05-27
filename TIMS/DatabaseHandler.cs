@@ -1268,6 +1268,31 @@ namespace TIMS
             return tables;
         }
 
+        public static List<string> SqlRetrieveTableHeaders(string table)
+        {
+            List<string> headers = new List<string>();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                $"PRAGMA table_info({table})";
+            //SQLiteParameter p1 = new SQLiteParameter("$TABLE", table);
+            //command.Parameters.Add(p1);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+                headers.Add(reader.GetString(1));
+
+            CloseConnection();
+            return headers;
+        }
+
         public static void OpenConnection()
         {
             sqlite_conn.Open();
