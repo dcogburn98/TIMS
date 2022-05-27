@@ -1249,6 +1249,25 @@ namespace TIMS
             return serialNumbers;
         }
 
+        public static List<string> SqlRetrieveTableNames()
+        {
+            List<string> tables = new List<string>();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT NAME FROM sqlite_master WHERE TYPE = 'table'";
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                tables.Add(reader.GetString(0));
+            }
+
+            CloseConnection();
+            return tables;
+        }
+
         public static void OpenConnection()
         {
             sqlite_conn.Open();

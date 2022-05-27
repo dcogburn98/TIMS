@@ -135,5 +135,11 @@ namespace TIMS.Forms
             standardPkgTB.Text = string.Empty;
             taxableCB.Checked = false;
         }
+
+        private void reportCreatorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReportCreator creator = new ReportCreator();
+            creator.Show();
+        }
     }
 }

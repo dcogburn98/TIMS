@@ -15,6 +15,10 @@ namespace TIMS.Forms
         public ReportCreator()
         {
             InitializeComponent();
+            foreach (string table in DatabaseHandler.SqlRetrieveTableNames())
+            {
+                comboBox1.Items.Add(table);
+            }
         }
     }
 }
