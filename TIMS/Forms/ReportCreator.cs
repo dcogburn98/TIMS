@@ -55,7 +55,7 @@ namespace TIMS.Forms
             string op = conditionOperatorCB.Text;
 
             foreach (char c in right)
-                if (!char.IsLetterOrDigit(c))
+                if (!char.IsLetterOrDigit(c) && c != '/' && c != '.')
                     return;
 
             conditionsLB.Items.Add($"{left} {op} {right}");
@@ -64,7 +64,10 @@ namespace TIMS.Forms
             conditionRightComparatorCB.Text = String.Empty;
             conditionOperatorCB.SelectedIndex = -1;
             if (fieldsLB.Items.Count > 0)
+            {
                 viewQueryButton.Enabled = true;
+                previewReportButton.Enabled = true;
+            }
         }
 
         private void addFieldButton_Click(object sender, EventArgs e)
@@ -74,7 +77,10 @@ namespace TIMS.Forms
 
             fieldsLB.Items.Add(fieldsCB.SelectedItem.ToString());
             if (conditionsLB.Items.Count > 0)
+            {
                 viewQueryButton.Enabled = true;
+                previewReportButton.Enabled = true;
+            }
         }
 
         private void addTotalButton_Click(object sender, EventArgs e)
@@ -104,17 +110,35 @@ namespace TIMS.Forms
             report.ExecuteReport();
 
             foreach (string field in fieldsLB.Items)
-            {
                 dataGridView1.Columns.Add(field, field);
-            }
-            for (int i = 0; i != report.Results.Count; i++)
+
+            int rowCount = report.Results.Count / report.ColumnCount;
+            for (int i = 0; i != rowCount; i++)
+                dataGridView1.Rows.Add();
+
+            for (int i = 0; i != rowCount; i++)
+                for (int j = 0; j != report.ColumnCount; j++)
+                    dataGridView1.Rows[i].Cells[j].Value = report.Results[(i*report.ColumnCount)+j];
+
+            int totalRow = dataGridView1.Rows.Add();
+            dataGridView1.Rows[totalRow].HeaderCell.Value = "Total:";
+            foreach (string total in totalLB.Items)
             {
-                int row = 0;
-                if (i % report.ColumnCount == 0)
+                float totalAmount = 0;
+                foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
-                    row = dataGridView1.Rows.Add();
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        if (cell.Value == null)
+                            continue;
+
+                        if (cell.OwningColumn == dataGridView1.Columns[total])
+                        {
+                            totalAmount = float.TryParse(cell.Value.ToString(), out float v) ? totalAmount + v : totalAmount;
+                        }
+                    }
                 }
-                dataGridView1.Rows[row].Cells[i % report.ColumnCount].Value = report.Results[i];
+                dataGridView1.Rows[totalRow].Cells[total].Value = totalAmount;
             }
         }
 
@@ -125,7 +149,10 @@ namespace TIMS.Forms
 
             conditionsLB.Items.RemoveAt(conditionsLB.SelectedIndex);
             if (conditionsLB.Items.Count == 0)
+            {
                 viewQueryButton.Enabled = false;
+                previewReportButton.Enabled = false;
+            }
         }
 
         private void viewQueryButton_Click(object sender, EventArgs e)
@@ -151,7 +178,10 @@ namespace TIMS.Forms
 
             fieldsLB.Items.RemoveAt(fieldsLB.SelectedIndex);
             if (fieldsLB.Items.Count == 0)
+            {
                 viewQueryButton.Enabled = false;
+                previewReportButton.Enabled = false;
+            }
         }
     }
 }

@@ -64,9 +64,14 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToOrderColumns = true;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dataGridView1.Location = new System.Drawing.Point(12, 357);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dataGridView1.Size = new System.Drawing.Size(698, 265);
             this.dataGridView1.TabIndex = 0;
             // 
@@ -117,6 +122,7 @@
             // 
             // previewReportButton
             // 
+            this.previewReportButton.Enabled = false;
             this.previewReportButton.Location = new System.Drawing.Point(12, 328);
             this.previewReportButton.Name = "previewReportButton";
             this.previewReportButton.Size = new System.Drawing.Size(75, 23);
