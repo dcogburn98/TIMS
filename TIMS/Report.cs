@@ -21,27 +21,27 @@ namespace TIMS
             Conditions = conditions;
             Totals = totals;
 
-            string fieldsQuery = String.Empty;
+            string fieldsQuery = string.Empty;
             foreach (string field in Fields)
             {
-                fieldsQuery += "T1." + field.ToUpper() + ", ";
+                fieldsQuery += field.ToUpper() + ", ";
                 ColumnCount++;
             }
             fieldsQuery = fieldsQuery.Trim(' ');
             fieldsQuery = fieldsQuery.Trim(',');
 
-            string conditionsString = String.Empty;
+            string conditionsString = string.Empty;
             foreach (string con in Conditions)
             {
                 string[] conArray = con.Split(' ');
-                conditionsString += "T1." + conArray[0] + " " + conArray[1] + " ";
+                conditionsString += conArray[0] + " " + conArray[1] + " ";
                 if (float.TryParse(conArray[2], out float i))
                 {
                     conditionsString += conArray[2] + " AND ";
                 }
                 else if (DatabaseHandler.SqlRetrieveTableHeaders(dataSource).Contains(conArray[2]))
                 {
-                    conditionsString += "T2." + conArray[2] + " AND ";
+                    conditionsString += conArray[2] + " AND ";
                 }
                 else
                 {
@@ -53,7 +53,7 @@ namespace TIMS
 
             Query =
                 "SELECT " + fieldsQuery + " " +
-                "FROM " + DataSource.ToUpper() + " T1 INNER JOIN " + DataSource.ToUpper() + " T2 " +
+                "FROM " + DataSource.ToUpper() + " " +
                 "WHERE " + conditionsString;
         }
     

@@ -107,13 +107,14 @@ namespace TIMS.Forms
             {
                 dataGridView1.Columns.Add(field, field);
             }
-            foreach (object o in report.Results)
+            for (int i = 0; i != report.Results.Count; i++)
             {
-                int row = dataGridView1.Rows.Add();
-                for (int i = 0; i != dataGridView1.Columns.Count; i++)
+                int row = 0;
+                if (i % report.ColumnCount == 0)
                 {
-                    dataGridView1.Rows[row].Cells[i].Value = o;
+                    row = dataGridView1.Rows.Add();
                 }
+                dataGridView1.Rows[row].Cells[i % report.ColumnCount].Value = report.Results[i];
             }
         }
 
