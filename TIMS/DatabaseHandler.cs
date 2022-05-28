@@ -1293,6 +1293,26 @@ namespace TIMS
             return headers;
         }
 
+        public static List<object> SqlGeneralQuery(string query, int columns)
+        {
+            List<object> data = new List<object>();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText = query;
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                for (int i = 0; i != columns; i++)
+                {
+                    data.Add(reader.GetValue(i));
+                }
+            }
+
+            CloseConnection();
+            return data;
+        }
+
         public static void OpenConnection()
         {
             sqlite_conn.Open();
