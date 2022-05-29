@@ -132,16 +132,28 @@
     <Compile Include="Forms\POS\SerialNumberPicker.Designer.cs">
       <DependentUpon>SerialNumberPicker.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ReportCreator.cs">
+    <Compile Include="Forms\Reporting\ReportConditionEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ReportCreator.Designer.cs">
+    <Compile Include="Forms\Reporting\ReportConditionEditor.Designer.cs">
+      <DependentUpon>ReportConditionEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Reporting\ReportCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Reporting\ReportCreator.Designer.cs">
       <DependentUpon>ReportCreator.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ReportViewer.cs">
+    <Compile Include="Forms\Reporting\ReportManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ReportViewer.Designer.cs">
+    <Compile Include="Forms\Reporting\ReportManager.Designer.cs">
+      <DependentUpon>ReportManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Reporting\ReportViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Reporting\ReportViewer.Designer.cs">
       <DependentUpon>ReportViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Report.cs" />
@@ -232,10 +244,16 @@
     <EmbeddedResource Include="Forms\POS\SerialNumberPicker.resx">
       <DependentUpon>SerialNumberPicker.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ReportCreator.resx">
+    <EmbeddedResource Include="Forms\Reporting\ReportConditionEditor.resx">
+      <DependentUpon>ReportConditionEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Reporting\ReportCreator.resx">
       <DependentUpon>ReportCreator.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ReportViewer.resx">
+    <EmbeddedResource Include="Forms\Reporting\ReportManager.resx">
+      <DependentUpon>ReportManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Reporting\ReportViewer.resx">
       <DependentUpon>ReportViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

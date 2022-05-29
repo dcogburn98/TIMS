@@ -3,6 +3,8 @@ using System.Windows.Forms;
 using TIMS.Forms.POS;
 using System.Collections.Generic;
 
+using TIMS.Forms.Reporting;
+
 namespace TIMS.Forms
 {
     public partial class OtherFunctions : Form
@@ -140,6 +142,12 @@ namespace TIMS.Forms
         {
             ReportCreator creator = new ReportCreator();
             creator.Show();
+        }
+
+        private void reportManagerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReportManager manager = new ReportManager();
+            manager.Show();
         }
     }
 }

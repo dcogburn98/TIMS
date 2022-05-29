@@ -55,8 +55,6 @@ namespace TIMS
             XFont fontH1 = new XFont("Times", 18, XFontStyle.Bold);
             XFont fontH2 = new XFont("Times", 12);
             XFont font = new XFont("Times", 8);
-            XFont fontItalic = new XFont("Times", 12, XFontStyle.BoldItalic);
-            double ls = fontH2.GetHeight();
 
             #region Invoice Header
             rect = new XRect(440, 10, 140, 30);

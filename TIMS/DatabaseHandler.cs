@@ -369,7 +369,7 @@ namespace TIMS
         #endregion
 
 
-
+        #region Login and user verification
         //Used at login to verify a correct username or employee number has been supplied
         public static string SqlCheckEmployee(string input)
         {
@@ -473,7 +473,9 @@ namespace TIMS
             CloseConnection();
             return e;
         }
+        #endregion
 
+        #region Employee information
         //Used when viewing invoices to retrieve employee information
         public static Employee SqlRetrieveEmployee(string employeeNumber)
         {
@@ -507,6 +509,7 @@ namespace TIMS
             CloseConnection();
             return e;
         }
+        #endregion
 
         public static List<Item> SqlCheckItemNumber(string itemNumber, bool connectionOpened)
         {
@@ -1293,7 +1296,7 @@ namespace TIMS
             return headers;
         }
 
-        public static List<object> SqlGeneralQuery(string query, int columns)
+        public static List<object> SqlReportQuery(string query, int columns)
         {
             List<object> data = new List<object>();
             OpenConnection();
@@ -1311,6 +1314,109 @@ namespace TIMS
 
             CloseConnection();
             return data;
+        }
+
+        public static void SqlSaveReport(Report report)
+        {
+            OpenConnection();
+
+            string conditions = string.Empty;
+            string fields = string.Empty;
+            string totals = string.Empty;
+
+            foreach (string condition in report.Conditions)
+                conditions += condition + "|";
+            conditions = conditions.Trim('|');
+            foreach (string field in report.Fields)
+                fields += field + "|";
+            fields = fields.Trim('|');
+            foreach (string total in report.Totals)
+                totals += total + "|";
+            totals = totals.Trim('|');
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "INSERT INTO REPORTS " +
+                "(REPORTNAME,REPORTSHORTCODE,DATASOURCE,CONDITIONS,FIELDS,TOTALS) " +
+                "VALUES ($REPORTNAME,$REPORTSHORTCODE,$DATASOURCE,$CONDITIONS,$FIELDS,$TOTALS)";
+
+            SQLiteParameter p1 = new SQLiteParameter("$REPORTNAME", report.ReportName);
+            SQLiteParameter p2 = new SQLiteParameter("$REPORTSHORTCODE", report.ReportShortcode);
+            SQLiteParameter p3 = new SQLiteParameter("$DATASOURCE", report.DataSource);
+            SQLiteParameter p4 = new SQLiteParameter("$CONDITIONS", conditions);
+            SQLiteParameter p5 = new SQLiteParameter("$FIELDS", fields);
+            SQLiteParameter p6 = new SQLiteParameter("$TOTALS", totals);
+
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+            command.Parameters.Add(p3);
+            command.Parameters.Add(p4);
+            command.Parameters.Add(p5);
+            command.Parameters.Add(p6);
+
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+            return;
+        }
+
+        public static Report SqlRetrieveReport(string shortcode)
+        {
+            Report report;
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT * FROM REPORTS WHERE REPORTSHORTCODE = $CODE";
+            SQLiteParameter p1 = new SQLiteParameter("$CODE", shortcode);
+            command.Parameters.Add(p1);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            string reportName = string.Empty;
+            string dataSource = string.Empty;
+            List<string> conditions = new List<string>();
+            List<string> fields = new List<string>();
+            List<string> totals = new List<string>();
+
+            while (reader.Read())
+            {
+                reportName = reader.GetString(0);
+                dataSource = reader.GetString(2);
+                foreach (string condition in reader.GetString(3).Split('|'))
+                    conditions.Add(condition);
+                foreach (string field in reader.GetString(4).Split('|'))
+                    fields.Add(field);
+                foreach (string total in reader.GetString(5).Split('|'))
+                    totals.Add(total);
+            }
+
+            report = new Report(fields, dataSource, conditions, totals) { ReportName = reportName, ReportShortcode = shortcode };
+            CloseConnection();
+            return report;
+        }
+
+        public static List<string> SqlRetrieveAvailableReports()
+        {
+            List<string> reports = new List<string>();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT REPORTSHORTCODE FROM REPORTS";
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                reports.Add(reader.GetString(0));
+            }
+
+            CloseConnection();
+            return reports;
         }
 
         public static void OpenConnection()

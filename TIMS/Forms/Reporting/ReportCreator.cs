@@ -17,6 +17,7 @@ namespace TIMS.Forms
         public ReportCreator()
         {
             InitializeComponent();
+            selectedDatasource = String.Empty;
             foreach (string table in DatabaseHandler.SqlRetrieveTableNames())
             {
                 dataSourceCB.Items.Add(table);
@@ -27,10 +28,23 @@ namespace TIMS.Forms
         {
             if (selectedDatasource == dataSourceCB.Text)
                 return;
+            else
+            {
+                if (selectedDatasource != String.Empty)
+                    if (MessageBox.Show("Are you sure you want to change the data source for the report? Conditions, fields, and totals will be lost!", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                    {
+                        dataSourceCB.Text = selectedDatasource;
+                        return;
+                    }
+            }
 
             selectedDatasource = dataSourceCB.Text;
-            conditionsLB.Items.Clear();
 
+            fieldsLB.Items.Clear();
+            conditionsLB.Items.Clear();
+            totalLB.Items.Clear();
+
+            fieldsCB.Items.Clear();
             conditionLeftComparatorCB.Items.Clear();
             conditionRightComparatorCB.Items.Clear();
             conditionLeftComparatorCB.Text = string.Empty;
@@ -41,7 +55,6 @@ namespace TIMS.Forms
                 conditionLeftComparatorCB.Items.Add(item);
                 conditionRightComparatorCB.Items.Add(item);
                 fieldsCB.Items.Add(item);
-                totalCB.Items.Add(item);
             }
         }
         
@@ -67,6 +80,7 @@ namespace TIMS.Forms
             {
                 viewQueryButton.Enabled = true;
                 previewReportButton.Enabled = true;
+                saveReportButton.Enabled = true;
             }
         }
 
@@ -76,10 +90,12 @@ namespace TIMS.Forms
                 return;
 
             fieldsLB.Items.Add(fieldsCB.SelectedItem.ToString());
+            totalCB.Items.Add(fieldsCB.SelectedItem.ToString());
             if (conditionsLB.Items.Count > 0)
             {
                 viewQueryButton.Enabled = true;
                 previewReportButton.Enabled = true;
+                saveReportButton.Enabled = true;
             }
         }
 
@@ -152,6 +168,7 @@ namespace TIMS.Forms
             {
                 viewQueryButton.Enabled = false;
                 previewReportButton.Enabled = false;
+                saveReportButton.Enabled = false;
             }
         }
 
@@ -177,11 +194,33 @@ namespace TIMS.Forms
                 return;
 
             fieldsLB.Items.RemoveAt(fieldsLB.SelectedIndex);
+            totalLB.Items.Remove(fieldsLB.SelectedItem.ToString());
             if (fieldsLB.Items.Count == 0)
             {
                 viewQueryButton.Enabled = false;
                 previewReportButton.Enabled = false;
+                saveReportButton.Enabled = false;
             }
+        }
+
+        private void totalLB_DoubleClick(object sender, EventArgs e)
+        {
+            if (totalLB.SelectedIndex == -1)
+                return;
+
+            totalLB.Items.RemoveAt(totalLB.SelectedIndex);
+        }
+
+        private void saveReportButton_Click(object sender, EventArgs e)
+        {
+            if (reportNameTB.Text == string.Empty || shortCodeTB.Text == string.Empty)
+            {
+                MessageBox.Show("A name and shortcode are required for the invoice!");
+                return;
+            }
+
+            report.SaveReport(reportNameTB.Text, shortCodeTB.Text);
+            MessageBox.Show("Report saved! You can now print this report from the report manager.");
         }
     }
 }

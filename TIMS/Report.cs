@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+
+using PdfSharp.Drawing;
 
 namespace TIMS
 {
-    class Report
+    public class Report
     {
+        public string ReportName;
+        public string ReportShortcode;
+
         public List<string> Fields;
         public string DataSource;
         public List<string> Conditions;
@@ -13,6 +19,9 @@ namespace TIMS
         public string Query;
         public int ColumnCount;
         public List<object> Results;
+
+        public int totalPages;
+        public int currentPage;
 
         public Report(List<string> fields, string dataSource, List<string> conditions, List<string> totals)
         {
@@ -56,10 +65,29 @@ namespace TIMS
                 "FROM " + DataSource.ToUpper() + " " +
                 "WHERE " + conditionsString;
         }
-    
+        
         public void ExecuteReport()
         {
-            Results = DatabaseHandler.SqlGeneralQuery(Query, ColumnCount);
+            Results = DatabaseHandler.SqlReportQuery(Query, ColumnCount);
+        }
+    
+        public void SaveReport(string reportName, string shortcode)
+        {
+            ReportName = reportName;
+            ReportShortcode = shortcode;
+
+            DatabaseHandler.SqlSaveReport(this);
+        }
+
+        public void RenderPage(XGraphics gfx)
+        {
+            totalPages = ((Results.Count / ColumnCount) / 40 + ((Results.Count / ColumnCount) % 40 > 0 ? 1 : 0));
+            XFont font = new XFont("Times", 8);
+
+            gfx.DrawString(ReportName, font, XBrushes.Black, gfx.PageSize.Width / 2, 5);
+
+            XGraphicsState state = gfx.Save();
+            gfx.Restore(state);
         }
     }
 }

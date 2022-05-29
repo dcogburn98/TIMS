@@ -42,6 +42,9 @@
             this.conditionLeftComparatorCB = new System.Windows.Forms.ComboBox();
             this.conditionOperatorCB = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.addConditionButton = new System.Windows.Forms.Button();
+            this.conditionRightComparatorCB = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.fieldsLB = new System.Windows.Forms.ListBox();
             this.addFieldButton = new System.Windows.Forms.Button();
@@ -52,10 +55,9 @@
             this.addTotalButton = new System.Windows.Forms.Button();
             this.totalCB = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.conditionRightComparatorCB = new System.Windows.Forms.ComboBox();
-            this.addConditionButton = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
             this.viewQueryButton = new System.Windows.Forms.Button();
+            this.shortCodeTB = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -79,10 +81,10 @@
             // 
             this.dataSourceCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.dataSourceCB.FormattingEnabled = true;
-            this.dataSourceCB.Location = new System.Drawing.Point(90, 45);
+            this.dataSourceCB.Location = new System.Drawing.Point(86, 92);
             this.dataSourceCB.Name = "dataSourceCB";
             this.dataSourceCB.Size = new System.Drawing.Size(176, 21);
-            this.dataSourceCB.TabIndex = 1;
+            this.dataSourceCB.TabIndex = 3;
             this.dataSourceCB.Leave += new System.EventHandler(this.dataSourceCB_Leave);
             // 
             // label1
@@ -98,7 +100,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 22);
+            this.label2.Location = new System.Drawing.Point(7, 69);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(73, 13);
             this.label2.TabIndex = 3;
@@ -106,15 +108,15 @@
             // 
             // reportNameTB
             // 
-            this.reportNameTB.Location = new System.Drawing.Point(90, 19);
+            this.reportNameTB.Location = new System.Drawing.Point(86, 66);
             this.reportNameTB.Name = "reportNameTB";
             this.reportNameTB.Size = new System.Drawing.Size(293, 20);
-            this.reportNameTB.TabIndex = 4;
+            this.reportNameTB.TabIndex = 2;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 48);
+            this.label3.Location = new System.Drawing.Point(10, 95);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(70, 13);
             this.label3.TabIndex = 5;
@@ -126,24 +128,26 @@
             this.previewReportButton.Location = new System.Drawing.Point(12, 328);
             this.previewReportButton.Name = "previewReportButton";
             this.previewReportButton.Size = new System.Drawing.Size(75, 23);
-            this.previewReportButton.TabIndex = 6;
+            this.previewReportButton.TabIndex = 12;
             this.previewReportButton.Text = "Preview";
             this.previewReportButton.UseVisualStyleBackColor = true;
             this.previewReportButton.Click += new System.EventHandler(this.previewReportButton_Click);
             // 
             // saveReportButton
             // 
+            this.saveReportButton.Enabled = false;
             this.saveReportButton.Location = new System.Drawing.Point(635, 328);
             this.saveReportButton.Name = "saveReportButton";
             this.saveReportButton.Size = new System.Drawing.Size(75, 23);
-            this.saveReportButton.TabIndex = 7;
+            this.saveReportButton.TabIndex = 14;
             this.saveReportButton.Text = "Save Report";
             this.saveReportButton.UseVisualStyleBackColor = true;
+            this.saveReportButton.Click += new System.EventHandler(this.saveReportButton_Click);
             // 
             // conditionsLB
             // 
             this.conditionsLB.FormattingEnabled = true;
-            this.conditionsLB.Location = new System.Drawing.Point(90, 72);
+            this.conditionsLB.Location = new System.Drawing.Point(86, 119);
             this.conditionsLB.Name = "conditionsLB";
             this.conditionsLB.Size = new System.Drawing.Size(292, 95);
             this.conditionsLB.TabIndex = 8;
@@ -152,7 +156,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(25, 72);
+            this.label4.Location = new System.Drawing.Point(21, 119);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(59, 13);
             this.label4.TabIndex = 9;
@@ -161,7 +165,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 173);
+            this.label5.Location = new System.Drawing.Point(4, 220);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(76, 13);
             this.label5.TabIndex = 10;
@@ -171,13 +175,14 @@
             // 
             this.conditionLeftComparatorCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.conditionLeftComparatorCB.FormattingEnabled = true;
-            this.conditionLeftComparatorCB.Location = new System.Drawing.Point(90, 173);
+            this.conditionLeftComparatorCB.Location = new System.Drawing.Point(86, 220);
             this.conditionLeftComparatorCB.Name = "conditionLeftComparatorCB";
             this.conditionLeftComparatorCB.Size = new System.Drawing.Size(115, 21);
-            this.conditionLeftComparatorCB.TabIndex = 11;
+            this.conditionLeftComparatorCB.TabIndex = 4;
             // 
             // conditionOperatorCB
             // 
+            this.conditionOperatorCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.conditionOperatorCB.FormattingEnabled = true;
             this.conditionOperatorCB.Items.AddRange(new object[] {
             ">",
@@ -185,15 +190,16 @@
             "<",
             "<=",
             "==",
-            "!=",
-            "CONTAINS"});
-            this.conditionOperatorCB.Location = new System.Drawing.Point(211, 173);
+            "!="});
+            this.conditionOperatorCB.Location = new System.Drawing.Point(207, 220);
             this.conditionOperatorCB.Name = "conditionOperatorCB";
             this.conditionOperatorCB.Size = new System.Drawing.Size(50, 21);
-            this.conditionOperatorCB.TabIndex = 12;
+            this.conditionOperatorCB.TabIndex = 5;
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.shortCodeTB);
+            this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.addConditionButton);
             this.groupBox1.Controls.Add(this.conditionRightComparatorCB);
@@ -206,12 +212,40 @@
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.conditionsLB);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Location = new System.Drawing.Point(12, 41);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(389, 281);
+            this.groupBox1.Size = new System.Drawing.Size(389, 310);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Select Data:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(83, 289);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(225, 13);
+            this.label8.TabIndex = 14;
+            this.label8.Text = "Double click to remove items from lists";
+            // 
+            // addConditionButton
+            // 
+            this.addConditionButton.Location = new System.Drawing.Point(182, 247);
+            this.addConditionButton.Name = "addConditionButton";
+            this.addConditionButton.Size = new System.Drawing.Size(75, 23);
+            this.addConditionButton.TabIndex = 7;
+            this.addConditionButton.Text = "Add";
+            this.addConditionButton.UseVisualStyleBackColor = true;
+            this.addConditionButton.Click += new System.EventHandler(this.addConditionButton_Click);
+            // 
+            // conditionRightComparatorCB
+            // 
+            this.conditionRightComparatorCB.FormattingEnabled = true;
+            this.conditionRightComparatorCB.Location = new System.Drawing.Point(263, 220);
+            this.conditionRightComparatorCB.Name = "conditionRightComparatorCB";
+            this.conditionRightComparatorCB.Size = new System.Drawing.Size(115, 21);
+            this.conditionRightComparatorCB.TabIndex = 6;
             // 
             // groupBox2
             // 
@@ -240,7 +274,7 @@
             this.addFieldButton.Location = new System.Drawing.Point(222, 19);
             this.addFieldButton.Name = "addFieldButton";
             this.addFieldButton.Size = new System.Drawing.Size(75, 23);
-            this.addFieldButton.TabIndex = 2;
+            this.addFieldButton.TabIndex = 9;
             this.addFieldButton.Text = "Add Field";
             this.addFieldButton.UseVisualStyleBackColor = true;
             this.addFieldButton.Click += new System.EventHandler(this.addFieldButton_Click);
@@ -261,7 +295,7 @@
             this.fieldsCB.Location = new System.Drawing.Point(44, 19);
             this.fieldsCB.Name = "fieldsCB";
             this.fieldsCB.Size = new System.Drawing.Size(172, 21);
-            this.fieldsCB.TabIndex = 0;
+            this.fieldsCB.TabIndex = 8;
             // 
             // groupBox3
             // 
@@ -283,13 +317,14 @@
             this.totalLB.Name = "totalLB";
             this.totalLB.Size = new System.Drawing.Size(170, 69);
             this.totalLB.TabIndex = 3;
+            this.totalLB.DoubleClick += new System.EventHandler(this.totalLB_DoubleClick);
             // 
             // addTotalButton
             // 
             this.addTotalButton.Location = new System.Drawing.Point(222, 17);
             this.addTotalButton.Name = "addTotalButton";
             this.addTotalButton.Size = new System.Drawing.Size(75, 23);
-            this.addTotalButton.TabIndex = 2;
+            this.addTotalButton.TabIndex = 11;
             this.addTotalButton.Text = "Add Total";
             this.addTotalButton.UseVisualStyleBackColor = true;
             this.addTotalButton.Click += new System.EventHandler(this.addTotalButton_Click);
@@ -301,7 +336,7 @@
             this.totalCB.Location = new System.Drawing.Point(46, 19);
             this.totalCB.Name = "totalCB";
             this.totalCB.Size = new System.Drawing.Size(170, 21);
-            this.totalCB.TabIndex = 1;
+            this.totalCB.TabIndex = 10;
             // 
             // label7
             // 
@@ -312,44 +347,32 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "Total:";
             // 
-            // conditionRightComparatorCB
-            // 
-            this.conditionRightComparatorCB.FormattingEnabled = true;
-            this.conditionRightComparatorCB.Location = new System.Drawing.Point(267, 173);
-            this.conditionRightComparatorCB.Name = "conditionRightComparatorCB";
-            this.conditionRightComparatorCB.Size = new System.Drawing.Size(115, 21);
-            this.conditionRightComparatorCB.TabIndex = 4;
-            // 
-            // addConditionButton
-            // 
-            this.addConditionButton.Location = new System.Drawing.Point(200, 200);
-            this.addConditionButton.Name = "addConditionButton";
-            this.addConditionButton.Size = new System.Drawing.Size(75, 23);
-            this.addConditionButton.TabIndex = 13;
-            this.addConditionButton.Text = "Add";
-            this.addConditionButton.UseVisualStyleBackColor = true;
-            this.addConditionButton.Click += new System.EventHandler(this.addConditionButton_Click);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(87, 242);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(225, 13);
-            this.label8.TabIndex = 14;
-            this.label8.Text = "Double click to remove items from lists";
-            // 
             // viewQueryButton
             // 
             this.viewQueryButton.Enabled = false;
             this.viewQueryButton.Location = new System.Drawing.Point(93, 328);
             this.viewQueryButton.Name = "viewQueryButton";
             this.viewQueryButton.Size = new System.Drawing.Size(75, 23);
-            this.viewQueryButton.TabIndex = 17;
+            this.viewQueryButton.TabIndex = 13;
             this.viewQueryButton.Text = "View Query";
             this.viewQueryButton.UseVisualStyleBackColor = true;
             this.viewQueryButton.Click += new System.EventHandler(this.viewQueryButton_Click);
+            // 
+            // shortCodeTB
+            // 
+            this.shortCodeTB.Location = new System.Drawing.Point(86, 40);
+            this.shortCodeTB.Name = "shortCodeTB";
+            this.shortCodeTB.Size = new System.Drawing.Size(100, 20);
+            this.shortCodeTB.TabIndex = 1;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(21, 43);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(59, 13);
+            this.label9.TabIndex = 19;
+            this.label9.Text = "Shortcode:";
             // 
             // ReportCreator
             // 
@@ -408,5 +431,7 @@
         private System.Windows.Forms.ComboBox conditionRightComparatorCB;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button viewQueryButton;
+        private System.Windows.Forms.TextBox shortCodeTB;
+        private System.Windows.Forms.Label label9;
     }
 }
