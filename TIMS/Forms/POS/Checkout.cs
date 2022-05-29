@@ -439,6 +439,7 @@ namespace TIMS.Forms
             invoice.finalized = true;
             invoice.invoiceFinalizedTime = DateTime.Now;
             invoice.invoiceNumber = DatabaseHandler.SqlRetrieveNextInvoiceNumber();
+            invoice.totalPayments = invoice.total;
 
             foreach (InvoiceItem invItem in invoice.items)
             {
@@ -450,6 +451,7 @@ namespace TIMS.Forms
             DatabaseHandler.SqlSaveReleasedInvoice(invoice);
             ReportViewer viewer = new ReportViewer(invoice);
             viewer.ShowDialog();
+            Close();
         }
 
         private void closeBtn_Click(object sender, EventArgs e)

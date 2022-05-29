@@ -85,6 +85,8 @@ namespace TIMS.Forms
             }
             else if (report != null)
             {
+                report.RenderPage(gfx);
+
                 if (report.currentPage != report.totalPages)
                 {
                     ev.HasMorePages = true;

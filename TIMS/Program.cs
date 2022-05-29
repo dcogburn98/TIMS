@@ -4,6 +4,7 @@ using System.Windows.Forms;
 
 using TIMS.Forms;
 using TIMS.Forms.POS;
+using TIMS.Forms.Reporting;
 
 namespace TIMS
 {
@@ -71,6 +72,12 @@ namespace TIMS
             //ReviewInvoices rev = new ReviewInvoices();
             //Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
             //Application.Run(rev);
+            #endregion
+            #region Report Manager Window Test Code
+            //DatabaseHandler.InitializeDatabases();
+            //ReportManager manager = new ReportManager();
+            //Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
+            //Application.Run(manager);
             #endregion
         }
 

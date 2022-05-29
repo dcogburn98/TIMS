@@ -23,9 +23,14 @@ namespace TIMS.Forms.Reporting
 
         private void reportPickerCB_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (reportPickerCB.SelectedIndex == -1)
+                return;
+
             currentReport = DatabaseHandler.SqlRetrieveReport(reportPickerCB.Text);
             foreach (string condition in currentReport.Conditions)
                 conditionsLB.Items.Add(condition);
+            printButton.Enabled = true;
+            resetButton.Enabled = true;
         }
 
         private void conditionsLB_DoubleClick(object sender, EventArgs e)

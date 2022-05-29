@@ -92,6 +92,7 @@
             // 
             // printButton
             // 
+            this.printButton.Enabled = false;
             this.printButton.Location = new System.Drawing.Point(498, 415);
             this.printButton.Name = "printButton";
             this.printButton.Size = new System.Drawing.Size(75, 23);
@@ -102,6 +103,7 @@
             // 
             // resetButton
             // 
+            this.resetButton.Enabled = false;
             this.resetButton.Location = new System.Drawing.Point(6, 367);
             this.resetButton.Name = "resetButton";
             this.resetButton.Size = new System.Drawing.Size(99, 23);
