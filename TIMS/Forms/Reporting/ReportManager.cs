@@ -27,6 +27,7 @@ namespace TIMS.Forms.Reporting
                 return;
 
             currentReport = DatabaseHandler.SqlRetrieveReport(reportPickerCB.Text);
+            conditionsLB.Items.Clear();
             foreach (string condition in currentReport.Conditions)
                 conditionsLB.Items.Add(condition);
             printButton.Enabled = true;

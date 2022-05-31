@@ -58,6 +58,7 @@ namespace TIMS.Forms
             int itemCount = 0;
             containsAgeRestrictedItems = false;
             int minimumAge = 0;
+            invoice.taxableTotal = 0;
             foreach (InvoiceItem item in invoice.items)
             {
                 if (item.taxed)

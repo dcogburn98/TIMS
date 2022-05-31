@@ -42,6 +42,8 @@
             this.conditionLeftComparatorCB = new System.Windows.Forms.ComboBox();
             this.conditionOperatorCB = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.shortCodeTB = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.addConditionButton = new System.Windows.Forms.Button();
             this.conditionRightComparatorCB = new System.Windows.Forms.ComboBox();
@@ -56,8 +58,7 @@
             this.totalCB = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.viewQueryButton = new System.Windows.Forms.Button();
-            this.shortCodeTB = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
+            this.printReportButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -219,6 +220,22 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Select Data:";
             // 
+            // shortCodeTB
+            // 
+            this.shortCodeTB.Location = new System.Drawing.Point(86, 40);
+            this.shortCodeTB.Name = "shortCodeTB";
+            this.shortCodeTB.Size = new System.Drawing.Size(100, 20);
+            this.shortCodeTB.TabIndex = 1;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(21, 43);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(59, 13);
+            this.label9.TabIndex = 19;
+            this.label9.Text = "Shortcode:";
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -358,27 +375,23 @@
             this.viewQueryButton.UseVisualStyleBackColor = true;
             this.viewQueryButton.Click += new System.EventHandler(this.viewQueryButton_Click);
             // 
-            // shortCodeTB
+            // printReportButton
             // 
-            this.shortCodeTB.Location = new System.Drawing.Point(86, 40);
-            this.shortCodeTB.Name = "shortCodeTB";
-            this.shortCodeTB.Size = new System.Drawing.Size(100, 20);
-            this.shortCodeTB.TabIndex = 1;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(21, 43);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(59, 13);
-            this.label9.TabIndex = 19;
-            this.label9.Text = "Shortcode:";
+            this.printReportButton.Enabled = false;
+            this.printReportButton.Location = new System.Drawing.Point(554, 328);
+            this.printReportButton.Name = "printReportButton";
+            this.printReportButton.Size = new System.Drawing.Size(75, 23);
+            this.printReportButton.TabIndex = 17;
+            this.printReportButton.Text = "Print Report";
+            this.printReportButton.UseVisualStyleBackColor = true;
+            this.printReportButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // ReportCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(720, 634);
+            this.Controls.Add(this.printReportButton);
             this.Controls.Add(this.viewQueryButton);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -433,5 +446,6 @@
         private System.Windows.Forms.Button viewQueryButton;
         private System.Windows.Forms.TextBox shortCodeTB;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button printReportButton;
     }
 }

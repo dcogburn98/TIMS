@@ -14,6 +14,8 @@ namespace TIMS
         public int previousYearVelocityCode;
         public int itemsPerContainer;
         public int standardPackage;
+        public string category;
+        public string SKU;
 
         public DateTime dateStocked;
         public DateTime dateLastReceipt;

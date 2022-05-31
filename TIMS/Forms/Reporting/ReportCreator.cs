@@ -24,6 +24,25 @@ namespace TIMS.Forms
             }
         }
 
+        private void CreateReport()
+        {
+            List<string> fields = new List<string>();
+            List<string> conditions = new List<string>();
+            List<string> totals = new List<string>();
+            foreach (string field in fieldsLB.Items)
+                fields.Add(field);
+            foreach (string condition in conditionsLB.Items)
+                conditions.Add(condition);
+            foreach (string total in totalLB.Items)
+                totals.Add(total);
+
+            report = new Report(fields, dataSourceCB.Text, conditions, totals);
+            report.ReportName = reportNameTB.Text;
+            report.ReportShortcode = shortCodeTB.Text;
+
+            report.ExecuteReport();
+        }
+
         private void dataSourceCB_Leave(object sender, EventArgs e)
         {
             if (selectedDatasource == dataSourceCB.Text)
@@ -81,6 +100,7 @@ namespace TIMS.Forms
                 viewQueryButton.Enabled = true;
                 previewReportButton.Enabled = true;
                 saveReportButton.Enabled = true;
+                printReportButton.Enabled = true;
             }
         }
 
@@ -96,6 +116,7 @@ namespace TIMS.Forms
                 viewQueryButton.Enabled = true;
                 previewReportButton.Enabled = true;
                 saveReportButton.Enabled = true;
+                printReportButton.Enabled = true;
             }
         }
 
@@ -112,18 +133,7 @@ namespace TIMS.Forms
             dataGridView1.Rows.Clear();
             dataGridView1.Columns.Clear();
 
-            List<string> fields = new List<string>();
-            List<string> conditions = new List<string>();
-            List<string> totals = new List<string>();
-            foreach (string field in fieldsLB.Items)
-                fields.Add(field);
-            foreach (string condition in conditionsLB.Items)
-                conditions.Add(condition);
-            foreach (string total in totalLB.Items)
-                totals.Add(total);
-
-            report = new Report(fields, dataSourceCB.Text, conditions, totals);
-            report.ExecuteReport();
+            CreateReport();
 
             foreach (string field in fieldsLB.Items)
                 dataGridView1.Columns.Add(field, field);
@@ -169,6 +179,7 @@ namespace TIMS.Forms
                 viewQueryButton.Enabled = false;
                 previewReportButton.Enabled = false;
                 saveReportButton.Enabled = false;
+                printReportButton.Enabled = false;
             }
         }
 
@@ -200,6 +211,7 @@ namespace TIMS.Forms
                 viewQueryButton.Enabled = false;
                 previewReportButton.Enabled = false;
                 saveReportButton.Enabled = false;
+                printReportButton.Enabled = false;
             }
         }
 
@@ -215,12 +227,26 @@ namespace TIMS.Forms
         {
             if (reportNameTB.Text == string.Empty || shortCodeTB.Text == string.Empty)
             {
-                MessageBox.Show("A name and shortcode are required for the invoice!");
+                MessageBox.Show("A name and shortcode are required for the report!");
                 return;
             }
 
+            CreateReport();
             report.SaveReport(reportNameTB.Text, shortCodeTB.Text);
             MessageBox.Show("Report saved! You can now print this report from the report manager.");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (reportNameTB.Text == string.Empty || shortCodeTB.Text == string.Empty)
+            {
+                reportNameTB.Text = "Custom Report";
+                shortCodeTB.Text = "TEMP" + DateTime.Now.Second.ToString();
+            }
+            CreateReport();
+
+            ReportViewer viewer = new ReportViewer(report);
+            viewer.ShowDialog();
         }
     }
 }

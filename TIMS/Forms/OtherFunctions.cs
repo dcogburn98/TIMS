@@ -13,13 +13,7 @@ namespace TIMS.Forms
         public OtherFunctions()
         {
             InitializeComponent();
-            tabPage1.GotFocus += TabPage1_GotFocus;
-        }
-
-        private void TabPage1_GotFocus(object sender, EventArgs e)
-        {
-            itemNumberTB.Focus();
-            itemNumberTB.SelectAll();
+            tabControl1.Selected += ChangeManagementTab;
         }
 
         private void SelectProductLine()
@@ -41,6 +35,12 @@ namespace TIMS.Forms
             prevYearVelocityCodeCB.Text = workingItem.previousYearVelocityCode.ToString();
             standardPkgTB.Text = workingItem.standardPackage.ToString();
             taxableCB.Checked = workingItem.taxed;
+        }
+
+        private void ChangeManagementTab(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedTab == tabPage1)
+                itemNameTB.Focus();
         }
 
         #region Toolbar Items
@@ -148,6 +148,12 @@ namespace TIMS.Forms
         {
             ReportManager manager = new ReportManager();
             manager.Show();
+        }
+
+        private void massImportItemsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ItemImport import = new ItemImport();
+            import.Show();
         }
     }
 }

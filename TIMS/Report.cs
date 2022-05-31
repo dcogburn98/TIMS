@@ -89,7 +89,7 @@ namespace TIMS
         public void RenderPage(XGraphics gfx)
         {
             totalPages = ((Results.Count / ColumnCount) / 40 + ((Results.Count / ColumnCount) % 40 > 0 ? 1 : 0));
-            XFont font = new XFont("Times", 9);
+            XFont font = new XFont("Times", 7);
 
             double currentLine = font.GetHeight() + 5;
             double columnWidth = (gfx.PageSize.Width - 5) / ColumnCount;
@@ -140,6 +140,8 @@ namespace TIMS
                 
                 gfx.DrawString(Totals[i] + ": " + totalAmt.ToString("0.00"), font, XBrushes.Black, gfx.PageSize.Width - gfx.MeasureString(Totals[i] + ": " + totalAmt.ToString("0.00"), font).Width - 15, currentLine);
             }
+
+            gfx.DrawString("TIMS - Total Inventory Management System | Reporting System", font, XBrushes.Black, 10, gfx.PageSize.Height - font.GetHeight() - 10);
 
             XGraphicsState state = gfx.Save();
             gfx.Restore(state);

@@ -46,6 +46,7 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="PdfSharp-gdi, Version=1.51.5185.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp-gdi.1.51.5185-beta\lib\net20\PdfSharp-gdi.dll</HintPath>
     </Reference>
@@ -92,6 +93,18 @@
     </Compile>
     <Compile Include="Forms\Accounting\GeneralJournal.Designer.cs">
       <DependentUpon>GeneralJournal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ItemImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ItemImport.Designer.cs">
+      <DependentUpon>ItemImport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ItemImportFieldEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ItemImportFieldEditor.Designer.cs">
+      <DependentUpon>ItemImportFieldEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ItemMaintenance.cs">
       <SubType>Form</SubType>
@@ -156,6 +169,8 @@
     <Compile Include="Forms\Reporting\ReportViewer.Designer.cs">
       <DependentUpon>ReportViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="POs\CheckIn.cs" />
+    <Compile Include="POs\PurchaseOrder.cs" />
     <Compile Include="Report.cs" />
     <Compile Include="Server\Client.cs" />
     <Compile Include="Server\Communication.cs" />
@@ -207,6 +222,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AddCustomer.resx">
       <DependentUpon>AddCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ItemImport.resx">
+      <DependentUpon>ItemImport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ItemImportFieldEditor.resx">
+      <DependentUpon>ItemImportFieldEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\POS\Checkout.resx">
       <DependentUpon>Checkout.cs</DependentUpon>

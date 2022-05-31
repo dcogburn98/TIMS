@@ -29,18 +29,18 @@ namespace TIMS.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea11 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend11 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea12 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend12 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.salesActivitiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.invoicingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,12 +73,8 @@ namespace TIMS.Forms
             this.maintainOrderSelectionGroupToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.factoryOrderTablesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.maintenanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.partToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.productLineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.warrantyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.supersedesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.barCodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.certificationTypesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miscellaneousChagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.adjustmentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -220,9 +216,6 @@ namespace TIMS.Forms
             this.itemNameTB = new System.Windows.Forms.TextBox();
             this.itemNumberTBField = new System.Windows.Forms.TextBox();
             this.productLineTBField = new System.Windows.Forms.TextBox();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.tabPage8 = new System.Windows.Forms.TabPage();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.tabPage11 = new System.Windows.Forms.TabPage();
@@ -240,6 +233,48 @@ namespace TIMS.Forms
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.textBox12 = new System.Windows.Forms.TextBox();
+            this.textBox13 = new System.Windows.Forms.TextBox();
+            this.textBox14 = new System.Windows.Forms.TextBox();
+            this.textBox15 = new System.Windows.Forms.TextBox();
+            this.textBox16 = new System.Windows.Forms.TextBox();
+            this.textBox17 = new System.Windows.Forms.TextBox();
+            this.textBox18 = new System.Windows.Forms.TextBox();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.textBox19 = new System.Windows.Forms.TextBox();
+            this.textBox20 = new System.Windows.Forms.TextBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.massImportItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage17.SuspendLayout();
@@ -250,6 +285,9 @@ namespace TIMS.Forms
             this.tabPage1.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -504,29 +542,14 @@ namespace TIMS.Forms
             // maintenanceToolStripMenuItem
             // 
             this.maintenanceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.partToolStripMenuItem,
-            this.productLineToolStripMenuItem,
             this.notesToolStripMenuItem,
-            this.warrantyToolStripMenuItem,
             this.supersedesToolStripMenuItem,
-            this.barCodesToolStripMenuItem,
             this.certificationTypesToolStripMenuItem,
-            this.miscellaneousChagesToolStripMenuItem});
+            this.miscellaneousChagesToolStripMenuItem,
+            this.massImportItemsToolStripMenuItem});
             this.maintenanceToolStripMenuItem.Name = "maintenanceToolStripMenuItem";
             this.maintenanceToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.maintenanceToolStripMenuItem.Text = "Maintenance";
-            // 
-            // partToolStripMenuItem
-            // 
-            this.partToolStripMenuItem.Name = "partToolStripMenuItem";
-            this.partToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.partToolStripMenuItem.Text = "Part";
-            // 
-            // productLineToolStripMenuItem
-            // 
-            this.productLineToolStripMenuItem.Name = "productLineToolStripMenuItem";
-            this.productLineToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.productLineToolStripMenuItem.Text = "Product Line";
             // 
             // notesToolStripMenuItem
             // 
@@ -534,23 +557,11 @@ namespace TIMS.Forms
             this.notesToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.notesToolStripMenuItem.Text = "Notes";
             // 
-            // warrantyToolStripMenuItem
-            // 
-            this.warrantyToolStripMenuItem.Name = "warrantyToolStripMenuItem";
-            this.warrantyToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.warrantyToolStripMenuItem.Text = "Warranty";
-            // 
             // supersedesToolStripMenuItem
             // 
             this.supersedesToolStripMenuItem.Name = "supersedesToolStripMenuItem";
             this.supersedesToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.supersedesToolStripMenuItem.Text = "Supersedes";
-            // 
-            // barCodesToolStripMenuItem
-            // 
-            this.barCodesToolStripMenuItem.Name = "barCodesToolStripMenuItem";
-            this.barCodesToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.barCodesToolStripMenuItem.Text = "Bar Codes";
             // 
             // certificationTypesToolStripMenuItem
             // 
@@ -1135,44 +1146,44 @@ namespace TIMS.Forms
             // reportManagerToolStripMenuItem
             // 
             this.reportManagerToolStripMenuItem.Name = "reportManagerToolStripMenuItem";
-            this.reportManagerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reportManagerToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.reportManagerToolStripMenuItem.Text = "Report Manager";
             this.reportManagerToolStripMenuItem.Click += new System.EventHandler(this.reportManagerToolStripMenuItem_Click);
             // 
             // reprintReportToolStripMenuItem
             // 
             this.reprintReportToolStripMenuItem.Name = "reprintReportToolStripMenuItem";
-            this.reprintReportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reprintReportToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.reprintReportToolStripMenuItem.Text = "Reprint Report";
             // 
             // archiveToolStripMenuItem
             // 
             this.archiveToolStripMenuItem.Name = "archiveToolStripMenuItem";
-            this.archiveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.archiveToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.archiveToolStripMenuItem.Text = "Archive";
             // 
             // resortToolStripMenuItem
             // 
             this.resortToolStripMenuItem.Name = "resortToolStripMenuItem";
-            this.resortToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.resortToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.resortToolStripMenuItem.Text = "Resort";
             // 
             // dataReviewToolStripMenuItem
             // 
             this.dataReviewToolStripMenuItem.Name = "dataReviewToolStripMenuItem";
-            this.dataReviewToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dataReviewToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.dataReviewToolStripMenuItem.Text = "Data Review";
             // 
             // reportingToolStripMenuItem
             // 
             this.reportingToolStripMenuItem.Name = "reportingToolStripMenuItem";
-            this.reportingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reportingToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.reportingToolStripMenuItem.Text = "Reporting";
             // 
             // reportCreatorToolStripMenuItem
             // 
             this.reportCreatorToolStripMenuItem.Name = "reportCreatorToolStripMenuItem";
-            this.reportCreatorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reportCreatorToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.reportCreatorToolStripMenuItem.Text = "Report Creator";
             this.reportCreatorToolStripMenuItem.Click += new System.EventHandler(this.reportCreatorToolStripMenuItem_Click);
             // 
@@ -1247,64 +1258,64 @@ namespace TIMS.Forms
             // 
             // chart4
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart4.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart4.Legends.Add(legend1);
+            chartArea9.Name = "ChartArea1";
+            this.chart4.ChartAreas.Add(chartArea9);
+            legend9.Name = "Legend1";
+            this.chart4.Legends.Add(legend9);
             this.chart4.Location = new System.Drawing.Point(402, 295);
             this.chart4.Name = "chart4";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart4.Series.Add(series1);
+            series9.ChartArea = "ChartArea1";
+            series9.Legend = "Legend1";
+            series9.Name = "Series1";
+            this.chart4.Series.Add(series9);
             this.chart4.Size = new System.Drawing.Size(396, 286);
             this.chart4.TabIndex = 3;
             this.chart4.Text = "chart4";
             // 
             // chart3
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chart3.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chart3.Legends.Add(legend2);
+            chartArea10.Name = "ChartArea1";
+            this.chart3.ChartAreas.Add(chartArea10);
+            legend10.Name = "Legend1";
+            this.chart3.Legends.Add(legend10);
             this.chart3.Location = new System.Drawing.Point(3, 295);
             this.chart3.Name = "chart3";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chart3.Series.Add(series2);
+            series10.ChartArea = "ChartArea1";
+            series10.Legend = "Legend1";
+            series10.Name = "Series1";
+            this.chart3.Series.Add(series10);
             this.chart3.Size = new System.Drawing.Size(396, 286);
             this.chart3.TabIndex = 2;
             this.chart3.Text = "chart3";
             // 
             // chart2
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chart2.Legends.Add(legend3);
+            chartArea11.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea11);
+            legend11.Name = "Legend1";
+            this.chart2.Legends.Add(legend11);
             this.chart2.Location = new System.Drawing.Point(402, 3);
             this.chart2.Name = "chart2";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.chart2.Series.Add(series3);
+            series11.ChartArea = "ChartArea1";
+            series11.Legend = "Legend1";
+            series11.Name = "Series1";
+            this.chart2.Series.Add(series11);
             this.chart2.Size = new System.Drawing.Size(396, 286);
             this.chart2.TabIndex = 1;
             this.chart2.Text = "chart2";
             // 
             // chart1
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chart1.Legends.Add(legend4);
+            chartArea12.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea12);
+            legend12.Name = "Legend1";
+            this.chart1.Legends.Add(legend12);
             this.chart1.Location = new System.Drawing.Point(3, 3);
             this.chart1.Name = "chart1";
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chart1.Series.Add(series4);
+            series12.ChartArea = "ChartArea1";
+            series12.Legend = "Legend1";
+            series12.Name = "Series1";
+            this.chart1.Series.Add(series12);
             this.chart1.Size = new System.Drawing.Size(396, 286);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -1349,9 +1360,6 @@ namespace TIMS.Forms
             // tabControl2
             // 
             this.tabControl2.Controls.Add(this.tabPage5);
-            this.tabControl2.Controls.Add(this.tabPage6);
-            this.tabControl2.Controls.Add(this.tabPage7);
-            this.tabControl2.Controls.Add(this.tabPage8);
             this.tabControl2.Controls.Add(this.tabPage9);
             this.tabControl2.Controls.Add(this.tabPage10);
             this.tabControl2.Controls.Add(this.tabPage11);
@@ -1392,6 +1400,12 @@ namespace TIMS.Forms
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.label37);
+            this.groupBox4.Controls.Add(this.listBox1);
+            this.groupBox4.Controls.Add(this.textBox20);
+            this.groupBox4.Controls.Add(this.textBox19);
+            this.groupBox4.Controls.Add(this.label36);
+            this.groupBox4.Controls.Add(this.label35);
             this.groupBox4.Location = new System.Drawing.Point(264, 413);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(252, 135);
@@ -1401,15 +1415,50 @@ namespace TIMS.Forms
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label27);
+            this.groupBox3.Controls.Add(this.label28);
+            this.groupBox3.Controls.Add(this.label29);
+            this.groupBox3.Controls.Add(this.label30);
+            this.groupBox3.Controls.Add(this.label31);
+            this.groupBox3.Controls.Add(this.label32);
+            this.groupBox3.Controls.Add(this.label33);
+            this.groupBox3.Controls.Add(this.label34);
+            this.groupBox3.Controls.Add(this.textBox11);
+            this.groupBox3.Controls.Add(this.textBox12);
+            this.groupBox3.Controls.Add(this.textBox13);
+            this.groupBox3.Controls.Add(this.textBox14);
+            this.groupBox3.Controls.Add(this.textBox15);
+            this.groupBox3.Controls.Add(this.textBox16);
+            this.groupBox3.Controls.Add(this.textBox17);
+            this.groupBox3.Controls.Add(this.textBox18);
             this.groupBox3.Location = new System.Drawing.Point(522, 6);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(252, 401);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Prices";
+            this.groupBox3.Text = " ";
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.textBox10);
+            this.groupBox2.Controls.Add(this.label26);
+            this.groupBox2.Controls.Add(this.label25);
+            this.groupBox2.Controls.Add(this.label24);
+            this.groupBox2.Controls.Add(this.label23);
+            this.groupBox2.Controls.Add(this.label22);
+            this.groupBox2.Controls.Add(this.label21);
+            this.groupBox2.Controls.Add(this.label20);
+            this.groupBox2.Controls.Add(this.label19);
+            this.groupBox2.Controls.Add(this.label18);
+            this.groupBox2.Controls.Add(this.textBox9);
+            this.groupBox2.Controls.Add(this.textBox8);
+            this.groupBox2.Controls.Add(this.textBox7);
+            this.groupBox2.Controls.Add(this.textBox6);
+            this.groupBox2.Controls.Add(this.textBox5);
+            this.groupBox2.Controls.Add(this.textBox4);
+            this.groupBox2.Controls.Add(this.textBox3);
+            this.groupBox2.Controls.Add(this.textBox2);
+            this.groupBox2.Controls.Add(this.textBox1);
             this.groupBox2.Location = new System.Drawing.Point(264, 6);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(252, 401);
@@ -1705,34 +1754,6 @@ namespace TIMS.Forms
             this.productLineTBField.Size = new System.Drawing.Size(48, 20);
             this.productLineTBField.TabIndex = 0;
             // 
-            // tabPage6
-            // 
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(781, 554);
-            this.tabPage6.TabIndex = 1;
-            this.tabPage6.Text = "Item Info";
-            this.tabPage6.UseVisualStyleBackColor = true;
-            // 
-            // tabPage7
-            // 
-            this.tabPage7.Location = new System.Drawing.Point(4, 22);
-            this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(781, 554);
-            this.tabPage7.TabIndex = 2;
-            this.tabPage7.Text = "Prices";
-            this.tabPage7.UseVisualStyleBackColor = true;
-            // 
-            // tabPage8
-            // 
-            this.tabPage8.Location = new System.Drawing.Point(4, 22);
-            this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(781, 554);
-            this.tabPage8.TabIndex = 3;
-            this.tabPage8.Text = "Quantities";
-            this.tabPage8.UseVisualStyleBackColor = true;
-            // 
             // tabPage9
             // 
             this.tabPage9.Location = new System.Drawing.Point(4, 22);
@@ -1885,6 +1906,341 @@ namespace TIMS.Forms
             this.tabPage4.Text = "Employee Management";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(140, 19);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 0;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(140, 45);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 20);
+            this.textBox2.TabIndex = 1;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(140, 71);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(100, 20);
+            this.textBox3.TabIndex = 2;
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(140, 97);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(100, 20);
+            this.textBox4.TabIndex = 3;
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(140, 124);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(100, 20);
+            this.textBox5.TabIndex = 4;
+            // 
+            // textBox6
+            // 
+            this.textBox6.Location = new System.Drawing.Point(140, 150);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(100, 20);
+            this.textBox6.TabIndex = 5;
+            // 
+            // textBox7
+            // 
+            this.textBox7.Location = new System.Drawing.Point(140, 177);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(100, 20);
+            this.textBox7.TabIndex = 6;
+            // 
+            // textBox8
+            // 
+            this.textBox8.Location = new System.Drawing.Point(140, 204);
+            this.textBox8.Name = "textBox8";
+            this.textBox8.Size = new System.Drawing.Size(100, 20);
+            this.textBox8.TabIndex = 7;
+            // 
+            // textBox9
+            // 
+            this.textBox9.Location = new System.Drawing.Point(142, 231);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(46, 20);
+            this.textBox9.TabIndex = 8;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(64, 22);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(76, 13);
+            this.label18.TabIndex = 9;
+            this.label18.Text = "Date Stocked:";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(70, 48);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(70, 13);
+            this.label19.TabIndex = 10;
+            this.label19.Text = "Last Receipt:";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(113, 74);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(27, 13);
+            this.label20.TabIndex = 11;
+            this.label20.Text = "Min:";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(110, 100);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(30, 13);
+            this.label21.TabIndex = 12;
+            this.label21.Text = "Max:";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(87, 127);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(53, 13);
+            this.label22.TabIndex = 13;
+            this.label22.Text = "On Hand:";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(90, 153);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(50, 13);
+            this.label23.TabIndex = 14;
+            this.label23.Text = "WIP Qty:";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(87, 180);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(53, 13);
+            this.label24.TabIndex = 15;
+            this.label24.Text = "On Order:";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(64, 207);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(76, 13);
+            this.label25.TabIndex = 16;
+            this.label25.Text = "On Backorder:";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(6, 234);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(134, 13);
+            this.label26.TabIndex = 17;
+            this.label26.Text = "Days On Order/Backorder:";
+            // 
+            // textBox10
+            // 
+            this.textBox10.Location = new System.Drawing.Point(194, 231);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(46, 20);
+            this.textBox10.TabIndex = 18;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(72, 203);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(74, 13);
+            this.label27.TabIndex = 32;
+            this.label27.Text = "Average Cost:";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(115, 176);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(31, 13);
+            this.label28.TabIndex = 31;
+            this.label28.Text = "Cost:";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(115, 149);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(31, 13);
+            this.label29.TabIndex = 30;
+            this.label29.Text = "Blue:";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(115, 123);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(31, 13);
+            this.label30.TabIndex = 29;
+            this.label30.Text = "Pink:";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(107, 96);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(39, 13);
+            this.label31.TabIndex = 28;
+            this.label31.Text = "Green:";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(105, 70);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(41, 13);
+            this.label32.TabIndex = 27;
+            this.label32.Text = "Yellow:";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(116, 44);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(30, 13);
+            this.label33.TabIndex = 26;
+            this.label33.Text = "Red:";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(120, 18);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(26, 13);
+            this.label34.TabIndex = 25;
+            this.label34.Text = "List:";
+            // 
+            // textBox11
+            // 
+            this.textBox11.Location = new System.Drawing.Point(146, 200);
+            this.textBox11.Name = "textBox11";
+            this.textBox11.Size = new System.Drawing.Size(100, 20);
+            this.textBox11.TabIndex = 24;
+            // 
+            // textBox12
+            // 
+            this.textBox12.Location = new System.Drawing.Point(146, 173);
+            this.textBox12.Name = "textBox12";
+            this.textBox12.Size = new System.Drawing.Size(100, 20);
+            this.textBox12.TabIndex = 23;
+            // 
+            // textBox13
+            // 
+            this.textBox13.Location = new System.Drawing.Point(146, 146);
+            this.textBox13.Name = "textBox13";
+            this.textBox13.Size = new System.Drawing.Size(100, 20);
+            this.textBox13.TabIndex = 22;
+            // 
+            // textBox14
+            // 
+            this.textBox14.Location = new System.Drawing.Point(146, 120);
+            this.textBox14.Name = "textBox14";
+            this.textBox14.Size = new System.Drawing.Size(100, 20);
+            this.textBox14.TabIndex = 21;
+            // 
+            // textBox15
+            // 
+            this.textBox15.Location = new System.Drawing.Point(146, 93);
+            this.textBox15.Name = "textBox15";
+            this.textBox15.Size = new System.Drawing.Size(100, 20);
+            this.textBox15.TabIndex = 20;
+            // 
+            // textBox16
+            // 
+            this.textBox16.Location = new System.Drawing.Point(146, 67);
+            this.textBox16.Name = "textBox16";
+            this.textBox16.Size = new System.Drawing.Size(100, 20);
+            this.textBox16.TabIndex = 19;
+            // 
+            // textBox17
+            // 
+            this.textBox17.Location = new System.Drawing.Point(146, 41);
+            this.textBox17.Name = "textBox17";
+            this.textBox17.Size = new System.Drawing.Size(100, 20);
+            this.textBox17.TabIndex = 18;
+            // 
+            // textBox18
+            // 
+            this.textBox18.Location = new System.Drawing.Point(146, 15);
+            this.textBox18.Name = "textBox18";
+            this.textBox18.Size = new System.Drawing.Size(100, 20);
+            this.textBox18.TabIndex = 17;
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(55, 22);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(85, 13);
+            this.label35.TabIndex = 0;
+            this.label35.Text = "Last Label Date:";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(54, 47);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(86, 13);
+            this.label36.TabIndex = 1;
+            this.label36.Text = "Last Label Price:";
+            // 
+            // textBox19
+            // 
+            this.textBox19.Location = new System.Drawing.Point(140, 19);
+            this.textBox19.Name = "textBox19";
+            this.textBox19.Size = new System.Drawing.Size(100, 20);
+            this.textBox19.TabIndex = 25;
+            // 
+            // textBox20
+            // 
+            this.textBox20.Location = new System.Drawing.Point(140, 44);
+            this.textBox20.Name = "textBox20";
+            this.textBox20.Size = new System.Drawing.Size(100, 20);
+            this.textBox20.TabIndex = 26;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(140, 70);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(100, 56);
+            this.listBox1.TabIndex = 27;
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(84, 70);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(56, 13);
+            this.label37.TabIndex = 28;
+            this.label37.Text = "Locations:";
+            // 
+            // massImportItemsToolStripMenuItem
+            // 
+            this.massImportItemsToolStripMenuItem.Name = "massImportItemsToolStripMenuItem";
+            this.massImportItemsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.massImportItemsToolStripMenuItem.Text = "Mass Import Items";
+            this.massImportItemsToolStripMenuItem.Click += new System.EventHandler(this.massImportItemsToolStripMenuItem_Click);
+            // 
             // OtherFunctions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1908,6 +2264,12 @@ namespace TIMS.Forms
             this.tabPage1.PerformLayout();
             this.tabControl2.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -1962,12 +2324,8 @@ namespace TIMS.Forms
         private System.Windows.Forms.ToolStripMenuItem buyoutPOToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem maintainOrderSelectionGroupToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem factoryOrderTablesToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem partToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem productLineToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem notesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem warrantyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem supersedesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem barCodesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem certificationTypesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem miscellaneousChagesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem accountsReceivableToolStripMenuItem;
@@ -2053,9 +2411,6 @@ namespace TIMS.Forms
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage5;
-        private System.Windows.Forms.TabPage tabPage6;
-        private System.Windows.Forms.TabPage tabPage7;
-        private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.TabPage tabPage9;
         private System.Windows.Forms.TabPage tabPage10;
         private System.Windows.Forms.TabPage tabPage11;
@@ -2116,5 +2471,47 @@ namespace TIMS.Forms
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.ToolStripMenuItem reportCreatorToolStripMenuItem;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.TextBox textBox20;
+        private System.Windows.Forms.TextBox textBox19;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.TextBox textBox13;
+        private System.Windows.Forms.TextBox textBox14;
+        private System.Windows.Forms.TextBox textBox15;
+        private System.Windows.Forms.TextBox textBox16;
+        private System.Windows.Forms.TextBox textBox17;
+        private System.Windows.Forms.TextBox textBox18;
+        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.ToolStripMenuItem massImportItemsToolStripMenuItem;
     }
 }
