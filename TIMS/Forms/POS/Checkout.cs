@@ -72,9 +72,9 @@ namespace TIMS.Forms
                 itemCount++;
             }
 
-            invoice.taxRate = 0.1025f;
+            invoice.taxRate = 0.1025m;
             invoice.taxAmount = invoice.taxableTotal * invoice.taxRate;
-            invoice.total = (float)Math.Round(invoice.subtotal + invoice.taxAmount, 2);
+            invoice.total = Math.Round(invoice.subtotal + invoice.taxAmount, 2);
 
             subtotalTB.Text = invoice.subtotal.ToString("C");
             itemCountTB.Text = itemCount.ToString();
@@ -142,7 +142,7 @@ namespace TIMS.Forms
 
         private void AddPayment()
         {
-            float amt = float.Parse(paymentAmountTB.Text);
+            decimal amt = decimal.Parse(paymentAmountTB.Text);
             switch ((string)paymentTypeLB.SelectedItem)
             {
 
@@ -405,8 +405,8 @@ namespace TIMS.Forms
             if (parsedLine[0].Contains("Charge"))
                 type = Payment.PaymentTypes.Charge;
 
-            invoice.payments.Remove(invoice.payments.Find(el => el.paymentAmount == float.Parse(parsedLine[1]) && el.paymentType == type));
-            invoice.totalPayments -= float.Parse(parsedLine[1]);
+            invoice.payments.Remove(invoice.payments.Find(el => el.paymentAmount == decimal.Parse(parsedLine[1]) && el.paymentType == type));
+            invoice.totalPayments -= decimal.Parse(parsedLine[1]);
             paymentsLB.Items.Remove(paymentsLB.SelectedItem);
             if (invoice.total >= invoice.totalPayments)
             {

@@ -19,23 +19,23 @@ namespace TIMS
 
         public DateTime dateStocked;
         public DateTime dateLastReceipt;
-        public float minimum;
-        public float maximum;
-        public float onHandQty;
-        public float WIPQty;
-        public float onOrderQty;
-        public float onBackorderQty;
+        public decimal minimum;
+        public decimal maximum;
+        public decimal onHandQty;
+        public decimal WIPQty;
+        public decimal onOrderQty;
+        public decimal onBackorderQty;
         public int daysOnOrder;
         public int daysOnBackorder;
 
-        public float listPrice;
-        public float redPrice;
-        public float yellowPrice;
-        public float greenPrice;
-        public float pinkPrice;
-        public float bluePrice;
-        public float replacementCost;
-        public float averageCost;
+        public decimal listPrice;
+        public decimal redPrice;
+        public decimal yellowPrice;
+        public decimal greenPrice;
+        public decimal pinkPrice;
+        public decimal bluePrice;
+        public decimal replacementCost;
+        public decimal averageCost;
         public bool taxed;
         public bool ageRestricted;
         public int minimumAge;

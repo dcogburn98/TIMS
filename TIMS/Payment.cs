@@ -15,7 +15,7 @@ namespace TIMS
             Paypal
         }
         public PaymentTypes paymentType;
-        public float paymentAmount;
+        public decimal paymentAmount;
         public Guid ID = Guid.NewGuid();
     }
 }

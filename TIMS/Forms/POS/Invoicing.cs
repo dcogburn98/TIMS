@@ -213,9 +213,9 @@ namespace TIMS.Forms
         {
             addingLine = true;
 
-            workingItem.quantity = float.Parse(qtyTB.Text);
-            workingItem.price = float.Parse(priceTB.Text);
-            workingItem.total = (float)Math.Round(workingItem.quantity * workingItem.price, 2);
+            workingItem.quantity = decimal.Parse(qtyTB.Text);
+            workingItem.price = decimal.Parse(priceTB.Text);
+            workingItem.total = Math.Round(workingItem.quantity * workingItem.price, 2);
             workingItem.taxed = taxedCB.Checked;
 
             dataGridView1.SelectedRows[0].Cells[3].Value = workingItem.quantity;
@@ -259,7 +259,7 @@ namespace TIMS.Forms
             dataGridView1.ClearSelection();
             dataGridView1.Enabled = true;
 
-            float total = 0.00f;
+            decimal total = 0.00m;
             foreach (InvoiceItem i in currentInvoice.items)
             {
                 total += i.total;
@@ -280,10 +280,10 @@ namespace TIMS.Forms
                 picker.ShowDialog();
             }
 
-            workingItem.quantity = float.Parse(qtyTB.Text);
-            workingItem.price = float.Parse(priceTB.Text);
+            workingItem.quantity = decimal.Parse(qtyTB.Text);
+            workingItem.price = decimal.Parse(priceTB.Text);
             workingItem.taxed = taxedCB.Checked;
-            workingItem.total = (float)Math.Round(workingItem.quantity * workingItem.price, 2);
+            workingItem.total = Math.Round(workingItem.quantity * workingItem.price, 2);
 
             currentInvoice.items.Add(workingItem);
             int row = dataGridView1.Rows.Add();
@@ -327,7 +327,7 @@ namespace TIMS.Forms
 
             dataGridView1.ClearSelection();
 
-            float total = 0.00f;
+            decimal total = 0.00m;
             foreach (InvoiceItem i in currentInvoice.items)
             {
                 total += i.total;
@@ -646,7 +646,7 @@ namespace TIMS.Forms
                 itemNoTB.ReadOnly = false;
                 itemNoTB.Clear();
 
-                float total = 0.00f;
+                decimal total = 0.00m;
                 foreach (InvoiceItem i in currentInvoice.items)
                 {
                     total += i.total;

@@ -13,10 +13,11 @@ namespace TIMS
         public string productLine;
         public string itemName;
         public string longDescription;
-        public float price;
-        public float listPrice;
-        public float total;
-        public float quantity;
+        public decimal price;
+        public decimal listPrice;
+        public decimal total;
+        public decimal cost;
+        public decimal quantity;
         public string pricingCode = "!";
         public bool serializedItem;
         public string serialNumber;
@@ -31,8 +32,8 @@ namespace TIMS
 
         }
 
-        public InvoiceItem(string itemNumber, string itemName, float price, int quantity, bool taxed,
-             float listPrice = 0.00f, string pricingCode = "!", bool serializedItem = false,
+        public InvoiceItem(string itemNumber, string itemName, decimal price, int quantity, bool taxed,
+             decimal listPrice = 0.00m, string pricingCode = "!", bool serializedItem = false,
              string serialNumber = "")
         {
             this.itemNumber = itemNumber;

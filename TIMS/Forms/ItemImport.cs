@@ -18,6 +18,8 @@ namespace TIMS.Forms
         {
             InitializeComponent();
             CancelButton = cancelButton;
+            foreach (string header in DatabaseHandler.SqlRetrieveTableHeaders("ITEMS"))
+                comboBox1.Items.Add(header);
         }
 
         private void openButton_Click(object sender, EventArgs e)
@@ -38,25 +40,13 @@ namespace TIMS.Forms
 
         private void populateButton_Click(object sender, EventArgs e)
         {
-            //File.Copy(csvPathTB.Text, "tempcsv");
-            //string csv = File.ReadAllText("tempcsv");
-            //File.Delete("tempcsv");
-            //string[] rows = csv.Split('\n');
-            //string[] headers = rows[0].Split(',');
-            //foreach (string header in headers)
-            //{
-            //    dataGridView1.Columns.Add(header, header);
-            //}
-            //for (int i = 1; i != rows.Length; i++)
-            //{
-            //    string[] cells = rows[i].Split(',');
-            //    int row = dataGridView1.Rows.Add();
-            //    for (int j = 0; j != cells.Length - 1; j++)
-            //    {
-            //        dataGridView1.Rows[row].Cells[j].Value = cells[j];
-            //    }
-            //}
             File.Copy(csvPathTB.Text, "tempcsv", true);
+            dataGridView1.Columns.Clear();
+            dataGridView1.Rows.Clear();
+            List<string> remainingHeaders = DatabaseHandler.SqlRetrieveTableHeaders("ITEMS");
+            comboBox1.Items.Clear();
+            foreach (string header in remainingHeaders)
+                comboBox1.Items.Add(header);
             using (TextFieldParser parser = new TextFieldParser("tempcsv"))
             {
                 parser.TextFieldType = FieldType.Delimited;
@@ -67,7 +57,20 @@ namespace TIMS.Forms
                     string[] fields = parser.ReadFields();
                     if (row == 0)
                         foreach (string header in fields)
-                            dataGridView1.Columns.Add(header, header);
+                        {
+                            if (!remainingHeaders.Contains(header))
+                            {
+                                ItemImportFieldEditor editor = new ItemImportFieldEditor(header, remainingHeaders);
+                                editor.ShowDialog();
+                                remainingHeaders.Remove(editor.selectedHeader);
+                                dataGridView1.Columns.Add(editor.selectedHeader, editor.selectedHeader);
+                            }
+                            else
+                            {
+                                remainingHeaders.Remove(header);
+                                dataGridView1.Columns.Add(header, header);
+                            }
+                        }
                     else
                     {
                         int gridRow = dataGridView1.Rows.Add();
@@ -77,6 +80,10 @@ namespace TIMS.Forms
                     row++;
                 }
             }
+            foreach (DataGridViewColumn col in dataGridView1.Columns)
+                comboBox1.Items.Remove(col.Name);
+            comboBox1.Enabled = true;
+            button1.Enabled = true;
             File.Delete("tempcsv");
             importButton.Enabled = true;
         }
@@ -104,9 +111,55 @@ namespace TIMS.Forms
                     availableHeaders.Remove(editor.selectedHeader);
                 }
 
-            Item newItem = new Item();
+            int rowsCompleted = 0;
+            List<DataGridViewRow> skippedRows = new List<DataGridViewRow>();
+            progressBar1.Value = 0;
+            progressBar1.Minimum = 0;
+            progressBar1.Maximum = dataGridView1.Rows.Count;
+            progressBar1.Step = 1;
+            progressBar1.Style = ProgressBarStyle.Continuous;
             foreach (DataGridViewRow itemRow in dataGridView1.Rows)
             {
+                Item newItem = new Item() {
+                    productLine = "XXX",
+                    itemNumber = "XXX",
+                    ageRestricted = false,
+                    minimumAge = 0,
+                    minimum = 0,
+                    maximum = 0,
+                    averageCost = 0,
+                    replacementCost = 0,
+                    bluePrice = 0,
+                    greenPrice = 0,
+                    listPrice = 0,
+                    pinkPrice = 0,
+                    redPrice = 0,
+                    yellowPrice = 0,
+                    previousYearVelocityCode = 0,
+                    velocityCode = 0,
+                    itemsPerContainer = 0,
+                    standardPackage = 0,
+                    WIPQty = 0,
+                    category = "Default",
+                    dateLastReceipt = DateTime.Now,
+                    dateStocked = DateTime.Now,
+                    locationCode = 0,
+                    longDescription = "",
+                    daysOnBackorder = 0,
+                    daysOnOrder = 0,
+                    groupCode = 0,
+                    onBackorderQty = 0,
+                    onHandQty = 0,
+                    onOrderQty = 0,
+                    itemName = "XXX",
+                    serialized = false,
+                    SKU = "",
+                    supplier = "Default",
+                    taxed = true
+                };
+                if (itemRow.Cells[0].Value == null)
+                    continue;
+                //System.Threading.Thread.Sleep(50);
                 foreach (DataGridViewCell cell in itemRow.Cells)
                 {
                     if (cell.OwningColumn.Name.ToLower() == "productline")
@@ -122,17 +175,40 @@ namespace TIMS.Forms
                     if (cell.OwningColumn.Name.ToLower() == "category")
                         newItem.category = cell.Value.ToString();
                     if (cell.OwningColumn.Name.ToLower() == "onHandquantity")
-                        newItem.onHandQty = float.Parse(cell.Value.ToString());
+                        newItem.onHandQty = decimal.Parse(cell.Value.ToString());
                     if (cell.OwningColumn.Name.ToLower() == "greenprice")
-                        newItem.greenPrice = float.Parse(cell.Value.ToString());
+                        newItem.greenPrice = decimal.Parse(cell.Value.ToString());
                     if (cell.OwningColumn.Name.ToLower() == "replacementcost")
-                        newItem.replacementCost = float.Parse(cell.Value.ToString());
+                        newItem.replacementCost = decimal.Parse(cell.Value.ToString());
                 }
                 if (newItem.supplier == null || newItem.supplier == string.Empty)
                     newItem.supplier = "Default";
-                DatabaseHandler.SqlAddItem(newItem);
+                if (DatabaseHandler.SqlRetrieveItem(newItem.itemNumber, newItem.productLine) == null)
+                {
+                    if (!DatabaseHandler.SqlAddItem(newItem))
+                        skippedRows.Add(itemRow);
+                }
+                else skippedRows.Add(itemRow);
+
+                rowsCompleted++;
+                progressBar1.PerformStep();
             }
-            MessageBox.Show("Items Added!");
+            MessageBox.Show("Items Added!\nItems skipped: " + skippedRows.Count);
+
+            dataGridView1.Rows.Clear();
+            foreach (DataGridViewRow row in skippedRows)
+            {
+                dataGridView1.Rows.Add(row);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedIndex == -1)
+                return;
+
+            dataGridView1.Columns.Add(comboBox1.Text, comboBox1.Text);
+            comboBox1.Items.Remove(comboBox1.SelectedItem);
         }
     }
 }

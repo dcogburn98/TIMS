@@ -12,13 +12,13 @@ namespace TIMS
         public Employee employee;
 
         public List<InvoiceItem> items;
-        public float subtotal;
-        public float taxableTotal;
-        public float taxRate;
-        public float taxAmount;
-        public float total;
+        public decimal subtotal;
+        public decimal taxableTotal;
+        public decimal taxRate;
+        public decimal taxAmount;
+        public decimal total;
         public List<Payment> payments;
-        public float totalPayments;
+        public decimal totalPayments;
 
         public bool containsAgeRestrictedItem;
         public DateTime customerBirthdate;

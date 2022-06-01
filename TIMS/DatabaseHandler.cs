@@ -187,188 +187,6 @@ namespace TIMS
             #endregion
         }
 
-        #region XML Database Methods
-        /*
-        public void AddEmployee(string name, string employeeNumber, string[] permissions)
-        {
-            employeeDB.Root.Add(
-                new XElement("Employee",
-                    new XElement("Employee Name", "Administrator"),
-                    new XElement("Username", "admin"),
-                    new XElement("Password", "admin"),
-                    new XElement("Permissions Profile", "Administrator"),
-                    new XElement("Startup Screen", "Administrator")));
-        }
-
-        public static void AddCustomer(Customer customer)
-        {
-            customerDB.Root.Add(
-                new XElement("Customer",
-                    new XElement("CustomerNumber", customer.customerNumber),
-                    new XElement("CustomerName", customer.customerName),
-                    new XElement("Phone", customer.phoneNumber),
-                    new XElement("Fax", customer.faxNumber),
-                    new XElement("TaxExempt", customer.taxExempt, new XAttribute("TaxExemptionNumber", customer.taxExemptionNumber)),
-                    new XElement("AvaiablePaymentTypes", customer.availablePaymentTypes),
-                    new XElement("CanCharge", customer.canCharge),
-                    new XElement("CreditLimit", customer.creditLimit),
-                    new XElement("AccountBalance", customer.accountBalance),
-                    new XElement("InvoiceMessage", customer.invoiceMessage),
-                    new XElement("MailingAddress", customer.mailingAddress),
-                    new XElement("ShippingAddress", customer.shippingAddress)));
-
-        }
-
-        public static void AddItem(string[] information)
-        {
-            itemDB.Root.Add(
-                new XElement("Item",
-                    new XElement("ItemNumber", information[0]),
-                    new XElement("ItemDescription", information[1]),
-                    new XElement("Supplier", information[2]),
-                    new XElement("LocationCode", information[3]),
-                    new XElement("Pricing",
-                        new XElement("Red", information[2]),
-                        new XElement("Blue", information[3]),
-                        new XElement("Green", information[4]),
-                        new XElement("Grey", information[5]),
-                        new XElement("White", information[6]),
-                        new XElement("Black", information[7]))));
-        }
-
-        public static XElement CheckEmployee(string userornumber)
-        {
-            XElement e = employeeDB.Root.Elements().FirstOrDefault(el => el.Element("Username").Value == userornumber);
-            if (e == null)
-                e = employeeDB.Root.Elements().FirstOrDefault(el => el.Element("EmployeeNumber").Value == userornumber);
-            if (e == null)
-                return new XElement("Invalid");
-            else
-                return e;
-        }
-
-        public static Employee Login(string userornumber, string password)
-        {
-            XElement e = employeeDB.Root.Elements().FirstOrDefault(el => el.Element("Username").Value == userornumber);
-            if (e == null)
-                e = employeeDB.Root.Elements().FirstOrDefault(el => el.Element("EmployeeNumber").Value == userornumber);
-            if (e == null)
-                return null;
-
-            if (e.Element("Password").Value == password)
-            {
-                Employee em = new Employee(int.Parse(e.Element("EmployeeNumber").Value), e.Element("EmployeeName").Value);
-                return em;
-            }
-            else
-                return null;
-        }
-
-        public static List<Item> CheckItemNumber(string itemNo)
-        {
-            List<Item> invItems = new List<Item>();
-            List<XElement> items = itemDB.Root.Elements().ToList().FindAll(el => el.Element("ItemNumber").Value == itemNo);
-            foreach (XElement item in items)
-            {
-                Item i = new Item()
-                {
-                    itemNumber = item.Element("ItemNumber").Value,
-                    productLine = item.Element("ProductLine").Value,
-                    itemName = item.Element("ItemName").Value,
-                    greenPrice = float.Parse(item.Element("ItemPrice").Value),
-                    ageRestricted = bool.Parse(item.Element("AgeRestricted").Value),
-                    taxed = item.Element("Taxed").Value == "True" ? true : false
-                };
-                if (item.Elements().FirstOrDefault(el => el.Name == "MinimumAge") != null)
-                    i.minimumAge = int.Parse(item.Element("MinimumAge").Value);
-                invItems.Add(i);
-            }
-            if (invItems.Count == 0)
-                return null;
-            else
-                return invItems;
-        }
-
-        public static Customer CheckCustomerNumber(string custNo)
-        {
-            Customer cust = new Customer();
-            var addresses = from address in customerDB.Root.Elements("Customer")
-                            where address.Element("CustomerNumber").Value == custNo
-                            select address;
-            if (addresses.Count() < 1)
-                return null;
-
-            List<Payment.PaymentTypes> ptypes = new List<Payment.PaymentTypes>();
-            string[] paymentTypes = addresses.First().Element("PaymentTypes").Value.Split(',');
-            foreach (string p in paymentTypes)
-            {
-                switch (p)
-                {
-                    case "Cash":
-                        ptypes.Add(Payment.PaymentTypes.Cash);
-                        break;
-                    case "Check":
-                        ptypes.Add(Payment.PaymentTypes.Check);
-                        break;
-                    case "PaymentCard":
-                        ptypes.Add(Payment.PaymentTypes.PaymentCard);
-                        break;
-                    case "CashApp":
-                        ptypes.Add(Payment.PaymentTypes.CashApp);
-                        break;
-                    case "Venmo":
-                        ptypes.Add(Payment.PaymentTypes.Venmo);
-                        break;
-                    case "Paypal":
-                        ptypes.Add(Payment.PaymentTypes.Paypal);
-                        break;
-                    case "Charge":
-                        ptypes.Add(Payment.PaymentTypes.Charge);
-                        break;
-                }
-            }
-
-            cust.customerNumber = addresses.First().Element("CustomerNumber").Value;
-            cust.customerName = addresses.First().Element("CustomerName").Value;
-            cust.mailingAddress = addresses.First().Element("MailingAddress").Value;
-            cust.shippingAddress = addresses.First().Element("ShippingAddress").Value;
-            //cust.availablePaymentTypes = ptypes.ToArray();
-
-            return cust;
-        }
-
-        public static void SaveReleasedInvoice(Invoice inv)
-        {
-            //itemDB.Root.Add(
-            //    new XElement("Invoice",
-            //        new XElement("InvoiceNumber", inv.invoiceNumber),
-            //        new XElement("CustomerNumber", inv.customer.customerNumber),
-            //        new XElement("EmployeeNumber", inv.employee.employeeNumber),
-            //        new XElement("Subtotal", inv.subtotal),
-            //        new XElement("TaxableTotal", inv.taxableTotal),
-            //        new XElement("TaxRate", inv.taxRate),
-            //        new XElement("TaxAmount", inv.taxAmount),
-            //        new XElement("Total", inv.total),
-            //        new XElement("Payments"),
-            //        new XElement("TotalPayments", inv.totalPayments),
-            //        new XElement("ContainsAgeRestrictedItems", inv.containsAgeRestrictedItem),
-            //        new XElement("Customer Birthdate", inv.customerBirthdate),
-            //        new XElement("Attention", inv.attentionLine),
-            //        new XElement("PONumber", inv.PONumber),
-            //        new XElement("Finalized", inv.finalized),
-            //        new XElement("Voided", inv.voided),
-            //        new XElement("Items")));
-
-            //foreach (InvoiceItem item in inv.items)
-            //{
-            //    XElement element = itemDB.Root.Elements().First(el => el.Element("InvoiceNumber").Value == inv.invoiceNumber.ToString()).Element("Items");
-
-            //}
-        }
-        */
-        #endregion
-
-
         #region Login and user verification
         //Used at login to verify a correct username or employee number has been supplied
         public static string SqlCheckEmployee(string input)
@@ -552,7 +370,7 @@ namespace TIMS
                     continue;
 
                 item.itemName = reader.GetString(2);
-                item.longDescription = reader.GetString(3);
+                item.longDescription = reader.GetValue(3).ToString();
                 item.supplier = reader.GetString(4);
                 item.groupCode = reader.GetInt32(5);
                 item.velocityCode = reader.GetInt32(6);
@@ -561,28 +379,30 @@ namespace TIMS
                 item.standardPackage = reader.GetInt32(9);
                 item.dateStocked = DateTime.Parse(reader.GetString(10));
                 item.dateLastReceipt = DateTime.Parse(reader.GetString(11));
-                item.minimum = reader.GetFloat(12);
-                item.maximum = reader.GetFloat(13);
-                item.onHandQty = reader.GetFloat(14);
-                item.WIPQty = reader.GetFloat(15);
-                item.onOrderQty = reader.GetFloat(16);
-                item.onBackorderQty = reader.GetFloat(17);
+                item.minimum = reader.GetDecimal(12);
+                item.maximum = reader.GetDecimal(13);
+                item.onHandQty = reader.GetDecimal(14);
+                item.WIPQty = reader.GetDecimal(15);
+                item.onOrderQty = reader.GetDecimal(16);
+                item.onBackorderQty = reader.GetDecimal(17);
                 item.daysOnOrder = reader.GetInt32(18);
                 item.daysOnBackorder = reader.GetInt32(19);
-                item.listPrice = reader.GetFloat(20);
-                item.redPrice = reader.GetFloat(21);
-                item.yellowPrice = reader.GetFloat(22);
-                item.greenPrice = reader.GetFloat(23);
-                item.pinkPrice = reader.GetFloat(24);
-                item.bluePrice = reader.GetFloat(25);
-                item.replacementCost = reader.GetFloat(26);
-                item.averageCost = reader.GetFloat(27);
+                item.listPrice = reader.GetDecimal(20);
+                item.redPrice = reader.GetDecimal(21);
+                item.yellowPrice = reader.GetDecimal(22);
+                item.greenPrice = reader.GetDecimal(23);
+                item.pinkPrice = reader.GetDecimal(24);
+                item.bluePrice = reader.GetDecimal(25);
+                item.replacementCost = reader.GetDecimal(26);
+                item.averageCost = reader.GetDecimal(27);
                 item.taxed = reader.GetBoolean(28);
                 item.ageRestricted = reader.GetBoolean(29);
                 item.minimumAge = reader.GetInt32(30);
                 item.locationCode = reader.GetInt32(31);
                 item.serialized = reader.GetBoolean(32);
                 invItems.Add(item);
+                //if (fixedPL == fixedIN)
+                //    break;
             }
 
             if (!connectionOpened)
@@ -930,12 +750,12 @@ namespace TIMS
             while (reader.Read())
             {
                 inv.invoiceNumber = reader.GetInt32(0);
-                inv.subtotal = reader.GetFloat(1);
-                inv.taxableTotal = reader.GetFloat(2);
-                inv.taxRate = reader.GetFloat(3);
-                inv.taxAmount = reader.GetFloat(4);
-                inv.total = reader.GetFloat(5);
-                inv.totalPayments = reader.GetFloat(6);
+                inv.subtotal = reader.GetDecimal(1);
+                inv.taxableTotal = reader.GetDecimal(2);
+                inv.taxRate = reader.GetDecimal(3);
+                inv.taxAmount = reader.GetDecimal(4);
+                inv.total = reader.GetDecimal(5);
+                inv.totalPayments = reader.GetDecimal(6);
                 inv.containsAgeRestrictedItem = reader.GetBoolean(7);
                 inv.customerBirthdate = DateTime.Parse(reader.GetString(8));
                 inv.attentionLine = reader.GetString(9);
@@ -961,7 +781,7 @@ namespace TIMS
             {
                 inv.payments.Add(new Payment()
                 {
-                    paymentAmount = reader.GetFloat(3),
+                    paymentAmount = reader.GetDecimal(3),
                     paymentType = (Payment.PaymentTypes)Enum.Parse(typeof(Payment.PaymentTypes), reader.GetString(2))
                 });
             }
@@ -978,10 +798,10 @@ namespace TIMS
                     itemNumber = reader.GetString(1),
                     productLine = reader.GetString(2),
                     itemName = reader.GetString(3),
-                    price = reader.GetFloat(4),
-                    listPrice = reader.GetFloat(5),
-                    quantity = reader.GetFloat(6),
-                    total = reader.GetFloat(7),
+                    price = reader.GetDecimal(4),
+                    listPrice = reader.GetDecimal(5),
+                    quantity = reader.GetDecimal(6),
+                    total = reader.GetDecimal(7),
                     pricingCode = reader.GetString(8),
                     serializedItem = reader.GetBoolean(9),
                     //serialNumber = reader.GetString(10),
@@ -1046,7 +866,7 @@ namespace TIMS
             {
                 string d1 = reader.GetString(0);
                 string d2 = reader.GetString(1);
-                float d3 = reader.GetFloat(2);
+                decimal d3 = reader.GetDecimal(2);
                 List<Item> itemMatches = SqlCheckItemNumber(d1, true);
                 item = new InvoiceItem(itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower()));
                 item.quantity = d3;
@@ -1104,7 +924,7 @@ namespace TIMS
             SQLiteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT * FROM ITEMS WHERE (ITEMNUMBER LIKE $ITEMNO AND PRODUCTLINE = $LINE)";
-            SQLiteParameter p1 = new SQLiteParameter("$ITEMNO", itemNumber);
+            SQLiteParameter p1 = new SQLiteParameter("$ITEMNO", fixedIN[0] + "%" + fixedIN[fixedIN.Length-1]);
             SQLiteParameter p2 = new SQLiteParameter("$LINE", productLine);
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
@@ -1127,9 +947,9 @@ namespace TIMS
                 if (fixedPL != fixedIN)
                     continue;
 
-                item.itemName = reader.GetString(2);
-                item.longDescription = reader.GetString(3);
-                item.supplier = reader.GetString(4);
+                item.itemName = reader.GetValue(2).ToString();
+                item.longDescription = reader.GetValue(3).ToString();
+                item.supplier = reader.GetValue(4).ToString();
                 item.groupCode = reader.GetInt32(5);
                 item.velocityCode = reader.GetInt32(6);
                 item.previousYearVelocityCode = reader.GetInt32(7);
@@ -1137,32 +957,45 @@ namespace TIMS
                 item.standardPackage = reader.GetInt32(9);
                 item.dateStocked = DateTime.Parse(reader.GetString(10));
                 item.dateLastReceipt = DateTime.Parse(reader.GetString(11));
-                item.minimum = reader.GetFloat(12);
-                item.maximum = reader.GetFloat(13);
-                item.onHandQty = reader.GetFloat(14);
-                item.WIPQty = reader.GetFloat(15);
-                item.onOrderQty = reader.GetFloat(16);
-                item.onBackorderQty = reader.GetFloat(17);
+                item.minimum = reader.GetDecimal(12);
+                item.maximum = reader.GetDecimal(13);
+                item.onHandQty = reader.GetDecimal(14);
+                item.WIPQty = reader.GetDecimal(15);
+                item.onOrderQty = reader.GetDecimal(16);
+                item.onBackorderQty = reader.GetDecimal(17);
                 item.daysOnOrder = reader.GetInt32(18);
                 item.daysOnBackorder = reader.GetInt32(19);
-                item.listPrice = reader.GetFloat(20);
-                item.redPrice = reader.GetFloat(21);
-                item.yellowPrice = reader.GetFloat(22);
-                item.greenPrice = reader.GetFloat(23);
-                item.pinkPrice = reader.GetFloat(24);
-                item.bluePrice = reader.GetFloat(25);
-                item.replacementCost = reader.GetFloat(26);
-                item.averageCost = reader.GetFloat(27);
+                item.listPrice = reader.GetDecimal(20);
+                item.redPrice = reader.GetDecimal(21);
+                item.yellowPrice = reader.GetDecimal(22);
+                item.greenPrice = reader.GetDecimal(23);
+                item.pinkPrice = reader.GetDecimal(24);
+                item.bluePrice = reader.GetDecimal(25);
+                item.replacementCost = reader.GetDecimal(26);
+                item.averageCost = reader.GetDecimal(27);
                 item.taxed = reader.GetBoolean(28);
                 item.ageRestricted = reader.GetBoolean(29);
                 item.minimumAge = reader.GetInt32(30);
                 item.locationCode = reader.GetInt32(31);
                 item.serialized = reader.GetBoolean(32);
-                item.category = reader.GetString(33);
+                item.category = reader.GetValue(33).ToString();
                 item.SKU = reader.GetValue(34).ToString();
+                if (fixedPL == fixedIN)
+                    break;
             }
+            reader.Close();
+            reader.Dispose();
 
             CloseConnection();
+
+            string fixedPLE = string.Empty;
+            foreach (char c in item.itemNumber)
+                if (char.IsLetterOrDigit(c))
+                    fixedPLE += c;
+            fixedPLE = fixedPLE.ToUpper();
+            if (fixedPLE != fixedIN)
+                return null;
+
             return item;
         }
 
@@ -1463,7 +1296,7 @@ namespace TIMS
             return reports;
         }
 
-        public static void SqlAddItem(Item item)
+        public static bool SqlAddItem(Item item)
         {
             OpenConnection();
 
@@ -1514,7 +1347,7 @@ namespace TIMS
             SQLiteParameter p32 = new SQLiteParameter("$LOCATION", item.locationCode);
             SQLiteParameter p33 = new SQLiteParameter("$SERIALIZED", item.serialized);
             SQLiteParameter p34 = new SQLiteParameter("$CATEGORY", item.category);
-            SQLiteParameter p35 = new SQLiteParameter("$SKU", item.productLine);
+            SQLiteParameter p35 = new SQLiteParameter("$SKU", item.SKU);
 
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
@@ -1555,6 +1388,7 @@ namespace TIMS
             command.ExecuteNonQuery();
 
             CloseConnection();
+            return true;
         }
 
         public static void OpenConnection()
