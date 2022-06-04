@@ -446,9 +446,12 @@ namespace TIMS.Forms
             {
                 Item newItem = DatabaseHandler.SqlRetrieveItem(invItem.itemNumber, invItem.productLine);
                 newItem.onHandQty -= invItem.quantity;
+                invItem.cost = newItem.replacementCost;
+                invoice.cost += invItem.cost;
                 DatabaseHandler.SqlUpdateItem(newItem);
             }
 
+            invoice.profit = invoice.subtotal - invoice.cost;
             DatabaseHandler.SqlSaveReleasedInvoice(invoice);
             ReportViewer viewer = new ReportViewer(invoice);
             viewer.ShowDialog();

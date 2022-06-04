@@ -94,16 +94,22 @@
     <Compile Include="Forms\Accounting\GeneralJournal.Designer.cs">
       <DependentUpon>GeneralJournal.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ItemImport.cs">
+    <Compile Include="Forms\ItemImporting\DefaultFieldValuesEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ItemImport.Designer.cs">
+    <Compile Include="Forms\ItemImporting\DefaultFieldValuesEditor.Designer.cs">
+      <DependentUpon>DefaultFieldValuesEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ItemImporting\ItemImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ItemImporting\ItemImport.Designer.cs">
       <DependentUpon>ItemImport.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ItemImportFieldEditor.cs">
+    <Compile Include="Forms\ItemImporting\ItemImportFieldEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ItemImportFieldEditor.Designer.cs">
+    <Compile Include="Forms\ItemImporting\ItemImportFieldEditor.Designer.cs">
       <DependentUpon>ItemImportFieldEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ItemMaintenance.cs">
@@ -223,10 +229,13 @@
     <EmbeddedResource Include="Forms\AddCustomer.resx">
       <DependentUpon>AddCustomer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ItemImport.resx">
+    <EmbeddedResource Include="Forms\ItemImporting\DefaultFieldValuesEditor.resx">
+      <DependentUpon>DefaultFieldValuesEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ItemImporting\ItemImport.resx">
       <DependentUpon>ItemImport.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ItemImportFieldEditor.resx">
+    <EmbeddedResource Include="Forms\ItemImporting\ItemImportFieldEditor.resx">
       <DependentUpon>ItemImportFieldEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\POS\Checkout.resx">

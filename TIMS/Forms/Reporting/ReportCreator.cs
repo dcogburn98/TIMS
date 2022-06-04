@@ -75,6 +75,7 @@ namespace TIMS.Forms
                 conditionRightComparatorCB.Items.Add(item);
                 fieldsCB.Items.Add(item);
             }
+            conditionRightComparatorCB.Items.Add("DateTime.Today");
         }
         
         private void addConditionButton_Click(object sender, EventArgs e)
@@ -204,8 +205,8 @@ namespace TIMS.Forms
             if (fieldsLB.SelectedIndex == -1)
                 return;
 
+            totalCB.Items.Remove(fieldsLB.SelectedItem.ToString());
             fieldsLB.Items.RemoveAt(fieldsLB.SelectedIndex);
-            totalLB.Items.Remove(fieldsLB.SelectedItem.ToString());
             if (fieldsLB.Items.Count == 0)
             {
                 viewQueryButton.Enabled = false;

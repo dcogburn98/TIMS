@@ -32,21 +32,6 @@ namespace TIMS
 
         }
 
-        public InvoiceItem(string itemNumber, string itemName, decimal price, int quantity, bool taxed,
-             decimal listPrice = 0.00m, string pricingCode = "!", bool serializedItem = false,
-             string serialNumber = "")
-        {
-            this.itemNumber = itemNumber;
-            this.itemName = itemName;
-            this.price = price;
-            this.quantity = quantity;
-            this.taxed = taxed;
-            this.listPrice = listPrice;
-            this.pricingCode = pricingCode;
-            this.serializedItem = serializedItem;
-            this.serialNumber = serialNumber;
-        }
-
         public InvoiceItem(Item item)
         {
             itemNumber = item.itemNumber;

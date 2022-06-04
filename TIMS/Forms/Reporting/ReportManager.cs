@@ -26,7 +26,7 @@ namespace TIMS.Forms.Reporting
             if (reportPickerCB.SelectedIndex == -1)
                 return;
 
-            currentReport = DatabaseHandler.SqlRetrieveReport(reportPickerCB.Text);
+            currentReport = DatabaseHandler.SqlRetrieveReport(reportPickerCB.Text.Split(' ')[0]);
             conditionsLB.Items.Clear();
             foreach (string condition in currentReport.Conditions)
                 conditionsLB.Items.Add(condition);

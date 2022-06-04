@@ -17,6 +17,8 @@ namespace TIMS
         public decimal taxRate;
         public decimal taxAmount;
         public decimal total;
+        public decimal cost;
+        public decimal profit;
         public List<Payment> payments;
         public decimal totalPayments;
 

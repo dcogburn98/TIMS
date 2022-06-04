@@ -512,11 +512,13 @@ namespace TIMS
 
                 "INVOICENUMBER,SUBTOTAL,TAXABLETOTAL,TAXRATE,TAXAMOUNT,TOTAL," +
                 "TOTALPAYMENTS,AGERESTRICTED,CUSTOMERBIRTHDATE,ATTENTION,PO,MESSAGE," +
-                "SAVEDINVOICE,SAVEDINVOICETIME,INVOICECREATIONTIME,INVOICEFINALIZEDTIME,FINALIZED,VOIDED,CUSTOMERNUMBER,EMPLOYEENUMBER) " +
+                "SAVEDINVOICE,SAVEDINVOICETIME,INVOICECREATIONTIME,INVOICEFINALIZEDTIME,FINALIZED,VOIDED,CUSTOMERNUMBER,EMPLOYEENUMBER, " +
+                "COST, PROFIT) " +
 
                 "VALUES ($INVOICENUMBER,$SUBTOTAL,$TAXABLETOTAL,$TAXRATE,$TAXAMOUNT,$TOTAL," +
                 "$TOTALPAYMENTS,$AGERESTRICTED,$CUSTOMERBIRTHDATE,$ATTENTION,$PO,$MESSAGE," +
-                "$SAVEDINVOICE,$SAVEDINVOICETIME,$INVOICECREATIONTIME,$INVOICEFINALIZEDTIME,$FINALIZED,$VOIDED,$CUSTOMERNUMBER,$EMPLOYEENUMBER)";
+                "$SAVEDINVOICE,$SAVEDINVOICETIME,$INVOICECREATIONTIME,$INVOICEFINALIZEDTIME,$FINALIZED,$VOIDED,$CUSTOMERNUMBER,$EMPLOYEENUMBER, " +
+                "$COST, $PROFIT)";
 
             SQLiteParameter p1 = new SQLiteParameter("$INVOICENUMBER", inv.invoiceNumber);
             SQLiteParameter p2 = new SQLiteParameter("$SUBTOTAL", inv.subtotal);
@@ -538,6 +540,9 @@ namespace TIMS
             SQLiteParameter p18 = new SQLiteParameter("$VOIDED", inv.voided);
             SQLiteParameter p19 = new SQLiteParameter("$CUSTOMERNUMBER", inv.customer.customerNumber);
             SQLiteParameter p20 = new SQLiteParameter("$EMPLOYEENUMBER", inv.employee.employeeNumber);
+            SQLiteParameter p21 = new SQLiteParameter("$COST", inv.cost);
+            SQLiteParameter p22 = new SQLiteParameter("$PROFIT", inv.profit);
+
 
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
@@ -559,6 +564,8 @@ namespace TIMS
             command.Parameters.Add(p18);
             command.Parameters.Add(p19);
             command.Parameters.Add(p20);
+            command.Parameters.Add(p21);
+            command.Parameters.Add(p22);
 
             command.ExecuteNonQuery();
             #endregion
@@ -571,11 +578,11 @@ namespace TIMS
 
                     "INVOICENUMBER,ITEMNUMBER,PRODUCTLINE,ITEMDESCRIPTION,PRICE,LISTPRICE," +
                     "QUANTITY,TOTAL,PRICECODE,SERIALIZED,SERIALNUMBER,AGERESTRICTED," +
-                    "MINIMUMAGE,TAXED,INVOICECODES,GUID) " +
+                    "MINIMUMAGE,TAXED,INVOICECODES,GUID,COST) " +
 
                     "VALUES ($INVOICENUMBER,$ITEMNUMBER,$PRODUCTLINE,$ITEMDESCRIPTION,$PRICE,$LISTPRICE," +
                     "$QUANTITY,$TOTAL,$PRICECODE,$SERIALIZED,$SERIALNUMBER,$AGERESTRICTED," +
-                    "$MINIMUMAGE,$TAXED,$INVOICECODES,$GUID)";
+                    "$MINIMUMAGE,$TAXED,$INVOICECODES,$GUID,$COST)";
 
                 SQLiteParameter pp1 = new SQLiteParameter("$INVOICENUMBER", inv.invoiceNumber);
                 SQLiteParameter pp2 = new SQLiteParameter("$ITEMNUMBER", item.itemNumber);
@@ -598,6 +605,7 @@ namespace TIMS
                 invCodes = invCodes.Trim(',');
                 SQLiteParameter pp15 = new SQLiteParameter("$INVOICECODES", invCodes);
                 SQLiteParameter pp16 = new SQLiteParameter("$GUID", item.ID);
+                SQLiteParameter pp17 = new SQLiteParameter("$GUID", item.ID);
 
                 command.Parameters.Add(pp1);
                 command.Parameters.Add(pp2);
@@ -615,6 +623,7 @@ namespace TIMS
                 command.Parameters.Add(pp14);
                 command.Parameters.Add(pp15);
                 command.Parameters.Add(pp16);
+                command.Parameters.Add(pp17);
 
                 command.ExecuteNonQuery();
             }
@@ -1285,11 +1294,11 @@ namespace TIMS
 
             SQLiteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
-                "SELECT REPORTSHORTCODE FROM REPORTS";
+                "SELECT REPORTSHORTCODE, REPORTNAME FROM REPORTS";
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                reports.Add(reader.GetString(0));
+                reports.Add(reader.GetString(0) + " " + reader.GetString(1));
             }
 
             CloseConnection();

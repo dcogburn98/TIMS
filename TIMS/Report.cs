@@ -54,13 +54,26 @@ namespace TIMS
                 {
                     conditionsString += conArray[2] + " AND ";
                 }
+                else if (DateTime.TryParse(conArray[2], out DateTime date))
+                {
+                    if (conArray[1] == "<=")
+                        date = date.AddDays(1);
+                    conditionsString += @"""" + date.ToString("M/d/yyyy") + @""" AND ";
+                }
                 else if (DatabaseHandler.SqlRetrieveTableHeaders(DataSource).Contains(conArray[2]))
                 {
                     conditionsString += conArray[2] + " AND ";
                 }
+                else if (conArray[2] == "DateTime.Today")
+                {
+                    date = DateTime.Now;
+                    if (conArray[1] == "<=")
+                        date = date.AddDays(1);
+                    conditionsString += @"""" + date.ToString("M/d/yyyy") + @""" AND ";
+                }
                 else
                 {
-                    conditionsString += "\"" + conArray[2] + "\" " + " AND ";
+                    conditionsString += "\"" + conArray[2] + "\" AND ";
                 }
             }
             if (conditionsString.EndsWith("AND "))
@@ -89,7 +102,7 @@ namespace TIMS
         public void RenderPage(XGraphics gfx)
         {
             totalPages = ((Results.Count / ColumnCount) / 40 + ((Results.Count / ColumnCount) % 40 > 0 ? 1 : 0));
-            XFont font = new XFont("Times", 7);
+            XFont font = new XFont("Times", 8);
 
             double currentLine = font.GetHeight() + 5;
             double columnWidth = (gfx.PageSize.Width - 5) / ColumnCount;
