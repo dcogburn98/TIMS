@@ -177,9 +177,15 @@ namespace TIMS.Forms
                     if (cell.OwningColumn.Name.ToLower() == "onHandquantity")
                         newItem.onHandQty = decimal.Parse(cell.Value.ToString());
                     if (cell.OwningColumn.Name.ToLower() == "greenprice")
-                        newItem.greenPrice = decimal.Parse(cell.Value.ToString());
+                        newItem.greenPrice = decimal.Parse(
+                            cell.Value.ToString()[0] == '$' ? 
+                            cell.Value.ToString().Trim('$') :
+                            cell.Value.ToString());
                     if (cell.OwningColumn.Name.ToLower() == "replacementcost")
-                        newItem.replacementCost = decimal.Parse(cell.Value.ToString());
+                        newItem.replacementCost = decimal.Parse(
+                            cell.Value.ToString()[0] == '$' ? 
+                            cell.Value.ToString().Trim('$') : 
+                            cell.Value.ToString());
                 }
                 if (newItem.supplier == null || newItem.supplier == string.Empty)
                     newItem.supplier = "Default";
