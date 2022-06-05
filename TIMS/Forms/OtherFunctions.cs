@@ -33,17 +33,42 @@ namespace TIMS.Forms
             groupCodeTB.Text = workingItem.groupCode.ToString();
             velocityCodeCB.Text = workingItem.velocityCode.ToString();
             prevYearVelocityCodeCB.Text = workingItem.previousYearVelocityCode.ToString();
+            categoryCB.Text = workingItem.category;
             standardPkgTB.Text = workingItem.standardPackage.ToString();
             taxableCB.Checked = workingItem.taxed;
+            descriptionTB.Text = workingItem.longDescription;
+
+            dateStockedTB.Text = workingItem.dateStocked.ToString("MM/dd/yyyy");
+            lastReceiptTB.Text = workingItem.dateLastReceipt.ToString("MM/dd/yyyy");
+            minTB.Text = workingItem.minimum.ToString();
+            maxTB.Text = workingItem.maximum.ToString();
+            onHandTB.Text = workingItem.onHandQty.ToString();
+            wipQtyTB.Text = workingItem.WIPQty.ToString();
+            onOrderQtyTB.Text = workingItem.onOrderQty.ToString();
+            onBackorderQtyTB.Text = workingItem.onBackorderQty.ToString();
+            daysOnOrderTB.Text = workingItem.daysOnOrder.ToString();
+            daysOnBackOrderTB.Text = workingItem.daysOnBackorder.ToString();
+
+            listPriceTB.Text = workingItem.listPrice.ToString();
+            redPriceTB.Text = workingItem.redPrice.ToString();
+            yellowPriceTB.Text = workingItem.yellowPrice.ToString();
+            greenPriceTB.Text = workingItem.greenPrice.ToString();
+            pinkPriceTB.Text = workingItem.pinkPrice.ToString();
+            bluePriceTB.Text = workingItem.bluePrice.ToString();
+            costTB.Text = workingItem.replacementCost.ToString();
+            avgCostTB.Text = workingItem.averageCost.ToString();
         }
 
         private void ChangeManagementTab(object sender, EventArgs e)
         {
             if (tabControl1.SelectedTab == tabPage1)
+            {
                 itemNameTB.Focus();
+            }
         }
 
-        #region Toolbar Items
+        #region Toolbar Item Click Methods and Other Form Handlers
+        
         private void orderOgToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -71,6 +96,25 @@ namespace TIMS.Forms
         {
             Program.OpenForm(new Invoicing());
         }
+
+        private void reportCreatorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReportCreator creator = new ReportCreator();
+            creator.Show();
+        }
+
+        private void reportManagerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReportManager manager = new ReportManager();
+            manager.Show();
+        }
+
+        private void massImportItemsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ItemImport import = new ItemImport();
+            import.Show();
+        }
+
         #endregion
 
         private void reviewChangeTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -138,22 +182,5 @@ namespace TIMS.Forms
             taxableCB.Checked = false;
         }
 
-        private void reportCreatorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ReportCreator creator = new ReportCreator();
-            creator.Show();
         }
-
-        private void reportManagerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ReportManager manager = new ReportManager();
-            manager.Show();
-        }
-
-        private void massImportItemsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ItemImport import = new ItemImport();
-            import.Show();
-        }
-    }
 }

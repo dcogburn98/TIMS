@@ -14,6 +14,8 @@ namespace TIMS.Forms
 
         bool addingLine;
         bool lineDeleted;
+        bool cancelstarted = false;
+        int count = 0;
 
         public enum State
         {
@@ -388,6 +390,15 @@ namespace TIMS.Forms
 
         private void extraFunctionsDropBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            count++;
+            if (cancelstarted)
+            {
+                cancelstarted = false;
+                extraFunctionsDropBox.SelectedIndex = 0;
+                return;
+            }
+            cancelstarted = true;
+
             if (extraFunctionsDropBox.SelectedIndex == 1)
             {
                 DialogResult ans = MessageBox.Show("Are you sure you want to cancel this invoice?", "Warning", MessageBoxButtons.YesNo);
@@ -465,8 +476,11 @@ namespace TIMS.Forms
 
         private void dataGridView1_SelectionChanged(object sender, EventArgs e)
         {
-            if (addingLine)
+            if (addingLine || dataGridView1.SelectedRows.Count < 1)
+            {
+                lineDeleted = false;
                 return;
+            }
             if (lineDeleted)
             {
                 lineDeleted = false;

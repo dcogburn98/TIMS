@@ -29,18 +29,18 @@ namespace TIMS.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea13 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend13 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series13 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea14 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend14 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea15 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend15 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series15 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea16 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend16 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series16 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.salesActivitiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.invoicingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,6 +77,7 @@ namespace TIMS.Forms
             this.supersedesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.certificationTypesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miscellaneousChagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.massImportItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.adjustmentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.binLabelsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.physicalInventoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -177,14 +178,55 @@ namespace TIMS.Forms
             this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.button5 = new System.Windows.Forms.Button();
+            this.saveItemButton = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.lastLabelPriceTB = new System.Windows.Forms.TextBox();
+            this.lastLabelDateTB = new System.Windows.Forms.TextBox();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.avgCostTB = new System.Windows.Forms.TextBox();
+            this.costTB = new System.Windows.Forms.TextBox();
+            this.bluePriceTB = new System.Windows.Forms.TextBox();
+            this.pinkPriceTB = new System.Windows.Forms.TextBox();
+            this.greenPriceTB = new System.Windows.Forms.TextBox();
+            this.yellowPriceTB = new System.Windows.Forms.TextBox();
+            this.redPriceTB = new System.Windows.Forms.TextBox();
+            this.listPriceTB = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.daysOnBackOrderTB = new System.Windows.Forms.TextBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.daysOnOrderTB = new System.Windows.Forms.TextBox();
+            this.onBackorderQtyTB = new System.Windows.Forms.TextBox();
+            this.onOrderQtyTB = new System.Windows.Forms.TextBox();
+            this.wipQtyTB = new System.Windows.Forms.TextBox();
+            this.onHandTB = new System.Windows.Forms.TextBox();
+            this.maxTB = new System.Windows.Forms.TextBox();
+            this.minTB = new System.Windows.Forms.TextBox();
+            this.lastReceiptTB = new System.Windows.Forms.TextBox();
+            this.dateStockedTB = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label17 = new System.Windows.Forms.Label();
             this.taxableCB = new System.Windows.Forms.CheckBox();
@@ -233,48 +275,9 @@ namespace TIMS.Forms
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
-            this.textBox9 = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.textBox10 = new System.Windows.Forms.TextBox();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.label30 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
-            this.textBox11 = new System.Windows.Forms.TextBox();
-            this.textBox12 = new System.Windows.Forms.TextBox();
-            this.textBox13 = new System.Windows.Forms.TextBox();
-            this.textBox14 = new System.Windows.Forms.TextBox();
-            this.textBox15 = new System.Windows.Forms.TextBox();
-            this.textBox16 = new System.Windows.Forms.TextBox();
-            this.textBox17 = new System.Windows.Forms.TextBox();
-            this.textBox18 = new System.Windows.Forms.TextBox();
-            this.label35 = new System.Windows.Forms.Label();
-            this.label36 = new System.Windows.Forms.Label();
-            this.textBox19 = new System.Windows.Forms.TextBox();
-            this.textBox20 = new System.Windows.Forms.TextBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.label37 = new System.Windows.Forms.Label();
-            this.massImportItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dateOfLastSaleTB = new System.Windows.Forms.TextBox();
+            this.label38 = new System.Windows.Forms.Label();
+            this.listBox2 = new System.Windows.Forms.ListBox();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage17.SuspendLayout();
@@ -285,6 +288,7 @@ namespace TIMS.Forms
             this.tabPage1.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -574,6 +578,13 @@ namespace TIMS.Forms
             this.miscellaneousChagesToolStripMenuItem.Name = "miscellaneousChagesToolStripMenuItem";
             this.miscellaneousChagesToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.miscellaneousChagesToolStripMenuItem.Text = "Miscellaneous Chages";
+            // 
+            // massImportItemsToolStripMenuItem
+            // 
+            this.massImportItemsToolStripMenuItem.Name = "massImportItemsToolStripMenuItem";
+            this.massImportItemsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.massImportItemsToolStripMenuItem.Text = "Mass Import Items";
+            this.massImportItemsToolStripMenuItem.Click += new System.EventHandler(this.massImportItemsToolStripMenuItem_Click);
             // 
             // adjustmentsToolStripMenuItem
             // 
@@ -1258,71 +1269,71 @@ namespace TIMS.Forms
             // 
             // chart4
             // 
-            chartArea13.Name = "ChartArea1";
-            this.chart4.ChartAreas.Add(chartArea13);
-            legend13.Name = "Legend1";
-            this.chart4.Legends.Add(legend13);
+            chartArea1.Name = "ChartArea1";
+            this.chart4.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart4.Legends.Add(legend1);
             this.chart4.Location = new System.Drawing.Point(402, 295);
             this.chart4.Name = "chart4";
-            series13.ChartArea = "ChartArea1";
-            series13.Legend = "Legend1";
-            series13.Name = "Series1";
-            this.chart4.Series.Add(series13);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart4.Series.Add(series1);
             this.chart4.Size = new System.Drawing.Size(396, 286);
             this.chart4.TabIndex = 3;
             this.chart4.Text = "chart4";
             // 
             // chart3
             // 
-            chartArea14.Name = "ChartArea1";
-            this.chart3.ChartAreas.Add(chartArea14);
-            legend14.Name = "Legend1";
-            this.chart3.Legends.Add(legend14);
+            chartArea2.Name = "ChartArea1";
+            this.chart3.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart3.Legends.Add(legend2);
             this.chart3.Location = new System.Drawing.Point(3, 295);
             this.chart3.Name = "chart3";
-            series14.ChartArea = "ChartArea1";
-            series14.Legend = "Legend1";
-            series14.Name = "Series1";
-            this.chart3.Series.Add(series14);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chart3.Series.Add(series2);
             this.chart3.Size = new System.Drawing.Size(396, 286);
             this.chart3.TabIndex = 2;
             this.chart3.Text = "chart3";
             // 
             // chart2
             // 
-            chartArea15.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea15);
-            legend15.Name = "Legend1";
-            this.chart2.Legends.Add(legend15);
+            chartArea3.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chart2.Legends.Add(legend3);
             this.chart2.Location = new System.Drawing.Point(402, 3);
             this.chart2.Name = "chart2";
-            series15.ChartArea = "ChartArea1";
-            series15.Legend = "Legend1";
-            series15.Name = "Series1";
-            this.chart2.Series.Add(series15);
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.chart2.Series.Add(series3);
             this.chart2.Size = new System.Drawing.Size(396, 286);
             this.chart2.TabIndex = 1;
             this.chart2.Text = "chart2";
             // 
             // chart1
             // 
-            chartArea16.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea16);
-            legend16.Name = "Legend1";
-            this.chart1.Legends.Add(legend16);
+            chartArea4.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            this.chart1.Legends.Add(legend4);
             this.chart1.Location = new System.Drawing.Point(3, 3);
             this.chart1.Name = "chart1";
-            series16.ChartArea = "ChartArea1";
-            series16.Legend = "Legend1";
-            series16.Name = "Series1";
-            this.chart1.Series.Add(series16);
+            series4.ChartArea = "ChartArea1";
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            this.chart1.Series.Add(series4);
             this.chart1.Size = new System.Drawing.Size(396, 286);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.button5);
+            this.tabPage1.Controls.Add(this.saveItemButton);
             this.tabPage1.Controls.Add(this.button4);
             this.tabPage1.Controls.Add(this.tabControl2);
             this.tabPage1.Controls.Add(this.itemDescriptionTB);
@@ -1338,15 +1349,15 @@ namespace TIMS.Forms
             this.tabPage1.Text = "Item Management";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // saveItemButton
             // 
-            this.button5.Location = new System.Drawing.Point(723, 4);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 7;
-            this.button5.Text = "Clear Entry";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.saveItemButton.Location = new System.Drawing.Point(723, 4);
+            this.saveItemButton.Name = "saveItemButton";
+            this.saveItemButton.Size = new System.Drawing.Size(75, 23);
+            this.saveItemButton.TabIndex = 7;
+            this.saveItemButton.Text = "Save Item";
+            this.saveItemButton.UseVisualStyleBackColor = true;
+            this.saveItemButton.Click += new System.EventHandler(this.button5_Click);
             // 
             // button4
             // 
@@ -1391,6 +1402,9 @@ namespace TIMS.Forms
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.listBox2);
+            this.groupBox5.Controls.Add(this.label38);
+            this.groupBox5.Controls.Add(this.dateOfLastSaleTB);
             this.groupBox5.Location = new System.Drawing.Point(522, 413);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(252, 135);
@@ -1402,8 +1416,8 @@ namespace TIMS.Forms
             // 
             this.groupBox4.Controls.Add(this.label37);
             this.groupBox4.Controls.Add(this.listBox1);
-            this.groupBox4.Controls.Add(this.textBox20);
-            this.groupBox4.Controls.Add(this.textBox19);
+            this.groupBox4.Controls.Add(this.lastLabelPriceTB);
+            this.groupBox4.Controls.Add(this.lastLabelDateTB);
             this.groupBox4.Controls.Add(this.label36);
             this.groupBox4.Controls.Add(this.label35);
             this.groupBox4.Location = new System.Drawing.Point(264, 413);
@@ -1412,6 +1426,55 @@ namespace TIMS.Forms
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Location";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(84, 70);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(56, 13);
+            this.label37.TabIndex = 28;
+            this.label37.Text = "Locations:";
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(140, 70);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(100, 56);
+            this.listBox1.TabIndex = 38;
+            // 
+            // lastLabelPriceTB
+            // 
+            this.lastLabelPriceTB.Location = new System.Drawing.Point(140, 44);
+            this.lastLabelPriceTB.Name = "lastLabelPriceTB";
+            this.lastLabelPriceTB.Size = new System.Drawing.Size(100, 20);
+            this.lastLabelPriceTB.TabIndex = 37;
+            // 
+            // lastLabelDateTB
+            // 
+            this.lastLabelDateTB.Location = new System.Drawing.Point(140, 19);
+            this.lastLabelDateTB.Name = "lastLabelDateTB";
+            this.lastLabelDateTB.Size = new System.Drawing.Size(100, 20);
+            this.lastLabelDateTB.TabIndex = 36;
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(54, 47);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(86, 13);
+            this.label36.TabIndex = 1;
+            this.label36.Text = "Last Label Price:";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(55, 22);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(85, 13);
+            this.label35.TabIndex = 0;
+            this.label35.Text = "Last Label Date:";
             // 
             // groupBox3
             // 
@@ -1423,14 +1486,14 @@ namespace TIMS.Forms
             this.groupBox3.Controls.Add(this.label32);
             this.groupBox3.Controls.Add(this.label33);
             this.groupBox3.Controls.Add(this.label34);
-            this.groupBox3.Controls.Add(this.textBox11);
-            this.groupBox3.Controls.Add(this.textBox12);
-            this.groupBox3.Controls.Add(this.textBox13);
-            this.groupBox3.Controls.Add(this.textBox14);
-            this.groupBox3.Controls.Add(this.textBox15);
-            this.groupBox3.Controls.Add(this.textBox16);
-            this.groupBox3.Controls.Add(this.textBox17);
-            this.groupBox3.Controls.Add(this.textBox18);
+            this.groupBox3.Controls.Add(this.avgCostTB);
+            this.groupBox3.Controls.Add(this.costTB);
+            this.groupBox3.Controls.Add(this.bluePriceTB);
+            this.groupBox3.Controls.Add(this.pinkPriceTB);
+            this.groupBox3.Controls.Add(this.greenPriceTB);
+            this.groupBox3.Controls.Add(this.yellowPriceTB);
+            this.groupBox3.Controls.Add(this.redPriceTB);
+            this.groupBox3.Controls.Add(this.listPriceTB);
             this.groupBox3.Location = new System.Drawing.Point(522, 6);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(252, 401);
@@ -1438,9 +1501,137 @@ namespace TIMS.Forms
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = " ";
             // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(72, 203);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(74, 13);
+            this.label27.TabIndex = 32;
+            this.label27.Text = "Average Cost:";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(115, 176);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(31, 13);
+            this.label28.TabIndex = 31;
+            this.label28.Text = "Cost:";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(115, 149);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(31, 13);
+            this.label29.TabIndex = 30;
+            this.label29.Text = "Blue:";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(115, 123);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(31, 13);
+            this.label30.TabIndex = 29;
+            this.label30.Text = "Pink:";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(107, 96);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(39, 13);
+            this.label31.TabIndex = 28;
+            this.label31.Text = "Green:";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(105, 70);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(41, 13);
+            this.label32.TabIndex = 27;
+            this.label32.Text = "Yellow:";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(116, 44);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(30, 13);
+            this.label33.TabIndex = 26;
+            this.label33.Text = "Red:";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(120, 18);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(26, 13);
+            this.label34.TabIndex = 25;
+            this.label34.Text = "List:";
+            // 
+            // avgCostTB
+            // 
+            this.avgCostTB.Location = new System.Drawing.Point(146, 200);
+            this.avgCostTB.Name = "avgCostTB";
+            this.avgCostTB.Size = new System.Drawing.Size(100, 20);
+            this.avgCostTB.TabIndex = 35;
+            // 
+            // costTB
+            // 
+            this.costTB.Location = new System.Drawing.Point(146, 173);
+            this.costTB.Name = "costTB";
+            this.costTB.Size = new System.Drawing.Size(100, 20);
+            this.costTB.TabIndex = 34;
+            // 
+            // bluePriceTB
+            // 
+            this.bluePriceTB.Location = new System.Drawing.Point(146, 146);
+            this.bluePriceTB.Name = "bluePriceTB";
+            this.bluePriceTB.Size = new System.Drawing.Size(100, 20);
+            this.bluePriceTB.TabIndex = 33;
+            // 
+            // pinkPriceTB
+            // 
+            this.pinkPriceTB.Location = new System.Drawing.Point(146, 120);
+            this.pinkPriceTB.Name = "pinkPriceTB";
+            this.pinkPriceTB.Size = new System.Drawing.Size(100, 20);
+            this.pinkPriceTB.TabIndex = 32;
+            // 
+            // greenPriceTB
+            // 
+            this.greenPriceTB.Location = new System.Drawing.Point(146, 93);
+            this.greenPriceTB.Name = "greenPriceTB";
+            this.greenPriceTB.Size = new System.Drawing.Size(100, 20);
+            this.greenPriceTB.TabIndex = 31;
+            // 
+            // yellowPriceTB
+            // 
+            this.yellowPriceTB.Location = new System.Drawing.Point(146, 67);
+            this.yellowPriceTB.Name = "yellowPriceTB";
+            this.yellowPriceTB.Size = new System.Drawing.Size(100, 20);
+            this.yellowPriceTB.TabIndex = 30;
+            // 
+            // redPriceTB
+            // 
+            this.redPriceTB.Location = new System.Drawing.Point(146, 41);
+            this.redPriceTB.Name = "redPriceTB";
+            this.redPriceTB.Size = new System.Drawing.Size(100, 20);
+            this.redPriceTB.TabIndex = 29;
+            // 
+            // listPriceTB
+            // 
+            this.listPriceTB.Location = new System.Drawing.Point(146, 15);
+            this.listPriceTB.Name = "listPriceTB";
+            this.listPriceTB.Size = new System.Drawing.Size(100, 20);
+            this.listPriceTB.TabIndex = 28;
+            // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.textBox10);
+            this.groupBox2.Controls.Add(this.daysOnBackOrderTB);
             this.groupBox2.Controls.Add(this.label26);
             this.groupBox2.Controls.Add(this.label25);
             this.groupBox2.Controls.Add(this.label24);
@@ -1450,21 +1641,172 @@ namespace TIMS.Forms
             this.groupBox2.Controls.Add(this.label20);
             this.groupBox2.Controls.Add(this.label19);
             this.groupBox2.Controls.Add(this.label18);
-            this.groupBox2.Controls.Add(this.textBox9);
-            this.groupBox2.Controls.Add(this.textBox8);
-            this.groupBox2.Controls.Add(this.textBox7);
-            this.groupBox2.Controls.Add(this.textBox6);
-            this.groupBox2.Controls.Add(this.textBox5);
-            this.groupBox2.Controls.Add(this.textBox4);
-            this.groupBox2.Controls.Add(this.textBox3);
-            this.groupBox2.Controls.Add(this.textBox2);
-            this.groupBox2.Controls.Add(this.textBox1);
+            this.groupBox2.Controls.Add(this.daysOnOrderTB);
+            this.groupBox2.Controls.Add(this.onBackorderQtyTB);
+            this.groupBox2.Controls.Add(this.onOrderQtyTB);
+            this.groupBox2.Controls.Add(this.wipQtyTB);
+            this.groupBox2.Controls.Add(this.onHandTB);
+            this.groupBox2.Controls.Add(this.maxTB);
+            this.groupBox2.Controls.Add(this.minTB);
+            this.groupBox2.Controls.Add(this.lastReceiptTB);
+            this.groupBox2.Controls.Add(this.dateStockedTB);
             this.groupBox2.Location = new System.Drawing.Point(264, 6);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(252, 401);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Quantities";
+            // 
+            // daysOnBackOrderTB
+            // 
+            this.daysOnBackOrderTB.Location = new System.Drawing.Point(194, 231);
+            this.daysOnBackOrderTB.Name = "daysOnBackOrderTB";
+            this.daysOnBackOrderTB.Size = new System.Drawing.Size(46, 20);
+            this.daysOnBackOrderTB.TabIndex = 27;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(6, 234);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(134, 13);
+            this.label26.TabIndex = 17;
+            this.label26.Text = "Days On Order/Backorder:";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(64, 207);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(76, 13);
+            this.label25.TabIndex = 16;
+            this.label25.Text = "On Backorder:";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(87, 180);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(53, 13);
+            this.label24.TabIndex = 15;
+            this.label24.Text = "On Order:";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(90, 153);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(50, 13);
+            this.label23.TabIndex = 14;
+            this.label23.Text = "WIP Qty:";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(87, 127);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(53, 13);
+            this.label22.TabIndex = 13;
+            this.label22.Text = "On Hand:";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(110, 100);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(30, 13);
+            this.label21.TabIndex = 12;
+            this.label21.Text = "Max:";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(113, 74);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(27, 13);
+            this.label20.TabIndex = 11;
+            this.label20.Text = "Min:";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(70, 48);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(70, 13);
+            this.label19.TabIndex = 10;
+            this.label19.Text = "Last Receipt:";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(64, 22);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(76, 13);
+            this.label18.TabIndex = 9;
+            this.label18.Text = "Date Stocked:";
+            // 
+            // daysOnOrderTB
+            // 
+            this.daysOnOrderTB.Location = new System.Drawing.Point(142, 231);
+            this.daysOnOrderTB.Name = "daysOnOrderTB";
+            this.daysOnOrderTB.Size = new System.Drawing.Size(46, 20);
+            this.daysOnOrderTB.TabIndex = 26;
+            // 
+            // onBackorderQtyTB
+            // 
+            this.onBackorderQtyTB.Location = new System.Drawing.Point(140, 204);
+            this.onBackorderQtyTB.Name = "onBackorderQtyTB";
+            this.onBackorderQtyTB.Size = new System.Drawing.Size(100, 20);
+            this.onBackorderQtyTB.TabIndex = 25;
+            // 
+            // onOrderQtyTB
+            // 
+            this.onOrderQtyTB.Location = new System.Drawing.Point(140, 177);
+            this.onOrderQtyTB.Name = "onOrderQtyTB";
+            this.onOrderQtyTB.Size = new System.Drawing.Size(100, 20);
+            this.onOrderQtyTB.TabIndex = 24;
+            // 
+            // wipQtyTB
+            // 
+            this.wipQtyTB.Location = new System.Drawing.Point(140, 150);
+            this.wipQtyTB.Name = "wipQtyTB";
+            this.wipQtyTB.Size = new System.Drawing.Size(100, 20);
+            this.wipQtyTB.TabIndex = 23;
+            // 
+            // onHandTB
+            // 
+            this.onHandTB.Location = new System.Drawing.Point(140, 124);
+            this.onHandTB.Name = "onHandTB";
+            this.onHandTB.Size = new System.Drawing.Size(100, 20);
+            this.onHandTB.TabIndex = 22;
+            // 
+            // maxTB
+            // 
+            this.maxTB.Location = new System.Drawing.Point(140, 97);
+            this.maxTB.Name = "maxTB";
+            this.maxTB.Size = new System.Drawing.Size(100, 20);
+            this.maxTB.TabIndex = 21;
+            // 
+            // minTB
+            // 
+            this.minTB.Location = new System.Drawing.Point(140, 71);
+            this.minTB.Name = "minTB";
+            this.minTB.Size = new System.Drawing.Size(100, 20);
+            this.minTB.TabIndex = 20;
+            // 
+            // lastReceiptTB
+            // 
+            this.lastReceiptTB.Location = new System.Drawing.Point(140, 45);
+            this.lastReceiptTB.Name = "lastReceiptTB";
+            this.lastReceiptTB.Size = new System.Drawing.Size(100, 20);
+            this.lastReceiptTB.TabIndex = 19;
+            // 
+            // dateStockedTB
+            // 
+            this.dateStockedTB.Location = new System.Drawing.Point(140, 19);
+            this.dateStockedTB.Name = "dateStockedTB";
+            this.dateStockedTB.Size = new System.Drawing.Size(100, 20);
+            this.dateStockedTB.TabIndex = 18;
             // 
             // groupBox1
             // 
@@ -1520,7 +1862,7 @@ namespace TIMS.Forms
             this.taxableCB.Location = new System.Drawing.Point(101, 365);
             this.taxableCB.Name = "taxableCB";
             this.taxableCB.Size = new System.Drawing.Size(15, 14);
-            this.taxableCB.TabIndex = 29;
+            this.taxableCB.TabIndex = 16;
             this.taxableCB.UseVisualStyleBackColor = true;
             // 
             // label16
@@ -1627,9 +1969,9 @@ namespace TIMS.Forms
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(38, 74);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(63, 13);
+            this.label5.Size = new System.Drawing.Size(61, 13);
             this.label5.TabIndex = 17;
-            this.label5.Text = "Description:";
+            this.label5.Text = "Item Name:";
             // 
             // descriptionTB
             // 
@@ -1637,7 +1979,7 @@ namespace TIMS.Forms
             this.descriptionTB.Multiline = true;
             this.descriptionTB.Name = "descriptionTB";
             this.descriptionTB.Size = new System.Drawing.Size(246, 129);
-            this.descriptionTB.TabIndex = 16;
+            this.descriptionTB.TabIndex = 17;
             // 
             // label4
             // 
@@ -1662,21 +2004,21 @@ namespace TIMS.Forms
             this.unitTB.Location = new System.Drawing.Point(101, 337);
             this.unitTB.Name = "unitTB";
             this.unitTB.Size = new System.Drawing.Size(83, 20);
-            this.unitTB.TabIndex = 12;
+            this.unitTB.TabIndex = 15;
             // 
             // factoryStdPkgTB
             // 
             this.factoryStdPkgTB.Location = new System.Drawing.Point(101, 311);
             this.factoryStdPkgTB.Name = "factoryStdPkgTB";
             this.factoryStdPkgTB.Size = new System.Drawing.Size(83, 20);
-            this.factoryStdPkgTB.TabIndex = 11;
+            this.factoryStdPkgTB.TabIndex = 14;
             // 
             // standardPkgTB
             // 
             this.standardPkgTB.Location = new System.Drawing.Point(101, 285);
             this.standardPkgTB.Name = "standardPkgTB";
             this.standardPkgTB.Size = new System.Drawing.Size(83, 20);
-            this.standardPkgTB.TabIndex = 10;
+            this.standardPkgTB.TabIndex = 13;
             // 
             // subDepartmentCB
             // 
@@ -1684,7 +2026,7 @@ namespace TIMS.Forms
             this.subDepartmentCB.Location = new System.Drawing.Point(101, 258);
             this.subDepartmentCB.Name = "subDepartmentCB";
             this.subDepartmentCB.Size = new System.Drawing.Size(145, 21);
-            this.subDepartmentCB.TabIndex = 9;
+            this.subDepartmentCB.TabIndex = 12;
             // 
             // departmentCB
             // 
@@ -1692,7 +2034,7 @@ namespace TIMS.Forms
             this.departmentCB.Location = new System.Drawing.Point(101, 231);
             this.departmentCB.Name = "departmentCB";
             this.departmentCB.Size = new System.Drawing.Size(145, 21);
-            this.departmentCB.TabIndex = 8;
+            this.departmentCB.TabIndex = 11;
             // 
             // categoryCB
             // 
@@ -1700,7 +2042,7 @@ namespace TIMS.Forms
             this.categoryCB.Location = new System.Drawing.Point(101, 204);
             this.categoryCB.Name = "categoryCB";
             this.categoryCB.Size = new System.Drawing.Size(145, 21);
-            this.categoryCB.TabIndex = 7;
+            this.categoryCB.TabIndex = 10;
             // 
             // prevYearVelocityCodeCB
             // 
@@ -1708,7 +2050,7 @@ namespace TIMS.Forms
             this.prevYearVelocityCodeCB.Location = new System.Drawing.Point(101, 177);
             this.prevYearVelocityCodeCB.Name = "prevYearVelocityCodeCB";
             this.prevYearVelocityCodeCB.Size = new System.Drawing.Size(145, 21);
-            this.prevYearVelocityCodeCB.TabIndex = 6;
+            this.prevYearVelocityCodeCB.TabIndex = 9;
             // 
             // velocityCodeCB
             // 
@@ -1716,7 +2058,7 @@ namespace TIMS.Forms
             this.velocityCodeCB.Location = new System.Drawing.Point(101, 150);
             this.velocityCodeCB.Name = "velocityCodeCB";
             this.velocityCodeCB.Size = new System.Drawing.Size(145, 21);
-            this.velocityCodeCB.TabIndex = 5;
+            this.velocityCodeCB.TabIndex = 8;
             // 
             // supplierCB
             // 
@@ -1724,35 +2066,35 @@ namespace TIMS.Forms
             this.supplierCB.Location = new System.Drawing.Point(101, 97);
             this.supplierCB.Name = "supplierCB";
             this.supplierCB.Size = new System.Drawing.Size(145, 21);
-            this.supplierCB.TabIndex = 4;
+            this.supplierCB.TabIndex = 6;
             // 
             // groupCodeTB
             // 
             this.groupCodeTB.Location = new System.Drawing.Point(101, 124);
             this.groupCodeTB.Name = "groupCodeTB";
             this.groupCodeTB.Size = new System.Drawing.Size(83, 20);
-            this.groupCodeTB.TabIndex = 3;
+            this.groupCodeTB.TabIndex = 7;
             // 
             // itemNameTB
             // 
             this.itemNameTB.Location = new System.Drawing.Point(101, 71);
             this.itemNameTB.Name = "itemNameTB";
             this.itemNameTB.Size = new System.Drawing.Size(145, 20);
-            this.itemNameTB.TabIndex = 2;
+            this.itemNameTB.TabIndex = 5;
             // 
             // itemNumberTBField
             // 
             this.itemNumberTBField.Location = new System.Drawing.Point(101, 45);
             this.itemNumberTBField.Name = "itemNumberTBField";
             this.itemNumberTBField.Size = new System.Drawing.Size(145, 20);
-            this.itemNumberTBField.TabIndex = 1;
+            this.itemNumberTBField.TabIndex = 4;
             // 
             // productLineTBField
             // 
             this.productLineTBField.Location = new System.Drawing.Point(101, 19);
             this.productLineTBField.Name = "productLineTBField";
             this.productLineTBField.Size = new System.Drawing.Size(48, 20);
-            this.productLineTBField.TabIndex = 0;
+            this.productLineTBField.TabIndex = 3;
             // 
             // tabPage9
             // 
@@ -1866,7 +2208,7 @@ namespace TIMS.Forms
             this.itemNumberTB.Location = new System.Drawing.Point(82, 6);
             this.itemNumberTB.Name = "itemNumberTB";
             this.itemNumberTB.Size = new System.Drawing.Size(183, 20);
-            this.itemNumberTB.TabIndex = 0;
+            this.itemNumberTB.TabIndex = 1;
             this.itemNumberTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.itemNumberTB_KeyDown);
             this.itemNumberTB.Leave += new System.EventHandler(this.itemNumberTB_Leave);
             // 
@@ -1907,346 +2249,35 @@ namespace TIMS.Forms
             this.tabPage4.Text = "Employee Management";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(140, 19);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 0;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(140, 45);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 1;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(140, 71);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 20);
-            this.textBox3.TabIndex = 2;
-            // 
-            // textBox4
-            // 
-            this.textBox4.Location = new System.Drawing.Point(140, 97);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 3;
-            // 
-            // textBox5
-            // 
-            this.textBox5.Location = new System.Drawing.Point(140, 124);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 20);
-            this.textBox5.TabIndex = 4;
-            // 
-            // textBox6
-            // 
-            this.textBox6.Location = new System.Drawing.Point(140, 150);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(100, 20);
-            this.textBox6.TabIndex = 5;
-            // 
-            // textBox7
-            // 
-            this.textBox7.Location = new System.Drawing.Point(140, 177);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(100, 20);
-            this.textBox7.TabIndex = 6;
-            // 
-            // textBox8
-            // 
-            this.textBox8.Location = new System.Drawing.Point(140, 204);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(100, 20);
-            this.textBox8.TabIndex = 7;
-            // 
-            // textBox9
-            // 
-            this.textBox9.Location = new System.Drawing.Point(142, 231);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(46, 20);
-            this.textBox9.TabIndex = 8;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(64, 22);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(76, 13);
-            this.label18.TabIndex = 9;
-            this.label18.Text = "Date Stocked:";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(70, 48);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(70, 13);
-            this.label19.TabIndex = 10;
-            this.label19.Text = "Last Receipt:";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(113, 74);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(27, 13);
-            this.label20.TabIndex = 11;
-            this.label20.Text = "Min:";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(110, 100);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(30, 13);
-            this.label21.TabIndex = 12;
-            this.label21.Text = "Max:";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(87, 127);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(53, 13);
-            this.label22.TabIndex = 13;
-            this.label22.Text = "On Hand:";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(90, 153);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(50, 13);
-            this.label23.TabIndex = 14;
-            this.label23.Text = "WIP Qty:";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(87, 180);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(53, 13);
-            this.label24.TabIndex = 15;
-            this.label24.Text = "On Order:";
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(64, 207);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(76, 13);
-            this.label25.TabIndex = 16;
-            this.label25.Text = "On Backorder:";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(6, 234);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(134, 13);
-            this.label26.TabIndex = 17;
-            this.label26.Text = "Days On Order/Backorder:";
-            // 
-            // textBox10
-            // 
-            this.textBox10.Location = new System.Drawing.Point(194, 231);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(46, 20);
-            this.textBox10.TabIndex = 18;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(72, 203);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(74, 13);
-            this.label27.TabIndex = 32;
-            this.label27.Text = "Average Cost:";
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(115, 176);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(31, 13);
-            this.label28.TabIndex = 31;
-            this.label28.Text = "Cost:";
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(115, 149);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(31, 13);
-            this.label29.TabIndex = 30;
-            this.label29.Text = "Blue:";
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(115, 123);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(31, 13);
-            this.label30.TabIndex = 29;
-            this.label30.Text = "Pink:";
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(107, 96);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(39, 13);
-            this.label31.TabIndex = 28;
-            this.label31.Text = "Green:";
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(105, 70);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(41, 13);
-            this.label32.TabIndex = 27;
-            this.label32.Text = "Yellow:";
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(116, 44);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(30, 13);
-            this.label33.TabIndex = 26;
-            this.label33.Text = "Red:";
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(120, 18);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(26, 13);
-            this.label34.TabIndex = 25;
-            this.label34.Text = "List:";
-            // 
-            // textBox11
-            // 
-            this.textBox11.Location = new System.Drawing.Point(146, 200);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(100, 20);
-            this.textBox11.TabIndex = 24;
-            // 
-            // textBox12
-            // 
-            this.textBox12.Location = new System.Drawing.Point(146, 173);
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(100, 20);
-            this.textBox12.TabIndex = 23;
-            // 
-            // textBox13
-            // 
-            this.textBox13.Location = new System.Drawing.Point(146, 146);
-            this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new System.Drawing.Size(100, 20);
-            this.textBox13.TabIndex = 22;
-            // 
-            // textBox14
-            // 
-            this.textBox14.Location = new System.Drawing.Point(146, 120);
-            this.textBox14.Name = "textBox14";
-            this.textBox14.Size = new System.Drawing.Size(100, 20);
-            this.textBox14.TabIndex = 21;
-            // 
-            // textBox15
-            // 
-            this.textBox15.Location = new System.Drawing.Point(146, 93);
-            this.textBox15.Name = "textBox15";
-            this.textBox15.Size = new System.Drawing.Size(100, 20);
-            this.textBox15.TabIndex = 20;
-            // 
-            // textBox16
-            // 
-            this.textBox16.Location = new System.Drawing.Point(146, 67);
-            this.textBox16.Name = "textBox16";
-            this.textBox16.Size = new System.Drawing.Size(100, 20);
-            this.textBox16.TabIndex = 19;
-            // 
-            // textBox17
-            // 
-            this.textBox17.Location = new System.Drawing.Point(146, 41);
-            this.textBox17.Name = "textBox17";
-            this.textBox17.Size = new System.Drawing.Size(100, 20);
-            this.textBox17.TabIndex = 18;
-            // 
-            // textBox18
-            // 
-            this.textBox18.Location = new System.Drawing.Point(146, 15);
-            this.textBox18.Name = "textBox18";
-            this.textBox18.Size = new System.Drawing.Size(100, 20);
-            this.textBox18.TabIndex = 17;
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(55, 22);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(85, 13);
-            this.label35.TabIndex = 0;
-            this.label35.Text = "Last Label Date:";
-            // 
-            // label36
-            // 
-            this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(54, 47);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(86, 13);
-            this.label36.TabIndex = 1;
-            this.label36.Text = "Last Label Price:";
-            // 
-            // textBox19
-            // 
-            this.textBox19.Location = new System.Drawing.Point(140, 19);
-            this.textBox19.Name = "textBox19";
-            this.textBox19.Size = new System.Drawing.Size(100, 20);
-            this.textBox19.TabIndex = 25;
-            // 
-            // textBox20
-            // 
-            this.textBox20.Location = new System.Drawing.Point(140, 44);
-            this.textBox20.Name = "textBox20";
-            this.textBox20.Size = new System.Drawing.Size(100, 20);
-            this.textBox20.TabIndex = 26;
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(140, 70);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(100, 56);
-            this.listBox1.TabIndex = 27;
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(84, 70);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(56, 13);
-            this.label37.TabIndex = 28;
-            this.label37.Text = "Locations:";
-            // 
-            // massImportItemsToolStripMenuItem
-            // 
-            this.massImportItemsToolStripMenuItem.Name = "massImportItemsToolStripMenuItem";
-            this.massImportItemsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.massImportItemsToolStripMenuItem.Text = "Mass Import Items";
-            this.massImportItemsToolStripMenuItem.Click += new System.EventHandler(this.massImportItemsToolStripMenuItem_Click);
+            // dateOfLastSaleTB
+            // 
+            this.dateOfLastSaleTB.Location = new System.Drawing.Point(107, 19);
+            this.dateOfLastSaleTB.Name = "dateOfLastSaleTB";
+            this.dateOfLastSaleTB.Size = new System.Drawing.Size(139, 20);
+            this.dateOfLastSaleTB.TabIndex = 39;
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(12, 22);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(89, 13);
+            this.label38.TabIndex = 34;
+            this.label38.Text = "Date of Last Sale";
+            // 
+            // listBox2
+            // 
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.Location = new System.Drawing.Point(15, 45);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(231, 82);
+            this.listBox2.TabIndex = 40;
             // 
             // OtherFunctions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(836, 683);
+            this.ClientSize = new System.Drawing.Size(836, 678);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -2265,6 +2296,8 @@ namespace TIMS.Forms
             this.tabPage1.PerformLayout();
             this.tabControl2.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -2469,7 +2502,7 @@ namespace TIMS.Forms
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button saveItemButton;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.ToolStripMenuItem reportCreatorToolStripMenuItem;
         private System.Windows.Forms.Label label25;
@@ -2480,19 +2513,19 @@ namespace TIMS.Forms
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox textBox9;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox daysOnOrderTB;
+        private System.Windows.Forms.TextBox onBackorderQtyTB;
+        private System.Windows.Forms.TextBox onOrderQtyTB;
+        private System.Windows.Forms.TextBox wipQtyTB;
+        private System.Windows.Forms.TextBox onHandTB;
+        private System.Windows.Forms.TextBox maxTB;
+        private System.Windows.Forms.TextBox minTB;
+        private System.Windows.Forms.TextBox lastReceiptTB;
+        private System.Windows.Forms.TextBox dateStockedTB;
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.TextBox textBox20;
-        private System.Windows.Forms.TextBox textBox19;
+        private System.Windows.Forms.TextBox lastLabelPriceTB;
+        private System.Windows.Forms.TextBox lastLabelDateTB;
         private System.Windows.Forms.Label label36;
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Label label27;
@@ -2503,16 +2536,19 @@ namespace TIMS.Forms
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Label label34;
-        private System.Windows.Forms.TextBox textBox11;
-        private System.Windows.Forms.TextBox textBox12;
-        private System.Windows.Forms.TextBox textBox13;
-        private System.Windows.Forms.TextBox textBox14;
-        private System.Windows.Forms.TextBox textBox15;
-        private System.Windows.Forms.TextBox textBox16;
-        private System.Windows.Forms.TextBox textBox17;
-        private System.Windows.Forms.TextBox textBox18;
-        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.TextBox avgCostTB;
+        private System.Windows.Forms.TextBox costTB;
+        private System.Windows.Forms.TextBox bluePriceTB;
+        private System.Windows.Forms.TextBox pinkPriceTB;
+        private System.Windows.Forms.TextBox greenPriceTB;
+        private System.Windows.Forms.TextBox yellowPriceTB;
+        private System.Windows.Forms.TextBox redPriceTB;
+        private System.Windows.Forms.TextBox listPriceTB;
+        private System.Windows.Forms.TextBox daysOnBackOrderTB;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.ToolStripMenuItem massImportItemsToolStripMenuItem;
+        private System.Windows.Forms.ListBox listBox2;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.TextBox dateOfLastSaleTB;
     }
 }

@@ -174,7 +174,7 @@ namespace TIMS.Forms
                         newItem.longDescription = cell.Value.ToString();
                     if (cell.OwningColumn.Name.ToLower() == "category")
                         newItem.category = cell.Value.ToString() == "" ? "Default" : cell.Value.ToString();
-                    if (cell.OwningColumn.Name.ToLower() == "onHandquantity")
+                    if (cell.OwningColumn.Name.ToLower() == "onhandquantity")
                         newItem.onHandQty = decimal.Parse(cell.Value.ToString());
                     if (cell.OwningColumn.Name.ToLower() == "greenprice")
                         newItem.greenPrice = decimal.Parse(
