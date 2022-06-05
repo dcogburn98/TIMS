@@ -163,9 +163,9 @@ namespace TIMS.Forms
                 foreach (DataGridViewCell cell in itemRow.Cells)
                 {
                     if (cell.OwningColumn.Name.ToLower() == "productline")
-                        newItem.productLine = cell.Value.ToString();
+                        newItem.productLine = cell.Value.ToString() == "" ? "XXX" : cell.Value.ToString();
                     if (cell.OwningColumn.Name.ToLower() == "itemnumber")
-                        newItem.itemNumber = cell.Value.ToString();
+                        newItem.itemNumber = cell.Value.ToString() == "" ? "XXX" : cell.Value.ToString();
                     if (cell.OwningColumn.Name.ToLower() == "sku")
                         newItem.SKU = cell.Value.ToString();
                     if (cell.OwningColumn.Name.ToLower() == "itemname")
@@ -173,7 +173,7 @@ namespace TIMS.Forms
                     if (cell.OwningColumn.Name.ToLower() == "longdescription")
                         newItem.longDescription = cell.Value.ToString();
                     if (cell.OwningColumn.Name.ToLower() == "category")
-                        newItem.category = cell.Value.ToString();
+                        newItem.category = cell.Value.ToString() == "" ? "Default" : cell.Value.ToString();
                     if (cell.OwningColumn.Name.ToLower() == "onHandquantity")
                         newItem.onHandQty = decimal.Parse(cell.Value.ToString());
                     if (cell.OwningColumn.Name.ToLower() == "greenprice")
