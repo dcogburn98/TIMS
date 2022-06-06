@@ -19,11 +19,11 @@ namespace TIMS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Login login = new Login();
-            OpenForms.Add(login);
-            login.Show();
-            Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
-            Application.Run();
+            //Login login = new Login();
+            //OpenForms.Add(login);
+            //login.Show();
+            //Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
+            //Application.Run();
 
             #region Invoice Viewer Test Code
             //SHA256 encrypt = SHA256.Create();
@@ -78,6 +78,11 @@ namespace TIMS
             //ReportManager manager = new ReportManager();
             //Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
             //Application.Run(manager);
+            #endregion
+            #region Bin Label Printer Test Code
+            DatabaseHandler.InitializeDatabases();
+            ReportViewer viewer = new ReportViewer(new BarcodeSheet());
+            Application.Run(viewer);
             #endregion
         }
 

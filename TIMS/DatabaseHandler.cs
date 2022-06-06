@@ -834,7 +834,57 @@ namespace TIMS
             return inv;
         }
 
-        public static InvoiceItem SqlRetrieveBarcode(string scannedBarcode)
+        public static Item SqlRetrieveItem(string scannedBarcode)
+        {
+            OpenConnection();
+            Item item = null;
+            string barcodeType = "UPCA";
+            string barcodeData = String.Empty;
+
+            if (scannedBarcode.Substring(0, 1) == "@")
+            {
+                if (scannedBarcode.Substring(1, 1).ToLower() == "c")
+                {
+                    barcodeType = "UPCA";
+                    barcodeData = scannedBarcode.Substring(2);
+                }
+            }
+            else
+            {
+                barcodeData = scannedBarcode;
+            }
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT SCANNEDITEMNUMBER,SCANNEDPRODUCTLINE,SCANNEDQUANTITY FROM BARCODES " +
+                "WHERE (BARCODETYPE = $TYPE AND BARCODEVALUE = $VALUE)";
+            SQLiteParameter p1 = new SQLiteParameter("$TYPE", barcodeType);
+            SQLiteParameter p2 = new SQLiteParameter("$VALUE", barcodeData);
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                string d1 = reader.GetString(0);
+                string d2 = reader.GetString(1);
+                decimal d3 = reader.GetDecimal(2);
+                List<Item> itemMatches = SqlCheckItemNumber(d1, true);
+                item = itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower());
+            }
+
+            CloseConnection();
+            return item;
+        }
+
+        public static InvoiceItem SqlRetrieveInvoiceItem(string scannedBarcode)
         {
             OpenConnection();
             InvoiceItem item = null;
@@ -878,11 +928,38 @@ namespace TIMS
                 decimal d3 = reader.GetDecimal(2);
                 List<Item> itemMatches = SqlCheckItemNumber(d1, true);
                 item = new InvoiceItem(itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower()));
-                item.quantity = d3;
             }
 
             CloseConnection();
             return item;
+        }
+
+        public static List<string> SqlRetrieveBarcode(Item item)
+        {
+            List<string> barcodes = new List<string>();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT BARCODEVALUE FROM BARCODES WHERE SCANNEDITEMNUMBER = $ITEMNUMBER AND SCANNEDPRODUCTLINE = $LINE";
+            SQLiteParameter p1 = new SQLiteParameter("$ITEMNUMBER", item.itemNumber);
+            SQLiteParameter p2 = new SQLiteParameter("$LINE", item.productLine);
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+            SQLiteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                barcodes.Add(reader.GetString(0));
+            }
+
+            CloseConnection();
+            return barcodes;
         }
 
         public static List<Invoice> SqlRetrieveInvoicesByCriteria(string[] criteria)

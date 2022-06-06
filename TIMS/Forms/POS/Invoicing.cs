@@ -14,8 +14,6 @@ namespace TIMS.Forms
 
         bool addingLine;
         bool lineDeleted;
-        bool cancelstarted = false;
-        int count = 0;
 
         public enum State
         {
@@ -148,7 +146,7 @@ namespace TIMS.Forms
         {
             if (itemNoTB.Text.Substring(0, 1) == "@")
             {
-                InvoiceItem invItem = DatabaseHandler.SqlRetrieveBarcode(itemNoTB.Text);
+                InvoiceItem invItem = DatabaseHandler.SqlRetrieveInvoiceItem(itemNoTB.Text);
                 if (invItem == null)
                 {
                     MessageBox.Show("Barcode does not exist!");
@@ -390,15 +388,6 @@ namespace TIMS.Forms
 
         private void extraFunctionsDropBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            count++;
-            if (cancelstarted)
-            {
-                cancelstarted = false;
-                extraFunctionsDropBox.SelectedIndex = 0;
-                return;
-            }
-            cancelstarted = true;
-
             if (extraFunctionsDropBox.SelectedIndex == 1)
             {
                 DialogResult ans = MessageBox.Show("Are you sure you want to cancel this invoice?", "Warning", MessageBoxButtons.YesNo);

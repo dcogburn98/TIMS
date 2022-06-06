@@ -14,6 +14,10 @@ namespace TIMS.Forms
 
         Report report;
 
+        UPCA upc;
+
+        BarcodeSheet barcodeSheet;
+
         public ReportViewer(Invoice inv)
         {
             InitializeComponent();
@@ -43,6 +47,16 @@ namespace TIMS.Forms
             report.currentPage = 1;
             pagePreview1.Zoom = PdfSharp.Forms.Zoom.BestFit;
             pagePreview1.SetRenderFunction(report.RenderPage);
+        }
+
+        public ReportViewer(BarcodeSheet sheet)
+        {
+            InitializeComponent();
+            CancelButton = closeButton;
+            this.barcodeSheet = sheet;
+
+            pagePreview1.Zoom = PdfSharp.Forms.Zoom.BestFit;
+            pagePreview1.SetRenderFunction(sheet.RenderBarcodePage);
         }
 
         private void closeButton_Click(object sender, EventArgs e)
