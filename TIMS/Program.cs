@@ -81,7 +81,11 @@ namespace TIMS
             #endregion
             #region Bin Label Printer Test Code
             DatabaseHandler.InitializeDatabases();
-            ReportViewer viewer = new ReportViewer(new BarcodeSheet());
+            BarcodeSheet sheet = new BarcodeSheet();
+            sheet.LabelItems.Add(DatabaseHandler.SqlRetrieveItem("SNAPPLE", "SNA"));
+            sheet.LabelItems.Add(DatabaseHandler.SqlRetrieveItem("MINUTEMAID", "MMD"));
+            sheet.LabelItems.Add(DatabaseHandler.SqlRetrieveItem("75130", "NOL"));
+            ReportViewer viewer = new ReportViewer(sheet);
             Application.Run(viewer);
             #endregion
         }

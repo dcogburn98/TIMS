@@ -14,8 +14,6 @@ namespace TIMS.Forms
 
         Report report;
 
-        UPCA upc;
-
         BarcodeSheet barcodeSheet;
 
         public ReportViewer(Invoice inv)
@@ -53,10 +51,15 @@ namespace TIMS.Forms
         {
             InitializeComponent();
             CancelButton = closeButton;
-            this.barcodeSheet = sheet;
+            barcodeSheet = sheet;
+            barcodeSheet.totalPages = 1;
+            if (barcodeSheet.totalPages > 1)
+                nextPageBtn.Enabled = true;
+            prevPageBtn.Enabled = false;
 
             pagePreview1.Zoom = PdfSharp.Forms.Zoom.BestFit;
-            pagePreview1.SetRenderFunction(sheet.RenderBarcodePage);
+            pagePreview1.PageSize = new XSize(612, 828);
+            pagePreview1.SetRenderFunction(barcodeSheet.RenderBarcodePage);
         }
 
         private void closeButton_Click(object sender, EventArgs e)
@@ -107,7 +110,16 @@ namespace TIMS.Forms
                     report.currentPage++;
                 }
             }
+            else if (barcodeSheet != null)
+            {
+                barcodeSheet.RenderBarcodePage(gfx);
 
+                if (barcodeSheet.currentPage != barcodeSheet.totalPages)
+                {
+                    ev.HasMorePages = true;
+                    barcodeSheet.currentPage++;
+                }
+            }
         }
 
         private void nextPageBtn_Click(object sender, EventArgs e)
