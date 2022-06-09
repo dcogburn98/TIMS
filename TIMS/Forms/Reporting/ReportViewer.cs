@@ -10,11 +10,11 @@ namespace TIMS.Forms
     public partial class ReportViewer : Form
     {
         public bool printed = false;
-        Invoice inv;
+        public Invoice inv;
 
-        Report report;
+        public Report report;
 
-        BarcodeSheet barcodeSheet;
+        public BarcodeSheet barcodeSheet;
 
         public ReportViewer(Invoice inv)
         {
@@ -52,13 +52,13 @@ namespace TIMS.Forms
             InitializeComponent();
             CancelButton = closeButton;
             barcodeSheet = sheet;
-            barcodeSheet.totalPages = 1;
             if (barcodeSheet.totalPages > 1)
                 nextPageBtn.Enabled = true;
             prevPageBtn.Enabled = false;
 
             pagePreview1.Zoom = PdfSharp.Forms.Zoom.BestFit;
-            pagePreview1.PageSize = new XSize(612, 828);
+            pagePreview1.PageSize = PageSizeConverter.ToSize(PageSize.Letter);
+            pagePreview1.PageGraphicsUnit = XGraphicsUnit.Point;
             pagePreview1.SetRenderFunction(barcodeSheet.RenderBarcodePage);
         }
 
@@ -72,8 +72,9 @@ namespace TIMS.Forms
             PrintDialog pd = new PrintDialog();
             pd.Document = new PrintDocument();
             pd.Document.PrintPage += new PrintPageEventHandler(PrintPage);
+            pd.PrinterSettings.Duplex = Duplex.Simplex;
+            
             DialogResult result = pd.ShowDialog();
-
             if (result == DialogResult.OK)
             {
                 pd.Document.Print();
@@ -89,7 +90,8 @@ namespace TIMS.Forms
         {
             Graphics graphics = ev.Graphics;
             graphics.PageUnit = GraphicsUnit.Point;
-            XGraphics gfx = XGraphics.FromGraphics(graphics, PageSizeConverter.ToSize(PageSize.A4));
+            XGraphics gfx = XGraphics.FromGraphics(graphics, PageSizeConverter.ToSize(PageSize.Letter));
+            
             if (inv != null)
             {
                 inv.RenderPage(gfx);
@@ -114,11 +116,11 @@ namespace TIMS.Forms
             {
                 barcodeSheet.RenderBarcodePage(gfx);
 
-                if (barcodeSheet.currentPage != barcodeSheet.totalPages)
-                {
-                    ev.HasMorePages = true;
-                    barcodeSheet.currentPage++;
-                }
+                //if (barcodeSheet.currentPage != barcodeSheet.totalPages)
+                //{
+                //    ev.HasMorePages = true;
+                //    barcodeSheet.currentPage++;
+                //}
             }
         }
 
@@ -140,6 +142,14 @@ namespace TIMS.Forms
                 prevPageBtn.Enabled = true;
                 pagePreview1.Refresh();
             }
+            else if (barcodeSheet != null)
+            {
+                barcodeSheet.currentPage++;
+                if (barcodeSheet.currentPage == barcodeSheet.totalPages)
+                    nextPageBtn.Enabled = false;
+                prevPageBtn.Enabled = true;
+                pagePreview1.Refresh();
+            }
         }
 
         private void prevPageBtn_Click(object sender, EventArgs e)
@@ -156,6 +166,14 @@ namespace TIMS.Forms
             {
                 report.currentPage--;
                 if (report.currentPage == 1)
+                    prevPageBtn.Enabled = false;
+                nextPageBtn.Enabled = true;
+                pagePreview1.Refresh();
+            }
+            else if (barcodeSheet != null)
+            {
+                barcodeSheet.currentPage--;
+                if (barcodeSheet.currentPage == 1)
                     prevPageBtn.Enabled = false;
                 nextPageBtn.Enabled = true;
                 pagePreview1.Refresh();

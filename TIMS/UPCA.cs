@@ -45,7 +45,7 @@ namespace TIMS
             {
                 ProductType = UPC.Substring(0, 1);
                 ManufacturerCode = UPC.Substring(1, 5);
-                ProductCode = UPC.Substring(5, 5);
+                ProductCode = UPC.Substring(6, 5);
                 ChecksumDigit = UPC.Substring(11, 1);
                 //CalculateChecksumDigit();
 
@@ -163,7 +163,7 @@ namespace TIMS
                         g.DrawRectangle(brush, xPosition, yStart, lineWidth, height - fTextHeight);
                     else
                         // Draw a full line.
-                        g.DrawRectangle(brush, xPosition, yStart, lineWidth, height - fTextHeight);
+                        g.DrawRectangle(brush, xPosition, yStart, lineWidth, height);
                 }
 
                 xPosition += lineWidth;
@@ -225,15 +225,16 @@ namespace TIMS
 
     public class BarcodeSheet
     {
-        public double topMargin = 0.5d;
-        public double bottomMargin = 0.5d;
-        public double sideMargin = 0.25d;
+        public double topMargin = 0.0d;
+        public double bottomMargin = 0.15625d;
+        public double leftMargin = 0.3125d;
+        //public double rightMargin = 0.5d;
         public int labelColumns = 3;
         public int labelRows = 9;
         public double labelVerticalSpacing = 0.0d;
         public double labelHorizontalSpacing = 0.0d;
-        public double labelWidth = 1.5d;
-        public double labelHeight = 1.0d;
+        public double labelWidth = 2.5d;
+        public double labelHeight = 1.1875d;
         public double ppi = 72.0d;
         public int totalLabels;
 
@@ -242,30 +243,38 @@ namespace TIMS
         public bool drawBarcode = true;
         public bool drawBarcodeString = false;
 
-        public int totalPages = 0;
-        public int currentPage = 0;
+        public int totalPages = 1;
+        public int currentPage = 1;
 
         public List<Item> LabelItems;
 
-        public BarcodeSheet()
+        public BarcodeSheet(List<Item> items)
         {
             totalLabels = labelColumns * labelRows;
             topMargin *= ppi;
             bottomMargin *= ppi;
-            sideMargin *= ppi;
+            leftMargin *= ppi;
             labelVerticalSpacing *= ppi;
             labelHorizontalSpacing *= ppi;
+            labelWidth *= ppi;
+            labelHeight *= ppi;
 
-            LabelItems = new List<Item>();
-        }
-
-        public BarcodeSheet(List<Item> items)
-        {
             LabelItems = items;
+
+            totalPages = LabelItems.Count % totalLabels == 0 ? 
+                LabelItems.Count / totalLabels : 
+                LabelItems.Count / totalLabels + 1;
         }
 
         public BarcodeSheet(List<string> barcodes)
         {
+            totalLabels = labelColumns * labelRows;
+            topMargin *= ppi;
+            bottomMargin *= ppi;
+            leftMargin *= ppi;
+            labelVerticalSpacing *= ppi;
+            labelHorizontalSpacing *= ppi;
+
             foreach (string barcode in barcodes)
             {
                 LabelItems.Add(DatabaseHandler.SqlRetrieveItem(barcode));
@@ -274,8 +283,12 @@ namespace TIMS
 
         public void RenderBarcodePage(XGraphics gfx)
         {
-            labelWidth = ((gfx.PageSize.Width - (2 * sideMargin)) / labelColumns);
-            labelHeight = ((gfx.PageSize.Height - (bottomMargin + topMargin)) / labelRows);
+            //labelWidth = ((gfx.PageSize.Width - (2 * sideMargin)) / labelColumns);
+            //labelHeight = ((gfx.PageSize.Height - (bottomMargin + topMargin)) / labelRows);
+            XFont smallFont = new XFont("Arial", 8, XFontStyle.Bold);
+            XFont priceFont = new XFont("Arial", 34, XFontStyle.BoldItalic);
+            gfx.DrawString((labelWidth / ppi).ToString(), smallFont, XBrushes.Black, 0, 10);
+            gfx.DrawString((labelHeight / ppi).ToString(), smallFont, XBrushes.Black, 0, 25);
 
             #region
             for (int i = 0; i != labelColumns; i++)
@@ -284,13 +297,37 @@ namespace TIMS
                 for (int j = 0; j != labelRows; j++)
                 {
                     gfx.DrawRectangle(XPens.Black, new System.Drawing.RectangleF(
-                        (float)((i * labelWidth) + sideMargin),
+                        (float)((i * labelWidth) + leftMargin),
                         (float)((j * labelHeight) + topMargin),
                         (float)labelWidth,
                         (float)labelHeight));
 
-                    Item item = LabelItems[(i * j) + j];
-                    XFont smallFont = new XFont("Courier", 8);
+                    Item item = LabelItems[(i * labelRows) + j + ((currentPage - 1) * totalLabels)];
+
+                    string itemName = item.itemName;
+                    double x = 0;
+                    if (gfx.MeasureString(itemName, smallFont).Width < labelWidth * 0.95d)
+                        x = ((i * labelWidth) + leftMargin + ((labelWidth / 2) - (gfx.MeasureString(itemName, smallFont).Width / 2)));
+                    else
+                        x = i * labelWidth + 10 + leftMargin;
+                    while (gfx.MeasureString(itemName, smallFont).Width > labelWidth * 0.90)
+                        itemName = itemName.Substring(0, itemName.Length - 1);
+                    gfx.DrawString(
+                        itemName,
+                        smallFont,
+                        XBrushes.Black,
+                        new XPoint(
+                            (float)x,
+                            (float)((j * labelHeight) + topMargin) + (labelHeight * 0.2d) - smallFont.GetHeight()));
+
+                    string price = item.greenPrice.ToString("C");
+                    gfx.DrawString(
+                        price,
+                        priceFont,
+                        XBrushes.Black,
+                        new XPoint(
+                            (float)((i * labelWidth) + leftMargin + ((labelWidth / 2) - (gfx.MeasureString(price, priceFont).Width / 2))),
+                            (float)((j * labelHeight) + topMargin) + (labelHeight * 0.55d) - smallFont.GetHeight()));
 
                     string itemNumber = item.productLine + " " + item.itemNumber;
                     gfx.DrawString(
@@ -298,22 +335,31 @@ namespace TIMS
                         smallFont,
                         XBrushes.Black,
                         new XPoint(
-                            (float)((i * labelWidth) + sideMargin),
-                            (float)((j * labelHeight) + topMargin) + (labelHeight * 0.75d)));
+                            (float)((i * labelWidth) + leftMargin + ((labelWidth / 2) - (gfx.MeasureString(itemNumber, smallFont).Width / 2))),
+                            (float)((j * labelHeight) + topMargin) + (labelHeight * 0.7d) - smallFont.GetHeight()));
 
-                    string barcode = 
-                        DatabaseHandler.SqlRetrieveBarcode(item) != null ? 
-                        DatabaseHandler.SqlRetrieveBarcode(item)[0] : null;
+                    //string barcode = 
+                    //    DatabaseHandler.SqlRetrieveBarcode(item) != null ? 
+                    //    DatabaseHandler.SqlRetrieveBarcode(item)[0] : null;
+                    string barcode = "047708762106";
                     if (barcode != null)
                     {
                         UPCA upc = new UPCA(barcode);
                         upc.pt = new XPoint(
-                            (float)((i * labelWidth) + sideMargin),
-                            (float)((j * labelHeight) + topMargin) + (labelHeight * 0.75d));
+                            (float)((i * labelWidth) + leftMargin),
+                            (float)((j * labelHeight) + topMargin) + (labelHeight * 0.65d));
                         upc.RenderBarcode(gfx, labelWidth - 10, labelHeight / 4);
+
+                        gfx.DrawString(
+                            barcode,
+                            smallFont,
+                            XBrushes.Black,
+                            new XPoint(
+                                (float)((i * labelWidth) + leftMargin + ((labelWidth / 2) - (gfx.MeasureString(barcode, smallFont).Width / 2))),
+                                (float)((j * labelHeight) + topMargin) + (labelHeight * 1.0d) - smallFont.GetHeight()));
                     }
 
-                    if (((i * j) + j + 1) == LabelItems.Count)
+                    if (((i * labelRows) + j + ((currentPage - 1) * totalLabels)+ 1) == LabelItems.Count)
                     {
                         broken = true;
                         break;

@@ -40,6 +40,9 @@
             // 
             // pagePreview1
             // 
+            this.pagePreview1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pagePreview1.DesktopColor = System.Drawing.SystemColors.ControlDark;
             this.pagePreview1.Location = new System.Drawing.Point(12, 12);
             this.pagePreview1.Name = "pagePreview1";
@@ -54,6 +57,7 @@
             // 
             // closeButton
             // 
+            this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.Location = new System.Drawing.Point(861, 618);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(75, 23);
@@ -64,6 +68,7 @@
             // 
             // printBtn
             // 
+            this.printBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.printBtn.Location = new System.Drawing.Point(780, 618);
             this.printBtn.Name = "printBtn";
             this.printBtn.Size = new System.Drawing.Size(75, 23);
@@ -74,6 +79,7 @@
             // 
             // prevPageBtn
             // 
+            this.prevPageBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.prevPageBtn.Location = new System.Drawing.Point(12, 618);
             this.prevPageBtn.Name = "prevPageBtn";
             this.prevPageBtn.Size = new System.Drawing.Size(99, 23);
@@ -84,6 +90,7 @@
             // 
             // nextPageBtn
             // 
+            this.nextPageBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.nextPageBtn.Enabled = false;
             this.nextPageBtn.Location = new System.Drawing.Point(117, 618);
             this.nextPageBtn.Name = "nextPageBtn";

@@ -994,7 +994,7 @@ namespace TIMS
             return invoices;
         }
 
-        public static Item SqlRetrieveItem(string itemNumber, string productLine)
+        public static Item SqlRetrieveItem(string itemNumber, string productLine, bool connectionOpened = false)
         {
             string fixedIN = string.Empty;
             foreach (char c in itemNumber)
@@ -1005,7 +1005,8 @@ namespace TIMS
             fixedIN = fixedIN.ToUpper();
 
             Item item = new Item();
-            OpenConnection();
+            if (!connectionOpened)
+                OpenConnection();
 
             SQLiteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
@@ -1017,7 +1018,8 @@ namespace TIMS
             SQLiteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
-                CloseConnection();
+                if (!connectionOpened)
+                    CloseConnection();
                 return null;
             }
 
@@ -1072,7 +1074,8 @@ namespace TIMS
             reader.Close();
             reader.Dispose();
 
-            CloseConnection();
+            if (!connectionOpened)
+                CloseConnection();
 
             string fixedPLE = string.Empty;
             foreach (char c in item.itemNumber)
@@ -1475,6 +1478,32 @@ namespace TIMS
 
             CloseConnection();
             return true;
+        }
+
+        public static List<Item> SqlRetrieveLabelOutOfDateItems()
+        {
+            List<Item> items = new List<Item>();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT PRODUCTLINE, ITEMNUMBER FROM ITEMS WHERE LASTLABELPRICE != GREENPRICE";
+            SQLiteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                string pl = reader.GetString(0);
+                string itemno = reader.GetString(1);
+                items.Add(SqlRetrieveItem(itemno, pl, true));
+            }
+
+            CloseConnection();
+            return items;
         }
 
         public static void OpenConnection()
