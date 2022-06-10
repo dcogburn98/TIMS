@@ -29,18 +29,18 @@ namespace TIMS.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.salesActivitiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.invoicingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -178,14 +178,17 @@ namespace TIMS.Forms
             this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.saveItemButton = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.clearItemButton = new System.Windows.Forms.Button();
+            this.searchItemButton = new System.Windows.Forms.Button();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.salesLB = new System.Windows.Forms.ListBox();
+            this.label38 = new System.Windows.Forms.Label();
+            this.dateOfLastSaleTB = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label37 = new System.Windows.Forms.Label();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.locationsLB = new System.Windows.Forms.ListBox();
             this.lastLabelPriceTB = new System.Windows.Forms.TextBox();
             this.lastLabelDateTB = new System.Windows.Forms.TextBox();
             this.label36 = new System.Windows.Forms.Label();
@@ -275,9 +278,11 @@ namespace TIMS.Forms
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.dateOfLastSaleTB = new System.Windows.Forms.TextBox();
-            this.label38 = new System.Windows.Forms.Label();
-            this.listBox2 = new System.Windows.Forms.ListBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.serializedCB = new System.Windows.Forms.CheckBox();
+            this.serialNumberTB = new System.Windows.Forms.TextBox();
+            this.serialNumbersLB = new System.Windows.Forms.ListBox();
+            this.removerSNbtn = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage17.SuspendLayout();
@@ -293,6 +298,7 @@ namespace TIMS.Forms
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -470,6 +476,7 @@ namespace TIMS.Forms
             this.createOrderToolStripMenuItem1.Name = "createOrderToolStripMenuItem1";
             this.createOrderToolStripMenuItem1.Size = new System.Drawing.Size(250, 22);
             this.createOrderToolStripMenuItem1.Text = "Create Order";
+            this.createOrderToolStripMenuItem1.Click += new System.EventHandler(this.createOrderToolStripMenuItem1_Click);
             // 
             // editOrderToolStripMenuItem1
             // 
@@ -597,6 +604,7 @@ namespace TIMS.Forms
             this.binLabelsToolStripMenuItem.Name = "binLabelsToolStripMenuItem";
             this.binLabelsToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.binLabelsToolStripMenuItem.Text = "Bin Labels";
+            this.binLabelsToolStripMenuItem.Click += new System.EventHandler(this.binLabelsToolStripMenuItem_Click);
             // 
             // physicalInventoryToolStripMenuItem
             // 
@@ -1269,72 +1277,72 @@ namespace TIMS.Forms
             // 
             // chart4
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart4.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart4.Legends.Add(legend1);
+            chartArea5.Name = "ChartArea1";
+            this.chart4.ChartAreas.Add(chartArea5);
+            legend5.Name = "Legend1";
+            this.chart4.Legends.Add(legend5);
             this.chart4.Location = new System.Drawing.Point(402, 295);
             this.chart4.Name = "chart4";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart4.Series.Add(series1);
+            series5.ChartArea = "ChartArea1";
+            series5.Legend = "Legend1";
+            series5.Name = "Series1";
+            this.chart4.Series.Add(series5);
             this.chart4.Size = new System.Drawing.Size(396, 286);
             this.chart4.TabIndex = 3;
             this.chart4.Text = "chart4";
             // 
             // chart3
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chart3.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chart3.Legends.Add(legend2);
+            chartArea6.Name = "ChartArea1";
+            this.chart3.ChartAreas.Add(chartArea6);
+            legend6.Name = "Legend1";
+            this.chart3.Legends.Add(legend6);
             this.chart3.Location = new System.Drawing.Point(3, 295);
             this.chart3.Name = "chart3";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chart3.Series.Add(series2);
+            series6.ChartArea = "ChartArea1";
+            series6.Legend = "Legend1";
+            series6.Name = "Series1";
+            this.chart3.Series.Add(series6);
             this.chart3.Size = new System.Drawing.Size(396, 286);
             this.chart3.TabIndex = 2;
             this.chart3.Text = "chart3";
             // 
             // chart2
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chart2.Legends.Add(legend3);
+            chartArea7.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea7);
+            legend7.Name = "Legend1";
+            this.chart2.Legends.Add(legend7);
             this.chart2.Location = new System.Drawing.Point(402, 3);
             this.chart2.Name = "chart2";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.chart2.Series.Add(series3);
+            series7.ChartArea = "ChartArea1";
+            series7.Legend = "Legend1";
+            series7.Name = "Series1";
+            this.chart2.Series.Add(series7);
             this.chart2.Size = new System.Drawing.Size(396, 286);
             this.chart2.TabIndex = 1;
             this.chart2.Text = "chart2";
             // 
             // chart1
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chart1.Legends.Add(legend4);
+            chartArea8.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea8);
+            legend8.Name = "Legend1";
+            this.chart1.Legends.Add(legend8);
             this.chart1.Location = new System.Drawing.Point(3, 3);
             this.chart1.Name = "chart1";
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chart1.Series.Add(series4);
+            series8.ChartArea = "ChartArea1";
+            series8.Legend = "Legend1";
+            series8.Name = "Series1";
+            this.chart1.Series.Add(series8);
             this.chart1.Size = new System.Drawing.Size(396, 286);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.saveItemButton);
-            this.tabPage1.Controls.Add(this.button4);
+            this.tabPage1.Controls.Add(this.clearItemButton);
+            this.tabPage1.Controls.Add(this.searchItemButton);
             this.tabPage1.Controls.Add(this.tabControl2);
             this.tabPage1.Controls.Add(this.itemDescriptionTB);
             this.tabPage1.Controls.Add(this.label2);
@@ -1349,24 +1357,24 @@ namespace TIMS.Forms
             this.tabPage1.Text = "Item Management";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // saveItemButton
+            // clearItemButton
             // 
-            this.saveItemButton.Location = new System.Drawing.Point(723, 4);
-            this.saveItemButton.Name = "saveItemButton";
-            this.saveItemButton.Size = new System.Drawing.Size(75, 23);
-            this.saveItemButton.TabIndex = 7;
-            this.saveItemButton.Text = "Save Item";
-            this.saveItemButton.UseVisualStyleBackColor = true;
-            this.saveItemButton.Click += new System.EventHandler(this.button5_Click);
+            this.clearItemButton.Location = new System.Drawing.Point(723, 4);
+            this.clearItemButton.Name = "clearItemButton";
+            this.clearItemButton.Size = new System.Drawing.Size(75, 23);
+            this.clearItemButton.TabIndex = 7;
+            this.clearItemButton.Text = "Save Item";
+            this.clearItemButton.UseVisualStyleBackColor = true;
+            this.clearItemButton.Click += new System.EventHandler(this.button5_Click);
             // 
-            // button4
+            // searchItemButton
             // 
-            this.button4.Location = new System.Drawing.Point(642, 4);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 6;
-            this.button4.Text = "Search";
-            this.button4.UseVisualStyleBackColor = true;
+            this.searchItemButton.Location = new System.Drawing.Point(642, 4);
+            this.searchItemButton.Name = "searchItemButton";
+            this.searchItemButton.Size = new System.Drawing.Size(75, 23);
+            this.searchItemButton.TabIndex = 6;
+            this.searchItemButton.Text = "Search";
+            this.searchItemButton.UseVisualStyleBackColor = true;
             // 
             // tabControl2
             // 
@@ -1387,6 +1395,7 @@ namespace TIMS.Forms
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.groupBox6);
             this.tabPage5.Controls.Add(this.groupBox5);
             this.tabPage5.Controls.Add(this.groupBox4);
             this.tabPage5.Controls.Add(this.groupBox3);
@@ -1402,7 +1411,7 @@ namespace TIMS.Forms
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.listBox2);
+            this.groupBox5.Controls.Add(this.salesLB);
             this.groupBox5.Controls.Add(this.label38);
             this.groupBox5.Controls.Add(this.dateOfLastSaleTB);
             this.groupBox5.Location = new System.Drawing.Point(522, 413);
@@ -1412,10 +1421,34 @@ namespace TIMS.Forms
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Sales";
             // 
+            // salesLB
+            // 
+            this.salesLB.FormattingEnabled = true;
+            this.salesLB.Location = new System.Drawing.Point(15, 45);
+            this.salesLB.Name = "salesLB";
+            this.salesLB.Size = new System.Drawing.Size(231, 82);
+            this.salesLB.TabIndex = 40;
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(12, 22);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(89, 13);
+            this.label38.TabIndex = 34;
+            this.label38.Text = "Date of Last Sale";
+            // 
+            // dateOfLastSaleTB
+            // 
+            this.dateOfLastSaleTB.Location = new System.Drawing.Point(107, 19);
+            this.dateOfLastSaleTB.Name = "dateOfLastSaleTB";
+            this.dateOfLastSaleTB.Size = new System.Drawing.Size(139, 20);
+            this.dateOfLastSaleTB.TabIndex = 39;
+            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.label37);
-            this.groupBox4.Controls.Add(this.listBox1);
+            this.groupBox4.Controls.Add(this.locationsLB);
             this.groupBox4.Controls.Add(this.lastLabelPriceTB);
             this.groupBox4.Controls.Add(this.lastLabelDateTB);
             this.groupBox4.Controls.Add(this.label36);
@@ -1436,13 +1469,13 @@ namespace TIMS.Forms
             this.label37.TabIndex = 28;
             this.label37.Text = "Locations:";
             // 
-            // listBox1
+            // locationsLB
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(140, 70);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(100, 56);
-            this.listBox1.TabIndex = 38;
+            this.locationsLB.FormattingEnabled = true;
+            this.locationsLB.Location = new System.Drawing.Point(140, 70);
+            this.locationsLB.Name = "locationsLB";
+            this.locationsLB.Size = new System.Drawing.Size(100, 56);
+            this.locationsLB.TabIndex = 38;
             // 
             // lastLabelPriceTB
             // 
@@ -1496,10 +1529,10 @@ namespace TIMS.Forms
             this.groupBox3.Controls.Add(this.listPriceTB);
             this.groupBox3.Location = new System.Drawing.Point(522, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(252, 401);
+            this.groupBox3.Size = new System.Drawing.Size(252, 235);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = " ";
+            this.groupBox3.Text = "Prices";
             // 
             // label27
             // 
@@ -2084,6 +2117,7 @@ namespace TIMS.Forms
             // 
             // itemNumberTBField
             // 
+            this.itemNumberTBField.Enabled = false;
             this.itemNumberTBField.Location = new System.Drawing.Point(101, 45);
             this.itemNumberTBField.Name = "itemNumberTBField";
             this.itemNumberTBField.Size = new System.Drawing.Size(145, 20);
@@ -2091,6 +2125,7 @@ namespace TIMS.Forms
             // 
             // productLineTBField
             // 
+            this.productLineTBField.Enabled = false;
             this.productLineTBField.Location = new System.Drawing.Point(101, 19);
             this.productLineTBField.Name = "productLineTBField";
             this.productLineTBField.Size = new System.Drawing.Size(48, 20);
@@ -2249,29 +2284,52 @@ namespace TIMS.Forms
             this.tabPage4.Text = "Employee Management";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // dateOfLastSaleTB
+            // groupBox6
             // 
-            this.dateOfLastSaleTB.Location = new System.Drawing.Point(107, 19);
-            this.dateOfLastSaleTB.Name = "dateOfLastSaleTB";
-            this.dateOfLastSaleTB.Size = new System.Drawing.Size(139, 20);
-            this.dateOfLastSaleTB.TabIndex = 39;
+            this.groupBox6.Controls.Add(this.removerSNbtn);
+            this.groupBox6.Controls.Add(this.serialNumbersLB);
+            this.groupBox6.Controls.Add(this.serialNumberTB);
+            this.groupBox6.Controls.Add(this.serializedCB);
+            this.groupBox6.Location = new System.Drawing.Point(522, 247);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(252, 160);
+            this.groupBox6.TabIndex = 5;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Serial Numbers";
             // 
-            // label38
+            // serializedCB
             // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(12, 22);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(89, 13);
-            this.label38.TabIndex = 34;
-            this.label38.Text = "Date of Last Sale";
+            this.serializedCB.AutoSize = true;
+            this.serializedCB.Location = new System.Drawing.Point(15, 21);
+            this.serializedCB.Name = "serializedCB";
+            this.serializedCB.Size = new System.Drawing.Size(71, 17);
+            this.serializedCB.TabIndex = 0;
+            this.serializedCB.Text = "Serialized";
+            this.serializedCB.UseVisualStyleBackColor = true;
             // 
-            // listBox2
+            // serialNumberTB
             // 
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(15, 45);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(231, 82);
-            this.listBox2.TabIndex = 40;
+            this.serialNumberTB.Location = new System.Drawing.Point(92, 17);
+            this.serialNumberTB.Name = "serialNumberTB";
+            this.serialNumberTB.Size = new System.Drawing.Size(154, 20);
+            this.serialNumberTB.TabIndex = 1;
+            // 
+            // serialNumbersLB
+            // 
+            this.serialNumbersLB.FormattingEnabled = true;
+            this.serialNumbersLB.Location = new System.Drawing.Point(15, 44);
+            this.serialNumbersLB.Name = "serialNumbersLB";
+            this.serialNumbersLB.Size = new System.Drawing.Size(150, 108);
+            this.serialNumbersLB.TabIndex = 2;
+            // 
+            // removerSNbtn
+            // 
+            this.removerSNbtn.Location = new System.Drawing.Point(171, 129);
+            this.removerSNbtn.Name = "removerSNbtn";
+            this.removerSNbtn.Size = new System.Drawing.Size(75, 23);
+            this.removerSNbtn.TabIndex = 3;
+            this.removerSNbtn.Text = "Remove";
+            this.removerSNbtn.UseVisualStyleBackColor = true;
             // 
             // OtherFunctions
             // 
@@ -2306,6 +2364,8 @@ namespace TIMS.Forms
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2502,8 +2562,8 @@ namespace TIMS.Forms
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button saveItemButton;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button clearItemButton;
+        private System.Windows.Forms.Button searchItemButton;
         private System.Windows.Forms.ToolStripMenuItem reportCreatorToolStripMenuItem;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label24;
@@ -2523,7 +2583,7 @@ namespace TIMS.Forms
         private System.Windows.Forms.TextBox lastReceiptTB;
         private System.Windows.Forms.TextBox dateStockedTB;
         private System.Windows.Forms.Label label37;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox locationsLB;
         private System.Windows.Forms.TextBox lastLabelPriceTB;
         private System.Windows.Forms.TextBox lastLabelDateTB;
         private System.Windows.Forms.Label label36;
@@ -2547,8 +2607,13 @@ namespace TIMS.Forms
         private System.Windows.Forms.TextBox daysOnBackOrderTB;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.ToolStripMenuItem massImportItemsToolStripMenuItem;
-        private System.Windows.Forms.ListBox listBox2;
+        private System.Windows.Forms.ListBox salesLB;
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.TextBox dateOfLastSaleTB;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Button removerSNbtn;
+        private System.Windows.Forms.ListBox serialNumbersLB;
+        private System.Windows.Forms.TextBox serialNumberTB;
+        private System.Windows.Forms.CheckBox serializedCB;
     }
 }

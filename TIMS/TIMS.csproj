@@ -124,6 +124,18 @@
     <Compile Include="Forms\ItemMaintenance.Designer.cs">
       <DependentUpon>ItemMaintenance.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Orders\OrderCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Orders\OrderCreator.Designer.cs">
+      <DependentUpon>OrderCreator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Orders\OrderSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Orders\OrderSelection.Designer.cs">
+      <DependentUpon>OrderSelection.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\OtherFunctions.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -247,6 +259,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ItemImporting\ItemImportFieldEditor.resx">
       <DependentUpon>ItemImportFieldEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Orders\OrderCreator.resx">
+      <DependentUpon>OrderCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Orders\OrderSelection.resx">
+      <DependentUpon>OrderSelection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\POS\Checkout.resx">
       <DependentUpon>Checkout.cs</DependentUpon>

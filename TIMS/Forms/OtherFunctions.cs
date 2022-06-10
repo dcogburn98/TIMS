@@ -4,6 +4,7 @@ using TIMS.Forms.POS;
 using System.Collections.Generic;
 
 using TIMS.Forms.Reporting;
+using TIMS.Forms.Orders;
 
 namespace TIMS.Forms
 {
@@ -67,6 +68,8 @@ namespace TIMS.Forms
             }
         }
 
+
+
         #region Toolbar Item Click Methods and Other Form Handlers
         
         private void orderOgToolStripMenuItem_Click(object sender, EventArgs e)
@@ -115,7 +118,20 @@ namespace TIMS.Forms
             import.Show();
         }
 
+        private void binLabelsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BinLabelPrinting printing = new BinLabelPrinting();
+            printing.Show();
+        }
+
+        private void createOrderToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            OrderSelection order = new OrderSelection();
+            order.Show();
+        }
         #endregion
+
+
 
         private void reviewChangeTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -173,14 +189,55 @@ namespace TIMS.Forms
 
             productLineTBField.Text = string.Empty;
             itemNumberTBField.Text = string.Empty;
+            itemNameTB.Text = string.Empty;
             descriptionTB.Text = string.Empty;
             supplierCB.Text = string.Empty;
             groupCodeTB.Text = string.Empty;
             velocityCodeCB.Text = string.Empty;
+            velocityCodeCB.Items.Clear();
             prevYearVelocityCodeCB.Text = string.Empty;
+            prevYearVelocityCodeCB.Items.Clear();
             standardPkgTB.Text = string.Empty;
+            categoryCB.Text = string.Empty;
+            categoryCB.Items.Clear();
+            departmentCB.Text = string.Empty;
+            departmentCB.Items.Clear();
+            subDepartmentCB.Text = string.Empty;
+            subDepartmentCB.Items.Clear();
+            unitTB.Text = string.Empty;
             taxableCB.Checked = false;
-        }
+
+            dateStockedTB.Text = string.Empty;
+            lastReceiptTB.Text = string.Empty;
+            minTB.Text = string.Empty;
+            maxTB.Text = string.Empty;
+            onHandTB.Text = string.Empty;
+            wipQtyTB.Text = string.Empty;
+            onOrderQtyTB.Text = string.Empty;
+            onBackorderQtyTB.Text = string.Empty;
+            daysOnBackOrderTB.Text = string.Empty;
+            daysOnOrderTB.Text = string.Empty;
+
+            listPriceTB.Text = string.Empty;
+            redPriceTB.Text = string.Empty;
+            yellowPriceTB.Text = string.Empty;
+            greenPriceTB.Text = string.Empty;
+            pinkPriceTB.Text = string.Empty;
+            bluePriceTB.Text = string.Empty;
+            costTB.Text = string.Empty;
+            avgCostTB.Text = string.Empty;
+
+            lastLabelDateTB.Text = string.Empty;
+            lastLabelPriceTB.Text = string.Empty;
+            locationsLB.Items.Clear();
+
+            serializedCB.Checked = false;
+            serialNumberTB.Text = string.Empty;
+            serialNumbersLB.Items.Clear();
+            removerSNbtn.Enabled = false;
+
+            dateOfLastSaleTB.Text = string.Empty;
 
         }
+    }
 }

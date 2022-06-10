@@ -19,11 +19,11 @@ namespace TIMS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Login login = new Login();
-            //OpenForms.Add(login);
-            //login.Show();
-            //Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
-            //Application.Run();
+            Login login = new Login();
+            OpenForms.Add(login);
+            login.Show();
+            Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
+            Application.Run();
 
             #region Invoice Viewer Test Code
             //SHA256 encrypt = SHA256.Create();
@@ -80,9 +80,9 @@ namespace TIMS
             //Application.Run(manager);
             #endregion
             #region Bin Label Printer Test Code
-            DatabaseHandler.InitializeDatabases();
-            BinLabelPrinting printer = new BinLabelPrinting();
-            Application.Run(printer);
+            //DatabaseHandler.InitializeDatabases();
+            //BinLabelPrinting printer = new BinLabelPrinting();
+            //Application.Run(printer);
             #endregion
         }
 
@@ -155,21 +155,11 @@ namespace TIMS
 
         public static bool IsStringAlphaNumeric(string input)
         {
-            char[] a = input.ToCharArray();
-            foreach (char b in a)
-            {
-                if (char.IsLetterOrDigit(b))
-                {
-                    continue;
-                }
-                return false;
-            }
+            foreach (char b in input.ToCharArray())
+                if (!char.IsLetterOrDigit(b))
+                    return false;
             return true;
         }
 
-        public static string FormatCurrency(float amount)
-        {
-            return amount.ToString("C");
-        }
     }
 }

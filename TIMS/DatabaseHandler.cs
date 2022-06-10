@@ -413,6 +413,108 @@ namespace TIMS
                 return invItems;
         }
 
+        public static List<Item> SqlCheckItemNumber(string itemNumber, string supplier)
+        {
+            string fixedIN = string.Empty;
+            foreach (char c in itemNumber)
+            {
+                if (char.IsLetterOrDigit(c))
+                    fixedIN += c;
+            }
+            fixedIN = fixedIN.ToUpper();
+
+            OpenConnection();
+            SQLiteCommand sqlite_cmd;
+            sqlite_cmd = sqlite_conn.CreateCommand();
+
+            sqlite_cmd.CommandText =
+                "SELECT *" + " " +
+                "FROM ITEMS" + " " +
+                "WHERE ITEMNUMBER LIKE $ITEM AND SUPPLIER == $SUPPLIER";
+
+            SQLiteParameter itemParam = new SQLiteParameter("$ITEM", fixedIN[0] + "%" + fixedIN[fixedIN.Length - 1]);
+            SQLiteParameter supplierParam = new SQLiteParameter("$SUPPLIER", supplier);
+            sqlite_cmd.Parameters.Add(itemParam);
+            sqlite_cmd.Parameters.Add(supplierParam);
+            SQLiteDataReader reader = sqlite_cmd.ExecuteReader();
+
+            List<Item> invItems = new List<Item>();
+
+            while (reader.Read())
+            {
+                Item item = new Item();
+                item.productLine = reader.GetString(0);
+                item.itemNumber = reader.GetString(1);
+                string fixedPL = string.Empty;
+                foreach (char c in item.itemNumber)
+                    if (char.IsLetterOrDigit(c))
+                        fixedPL += c;
+                fixedPL = fixedPL.ToUpper();
+                if (fixedPL != fixedIN)
+                    continue;
+
+                item.itemName = reader.GetString(2);
+                item.longDescription = reader.GetValue(3).ToString();
+                item.supplier = reader.GetString(4);
+                item.groupCode = reader.GetInt32(5);
+                item.velocityCode = reader.GetInt32(6);
+                item.previousYearVelocityCode = reader.GetInt32(7);
+                item.itemsPerContainer = reader.GetInt32(8);
+                item.standardPackage = reader.GetInt32(9);
+                item.dateStocked = DateTime.Parse(reader.GetString(10));
+                item.dateLastReceipt = DateTime.Parse(reader.GetString(11));
+                item.minimum = reader.GetDecimal(12);
+                item.maximum = reader.GetDecimal(13);
+                item.onHandQty = reader.GetDecimal(14);
+                item.WIPQty = reader.GetDecimal(15);
+                item.onOrderQty = reader.GetDecimal(16);
+                item.onBackorderQty = reader.GetDecimal(17);
+                item.daysOnOrder = reader.GetInt32(18);
+                item.daysOnBackorder = reader.GetInt32(19);
+                item.listPrice = reader.GetDecimal(20);
+                item.redPrice = reader.GetDecimal(21);
+                item.yellowPrice = reader.GetDecimal(22);
+                item.greenPrice = reader.GetDecimal(23);
+                item.pinkPrice = reader.GetDecimal(24);
+                item.bluePrice = reader.GetDecimal(25);
+                item.replacementCost = reader.GetDecimal(26);
+                item.averageCost = reader.GetDecimal(27);
+                item.taxed = reader.GetBoolean(28);
+                item.ageRestricted = reader.GetBoolean(29);
+                item.minimumAge = reader.GetInt32(30);
+                item.locationCode = reader.GetInt32(31);
+                item.serialized = reader.GetBoolean(32);
+                invItems.Add(item);
+                //if (fixedPL == fixedIN)
+                //    break;
+            }
+
+            CloseConnection();
+            if (invItems.Count == 0)
+                return null;
+            else
+                return invItems;
+        }
+
+        public static List<string> SqlRetrieveSuppliers()
+        {
+            List<string> suppliers = new List<string>();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT SUPPLIER FROM SUPPLIERS";
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+                suppliers.Add(reader.GetString(0));
+
+            suppliers.Sort();
+
+            CloseConnection();
+            return suppliers;
+        }
+
         public static bool SqlCheckProductLine(string productLine)
         {
             OpenConnection();
