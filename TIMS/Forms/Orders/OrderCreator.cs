@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TIMS.Forms.Orders
@@ -15,6 +9,7 @@ namespace TIMS.Forms.Orders
         public string supplier = string.Empty;
         public string criteria = string.Empty;
         public InvoiceItem workingItem;
+        public decimal beforeEditValue = 0.0m;
         public OrderCreator(string supplier, string criteria)
         {
             InitializeComponent();
@@ -30,6 +25,98 @@ namespace TIMS.Forms.Orders
                 supplierLabel.Text = "Supplier: " + supplier;
 
             criteriaLabel.Text = "Criteria: " + criteria;
+
+            decimal totalCost = 0;
+            decimal totalItems = 0;
+            switch (criteria)
+            {
+                case "all":
+                    if (supplier == "Manual Order")
+                        break;
+                    foreach (Item item in DatabaseHandler.SqlRetrieveItemsFromSupplier(supplier))
+                    {
+                        workingItem = new InvoiceItem(item);
+                        int row = dataGridView1.Rows.Add();
+                        dataGridView1.Rows[row].Cells[0].Value = workingItem.itemNumber;
+                        dataGridView1.Rows[row].Cells[1].Value = workingItem.productLine;
+                        dataGridView1.Rows[row].Cells[2].Value = workingItem.itemName;
+                        dataGridView1.Rows[row].Cells[3].Value = 1;
+                        dataGridView1.Rows[row].Cells[4].Value = item.minimum;
+                        dataGridView1.Rows[row].Cells[5].Value = item.maximum;
+                        dataGridView1.Rows[row].Cells[6].Value = item.onHandQty;
+                        dataGridView1.Rows[row].Cells[7].Value = workingItem.cost;
+                        dataGridView1.Rows[row].Cells[8].Value = workingItem.price;
+                        dataGridView1.Rows[row].Cells[9].Value = workingItem.cost;
+                        dataGridView1.Rows[row].Cells[10].Value = workingItem.price;
+                    }
+                    
+                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                    {
+                        totalCost += decimal.Parse(row.Cells[9].Value.ToString());
+                        totalItems += decimal.Parse(row.Cells[3].Value.ToString());
+                    }
+                    totalCostTB.Text = totalCost.ToString("C");
+                    totalItemsTB.Text = totalItems.ToString();
+                    break;
+                case "none":
+                    break;
+                case "min":
+                    if (supplier == "Manual Order")
+                        break;
+                    foreach (Item item in DatabaseHandler.SqlRetrieveItemsFromSupplierBelowMin(supplier))
+                    {
+                        workingItem = new InvoiceItem(item);
+                        int row = dataGridView1.Rows.Add();
+                        dataGridView1.Rows[row].Cells[0].Value = workingItem.itemNumber;
+                        dataGridView1.Rows[row].Cells[1].Value = workingItem.productLine;
+                        dataGridView1.Rows[row].Cells[2].Value = workingItem.itemName;
+                        dataGridView1.Rows[row].Cells[3].Value = 1;
+                        dataGridView1.Rows[row].Cells[4].Value = item.minimum;
+                        dataGridView1.Rows[row].Cells[5].Value = item.maximum;
+                        dataGridView1.Rows[row].Cells[6].Value = item.onHandQty;
+                        dataGridView1.Rows[row].Cells[7].Value = workingItem.cost;
+                        dataGridView1.Rows[row].Cells[8].Value = workingItem.price;
+                        dataGridView1.Rows[row].Cells[9].Value = workingItem.cost;
+                        dataGridView1.Rows[row].Cells[10].Value = workingItem.price;
+                    }
+
+                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                    {
+                        totalCost += decimal.Parse(row.Cells[9].Value.ToString());
+                        totalItems += decimal.Parse(row.Cells[3].Value.ToString());
+                    }
+                    totalCostTB.Text = totalCost.ToString("C");
+                    totalItemsTB.Text = totalItems.ToString();
+                    break;
+                case "max":
+                    if (supplier == "Manual Order")
+                        break;
+                    foreach (Item item in DatabaseHandler.SqlRetrieveItemsFromSupplierBelowMax(supplier))
+                    {
+                        workingItem = new InvoiceItem(item);
+                        int row = dataGridView1.Rows.Add();
+                        dataGridView1.Rows[row].Cells[0].Value = workingItem.itemNumber;
+                        dataGridView1.Rows[row].Cells[1].Value = workingItem.productLine;
+                        dataGridView1.Rows[row].Cells[2].Value = workingItem.itemName;
+                        dataGridView1.Rows[row].Cells[3].Value = 1;
+                        dataGridView1.Rows[row].Cells[4].Value = item.minimum;
+                        dataGridView1.Rows[row].Cells[5].Value = item.maximum;
+                        dataGridView1.Rows[row].Cells[6].Value = item.onHandQty;
+                        dataGridView1.Rows[row].Cells[7].Value = workingItem.cost;
+                        dataGridView1.Rows[row].Cells[8].Value = workingItem.price;
+                        dataGridView1.Rows[row].Cells[9].Value = workingItem.cost;
+                        dataGridView1.Rows[row].Cells[10].Value = workingItem.price;
+                    }
+
+                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                    {
+                        totalCost += decimal.Parse(row.Cells[9].Value.ToString());
+                        totalItems += decimal.Parse(row.Cells[3].Value.ToString());
+                    }
+                    totalCostTB.Text = totalCost.ToString("C");
+                    totalItemsTB.Text = totalItems.ToString();
+                    break;
+            }
         }
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
@@ -49,6 +136,9 @@ namespace TIMS.Forms.Orders
 
         private void productLineCB_Enter(object sender, EventArgs e)
         {
+            if (itemNumberTB.Text == string.Empty)
+                return;
+
             productLineCB.Items.Clear();
             List<Item> items;
             if (supplier == string.Empty)
@@ -130,11 +220,144 @@ namespace TIMS.Forms.Orders
                 return;
             }
 
-            workingItem = new InvoiceItem(DatabaseHandler.SqlRetrieveItem(itemNumberTB.Text, productLineCB.Text));
+            Item item = DatabaseHandler.SqlRetrieveItem(itemNumberTB.Text, productLineCB.Text);
+            workingItem = new InvoiceItem(item);
+            workingItem.quantity = decimal.Parse(qtyTB.Text);
 
             int row = dataGridView1.Rows.Add();
             dataGridView1.Rows[row].Cells[0].Value = workingItem.itemNumber;
             dataGridView1.Rows[row].Cells[1].Value = workingItem.productLine;
+            dataGridView1.Rows[row].Cells[2].Value = workingItem.itemName;
+            dataGridView1.Rows[row].Cells[3].Value = workingItem.quantity;
+            dataGridView1.Rows[row].Cells[4].Value = item.minimum;
+            dataGridView1.Rows[row].Cells[5].Value = item.maximum;
+            dataGridView1.Rows[row].Cells[6].Value = item.onHandQty;
+            dataGridView1.Rows[row].Cells[7].Value = workingItem.cost;
+            dataGridView1.Rows[row].Cells[8].Value = workingItem.price;
+            dataGridView1.Rows[row].Cells[9].Value = workingItem.cost * workingItem.quantity;
+            dataGridView1.Rows[row].Cells[10].Value = workingItem.price * workingItem.quantity;
+
+            decimal totalCost = 0;
+            decimal totalItems = 0;
+            foreach (DataGridViewRow roww in dataGridView1.Rows)
+            {
+                totalCost += decimal.Parse(roww.Cells[9].Value.ToString());
+                totalItems += decimal.Parse(roww.Cells[3].Value.ToString());
+            }
+            totalCostTB.Text = totalCost.ToString("C");
+            totalItemsTB.Text = totalItems.ToString();
+
+            itemNumberTB.Text = "";
+            productLineCB.Items.Clear();
+            qtyTB.Text = "";
+            itemNumberTB.Focus();
+        }
+
+        private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (e.ColumnIndex != 3)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            beforeEditValue = decimal.Parse(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+        }
+
+        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if (!decimal.TryParse(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(), out decimal d))
+            {
+                MessageBox.Show("Invalid quantity");
+                dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = beforeEditValue;
+                return;
+            }
+
+            Item item = DatabaseHandler.SqlRetrieveItem(
+                dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString(),
+                dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString());
+            workingItem = new InvoiceItem(item);
+
+            workingItem.quantity = decimal.Parse(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+
+            dataGridView1.Rows[e.RowIndex].Cells[4].Value = item.minimum;
+            dataGridView1.Rows[e.RowIndex].Cells[5].Value = item.maximum;
+            dataGridView1.Rows[e.RowIndex].Cells[6].Value = item.onHandQty;
+            dataGridView1.Rows[e.RowIndex].Cells[7].Value = workingItem.cost;
+            dataGridView1.Rows[e.RowIndex].Cells[8].Value = workingItem.price;
+            dataGridView1.Rows[e.RowIndex].Cells[9].Value = workingItem.cost * workingItem.quantity;
+            dataGridView1.Rows[e.RowIndex].Cells[10].Value = workingItem.price * workingItem.quantity;
+
+            decimal totalCost = 0;
+            decimal totalItems = 0;
+            foreach (DataGridViewRow roww in dataGridView1.Rows)
+            {
+                totalCost += decimal.Parse(roww.Cells[9].Value.ToString());
+                totalItems += decimal.Parse(roww.Cells[3].Value.ToString());
+            }
+            totalCostTB.Text = totalCost.ToString("C");
+            totalItemsTB.Text = totalItems.ToString();
+        }
+
+        private void clearItemButton_Click(object sender, EventArgs e)
+        {
+            itemNumberTB.Text = "";
+            productLineCB.Items.Clear();
+            qtyTB.Text = "";
+            itemNumberTB.Focus();
+        }
+
+        private void qtyTB_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter)
+                return;
+
+            addItemButton.Focus();
+        }
+
+        private void dataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            finalizeButton.Enabled = true;
+            saveOrderButton.Enabled = true;
+        }
+
+        private void dataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            if (dataGridView1.Rows.Count < 1)
+            {
+                finalizeButton.Enabled = false;
+                saveOrderButton.Enabled = false;
+            }
+            decimal totalCost = 0;
+            decimal totalItems = 0;
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                totalCost += decimal.Parse(row.Cells[9].Value.ToString());
+                totalItems += decimal.Parse(row.Cells[3].Value.ToString());
+            }
+            totalCostTB.Text = totalCost.ToString("C");
+            totalItemsTB.Text = totalItems.ToString();
+        }
+
+        private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            deleteItemButton.Enabled = true;
+        }
+
+        private void deleteItemButton_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Rows.Remove(dataGridView1.CurrentCell.OwningRow);
+            deleteItemButton.Enabled = false;
+        }
+
+        private void saveOrderButton_Click(object sender, EventArgs e)
+        {
+            List<InvoiceItem> items = new List<InvoiceItem>();
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                items.Add(new InvoiceItem(DatabaseHandler.SqlRetrieveItem(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString())));
+
+            }
         }
     }
 }

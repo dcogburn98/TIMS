@@ -44,6 +44,7 @@ namespace TIMS
             minimumAge = item.minimumAge;
             taxed = item.taxed;
             serializedItem = item.serialized;
+            cost = item.replacementCost;
         }
 
         public void AddCode(string code)

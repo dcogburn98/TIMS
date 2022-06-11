@@ -29,14 +29,6 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.itemNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.productLine = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cost = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.retail = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.extCost = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.extRetail = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.deleteItemButton = new System.Windows.Forms.Button();
             this.saveOrderButton = new System.Windows.Forms.Button();
             this.finalizeButton = new System.Windows.Forms.Button();
@@ -51,6 +43,21 @@
             this.clearItemButton = new System.Windows.Forms.Button();
             this.supplierLabel = new System.Windows.Forms.Label();
             this.criteriaLabel = new System.Windows.Forms.Label();
+            this.itemNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.productLine = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.max = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.onHandQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cost = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.retail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.extCost = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.extRetail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.totalItemsTB = new System.Windows.Forms.TextBox();
+            this.totalCostTB = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,83 +74,53 @@
             this.productLine,
             this.description,
             this.qty,
+            this.min,
+            this.max,
+            this.onHandQty,
             this.cost,
             this.retail,
             this.extCost,
             this.extRetail});
-            this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
             this.dataGridView1.Location = new System.Drawing.Point(12, 52);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(803, 357);
+            this.dataGridView1.Size = new System.Drawing.Size(953, 357);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // itemNumber
-            // 
-            this.itemNumber.HeaderText = "Item Number";
-            this.itemNumber.Name = "itemNumber";
-            // 
-            // productLine
-            // 
-            this.productLine.HeaderText = "Product Line";
-            this.productLine.Name = "productLine";
-            // 
-            // description
-            // 
-            this.description.HeaderText = "Description";
-            this.description.Name = "description";
-            // 
-            // qty
-            // 
-            this.qty.HeaderText = "Quantity";
-            this.qty.Name = "qty";
-            // 
-            // cost
-            // 
-            this.cost.HeaderText = "Cost";
-            this.cost.Name = "cost";
-            // 
-            // retail
-            // 
-            this.retail.HeaderText = "Retail Price";
-            this.retail.Name = "retail";
-            // 
-            // extCost
-            // 
-            this.extCost.HeaderText = "Ext. Cost";
-            this.extCost.Name = "extCost";
-            // 
-            // extRetail
-            // 
-            this.extRetail.HeaderText = "Ext. Retail";
-            this.extRetail.Name = "extRetail";
+            this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
+            this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
+            this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
+            this.dataGridView1.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridView1_RowsAdded);
+            this.dataGridView1.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dataGridView1_RowsRemoved);
             // 
             // deleteItemButton
             // 
             this.deleteItemButton.Enabled = false;
-            this.deleteItemButton.Location = new System.Drawing.Point(578, 415);
+            this.deleteItemButton.Location = new System.Drawing.Point(728, 476);
             this.deleteItemButton.Name = "deleteItemButton";
             this.deleteItemButton.Size = new System.Drawing.Size(75, 23);
             this.deleteItemButton.TabIndex = 8;
             this.deleteItemButton.Text = "Delete Item";
             this.deleteItemButton.UseVisualStyleBackColor = true;
+            this.deleteItemButton.Click += new System.EventHandler(this.deleteItemButton_Click);
             // 
             // saveOrderButton
             // 
             this.saveOrderButton.Enabled = false;
-            this.saveOrderButton.Location = new System.Drawing.Point(740, 415);
+            this.saveOrderButton.Location = new System.Drawing.Point(890, 476);
             this.saveOrderButton.Name = "saveOrderButton";
             this.saveOrderButton.Size = new System.Drawing.Size(75, 23);
             this.saveOrderButton.TabIndex = 6;
             this.saveOrderButton.Text = "Save Order";
             this.saveOrderButton.UseVisualStyleBackColor = true;
+            this.saveOrderButton.Click += new System.EventHandler(this.saveOrderButton_Click);
             // 
             // finalizeButton
             // 
             this.finalizeButton.Enabled = false;
-            this.finalizeButton.Location = new System.Drawing.Point(659, 415);
+            this.finalizeButton.Location = new System.Drawing.Point(809, 476);
             this.finalizeButton.Name = "finalizeButton";
             this.finalizeButton.Size = new System.Drawing.Size(75, 23);
             this.finalizeButton.TabIndex = 7;
@@ -152,7 +129,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(12, 415);
+            this.button3.Location = new System.Drawing.Point(12, 476);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 9;
@@ -205,6 +182,7 @@
             this.qtyTB.Name = "qtyTB";
             this.qtyTB.Size = new System.Drawing.Size(46, 20);
             this.qtyTB.TabIndex = 3;
+            this.qtyTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.qtyTB_KeyDown);
             this.qtyTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.qtyTB_KeyPress);
             // 
             // label3
@@ -234,11 +212,12 @@
             this.clearItemButton.TabIndex = 5;
             this.clearItemButton.Text = "Clear Item";
             this.clearItemButton.UseVisualStyleBackColor = true;
+            this.clearItemButton.Click += new System.EventHandler(this.clearItemButton_Click);
             // 
             // supplierLabel
             // 
             this.supplierLabel.AutoSize = true;
-            this.supplierLabel.Location = new System.Drawing.Point(575, 8);
+            this.supplierLabel.Location = new System.Drawing.Point(455, 8);
             this.supplierLabel.Name = "supplierLabel";
             this.supplierLabel.Size = new System.Drawing.Size(48, 13);
             this.supplierLabel.TabIndex = 13;
@@ -247,17 +226,121 @@
             // criteriaLabel
             // 
             this.criteriaLabel.AutoSize = true;
-            this.criteriaLabel.Location = new System.Drawing.Point(575, 27);
+            this.criteriaLabel.Location = new System.Drawing.Point(427, 27);
             this.criteriaLabel.Name = "criteriaLabel";
             this.criteriaLabel.Size = new System.Drawing.Size(76, 13);
             this.criteriaLabel.TabIndex = 14;
             this.criteriaLabel.Text = "Pre-Fill Criteria:";
             // 
+            // itemNumber
+            // 
+            this.itemNumber.FillWeight = 70.91371F;
+            this.itemNumber.HeaderText = "Item Number";
+            this.itemNumber.Name = "itemNumber";
+            // 
+            // productLine
+            // 
+            this.productLine.FillWeight = 70.91371F;
+            this.productLine.HeaderText = "Product Line";
+            this.productLine.Name = "productLine";
+            // 
+            // description
+            // 
+            this.description.FillWeight = 390.8629F;
+            this.description.HeaderText = "Description";
+            this.description.Name = "description";
+            // 
+            // qty
+            // 
+            this.qty.FillWeight = 70.91371F;
+            this.qty.HeaderText = "Quantity";
+            this.qty.Name = "qty";
+            // 
+            // min
+            // 
+            this.min.FillWeight = 70.91371F;
+            this.min.HeaderText = "Min";
+            this.min.Name = "min";
+            // 
+            // max
+            // 
+            this.max.FillWeight = 70.91371F;
+            this.max.HeaderText = "Max";
+            this.max.Name = "max";
+            // 
+            // onHandQty
+            // 
+            this.onHandQty.FillWeight = 70.91371F;
+            this.onHandQty.HeaderText = "On Hand";
+            this.onHandQty.Name = "onHandQty";
+            // 
+            // cost
+            // 
+            this.cost.FillWeight = 70.91371F;
+            this.cost.HeaderText = "Cost";
+            this.cost.Name = "cost";
+            // 
+            // retail
+            // 
+            this.retail.FillWeight = 70.91371F;
+            this.retail.HeaderText = "Retail Price";
+            this.retail.Name = "retail";
+            // 
+            // extCost
+            // 
+            this.extCost.FillWeight = 70.91371F;
+            this.extCost.HeaderText = "Ext. Cost";
+            this.extCost.Name = "extCost";
+            // 
+            // extRetail
+            // 
+            this.extRetail.FillWeight = 70.91371F;
+            this.extRetail.HeaderText = "Ext. Retail";
+            this.extRetail.Name = "extRetail";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 415);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(62, 13);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "Total Items:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(188, 415);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(58, 13);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Total Cost:";
+            // 
+            // totalItemsTB
+            // 
+            this.totalItemsTB.Enabled = false;
+            this.totalItemsTB.Location = new System.Drawing.Point(80, 412);
+            this.totalItemsTB.Name = "totalItemsTB";
+            this.totalItemsTB.Size = new System.Drawing.Size(100, 20);
+            this.totalItemsTB.TabIndex = 17;
+            // 
+            // totalCostTB
+            // 
+            this.totalCostTB.Enabled = false;
+            this.totalCostTB.Location = new System.Drawing.Point(252, 412);
+            this.totalCostTB.Name = "totalCostTB";
+            this.totalCostTB.Size = new System.Drawing.Size(100, 20);
+            this.totalCostTB.TabIndex = 18;
+            // 
             // OrderCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(827, 450);
+            this.ClientSize = new System.Drawing.Size(977, 511);
+            this.Controls.Add(this.totalCostTB);
+            this.Controls.Add(this.totalItemsTB);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.criteriaLabel);
             this.Controls.Add(this.supplierLabel);
             this.Controls.Add(this.clearItemButton);
@@ -284,14 +367,6 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn itemNumber;
-        private System.Windows.Forms.DataGridViewTextBoxColumn productLine;
-        private System.Windows.Forms.DataGridViewTextBoxColumn description;
-        private System.Windows.Forms.DataGridViewTextBoxColumn qty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cost;
-        private System.Windows.Forms.DataGridViewTextBoxColumn retail;
-        private System.Windows.Forms.DataGridViewTextBoxColumn extCost;
-        private System.Windows.Forms.DataGridViewTextBoxColumn extRetail;
         private System.Windows.Forms.Button deleteItemButton;
         private System.Windows.Forms.Button saveOrderButton;
         private System.Windows.Forms.Button finalizeButton;
@@ -306,5 +381,20 @@
         private System.Windows.Forms.Button clearItemButton;
         private System.Windows.Forms.Label supplierLabel;
         private System.Windows.Forms.Label criteriaLabel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn productLine;
+        private System.Windows.Forms.DataGridViewTextBoxColumn description;
+        private System.Windows.Forms.DataGridViewTextBoxColumn qty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn min;
+        private System.Windows.Forms.DataGridViewTextBoxColumn max;
+        private System.Windows.Forms.DataGridViewTextBoxColumn onHandQty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cost;
+        private System.Windows.Forms.DataGridViewTextBoxColumn retail;
+        private System.Windows.Forms.DataGridViewTextBoxColumn extCost;
+        private System.Windows.Forms.DataGridViewTextBoxColumn extRetail;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox totalItemsTB;
+        private System.Windows.Forms.TextBox totalCostTB;
     }
 }
