@@ -178,10 +178,15 @@ namespace TIMS.Forms
             this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.clearItemButton = new System.Windows.Forms.Button();
+            this.saveItemButton = new System.Windows.Forms.Button();
             this.searchItemButton = new System.Windows.Forms.Button();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.removerSNbtn = new System.Windows.Forms.Button();
+            this.serialNumbersLB = new System.Windows.Forms.ListBox();
+            this.serialNumberTB = new System.Windows.Forms.TextBox();
+            this.serializedCB = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.salesLB = new System.Windows.Forms.ListBox();
             this.label38 = new System.Windows.Forms.Label();
@@ -278,11 +283,11 @@ namespace TIMS.Forms
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.serializedCB = new System.Windows.Forms.CheckBox();
-            this.serialNumberTB = new System.Windows.Forms.TextBox();
-            this.serialNumbersLB = new System.Windows.Forms.ListBox();
-            this.removerSNbtn = new System.Windows.Forms.Button();
+            this.clearItemButton = new System.Windows.Forms.Button();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.ageRestrictedCB = new System.Windows.Forms.CheckBox();
+            this.minimumAgeTB = new System.Windows.Forms.TextBox();
+            this.label39 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage17.SuspendLayout();
@@ -293,12 +298,13 @@ namespace TIMS.Forms
             this.tabPage1.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBox6.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -1283,6 +1289,7 @@ namespace TIMS.Forms
             this.chart4.Legends.Add(legend5);
             this.chart4.Location = new System.Drawing.Point(402, 295);
             this.chart4.Name = "chart4";
+            this.chart4.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry;
             series5.ChartArea = "ChartArea1";
             series5.Legend = "Legend1";
             series5.Name = "Series1";
@@ -1299,6 +1306,7 @@ namespace TIMS.Forms
             this.chart3.Legends.Add(legend6);
             this.chart3.Location = new System.Drawing.Point(3, 295);
             this.chart3.Name = "chart3";
+            this.chart3.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Fire;
             series6.ChartArea = "ChartArea1";
             series6.Legend = "Legend1";
             series6.Name = "Series1";
@@ -1315,6 +1323,7 @@ namespace TIMS.Forms
             this.chart2.Legends.Add(legend7);
             this.chart2.Location = new System.Drawing.Point(402, 3);
             this.chart2.Name = "chart2";
+            this.chart2.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Pastel;
             series7.ChartArea = "ChartArea1";
             series7.Legend = "Legend1";
             series7.Name = "Series1";
@@ -1331,6 +1340,7 @@ namespace TIMS.Forms
             this.chart1.Legends.Add(legend8);
             this.chart1.Location = new System.Drawing.Point(3, 3);
             this.chart1.Name = "chart1";
+            this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
             series8.ChartArea = "ChartArea1";
             series8.Legend = "Legend1";
             series8.Name = "Series1";
@@ -1342,6 +1352,7 @@ namespace TIMS.Forms
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.clearItemButton);
+            this.tabPage1.Controls.Add(this.saveItemButton);
             this.tabPage1.Controls.Add(this.searchItemButton);
             this.tabPage1.Controls.Add(this.tabControl2);
             this.tabPage1.Controls.Add(this.itemDescriptionTB);
@@ -1357,19 +1368,19 @@ namespace TIMS.Forms
             this.tabPage1.Text = "Item Management";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // clearItemButton
+            // saveItemButton
             // 
-            this.clearItemButton.Location = new System.Drawing.Point(723, 4);
-            this.clearItemButton.Name = "clearItemButton";
-            this.clearItemButton.Size = new System.Drawing.Size(75, 23);
-            this.clearItemButton.TabIndex = 7;
-            this.clearItemButton.Text = "Save Item";
-            this.clearItemButton.UseVisualStyleBackColor = true;
-            this.clearItemButton.Click += new System.EventHandler(this.button5_Click);
+            this.saveItemButton.Location = new System.Drawing.Point(723, 4);
+            this.saveItemButton.Name = "saveItemButton";
+            this.saveItemButton.Size = new System.Drawing.Size(75, 23);
+            this.saveItemButton.TabIndex = 7;
+            this.saveItemButton.Text = "Save Item";
+            this.saveItemButton.UseVisualStyleBackColor = true;
+            this.saveItemButton.Click += new System.EventHandler(this.button5_Click);
             // 
             // searchItemButton
             // 
-            this.searchItemButton.Location = new System.Drawing.Point(642, 4);
+            this.searchItemButton.Location = new System.Drawing.Point(561, 4);
             this.searchItemButton.Name = "searchItemButton";
             this.searchItemButton.Size = new System.Drawing.Size(75, 23);
             this.searchItemButton.TabIndex = 6;
@@ -1395,6 +1406,7 @@ namespace TIMS.Forms
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.groupBox7);
             this.tabPage5.Controls.Add(this.groupBox6);
             this.tabPage5.Controls.Add(this.groupBox5);
             this.tabPage5.Controls.Add(this.groupBox4);
@@ -1408,6 +1420,53 @@ namespace TIMS.Forms
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "Overview";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.removerSNbtn);
+            this.groupBox6.Controls.Add(this.serialNumbersLB);
+            this.groupBox6.Controls.Add(this.serialNumberTB);
+            this.groupBox6.Controls.Add(this.serializedCB);
+            this.groupBox6.Location = new System.Drawing.Point(522, 247);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(252, 160);
+            this.groupBox6.TabIndex = 5;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Serial Numbers";
+            // 
+            // removerSNbtn
+            // 
+            this.removerSNbtn.Location = new System.Drawing.Point(171, 129);
+            this.removerSNbtn.Name = "removerSNbtn";
+            this.removerSNbtn.Size = new System.Drawing.Size(75, 23);
+            this.removerSNbtn.TabIndex = 3;
+            this.removerSNbtn.Text = "Remove";
+            this.removerSNbtn.UseVisualStyleBackColor = true;
+            // 
+            // serialNumbersLB
+            // 
+            this.serialNumbersLB.FormattingEnabled = true;
+            this.serialNumbersLB.Location = new System.Drawing.Point(15, 44);
+            this.serialNumbersLB.Name = "serialNumbersLB";
+            this.serialNumbersLB.Size = new System.Drawing.Size(150, 108);
+            this.serialNumbersLB.TabIndex = 2;
+            // 
+            // serialNumberTB
+            // 
+            this.serialNumberTB.Location = new System.Drawing.Point(92, 17);
+            this.serialNumberTB.Name = "serialNumberTB";
+            this.serialNumberTB.Size = new System.Drawing.Size(154, 20);
+            this.serialNumberTB.TabIndex = 1;
+            // 
+            // serializedCB
+            // 
+            this.serializedCB.AutoSize = true;
+            this.serializedCB.Location = new System.Drawing.Point(15, 21);
+            this.serializedCB.Name = "serializedCB";
+            this.serializedCB.Size = new System.Drawing.Size(71, 17);
+            this.serializedCB.TabIndex = 0;
+            this.serializedCB.Text = "Serialized";
+            this.serializedCB.UseVisualStyleBackColor = true;
             // 
             // groupBox5
             // 
@@ -1463,7 +1522,7 @@ namespace TIMS.Forms
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(84, 70);
+            this.label37.Location = new System.Drawing.Point(35, 70);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(56, 13);
             this.label37.TabIndex = 28;
@@ -1472,29 +1531,29 @@ namespace TIMS.Forms
             // locationsLB
             // 
             this.locationsLB.FormattingEnabled = true;
-            this.locationsLB.Location = new System.Drawing.Point(140, 70);
+            this.locationsLB.Location = new System.Drawing.Point(97, 70);
             this.locationsLB.Name = "locationsLB";
-            this.locationsLB.Size = new System.Drawing.Size(100, 56);
+            this.locationsLB.Size = new System.Drawing.Size(143, 56);
             this.locationsLB.TabIndex = 38;
             // 
             // lastLabelPriceTB
             // 
-            this.lastLabelPriceTB.Location = new System.Drawing.Point(140, 44);
+            this.lastLabelPriceTB.Location = new System.Drawing.Point(97, 44);
             this.lastLabelPriceTB.Name = "lastLabelPriceTB";
-            this.lastLabelPriceTB.Size = new System.Drawing.Size(100, 20);
+            this.lastLabelPriceTB.Size = new System.Drawing.Size(143, 20);
             this.lastLabelPriceTB.TabIndex = 37;
             // 
             // lastLabelDateTB
             // 
-            this.lastLabelDateTB.Location = new System.Drawing.Point(140, 19);
+            this.lastLabelDateTB.Location = new System.Drawing.Point(97, 19);
             this.lastLabelDateTB.Name = "lastLabelDateTB";
-            this.lastLabelDateTB.Size = new System.Drawing.Size(100, 20);
+            this.lastLabelDateTB.Size = new System.Drawing.Size(143, 20);
             this.lastLabelDateTB.TabIndex = 36;
             // 
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(54, 47);
+            this.label36.Location = new System.Drawing.Point(5, 47);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(86, 13);
             this.label36.TabIndex = 1;
@@ -1503,7 +1562,7 @@ namespace TIMS.Forms
             // label35
             // 
             this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(55, 22);
+            this.label35.Location = new System.Drawing.Point(6, 22);
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(85, 13);
             this.label35.TabIndex = 0;
@@ -1685,7 +1744,7 @@ namespace TIMS.Forms
             this.groupBox2.Controls.Add(this.dateStockedTB);
             this.groupBox2.Location = new System.Drawing.Point(264, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(252, 401);
+            this.groupBox2.Size = new System.Drawing.Size(252, 267);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Quantities";
@@ -2041,6 +2100,7 @@ namespace TIMS.Forms
             // 
             // factoryStdPkgTB
             // 
+            this.factoryStdPkgTB.Enabled = false;
             this.factoryStdPkgTB.Location = new System.Drawing.Point(101, 311);
             this.factoryStdPkgTB.Name = "factoryStdPkgTB";
             this.factoryStdPkgTB.Size = new System.Drawing.Size(83, 20);
@@ -2055,6 +2115,7 @@ namespace TIMS.Forms
             // 
             // subDepartmentCB
             // 
+            this.subDepartmentCB.Enabled = false;
             this.subDepartmentCB.FormattingEnabled = true;
             this.subDepartmentCB.Location = new System.Drawing.Point(101, 258);
             this.subDepartmentCB.Name = "subDepartmentCB";
@@ -2063,6 +2124,7 @@ namespace TIMS.Forms
             // 
             // departmentCB
             // 
+            this.departmentCB.Enabled = false;
             this.departmentCB.FormattingEnabled = true;
             this.departmentCB.Location = new System.Drawing.Point(101, 231);
             this.departmentCB.Name = "departmentCB";
@@ -2205,7 +2267,7 @@ namespace TIMS.Forms
             // 
             // itemDescriptionTB
             // 
-            this.itemDescriptionTB.Location = new System.Drawing.Point(421, 6);
+            this.itemDescriptionTB.Location = new System.Drawing.Point(340, 6);
             this.itemDescriptionTB.Name = "itemDescriptionTB";
             this.itemDescriptionTB.Size = new System.Drawing.Size(215, 20);
             this.itemDescriptionTB.TabIndex = 4;
@@ -2213,7 +2275,7 @@ namespace TIMS.Forms
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(352, 9);
+            this.label2.Location = new System.Drawing.Point(271, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 13);
             this.label2.TabIndex = 3;
@@ -2222,9 +2284,9 @@ namespace TIMS.Forms
             // productLineComboBox
             // 
             this.productLineComboBox.FormattingEnabled = true;
-            this.productLineComboBox.Location = new System.Drawing.Point(271, 6);
+            this.productLineComboBox.Location = new System.Drawing.Point(198, 6);
             this.productLineComboBox.Name = "productLineComboBox";
-            this.productLineComboBox.Size = new System.Drawing.Size(75, 21);
+            this.productLineComboBox.Size = new System.Drawing.Size(67, 21);
             this.productLineComboBox.TabIndex = 2;
             this.productLineComboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.productLineComboBox_KeyDown);
             // 
@@ -2242,7 +2304,7 @@ namespace TIMS.Forms
             this.itemNumberTB.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.itemNumberTB.Location = new System.Drawing.Point(82, 6);
             this.itemNumberTB.Name = "itemNumberTB";
-            this.itemNumberTB.Size = new System.Drawing.Size(183, 20);
+            this.itemNumberTB.Size = new System.Drawing.Size(110, 20);
             this.itemNumberTB.TabIndex = 1;
             this.itemNumberTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.itemNumberTB_KeyDown);
             this.itemNumberTB.Leave += new System.EventHandler(this.itemNumberTB_Leave);
@@ -2284,52 +2346,53 @@ namespace TIMS.Forms
             this.tabPage4.Text = "Employee Management";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // groupBox6
+            // clearItemButton
             // 
-            this.groupBox6.Controls.Add(this.removerSNbtn);
-            this.groupBox6.Controls.Add(this.serialNumbersLB);
-            this.groupBox6.Controls.Add(this.serialNumberTB);
-            this.groupBox6.Controls.Add(this.serializedCB);
-            this.groupBox6.Location = new System.Drawing.Point(522, 247);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(252, 160);
-            this.groupBox6.TabIndex = 5;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Serial Numbers";
+            this.clearItemButton.Location = new System.Drawing.Point(642, 4);
+            this.clearItemButton.Name = "clearItemButton";
+            this.clearItemButton.Size = new System.Drawing.Size(75, 23);
+            this.clearItemButton.TabIndex = 8;
+            this.clearItemButton.Text = "Clear Item";
+            this.clearItemButton.UseVisualStyleBackColor = true;
+            this.clearItemButton.Click += new System.EventHandler(this.clearItemButton_Click);
             // 
-            // serializedCB
+            // groupBox7
             // 
-            this.serializedCB.AutoSize = true;
-            this.serializedCB.Location = new System.Drawing.Point(15, 21);
-            this.serializedCB.Name = "serializedCB";
-            this.serializedCB.Size = new System.Drawing.Size(71, 17);
-            this.serializedCB.TabIndex = 0;
-            this.serializedCB.Text = "Serialized";
-            this.serializedCB.UseVisualStyleBackColor = true;
+            this.groupBox7.Controls.Add(this.label39);
+            this.groupBox7.Controls.Add(this.minimumAgeTB);
+            this.groupBox7.Controls.Add(this.ageRestrictedCB);
+            this.groupBox7.Location = new System.Drawing.Point(264, 279);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(252, 128);
+            this.groupBox7.TabIndex = 6;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Misc";
             // 
-            // serialNumberTB
+            // ageRestrictedCB
             // 
-            this.serialNumberTB.Location = new System.Drawing.Point(92, 17);
-            this.serialNumberTB.Name = "serialNumberTB";
-            this.serialNumberTB.Size = new System.Drawing.Size(154, 20);
-            this.serialNumberTB.TabIndex = 1;
+            this.ageRestrictedCB.AutoSize = true;
+            this.ageRestrictedCB.Location = new System.Drawing.Point(9, 15);
+            this.ageRestrictedCB.Name = "ageRestrictedCB";
+            this.ageRestrictedCB.Size = new System.Drawing.Size(96, 17);
+            this.ageRestrictedCB.TabIndex = 0;
+            this.ageRestrictedCB.Text = "Age Restricted";
+            this.ageRestrictedCB.UseVisualStyleBackColor = true;
             // 
-            // serialNumbersLB
+            // minimumAgeTB
             // 
-            this.serialNumbersLB.FormattingEnabled = true;
-            this.serialNumbersLB.Location = new System.Drawing.Point(15, 44);
-            this.serialNumbersLB.Name = "serialNumbersLB";
-            this.serialNumbersLB.Size = new System.Drawing.Size(150, 108);
-            this.serialNumbersLB.TabIndex = 2;
+            this.minimumAgeTB.Location = new System.Drawing.Point(191, 12);
+            this.minimumAgeTB.Name = "minimumAgeTB";
+            this.minimumAgeTB.Size = new System.Drawing.Size(49, 20);
+            this.minimumAgeTB.TabIndex = 1;
             // 
-            // removerSNbtn
+            // label39
             // 
-            this.removerSNbtn.Location = new System.Drawing.Point(171, 129);
-            this.removerSNbtn.Name = "removerSNbtn";
-            this.removerSNbtn.Size = new System.Drawing.Size(75, 23);
-            this.removerSNbtn.TabIndex = 3;
-            this.removerSNbtn.Text = "Remove";
-            this.removerSNbtn.UseVisualStyleBackColor = true;
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(156, 15);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(29, 13);
+            this.label39.TabIndex = 2;
+            this.label39.Text = "Age:";
             // 
             // OtherFunctions
             // 
@@ -2354,6 +2417,8 @@ namespace TIMS.Forms
             this.tabPage1.PerformLayout();
             this.tabControl2.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -2364,8 +2429,8 @@ namespace TIMS.Forms
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2562,7 +2627,7 @@ namespace TIMS.Forms
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button clearItemButton;
+        private System.Windows.Forms.Button saveItemButton;
         private System.Windows.Forms.Button searchItemButton;
         private System.Windows.Forms.ToolStripMenuItem reportCreatorToolStripMenuItem;
         private System.Windows.Forms.Label label25;
@@ -2615,5 +2680,10 @@ namespace TIMS.Forms
         private System.Windows.Forms.ListBox serialNumbersLB;
         private System.Windows.Forms.TextBox serialNumberTB;
         private System.Windows.Forms.CheckBox serializedCB;
+        private System.Windows.Forms.Button clearItemButton;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.TextBox minimumAgeTB;
+        private System.Windows.Forms.CheckBox ageRestrictedCB;
     }
 }

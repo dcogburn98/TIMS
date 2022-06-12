@@ -132,7 +132,7 @@ namespace TIMS.Forms
         #endregion
 
 
-
+        #region Item Maintenance Group Methods
         private void reviewChangeTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form reviewInvoices = Program.OpenForms.Find(el => el is ReviewInvoices);
@@ -183,6 +183,47 @@ namespace TIMS.Forms
         }
 
         private void button5_Click(object sender, EventArgs e)
+        {
+            Item newItem = new Item();
+            newItem.productLine = productLineTBField.Text == string.Empty ? "XXX" : productLineTBField.Text;
+            newItem.itemNumber = itemNumberTBField.Text == string.Empty ? "XXX" : itemNumberTBField.Text;
+            newItem.itemName = itemNameTB.Text;
+            newItem.supplier = supplierCB.Text;
+            newItem.groupCode = int.TryParse(groupCodeTB.Text, out int i) == false ? 0 : i;
+            newItem.velocityCode = int.TryParse(velocityCodeCB.Text, out i) == false ? 0 : i;
+            newItem.previousYearVelocityCode = int.TryParse(prevYearVelocityCodeCB.Text, out i) == false ? 0 : i;
+            newItem.category = categoryCB.Text;
+            newItem.standardPackage = int.TryParse(standardPkgTB.Text, out i) == false ? 0 : i;
+            newItem.taxed = taxableCB.Checked;
+            newItem.dateStocked = DateTime.Parse(dateStockedTB.Text);
+            newItem.dateLastReceipt = DateTime.Parse(lastReceiptTB.Text);
+            newItem.minimum = decimal.TryParse(minTB.Text, out decimal j) == false ? 0 : j;
+            newItem.maximum = decimal.TryParse(maxTB.Text, out j) == false ? 0 : j;
+            newItem.onHandQty = decimal.TryParse(onHandTB.Text, out j) == false ? 0 : j;
+            newItem.WIPQty = decimal.TryParse(wipQtyTB.Text, out j) == false ? 0 : j;
+            newItem.onOrderQty = decimal.TryParse(onOrderQtyTB.Text, out j) == false ? 0 : j;
+            newItem.onBackorderQty = decimal.TryParse(onBackorderQtyTB.Text, out j) == false ? 0 : j;
+            newItem.daysOnOrder = int.TryParse(daysOnOrderTB.Text, out i) == false ? 0 : i;
+            newItem.daysOnBackorder = int.TryParse(daysOnBackOrderTB.Text, out i) == false ? 0 : i;
+            newItem.listPrice = decimal.TryParse(listPriceTB.Text, out j) == false ? 0 : j;
+            newItem.redPrice = decimal.TryParse(redPriceTB.Text, out j) == false ? 0 : j;
+            newItem.yellowPrice = decimal.TryParse(yellowPriceTB.Text, out j) == false ? 0 : j;
+            newItem.greenPrice = decimal.TryParse(greenPriceTB.Text, out j) == false ? 0 : j;
+            newItem.pinkPrice = decimal.TryParse(pinkPriceTB.Text, out j) == false ? 0 : j;
+            newItem.bluePrice = decimal.TryParse(bluePriceTB.Text, out j) == false ? 0 : j;
+            newItem.replacementCost = decimal.TryParse(costTB.Text, out j) == false ? 0 : j;
+            newItem.averageCost = decimal.TryParse(avgCostTB.Text, out j) == false ? 0 : j;
+            newItem.ageRestricted = ageRestrictedCB.Checked;
+            newItem.minimumAge = int.TryParse(minimumAgeTB.Text, out i) == false ? 0 : i;
+            newItem.longDescription = descriptionTB.Text;
+            newItem.serialized = serializedCB.Checked;
+
+            DatabaseHandler.SqlUpdateItem(newItem);
+            MessageBox.Show("Item updated!");
+        }
+        #endregion
+
+        private void clearItemButton_Click(object sender, EventArgs e)
         {
             workingItem = null;
             itemDescriptionTB.Text = string.Empty;
@@ -237,7 +278,6 @@ namespace TIMS.Forms
             removerSNbtn.Enabled = false;
 
             dateOfLastSaleTB.Text = string.Empty;
-
         }
     }
 }

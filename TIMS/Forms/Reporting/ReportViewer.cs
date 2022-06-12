@@ -28,6 +28,7 @@ namespace TIMS.Forms
             this.inv = inv;
             inv.currentPage = 1;
             pagePreview1.Zoom = PdfSharp.Forms.Zoom.BestFit;
+            pagePreview1.PageSize = PageSizeConverter.ToSize(PageSize.Letter);
             pagePreview1.SetRenderFunction(inv.RenderPage);
         }
 
@@ -44,6 +45,7 @@ namespace TIMS.Forms
 
             report.currentPage = 1;
             pagePreview1.Zoom = PdfSharp.Forms.Zoom.BestFit;
+            pagePreview1.PageSize = PageSizeConverter.ToSize(PageSize.Letter);
             pagePreview1.SetRenderFunction(report.RenderPage);
         }
 
@@ -116,11 +118,11 @@ namespace TIMS.Forms
             {
                 barcodeSheet.RenderBarcodePage(gfx);
 
-                //if (barcodeSheet.currentPage != barcodeSheet.totalPages)
-                //{
-                //    ev.HasMorePages = true;
-                //    barcodeSheet.currentPage++;
-                //}
+                if (barcodeSheet.currentPage != barcodeSheet.totalPages)
+                {
+                    ev.HasMorePages = true;
+                    barcodeSheet.currentPage++;
+                }
             }
         }
 

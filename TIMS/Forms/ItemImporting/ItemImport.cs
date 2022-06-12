@@ -200,7 +200,7 @@ namespace TIMS.Forms
 
                 if (newItem.SKU != "")
                 {
-                    if (Program.IsStringNumeric(newItem.SKU) && newItem.SKU.Length == 11)
+                    if (Program.IsStringNumeric(newItem.SKU) && newItem.SKU.Length == 11 && calculateCheckDigit)
                         newItem.SKU = UPCA.CalculateChecksumDigit(newItem.SKU);
                     DatabaseHandler.SqlAddBarcode(newItem.itemNumber, newItem.productLine, newItem.SKU, 1);
                 }
@@ -225,7 +225,8 @@ namespace TIMS.Forms
                 rowsCompleted++;
                 progressBar1.PerformStep();
             }
-            MessageBox.Show("Items Added!\nItems skipped: " + skippedRows.Count);
+            MessageBox.Show("Items Added!\nItems skipped: " + skippedRows.Count + "\n\n" +
+                "Skipped items will be displayed in the import window.");
 
             dataGridView1.Rows.Clear();
             foreach (DataGridViewRow row in skippedRows)

@@ -106,7 +106,7 @@ namespace TIMS
             XFont font = new XFont("Times", 8.5d);
 
             double currentLine = font.GetHeight() + 5;
-            double columnWidth = (gfx.PageSize.Width - 5) / ColumnCount;
+            double columnWidth = (gfx.PageSize.Width - 15 - 5) / ColumnCount;
             int totalRows = 0;
 
             gfx.DrawString(DateTime.Now.ToString(), font, XBrushes.Black, 10, currentLine);
