@@ -22,6 +22,7 @@ namespace TIMS
 
         public int totalPages;
         public int currentPage;
+        public int pageRows = 75;
 
         public Report(List<string> fields, string dataSource, List<string> conditions, List<string> totals)
         {
@@ -101,8 +102,8 @@ namespace TIMS
 
         public void RenderPage(XGraphics gfx)
         {
-            totalPages = ((Results.Count / ColumnCount) / 40 + ((Results.Count / ColumnCount) % 40 > 0 ? 1 : 0));
-            XFont font = new XFont("Times", 8);
+            totalPages = ((Results.Count / ColumnCount) / pageRows + ((Results.Count / ColumnCount) % pageRows > 0 ? 1 : 0));
+            XFont font = new XFont("Times", 8.5d);
 
             double currentLine = font.GetHeight() + 5;
             double columnWidth = (gfx.PageSize.Width - 5) / ColumnCount;
@@ -126,32 +127,38 @@ namespace TIMS
                 gfx.DrawString(Fields[i], font, XBrushes.Black, (columnWidth * i) + ((columnWidth - gfx.MeasureString(Fields[i], font).Width) / 2), currentLine);
             }
 
-            for (int i = 0; i != Results.Count; i++)
+            for (int i = 0; i != pageRows * Fields.Count; i++)
             {
+                if ((currentPage * (Fields.Count * pageRows)) + i > Results.Count - 1)
+                    break;
+
                 if (i % ColumnCount == 0)
                 {
                     currentLine += font.GetHeight();
                     totalRows++;
                 }
-                string result = double.TryParse(Results[i].ToString(), out double f) ? Math.Round(f, 2).ToString() : Results[i].ToString(); //Try parsing as a number to get rid of all those extra digits that don't need to be there
+                string result = double.TryParse(Results[(currentPage * (Fields.Count * pageRows)) + i].ToString(), out double f) ? Math.Round(f, 2).ToString() : Results[(currentPage * (Fields.Count * pageRows)) + i].ToString(); //Try parsing as a number to get rid of all those extra digits that don't need to be there
                 gfx.DrawString(result, font, XBrushes.Black, (columnWidth * (i % ColumnCount)) + ((columnWidth - gfx.MeasureString(result, font).Width) / 2), currentLine);
             }
             currentLine += font.GetHeight();
 
-            gfx.DrawString("Total Rows: " + totalRows.ToString(), font, XBrushes.Black, 10, currentLine + font.GetHeight());
-            for (int i = 0; i != Totals.Count; i++)
+            if (currentPage == totalPages)
             {
-                currentLine += font.GetHeight();
-                int totalColumnNumber = Fields.IndexOf(Totals[i]);
-                float totalAmt = 0;
-
-                for (int j = 0; j != totalRows; j++)
+                gfx.DrawString("Total Rows: " + totalRows.ToString(), font, XBrushes.Black, 10, currentLine + font.GetHeight());
+                for (int i = 0; i != Totals.Count; i++)
                 {
-                    int index = totalColumnNumber + (j * ColumnCount);
-                    totalAmt += float.TryParse(Results[index].ToString(), out float f) ? (float)Math.Round(f, 2) : 0;
+                    currentLine += font.GetHeight();
+                    int totalColumnNumber = Fields.IndexOf(Totals[i]);
+                    float totalAmt = 0;
+
+                    for (int j = 0; j != totalRows; j++)
+                    {
+                        int index = totalColumnNumber + (j * ColumnCount);
+                        totalAmt += float.TryParse(Results[index].ToString(), out float f) ? (float)Math.Round(f, 2) : 0;
+                    }
+
+                    gfx.DrawString(Totals[i] + ": " + totalAmt.ToString("0.00"), font, XBrushes.Black, gfx.PageSize.Width - gfx.MeasureString(Totals[i] + ": " + totalAmt.ToString("0.00"), font).Width - 15, currentLine);
                 }
-                
-                gfx.DrawString(Totals[i] + ": " + totalAmt.ToString("0.00"), font, XBrushes.Black, gfx.PageSize.Width - gfx.MeasureString(Totals[i] + ": " + totalAmt.ToString("0.00"), font).Width - 15, currentLine);
             }
 
             gfx.DrawString("TIMS - Total Inventory Management System | Reporting System", font, XBrushes.Black, 10, gfx.PageSize.Height - font.GetHeight() - 10);

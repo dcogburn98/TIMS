@@ -696,7 +696,7 @@ namespace TIMS
             SQLiteDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
-                suppliers.Add(reader.GetString(0).ToUpper());
+                suppliers.Add(reader.GetString(0));
 
             suppliers.Sort();
 

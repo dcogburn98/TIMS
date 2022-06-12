@@ -73,6 +73,9 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToOrderColumns = true;
             this.dataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -169,6 +172,7 @@
             // 
             // deleteItemButton
             // 
+            this.deleteItemButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.deleteItemButton.Enabled = false;
             this.deleteItemButton.Location = new System.Drawing.Point(728, 476);
             this.deleteItemButton.Name = "deleteItemButton";
@@ -180,6 +184,7 @@
             // 
             // saveOrderButton
             // 
+            this.saveOrderButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.saveOrderButton.Enabled = false;
             this.saveOrderButton.Location = new System.Drawing.Point(890, 476);
             this.saveOrderButton.Name = "saveOrderButton";
@@ -191,6 +196,7 @@
             // 
             // finalizeButton
             // 
+            this.finalizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.finalizeButton.Enabled = false;
             this.finalizeButton.Location = new System.Drawing.Point(809, 476);
             this.finalizeButton.Name = "finalizeButton";
@@ -201,6 +207,7 @@
             // 
             // button3
             // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button3.Location = new System.Drawing.Point(12, 476);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
@@ -306,6 +313,7 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(12, 415);
             this.label4.Name = "label4";
@@ -315,6 +323,7 @@
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(188, 415);
             this.label5.Name = "label5";
@@ -324,6 +333,7 @@
             // 
             // totalItemsTB
             // 
+            this.totalItemsTB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.totalItemsTB.Enabled = false;
             this.totalItemsTB.Location = new System.Drawing.Point(80, 412);
             this.totalItemsTB.Name = "totalItemsTB";
@@ -332,6 +342,7 @@
             // 
             // totalCostTB
             // 
+            this.totalCostTB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.totalCostTB.Enabled = false;
             this.totalCostTB.Location = new System.Drawing.Point(252, 412);
             this.totalCostTB.Name = "totalCostTB";
@@ -340,6 +351,7 @@
             // 
             // totalRetailTB
             // 
+            this.totalRetailTB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.totalRetailTB.Enabled = false;
             this.totalRetailTB.Location = new System.Drawing.Point(422, 412);
             this.totalRetailTB.Name = "totalRetailTB";
@@ -348,6 +360,7 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(358, 415);
             this.label6.Name = "label6";
@@ -357,6 +370,7 @@
             // 
             // potentialProfitTB
             // 
+            this.potentialProfitTB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.potentialProfitTB.Enabled = false;
             this.potentialProfitTB.Location = new System.Drawing.Point(612, 412);
             this.potentialProfitTB.Name = "potentialProfitTB";
@@ -365,6 +379,7 @@
             // 
             // label7
             // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(528, 415);
             this.label7.Name = "label7";
@@ -374,6 +389,7 @@
             // 
             // averageMarginTB
             // 
+            this.averageMarginTB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.averageMarginTB.Enabled = false;
             this.averageMarginTB.Location = new System.Drawing.Point(802, 412);
             this.averageMarginTB.Name = "averageMarginTB";
@@ -382,6 +398,7 @@
             // 
             // label8
             // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(718, 415);
             this.label8.Name = "label8";

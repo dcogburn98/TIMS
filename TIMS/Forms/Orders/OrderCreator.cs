@@ -36,7 +36,10 @@ namespace TIMS.Forms.Orders
                 case "all":
                     if (supplier == "Manual Order")
                         break;
-                    foreach (Item item in DatabaseHandler.SqlRetrieveItemsFromSupplier(supplier))
+                    List<Item> itemsall = DatabaseHandler.SqlRetrieveItemsFromSupplier(supplier);
+                    if (itemsall == null)
+                        break;
+                    foreach (Item item in itemsall)
                     {
                         workingItem = new InvoiceItem(item);
                         int row = dataGridView1.Rows.Add();
@@ -72,7 +75,10 @@ namespace TIMS.Forms.Orders
                 case "min":
                     if (supplier == "Manual Order")
                         break;
-                    foreach (Item item in DatabaseHandler.SqlRetrieveItemsFromSupplierBelowMin(supplier))
+                    List<Item> itemsmin = DatabaseHandler.SqlRetrieveItemsFromSupplierBelowMin(supplier);
+                    if (itemsmin == null)
+                        break;
+                    foreach (Item item in itemsmin)
                     {
                         workingItem = new InvoiceItem(item);
                         int row = dataGridView1.Rows.Add();
@@ -106,7 +112,10 @@ namespace TIMS.Forms.Orders
                 case "max":
                     if (supplier == "Manual Order")
                         break;
-                    foreach (Item item in DatabaseHandler.SqlRetrieveItemsFromSupplierBelowMax(supplier))
+                    List<Item> itemsmax = DatabaseHandler.SqlRetrieveItemsFromSupplierBelowMax(supplier);
+                    if (itemsmax == null)
+                        break;
+                    foreach (Item item in itemsmax)
                     {
                         workingItem = new InvoiceItem(item);
                         int row = dataGridView1.Rows.Add();
