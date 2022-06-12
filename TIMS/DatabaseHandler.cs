@@ -28,7 +28,7 @@ namespace TIMS
 
         public static void InitializeDatabases()
         {
-            sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Compress = True; ");
+            sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Pooling = true; Max Pool Size = 100; Compress = True; ");
             OpenConnection();
             CloseConnection();
 
@@ -696,12 +696,26 @@ namespace TIMS
             SQLiteDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
-                suppliers.Add(reader.GetString(0));
+                suppliers.Add(reader.GetString(0).ToUpper());
 
             suppliers.Sort();
 
             CloseConnection();
             return suppliers;
+        }
+
+        public static void SqlAddSupplier(string supplier)
+        {
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "INSERT INTO SUPPLIERS (SUPPLIER) VALUES ($SUPPLIER)";
+            SQLiteParameter p1 = new SQLiteParameter("$SUPPLIER", supplier);
+            command.Parameters.Add(p1);
+            command.ExecuteNonQuery();
+
+            CloseConnection();
         }
 
         public static bool SqlCheckProductLine(string productLine)
@@ -725,6 +739,20 @@ namespace TIMS
                 CloseConnection();
                 return true;
             }
+        }
+
+        public static void SqlAddProductLine(string productLine)
+        {
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "INSERT INTO PRODUCTLINES (PRODUCTLINE) VALUES ($LINE)";
+            SQLiteParameter p1 = new SQLiteParameter("$LINE", productLine);
+            command.Parameters.Add(p1);
+            command.ExecuteNonQuery();
+
+            CloseConnection();
         }
 
         public static Customer SqlCheckCustomerNumber(string custNo)
@@ -1223,6 +1251,30 @@ namespace TIMS
 
             CloseConnection();
             return item;
+        }
+
+        public static void SqlAddBarcode(string itemnumber, string productline, string barcode, decimal quantity)
+        {
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "INSERT INTO BARCODES ( BARCODETYPE, BARCODEVALUE, SCANNEDITEMNUMBER, SCANNEDPRODUCTLINE, SCANNEDQUANTITY) " +
+                "VALUES ($TYPE, $VALUE, $ITEMNUMBER, $PRODUCTLINE, $QUANTITY)";
+            SQLiteParameter p1 = new SQLiteParameter("$TYPE", "UPCA");
+            SQLiteParameter p2 = new SQLiteParameter("$VALUE", barcode);
+            SQLiteParameter p3 = new SQLiteParameter("$ITEMNUMBER", itemnumber);
+            SQLiteParameter p4 = new SQLiteParameter("$PRODUCTLINE", productline);
+            SQLiteParameter p5 = new SQLiteParameter("$QUANTITY", quantity);
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+            command.Parameters.Add(p3);
+            command.Parameters.Add(p4);
+            command.Parameters.Add(p5);
+
+            command.ExecuteNonQuery();
+
+            CloseConnection();
         }
 
         public static List<string> SqlRetrieveBarcode(Item item)
@@ -1799,7 +1851,6 @@ namespace TIMS
 
         public static void OpenConnection()
         {
-            System.Data.ConnectionState state = sqlite_conn.State;
             sqlite_conn.Open();
         }
 

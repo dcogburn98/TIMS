@@ -24,10 +24,13 @@ namespace TIMS.Forms.Orders
             else
                 supplierLabel.Text = "Supplier: " + supplier;
 
-            criteriaLabel.Text = "Criteria: " + criteria;
+            criteriaLabel.Text = "Pre-Fill Criteria: " + criteria;
 
             decimal totalCost = 0;
             decimal totalItems = 0;
+            decimal totalRetail = 0;
+            decimal totalPotentialProfit = 0;
+            decimal averageMargin = 0;
             switch (criteria)
             {
                 case "all":
@@ -49,14 +52,20 @@ namespace TIMS.Forms.Orders
                         dataGridView1.Rows[row].Cells[9].Value = workingItem.cost;
                         dataGridView1.Rows[row].Cells[10].Value = workingItem.price;
                     }
-                    
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
+
+                    foreach (DataGridViewRow roww in dataGridView1.Rows)
                     {
-                        totalCost += decimal.Parse(row.Cells[9].Value.ToString());
-                        totalItems += decimal.Parse(row.Cells[3].Value.ToString());
+                        totalCost += decimal.Parse(roww.Cells[9].Value.ToString());
+                        totalItems += decimal.Parse(roww.Cells[3].Value.ToString());
+                        totalRetail += decimal.Parse(roww.Cells[10].Value.ToString());
+                        averageMargin = (totalRetail - totalCost) / totalRetail;
                     }
+                    totalPotentialProfit = totalRetail - totalCost;
                     totalCostTB.Text = totalCost.ToString("C");
                     totalItemsTB.Text = totalItems.ToString();
+                    totalRetailTB.Text = totalRetail.ToString("C");
+                    potentialProfitTB.Text = totalPotentialProfit.ToString("C");
+                    averageMarginTB.Text = averageMargin.ToString("P");
                     break;
                 case "none":
                     break;
@@ -80,13 +89,19 @@ namespace TIMS.Forms.Orders
                         dataGridView1.Rows[row].Cells[10].Value = workingItem.price;
                     }
 
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                    foreach (DataGridViewRow roww in dataGridView1.Rows)
                     {
-                        totalCost += decimal.Parse(row.Cells[9].Value.ToString());
-                        totalItems += decimal.Parse(row.Cells[3].Value.ToString());
+                        totalCost += decimal.Parse(roww.Cells[9].Value.ToString());
+                        totalItems += decimal.Parse(roww.Cells[3].Value.ToString());
+                        totalRetail += decimal.Parse(roww.Cells[10].Value.ToString());
+                        averageMargin = (totalRetail - totalCost) / totalRetail;
                     }
+                    totalPotentialProfit = totalRetail - totalCost;
                     totalCostTB.Text = totalCost.ToString("C");
                     totalItemsTB.Text = totalItems.ToString();
+                    totalRetailTB.Text = totalRetail.ToString("C");
+                    potentialProfitTB.Text = totalPotentialProfit.ToString("C");
+                    averageMarginTB.Text = averageMargin.ToString("P");
                     break;
                 case "max":
                     if (supplier == "Manual Order")
@@ -108,13 +123,19 @@ namespace TIMS.Forms.Orders
                         dataGridView1.Rows[row].Cells[10].Value = workingItem.price;
                     }
 
-                    foreach (DataGridViewRow row in dataGridView1.Rows)
+                    foreach (DataGridViewRow roww in dataGridView1.Rows)
                     {
-                        totalCost += decimal.Parse(row.Cells[9].Value.ToString());
-                        totalItems += decimal.Parse(row.Cells[3].Value.ToString());
+                        totalCost += decimal.Parse(roww.Cells[9].Value.ToString());
+                        totalItems += decimal.Parse(roww.Cells[3].Value.ToString());
+                        totalRetail += decimal.Parse(roww.Cells[10].Value.ToString());
+                        averageMargin = (totalRetail - totalCost) / totalRetail;
                     }
+                    totalPotentialProfit = totalRetail - totalCost;
                     totalCostTB.Text = totalCost.ToString("C");
                     totalItemsTB.Text = totalItems.ToString();
+                    totalRetailTB.Text = totalRetail.ToString("C");
+                    potentialProfitTB.Text = totalPotentialProfit.ToString("C");
+                    averageMarginTB.Text = averageMargin.ToString("P");
                     break;
             }
         }
@@ -130,8 +151,12 @@ namespace TIMS.Forms.Orders
         private void button3_Click(object sender, EventArgs e)
         {
             if (dataGridView1.Rows.Count != 0)
+            {
                 if (MessageBox.Show("Are you sure you want to leave order editing?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     Close();
+            }
+            else
+                Close();
         }
 
         private void productLineCB_Enter(object sender, EventArgs e)
@@ -255,7 +280,7 @@ namespace TIMS.Forms.Orders
 
         private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            if (e.ColumnIndex != 3)
+            if (e.ColumnIndex < 3 || e.ColumnIndex > 8)
             {
                 e.Cancel = true;
                 return;
@@ -273,30 +298,42 @@ namespace TIMS.Forms.Orders
                 return;
             }
 
+            if (decimal.Parse(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()) == 0)
+            {
+                MessageBox.Show("Cannot use 0 as a quantity for order!\nUse 'Delete Item' button if removal was intended."); 
+                return;
+            }
+
             Item item = DatabaseHandler.SqlRetrieveItem(
                 dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString(),
                 dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString());
             workingItem = new InvoiceItem(item);
 
-            workingItem.quantity = decimal.Parse(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+            workingItem.quantity = decimal.Parse(dataGridView1.Rows[e.RowIndex].Cells[3].Value.ToString());
+            workingItem.cost = decimal.Parse(dataGridView1.Rows[e.RowIndex].Cells[7].Value.ToString());
+            workingItem.price = decimal.Parse(dataGridView1.Rows[e.RowIndex].Cells[8].Value.ToString());
 
-            dataGridView1.Rows[e.RowIndex].Cells[4].Value = item.minimum;
-            dataGridView1.Rows[e.RowIndex].Cells[5].Value = item.maximum;
-            dataGridView1.Rows[e.RowIndex].Cells[6].Value = item.onHandQty;
-            dataGridView1.Rows[e.RowIndex].Cells[7].Value = workingItem.cost;
-            dataGridView1.Rows[e.RowIndex].Cells[8].Value = workingItem.price;
             dataGridView1.Rows[e.RowIndex].Cells[9].Value = workingItem.cost * workingItem.quantity;
             dataGridView1.Rows[e.RowIndex].Cells[10].Value = workingItem.price * workingItem.quantity;
 
             decimal totalCost = 0;
             decimal totalItems = 0;
+            decimal totalRetail = 0;
+            decimal totalPotentialProfit = 0;
+            decimal averageMargin = 0;
             foreach (DataGridViewRow roww in dataGridView1.Rows)
             {
                 totalCost += decimal.Parse(roww.Cells[9].Value.ToString());
                 totalItems += decimal.Parse(roww.Cells[3].Value.ToString());
+                totalRetail += decimal.Parse(roww.Cells[10].Value.ToString());
+                averageMargin = (totalRetail - totalCost) / totalRetail;
             }
+            totalPotentialProfit = totalRetail - totalCost;
             totalCostTB.Text = totalCost.ToString("C");
             totalItemsTB.Text = totalItems.ToString();
+            totalRetailTB.Text = totalRetail.ToString("C");
+            potentialProfitTB.Text = totalPotentialProfit.ToString("C");
+            averageMarginTB.Text = averageMargin.ToString("P");
         }
 
         private void clearItemButton_Click(object sender, EventArgs e)
@@ -346,8 +383,12 @@ namespace TIMS.Forms.Orders
 
         private void deleteItemButton_Click(object sender, EventArgs e)
         {
+            if (dataGridView1.SelectedCells.Count < 1)
+                return;
+
             dataGridView1.Rows.Remove(dataGridView1.CurrentCell.OwningRow);
-            deleteItemButton.Enabled = false;
+            if (dataGridView1.Rows.Count < 1)
+                deleteItemButton.Enabled = false;
         }
 
         private void saveOrderButton_Click(object sender, EventArgs e)

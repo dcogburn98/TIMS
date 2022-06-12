@@ -90,6 +90,12 @@ namespace TIMS.Forms
 
         private void importButton_Click(object sender, EventArgs e)
         {
+            bool calculateCheckDigit = false;
+            if (MessageBox.Show("Should TIMS calculate the check digit for UPC's only containing 11 digits?", "Question", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                calculateCheckDigit = true;
+            }
+
             List<string> availableHeaders = DatabaseHandler.SqlRetrieveTableHeaders("ITEMS");
             List<string> dataHeaders = new List<string>();
 
@@ -186,9 +192,29 @@ namespace TIMS.Forms
                             cell.Value.ToString()[0] == '$' ? 
                             cell.Value.ToString().Trim('$') : 
                             cell.Value.ToString());
+                    if (cell.OwningColumn.Name.ToLower() == "supplier")
+                        newItem.supplier = cell.Value.ToString() == "" ? "Default" : cell.Value.ToString();
                 }
                 if (newItem.supplier == null || newItem.supplier == string.Empty)
                     newItem.supplier = "Default";
+
+                if (newItem.SKU != "")
+                {
+                    if (Program.IsStringNumeric(newItem.SKU) && newItem.SKU.Length == 11)
+                        newItem.SKU = UPCA.CalculateChecksumDigit(newItem.SKU);
+                    DatabaseHandler.SqlAddBarcode(newItem.itemNumber, newItem.productLine, newItem.SKU, 1);
+                }
+
+                if (!DatabaseHandler.SqlCheckProductLine(newItem.productLine.ToUpper()))
+                {
+                    DatabaseHandler.SqlAddProductLine(newItem.productLine.ToUpper());
+                }
+
+                if (!DatabaseHandler.SqlRetrieveSuppliers().Contains(newItem.supplier.ToUpper()))
+                {
+                    DatabaseHandler.SqlAddSupplier(newItem.supplier);
+                }
+
                 if (DatabaseHandler.SqlRetrieveItem(newItem.itemNumber, newItem.productLine) == null)
                 {
                     if (!DatabaseHandler.SqlAddItem(newItem))

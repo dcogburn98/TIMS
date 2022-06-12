@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerTest", "ServerTest\Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionsTest", "PermissionsTest\PermissionsTest.csproj", "{31B90E70-C6A1-4B76-B3D0-3F23578CD3E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SortingAlgorithmTest", "SortingAlgorithmTest\SortingAlgorithmTest.csproj", "{314130A5-DA29-4D74-B702-E1CB2A2F3A92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{31B90E70-C6A1-4B76-B3D0-3F23578CD3E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31B90E70-C6A1-4B76-B3D0-3F23578CD3E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31B90E70-C6A1-4B76-B3D0-3F23578CD3E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{314130A5-DA29-4D74-B702-E1CB2A2F3A92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{314130A5-DA29-4D74-B702-E1CB2A2F3A92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{314130A5-DA29-4D74-B702-E1CB2A2F3A92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{314130A5-DA29-4D74-B702-E1CB2A2F3A92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

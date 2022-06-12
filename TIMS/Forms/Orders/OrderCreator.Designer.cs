@@ -29,6 +29,17 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.itemNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.productLine = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.min = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.max = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.onHandQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cost = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.retail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.extCost = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.extRetail = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.deleteItemButton = new System.Windows.Forms.Button();
             this.saveOrderButton = new System.Windows.Forms.Button();
             this.finalizeButton = new System.Windows.Forms.Button();
@@ -43,21 +54,16 @@
             this.clearItemButton = new System.Windows.Forms.Button();
             this.supplierLabel = new System.Windows.Forms.Label();
             this.criteriaLabel = new System.Windows.Forms.Label();
-            this.itemNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.productLine = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.min = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.max = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.onHandQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cost = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.retail = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.extCost = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.extRetail = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.totalItemsTB = new System.Windows.Forms.TextBox();
             this.totalCostTB = new System.Windows.Forms.TextBox();
+            this.totalRetailTB = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.potentialProfitTB = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.averageMarginTB = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -94,6 +100,72 @@
             this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
             this.dataGridView1.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridView1_RowsAdded);
             this.dataGridView1.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dataGridView1_RowsRemoved);
+            // 
+            // itemNumber
+            // 
+            this.itemNumber.FillWeight = 70.91371F;
+            this.itemNumber.HeaderText = "Item Number";
+            this.itemNumber.Name = "itemNumber";
+            // 
+            // productLine
+            // 
+            this.productLine.FillWeight = 70.91371F;
+            this.productLine.HeaderText = "Product Line";
+            this.productLine.Name = "productLine";
+            // 
+            // description
+            // 
+            this.description.FillWeight = 390.8629F;
+            this.description.HeaderText = "Description";
+            this.description.Name = "description";
+            // 
+            // qty
+            // 
+            this.qty.FillWeight = 70.91371F;
+            this.qty.HeaderText = "Quantity";
+            this.qty.Name = "qty";
+            // 
+            // min
+            // 
+            this.min.FillWeight = 70.91371F;
+            this.min.HeaderText = "Min";
+            this.min.Name = "min";
+            // 
+            // max
+            // 
+            this.max.FillWeight = 70.91371F;
+            this.max.HeaderText = "Max";
+            this.max.Name = "max";
+            // 
+            // onHandQty
+            // 
+            this.onHandQty.FillWeight = 70.91371F;
+            this.onHandQty.HeaderText = "On Hand";
+            this.onHandQty.Name = "onHandQty";
+            // 
+            // cost
+            // 
+            this.cost.FillWeight = 70.91371F;
+            this.cost.HeaderText = "Cost";
+            this.cost.Name = "cost";
+            // 
+            // retail
+            // 
+            this.retail.FillWeight = 70.91371F;
+            this.retail.HeaderText = "Retail Price";
+            this.retail.Name = "retail";
+            // 
+            // extCost
+            // 
+            this.extCost.FillWeight = 70.91371F;
+            this.extCost.HeaderText = "Ext. Cost";
+            this.extCost.Name = "extCost";
+            // 
+            // extRetail
+            // 
+            this.extRetail.FillWeight = 70.91371F;
+            this.extRetail.HeaderText = "Ext. Retail";
+            this.extRetail.Name = "extRetail";
             // 
             // deleteItemButton
             // 
@@ -232,72 +304,6 @@
             this.criteriaLabel.TabIndex = 14;
             this.criteriaLabel.Text = "Pre-Fill Criteria:";
             // 
-            // itemNumber
-            // 
-            this.itemNumber.FillWeight = 70.91371F;
-            this.itemNumber.HeaderText = "Item Number";
-            this.itemNumber.Name = "itemNumber";
-            // 
-            // productLine
-            // 
-            this.productLine.FillWeight = 70.91371F;
-            this.productLine.HeaderText = "Product Line";
-            this.productLine.Name = "productLine";
-            // 
-            // description
-            // 
-            this.description.FillWeight = 390.8629F;
-            this.description.HeaderText = "Description";
-            this.description.Name = "description";
-            // 
-            // qty
-            // 
-            this.qty.FillWeight = 70.91371F;
-            this.qty.HeaderText = "Quantity";
-            this.qty.Name = "qty";
-            // 
-            // min
-            // 
-            this.min.FillWeight = 70.91371F;
-            this.min.HeaderText = "Min";
-            this.min.Name = "min";
-            // 
-            // max
-            // 
-            this.max.FillWeight = 70.91371F;
-            this.max.HeaderText = "Max";
-            this.max.Name = "max";
-            // 
-            // onHandQty
-            // 
-            this.onHandQty.FillWeight = 70.91371F;
-            this.onHandQty.HeaderText = "On Hand";
-            this.onHandQty.Name = "onHandQty";
-            // 
-            // cost
-            // 
-            this.cost.FillWeight = 70.91371F;
-            this.cost.HeaderText = "Cost";
-            this.cost.Name = "cost";
-            // 
-            // retail
-            // 
-            this.retail.FillWeight = 70.91371F;
-            this.retail.HeaderText = "Retail Price";
-            this.retail.Name = "retail";
-            // 
-            // extCost
-            // 
-            this.extCost.FillWeight = 70.91371F;
-            this.extCost.HeaderText = "Ext. Cost";
-            this.extCost.Name = "extCost";
-            // 
-            // extRetail
-            // 
-            this.extRetail.FillWeight = 70.91371F;
-            this.extRetail.HeaderText = "Ext. Retail";
-            this.extRetail.Name = "extRetail";
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -332,11 +338,68 @@
             this.totalCostTB.Size = new System.Drawing.Size(100, 20);
             this.totalCostTB.TabIndex = 18;
             // 
+            // totalRetailTB
+            // 
+            this.totalRetailTB.Enabled = false;
+            this.totalRetailTB.Location = new System.Drawing.Point(422, 412);
+            this.totalRetailTB.Name = "totalRetailTB";
+            this.totalRetailTB.Size = new System.Drawing.Size(100, 20);
+            this.totalRetailTB.TabIndex = 20;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(358, 415);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(64, 13);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "Total Retail:";
+            // 
+            // potentialProfitTB
+            // 
+            this.potentialProfitTB.Enabled = false;
+            this.potentialProfitTB.Location = new System.Drawing.Point(612, 412);
+            this.potentialProfitTB.Name = "potentialProfitTB";
+            this.potentialProfitTB.Size = new System.Drawing.Size(100, 20);
+            this.potentialProfitTB.TabIndex = 22;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(528, 415);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(78, 13);
+            this.label7.TabIndex = 21;
+            this.label7.Text = "Potential Profit:";
+            // 
+            // averageMarginTB
+            // 
+            this.averageMarginTB.Enabled = false;
+            this.averageMarginTB.Location = new System.Drawing.Point(802, 412);
+            this.averageMarginTB.Name = "averageMarginTB";
+            this.averageMarginTB.Size = new System.Drawing.Size(100, 20);
+            this.averageMarginTB.TabIndex = 24;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(718, 415);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(85, 13);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "Average Margin:";
+            // 
             // OrderCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(977, 511);
+            this.Controls.Add(this.averageMarginTB);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.potentialProfitTB);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.totalRetailTB);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.totalCostTB);
             this.Controls.Add(this.totalItemsTB);
             this.Controls.Add(this.label5);
@@ -396,5 +459,11 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox totalItemsTB;
         private System.Windows.Forms.TextBox totalCostTB;
+        private System.Windows.Forms.TextBox totalRetailTB;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox potentialProfitTB;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox averageMarginTB;
+        private System.Windows.Forms.Label label8;
     }
 }

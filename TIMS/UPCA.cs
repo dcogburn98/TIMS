@@ -56,7 +56,7 @@ namespace TIMS
             {
                 ProductType = UPC.Substring(0, 1);
                 ManufacturerCode = UPC.Substring(1, 5);
-                ProductCode = UPC.Substring(5, 5);
+                ProductCode = UPC.Substring(6, 5);
                 CalculateChecksumDigit();
             }
         }
@@ -84,6 +84,31 @@ namespace TIMS
             int iCheckSum = (10 - (iSum % 10)) % 10;
             this.ChecksumDigit = iCheckSum.ToString();
 
+        }
+
+        public static string CalculateChecksumDigit(string UPC11)
+        {
+            string sTemp = UPC11;
+            int iSum = 0;
+            int iDigit = 0;
+
+            // Calculate the checksum digit here.
+            for (int i = 1; i <= sTemp.Length; i++)
+            {
+                iDigit = Convert.ToInt32(sTemp.Substring(i - 1, 1));
+                if (i % 2 == 0)
+                {    // even
+                    iSum += iDigit * 1;
+                }
+                else
+                {    // odd
+                    iSum += iDigit * 3;
+                }
+            }
+
+            int iCheckSum = (10 - (iSum % 10)) % 10;
+            string Checksum = iCheckSum.ToString();
+            return UPC11 + Checksum;
         }
 
         private string ConvertToDigitPatterns(string inputNumber, string[] patterns)
@@ -296,11 +321,11 @@ namespace TIMS
                 bool broken = false;
                 for (int j = 0; j != labelRows; j++)
                 {
-                    gfx.DrawRectangle(XPens.Black, new System.Drawing.RectangleF(
-                        (float)((i * labelWidth) + leftMargin),
-                        (float)((j * labelHeight) + topMargin),
-                        (float)labelWidth,
-                        (float)labelHeight));
+                    //gfx.DrawRectangle(XPens.Black, new System.Drawing.RectangleF(
+                    //    (float)((i * labelWidth) + leftMargin),
+                    //    (float)((j * labelHeight) + topMargin),
+                    //    (float)labelWidth,
+                    //    (float)labelHeight));
 
                     Item item = LabelItems[(i * labelRows) + j + ((currentPage - 1) * totalLabels)];
 
