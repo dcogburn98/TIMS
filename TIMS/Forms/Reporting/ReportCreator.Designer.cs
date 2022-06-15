@@ -59,6 +59,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.viewQueryButton = new System.Windows.Forms.Button();
             this.printReportButton = new System.Windows.Forms.Button();
+            this.resultsFetchedLabel = new System.Windows.Forms.Label();
+            this.rowCountLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -386,11 +388,31 @@
             this.printReportButton.UseVisualStyleBackColor = true;
             this.printReportButton.Click += new System.EventHandler(this.button1_Click);
             // 
+            // resultsFetchedLabel
+            // 
+            this.resultsFetchedLabel.AutoSize = true;
+            this.resultsFetchedLabel.Location = new System.Drawing.Point(174, 325);
+            this.resultsFetchedLabel.Name = "resultsFetchedLabel";
+            this.resultsFetchedLabel.Size = new System.Drawing.Size(87, 13);
+            this.resultsFetchedLabel.TabIndex = 18;
+            this.resultsFetchedLabel.Text = "Results Fetched:";
+            // 
+            // rowCountLabel
+            // 
+            this.rowCountLabel.AutoSize = true;
+            this.rowCountLabel.Location = new System.Drawing.Point(198, 341);
+            this.rowCountLabel.Name = "rowCountLabel";
+            this.rowCountLabel.Size = new System.Drawing.Size(63, 13);
+            this.rowCountLabel.TabIndex = 19;
+            this.rowCountLabel.Text = "Row Count:";
+            // 
             // ReportCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(720, 634);
+            this.Controls.Add(this.rowCountLabel);
+            this.Controls.Add(this.resultsFetchedLabel);
             this.Controls.Add(this.printReportButton);
             this.Controls.Add(this.viewQueryButton);
             this.Controls.Add(this.groupBox3);
@@ -447,5 +469,7 @@
         private System.Windows.Forms.TextBox shortCodeTB;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button printReportButton;
+        private System.Windows.Forms.Label resultsFetchedLabel;
+        private System.Windows.Forms.Label rowCountLabel;
     }
 }

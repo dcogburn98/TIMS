@@ -22,7 +22,7 @@ namespace TIMS
 
         public int totalPages;
         public int currentPage;
-        public int pageRows = 75;
+        public int pageRows = 60;
 
         public Report(List<string> fields, string dataSource, List<string> conditions, List<string> totals)
         {
@@ -102,12 +102,12 @@ namespace TIMS
 
         public void RenderPage(XGraphics gfx)
         {
-            totalPages = ((Results.Count / ColumnCount) / pageRows + ((Results.Count / ColumnCount) % pageRows > 0 ? 1 : 0));
+            int rows = Results.Count / ColumnCount;
+            totalPages = (rows / pageRows + (rows % pageRows > 0 ? 1 : 0));
             XFont font = new XFont("Times", 8.5d);
 
             double currentLine = font.GetHeight() + 5;
             double columnWidth = (gfx.PageSize.Width - 15 - 5) / ColumnCount;
-            int totalRows = 0;
 
             gfx.DrawString(DateTime.Now.ToString(), font, XBrushes.Black, 10, currentLine);
             gfx.DrawString(ReportName, font, XBrushes.Black, (gfx.PageSize.Width / 2) - gfx.MeasureString(ReportName, font).Width / 2, currentLine);
@@ -129,29 +129,28 @@ namespace TIMS
 
             for (int i = 0; i != pageRows * Fields.Count; i++)
             {
-                if ((currentPage * (Fields.Count * pageRows)) + i > Results.Count - 1)
+                if (((currentPage - 1) * (Fields.Count * pageRows)) + i > Results.Count - 1)
                     break;
 
                 if (i % ColumnCount == 0)
                 {
                     currentLine += font.GetHeight();
-                    totalRows++;
                 }
-                string result = double.TryParse(Results[(currentPage * (Fields.Count * pageRows)) + i].ToString(), out double f) ? Math.Round(f, 2).ToString() : Results[(currentPage * (Fields.Count * pageRows)) + i].ToString(); //Try parsing as a number to get rid of all those extra digits that don't need to be there
+                string result = double.TryParse(Results[((currentPage - 1) * (Fields.Count * pageRows)) + i].ToString(), out double f) ? Math.Round(f, 2).ToString() : Results[((currentPage - 1) * (Fields.Count * pageRows)) + i].ToString(); //Try parsing as a number to get rid of all those extra digits that don't need to be there
                 gfx.DrawString(result, font, XBrushes.Black, (columnWidth * (i % ColumnCount)) + ((columnWidth - gfx.MeasureString(result, font).Width) / 2), currentLine);
             }
             currentLine += font.GetHeight();
 
             if (currentPage == totalPages)
             {
-                gfx.DrawString("Total Rows: " + totalRows.ToString(), font, XBrushes.Black, 10, currentLine + font.GetHeight());
+                gfx.DrawString("Total Rows: " + rows, font, XBrushes.Black, 10, currentLine + font.GetHeight());
                 for (int i = 0; i != Totals.Count; i++)
                 {
                     currentLine += font.GetHeight();
                     int totalColumnNumber = Fields.IndexOf(Totals[i]);
                     float totalAmt = 0;
 
-                    for (int j = 0; j != totalRows; j++)
+                    for (int j = 0; j != rows; j++)
                     {
                         int index = totalColumnNumber + (j * ColumnCount);
                         totalAmt += float.TryParse(Results[index].ToString(), out float f) ? (float)Math.Round(f, 2) : 0;

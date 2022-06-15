@@ -47,6 +47,9 @@ namespace TIMS.Forms.Orders
                 case 3:
                     criteria = "max";
                     break;
+                case 4:
+                    criteria = "items sold";
+                    break;
             }
             OrderCreator creator = new OrderCreator(supplier, criteria);
             creator.Show();

@@ -685,6 +685,42 @@ namespace TIMS
                 return invItems;
         }
 
+        public static List<InvoiceItem> SqlRetrieveItemsFromSupplierSoldAfterLastOrderDate(string supplier)
+        {
+            List<InvoiceItem> items = new List<InvoiceItem>();
+            List<Item> supplierItems = new List<Item>();
+            DateTime lastOrderDate = DateTime.MinValue;
+
+            OpenConnection();
+
+            //Retrieve last order date for supplier
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT LASTORDERDATE FROM SUPPLIERS WHERE SUPPLIER = $SUPPLIER";
+            SQLiteParameter p1 = new SQLiteParameter("$SUPPLIER", supplier);
+            command.Parameters.Add(p1);
+            SQLiteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+                lastOrderDate = DateTime.MinValue;
+            else
+                while (reader.Read())
+                    lastOrderDate = DateTime.Parse(reader.GetString(0));
+
+            CloseConnection();
+
+            supplierItems = SqlRetrieveItemsFromSupplier(supplier);
+            List<Invoice> invoices = SqlRetrieveInvoicesByDateRange(lastOrderDate, DateTime.Now);
+
+            foreach (Invoice inv in invoices)
+                foreach (InvoiceItem item in inv.items)
+                {
+                    if (supplierItems.Find(el => el.productLine == item.productLine && el.itemNumber == item.itemNumber) != null)
+                        items.Add(item);
+                }
+
+            return items;
+        }
+
         public static List<string> SqlRetrieveSuppliers()
         {
             List<string> suppliers = new List<string>();
@@ -1305,6 +1341,46 @@ namespace TIMS
             return barcodes;
         }
 
+        public static List<Invoice> SqlRetrieveInvoicesByDateRange(DateTime startDate, DateTime endDate, bool connectionOpened = false)
+        {
+            List<Invoice> invoices = new List<Invoice>();
+            if (!connectionOpened)
+                OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT INVOICENUMBER FROM INVOICES WHERE INVOICEFINALIZEDTIME > $STARTTIME AND INVOICEFINALIZEDTIME < $ENDTIME";
+            SQLiteParameter p1 = new SQLiteParameter("$STARTTIME", startDate.ToString());
+            SQLiteParameter p2 = new SQLiteParameter("$ENDTIME", endDate.AddDays(1).ToString());
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+            SQLiteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                if (!connectionOpened)
+                    CloseConnection();
+                return null;
+            }
+
+            List<int> invNumbers = new List<int>();
+
+            while (reader.Read())
+            {
+                invNumbers.Add(reader.GetInt32(0));
+            }
+
+            CloseConnection();
+
+            foreach (int number in invNumbers)
+            {
+                invoices.Add(SqlRetrieveInvoice(number));
+            }
+
+            if (!connectionOpened)
+                CloseConnection();
+            return invoices;
+        }
+
         public static List<Invoice> SqlRetrieveInvoicesByCriteria(string[] criteria)
         {
             List<Invoice> invoices = new List<Invoice>();
@@ -1847,6 +1923,35 @@ namespace TIMS
 
             CloseConnection();
             return items;
+        }
+
+        public static int SqlRetrieveNextPONumber()
+        {
+            int PONumber = 0;
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT MAX(PONUMBER) FROM PURCHASEORDERS";
+            SQLiteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return PONumber;
+            }
+
+            while (reader.Read())
+            {
+                if (reader.IsDBNull(0))
+                {
+                    CloseConnection();
+                    return PONumber;
+                }
+                PONumber = reader.GetInt32(0) + 1;
+            }
+
+            CloseConnection();
+            return PONumber;
         }
 
         public static void OpenConnection()

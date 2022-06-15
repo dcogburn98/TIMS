@@ -16,6 +16,8 @@ namespace TIMS.Forms
 
         public BarcodeSheet barcodeSheet;
 
+        public PurchaseOrder POSheet;
+
         public ReportViewer(Invoice inv)
         {
             InitializeComponent();
@@ -38,7 +40,9 @@ namespace TIMS.Forms
             CancelButton = closeButton;
             report = reportData;
             report.ExecuteReport();
-            reportData.totalPages = (reportData.Results.Count / reportData.ColumnCount) % 40 != 0 ? (reportData.Results.Count / reportData.ColumnCount) / 40 + 1 : (reportData.Results.Count / reportData.ColumnCount) / 40;
+            reportData.totalPages = (reportData.Results.Count / reportData.ColumnCount) % report.pageRows != 0 ? 
+                (reportData.Results.Count / reportData.ColumnCount) / report.pageRows + 1 : 
+                (reportData.Results.Count / reportData.ColumnCount) / report.pageRows;
             if (reportData.totalPages > 1)
                 nextPageBtn.Enabled = true;
             prevPageBtn.Enabled = false;
@@ -62,6 +66,23 @@ namespace TIMS.Forms
             pagePreview1.PageSize = PageSizeConverter.ToSize(PageSize.Letter);
             pagePreview1.PageGraphicsUnit = XGraphicsUnit.Point;
             pagePreview1.SetRenderFunction(barcodeSheet.RenderBarcodePage);
+        }
+
+        public ReportViewer(PurchaseOrder sheet)
+        {
+            InitializeComponent();
+            CancelButton = closeButton;
+            POSheet = sheet;
+            POSheet.totalPages =
+                POSheet.items.Count / POSheet.pageRows + (POSheet.items.Count % POSheet.pageRows != 0 ? 1 : 0);
+            if (POSheet.totalPages > 1)
+                nextPageBtn.Enabled = true;
+            prevPageBtn.Enabled = false;
+
+            pagePreview1.Zoom = PdfSharp.Forms.Zoom.BestFit;
+            pagePreview1.PageSize = PageSizeConverter.ToSize(PageSize.Letter);
+            pagePreview1.PageGraphicsUnit = XGraphicsUnit.Point;
+            pagePreview1.SetRenderFunction(POSheet.RenderPage);
         }
 
         private void closeButton_Click(object sender, EventArgs e)

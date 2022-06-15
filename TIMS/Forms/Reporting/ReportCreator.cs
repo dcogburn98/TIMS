@@ -41,6 +41,8 @@ namespace TIMS.Forms
             report.ReportShortcode = shortCodeTB.Text;
 
             report.ExecuteReport();
+
+            resultsFetchedLabel.Text = "Results Fetched: " + report.Results.Count;
         }
 
         private void dataSourceCB_Leave(object sender, EventArgs e)
@@ -140,6 +142,7 @@ namespace TIMS.Forms
                 dataGridView1.Columns.Add(field, field);
 
             int rowCount = report.Results.Count / report.ColumnCount;
+            rowCountLabel.Text = "Row Count: " + rowCount;
             for (int i = 0; i != rowCount; i++)
                 dataGridView1.Rows.Add();
 

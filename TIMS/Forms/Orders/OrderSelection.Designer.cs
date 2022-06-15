@@ -73,7 +73,8 @@
             "All",
             "None",
             "On Hand Quantity is Less Than Minimum",
-            "On Hand Quantity is Less Than Maximum"});
+            "On Hand Quantity is Less Than Maximum",
+            "Items sold since last order date from Supplier"});
             this.comboBox2.Location = new System.Drawing.Point(235, 29);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(217, 21);

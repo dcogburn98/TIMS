@@ -195,6 +195,7 @@
     </Compile>
     <Compile Include="POs\CheckIn.cs" />
     <Compile Include="POs\PurchaseOrder.cs" />
+    <Compile Include="PurchaseOrder.cs" />
     <Compile Include="Report.cs" />
     <Compile Include="Server\Client.cs" />
     <Compile Include="Server\Communication.cs" />
