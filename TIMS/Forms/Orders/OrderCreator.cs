@@ -152,6 +152,8 @@ namespace TIMS.Forms.Orders
                         break;
                     foreach (InvoiceItem item in items)
                     {
+                        workingItem = item;
+                        Item iData = DatabaseHandler.SqlRetrieveItem(workingItem.itemNumber, workingItem.productLine);
                         bool broken = false;
                         foreach (DataGridViewRow roww in dataGridView1.Rows)
                         {
@@ -160,27 +162,26 @@ namespace TIMS.Forms.Orders
                                 decimal quantity = decimal.Parse(roww.Cells[3].Value.ToString());
                                 quantity += item.quantity;
                                 roww.Cells[3].Value = quantity;
-                                roww.Cells[9].Value = workingItem.cost * item.quantity;
-                                roww.Cells[10].Value = workingItem.price * item.quantity;
+                                roww.Cells[9].Value = iData.replacementCost * quantity;
+                                roww.Cells[10].Value = iData.greenPrice * quantity;
                                 broken = true;
                             }
                         }
                         if (broken)
                             continue;
 
-                        workingItem = item;
                         int row = dataGridView1.Rows.Add();
                         dataGridView1.Rows[row].Cells[0].Value = workingItem.itemNumber;
                         dataGridView1.Rows[row].Cells[1].Value = workingItem.productLine;
                         dataGridView1.Rows[row].Cells[2].Value = workingItem.itemName;
                         dataGridView1.Rows[row].Cells[3].Value = item.quantity;
-                        dataGridView1.Rows[row].Cells[4].Value = DatabaseHandler.SqlRetrieveItem(workingItem.itemNumber, workingItem.productLine).minimum;
-                        dataGridView1.Rows[row].Cells[5].Value = DatabaseHandler.SqlRetrieveItem(workingItem.itemNumber, workingItem.productLine).maximum;
-                        dataGridView1.Rows[row].Cells[6].Value = DatabaseHandler.SqlRetrieveItem(workingItem.itemNumber, workingItem.productLine).onHandQty;
-                        dataGridView1.Rows[row].Cells[7].Value = DatabaseHandler.SqlRetrieveItem(workingItem.itemNumber, workingItem.productLine).replacementCost;
-                        dataGridView1.Rows[row].Cells[8].Value = DatabaseHandler.SqlRetrieveItem(workingItem.itemNumber, workingItem.productLine).greenPrice;
-                        dataGridView1.Rows[row].Cells[9].Value = workingItem.cost * item.quantity;
-                        dataGridView1.Rows[row].Cells[10].Value = workingItem.price * item.quantity;
+                        dataGridView1.Rows[row].Cells[4].Value = iData.minimum;
+                        dataGridView1.Rows[row].Cells[5].Value = iData.maximum;
+                        dataGridView1.Rows[row].Cells[6].Value = iData.onHandQty;
+                        dataGridView1.Rows[row].Cells[7].Value = iData.replacementCost;
+                        dataGridView1.Rows[row].Cells[8].Value = iData.greenPrice;
+                        dataGridView1.Rows[row].Cells[9].Value = iData.replacementCost * item.quantity;
+                        dataGridView1.Rows[row].Cells[10].Value = iData.greenPrice * item.quantity;
                     }
 
                     foreach (DataGridViewRow roww in dataGridView1.Rows)
@@ -315,10 +316,10 @@ namespace TIMS.Forms.Orders
             {
                 if (roww.Cells[0].Value.ToString() == workingItem.itemNumber && roww.Cells[1].Value.ToString() == workingItem.productLine)
                 {
-                    decimal qty = decimal.Parse(roww.Cells[3].Value.ToString());
-                    roww.Cells[3].Value = workingItem.quantity + qty;
-                    roww.Cells[9].Value = workingItem.cost * workingItem.quantity;
-                    roww.Cells[10].Value = workingItem.price * workingItem.quantity;
+                    decimal qty = decimal.Parse(roww.Cells[3].Value.ToString()) + workingItem.quantity;
+                    roww.Cells[3].Value = qty;
+                    roww.Cells[9].Value = workingItem.cost * qty;
+                    roww.Cells[10].Value = workingItem.price * qty;
                     broken = true;
                 }
             }
@@ -470,15 +471,43 @@ namespace TIMS.Forms.Orders
 
         private void saveOrderButton_Click(object sender, EventArgs e)
         {
-            List<InvoiceItem> items = new List<InvoiceItem>();
+            PurchaseOrder order = new PurchaseOrder(supplier);
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                items.Add(new InvoiceItem(DatabaseHandler.SqlRetrieveItem(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString())));
+                if (decimal.Parse(row.Cells[3].Value.ToString()) == 0)
+                    continue;
+
+                order.items.Add(new InvoiceItem(DatabaseHandler.SqlRetrieveItem(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString())) { 
+                    quantity = decimal.Parse(row.Cells[3].Value.ToString()),
+                    cost = decimal.Parse(row.Cells[7].Value.ToString()),
+                    total = decimal.Parse(row.Cells[3].Value.ToString()) * decimal.Parse(row.Cells[7].Value.ToString())
+                });
+                order.totalCost += decimal.Parse(row.Cells[3].Value.ToString()) * decimal.Parse(row.Cells[7].Value.ToString());
+                order.totalItems++;
             }
-            PurchaseOrder order = new PurchaseOrder(supplier);
-            order.items = items;
+            order.shippingCost = decimal.TryParse(shippingCostTB.Text, out decimal d) == false ? 0 : d;
             ReportViewer viewer = new ReportViewer(order);
             viewer.Show();
+        }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.') && (e.KeyChar != '-'))
+            {
+                e.Handled = true;
+            }
+
+            // only allow one decimal point
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+
+            // only allow one minus sign
+            if ((e.KeyChar == '-') && ((sender as TextBox).Text.IndexOf('-') > -1))
+            {
+                e.Handled = true;
+            }
         }
     }
 }

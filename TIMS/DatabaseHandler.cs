@@ -1173,7 +1173,8 @@ namespace TIMS
                     minimumAge = reader.GetInt32(12),
                     taxed = reader.GetBoolean(13),
                     codes = reader.GetString(14).Split(','),
-                    ID = reader.GetGuid(15)
+                    ID = reader.GetGuid(15),
+                    cost = reader.GetDecimal(16)
                 };
 
                 if (item.serializedItem)

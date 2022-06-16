@@ -64,6 +64,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.averageMarginTB = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.shippingCostTB = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -406,11 +408,32 @@
             this.label8.TabIndex = 23;
             this.label8.Text = "Average Margin:";
             // 
+            // shippingCostTB
+            // 
+            this.shippingCostTB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.shippingCostTB.Location = new System.Drawing.Point(612, 478);
+            this.shippingCostTB.Name = "shippingCostTB";
+            this.shippingCostTB.Size = new System.Drawing.Size(100, 20);
+            this.shippingCostTB.TabIndex = 26;
+            this.shippingCostTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
+            // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(531, 481);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(75, 13);
+            this.label9.TabIndex = 25;
+            this.label9.Text = "Shipping Cost:";
+            // 
             // OrderCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(977, 511);
+            this.Controls.Add(this.shippingCostTB);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.averageMarginTB);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.potentialProfitTB);
@@ -482,5 +505,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox averageMarginTB;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox shippingCostTB;
+        private System.Windows.Forms.Label label9;
     }
 }

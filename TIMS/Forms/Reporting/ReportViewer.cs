@@ -145,6 +145,16 @@ namespace TIMS.Forms
                     barcodeSheet.currentPage++;
                 }
             }
+            else if (POSheet != null)
+            {
+                POSheet.RenderPage(gfx);
+
+                if (POSheet.currentPage != POSheet.totalPages)
+                {
+                    ev.HasMorePages = true;
+                    POSheet.currentPage++;
+                }
+            }
         }
 
         private void nextPageBtn_Click(object sender, EventArgs e)
@@ -173,6 +183,14 @@ namespace TIMS.Forms
                 prevPageBtn.Enabled = true;
                 pagePreview1.Refresh();
             }
+            else if (POSheet != null)
+            {
+                POSheet.currentPage++;
+                if (POSheet.currentPage == POSheet.totalPages)
+                    nextPageBtn.Enabled = false;
+                prevPageBtn.Enabled = true;
+                pagePreview1.Refresh();
+            }
         }
 
         private void prevPageBtn_Click(object sender, EventArgs e)
@@ -197,6 +215,14 @@ namespace TIMS.Forms
             {
                 barcodeSheet.currentPage--;
                 if (barcodeSheet.currentPage == 1)
+                    prevPageBtn.Enabled = false;
+                nextPageBtn.Enabled = true;
+                pagePreview1.Refresh();
+            }
+            else if (POSheet != null)
+            {
+                POSheet.currentPage--;
+                if (POSheet.currentPage == 1)
                     prevPageBtn.Enabled = false;
                 nextPageBtn.Enabled = true;
                 pagePreview1.Refresh();
