@@ -7,184 +7,15 @@ using System.Xml.Linq;
 
 namespace TIMS
 {
-    class DatabaseHandler
+    public partial class DatabaseHandler
     {
         public static SQLiteConnection sqlite_conn;
-
-        public static XDocument employeeDB = new XDocument();
-        public static XDocument itemDB = new XDocument();
-        public static XDocument customerDB = new XDocument();
-        public static XDocument runningInvDB = new XDocument();
-        public static XDocument savedInvDB = new XDocument();
-        public static XDocument accountsDB = new XDocument();
-        public static XDocument invoicesDB = new XDocument();
-        public static string employeeDBLocation = "Employees.xml";
-        public static string itemDBLocation = "Items.xml";
-        public static string customerDBLocation = "Customers.xml";
-        public static string runningInvDBLocation = "RunningInvoices.xml";
-        public static string savedInvDBLocation = "SavedInvoices.xml";
-        public static string accountsDBLocation = "Accounts.xml";
-        public static string invoicesDBLocation = "Invoices.xml";
 
         public static void InitializeDatabases()
         {
             sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Pooling = true; Max Pool Size = 100; Compress = True; ");
             OpenConnection();
             CloseConnection();
-
-            #region XML Database Stuff
-            /*
-            #region Check if DB Files Exist
-            if (!File.Exists(employeeDBLocation))
-            {
-                employeeDB = new XDocument(
-                    new XElement("Employees"));
-                employeeDB.Save(employeeDBLocation);
-            }
-            else
-                employeeDB = XDocument.Load(employeeDBLocation);
-
-            if (!File.Exists(itemDBLocation))
-            {
-                itemDB = new XDocument(
-                    new XElement("Items"));
-                itemDB.Save(itemDBLocation);
-            }
-            else
-                itemDB = XDocument.Load(itemDBLocation);
-
-            if (!File.Exists(customerDBLocation))
-            {
-                customerDB = new XDocument(
-                    new XElement("Customers"));
-                customerDB.Save(customerDBLocation);
-            }
-            else
-                customerDB = XDocument.Load(customerDBLocation);
-
-            if (!File.Exists(runningInvDBLocation))
-            {
-                runningInvDB = new XDocument(
-                    new XElement("RunningInvoices"));
-                runningInvDB.Save(runningInvDBLocation);
-            }
-            else
-                runningInvDB = XDocument.Load(runningInvDBLocation);
-
-            if (!File.Exists(savedInvDBLocation))
-            {
-                savedInvDB = new XDocument(
-                    new XElement("SavedInvoices"));
-                savedInvDB.Save(savedInvDBLocation);
-            }
-            else
-                savedInvDB = XDocument.Load(savedInvDBLocation);
-
-            if (!File.Exists(accountsDBLocation))
-            {
-                accountsDB = new XDocument(
-                    new XElement("Accounts"));
-                accountsDB.Save(accountsDBLocation);
-            }
-            else
-                accountsDB = XDocument.Load(accountsDBLocation);
-
-            if (!File.Exists(invoicesDBLocation))
-            {
-                invoicesDB = new XDocument(
-                    new XElement("Invoices"));
-                invoicesDB.Root.Add(new XElement("NextInvoice", 000001));
-                invoicesDB.Save(invoicesDBLocation);
-            }
-            else
-                invoicesDB = XDocument.Load(invoicesDBLocation);
-            #endregion
-
-            #region Default Employee Database Contents
-            if (employeeDB.Root.Elements().FirstOrDefault(el => el.Element("Username").Value == "admin") == null)
-            {
-                employeeDB.Root.Add(
-                new XElement("Employee",
-                    new XElement("EmployeeName", "Administrator"),
-                    new XElement("EmployeeNumber", "0"),
-                    new XElement("Username", "admin"),
-                    new XElement("Password", "admin"),
-                    new XElement("PermissionsProfile", "Administrator"),
-                    new XElement("StartupScreen", "Administrator")));
-                employeeDB.Save(employeeDBLocation);
-            }
-            #endregion
-
-            #region Default Account Database Contents
-            if (accountsDB.Root.Elements().FirstOrDefault(el => el.Name == "Assets") == null)
-                accountsDB.Root.Add(new XElement("Assets"));
-            if (accountsDB.Root.Elements().FirstOrDefault(el => el.Name == "Equity") == null)
-                accountsDB.Root.Add(new XElement("Equity"));
-            if (accountsDB.Root.Elements().FirstOrDefault(el => el.Name == "Liabilities") == null)
-                accountsDB.Root.Add(new XElement("Liabilities"));
-            if (accountsDB.Root.Elements().FirstOrDefault(el => el.Name == "Income") == null)
-                accountsDB.Root.Add(new XElement("Income"));
-            if (accountsDB.Root.Elements().FirstOrDefault(el => el.Name == "Expenses") == null)
-                accountsDB.Root.Add(new XElement("Expenses"));
-
-            if (accountsDB.Root.Element("Assets").Elements().FirstOrDefault(el => el.Element("Name").Value == "Inventory") == null)
-            {
-                accountsDB.Root.Element("Assets").Add(
-                new XElement("Account",
-                    new XElement("Name", "Inventory"),
-                    new XElement("Description", "Physical Inventory"),
-                    new XElement("ID", "1000"),
-                    new XElement("Balance", 0.00d)));
-            }
-
-            accountsDB.Save(accountsDBLocation);
-            #endregion
-
-            #region Default Customer Database Contents
-            if (customerDB.Root.Elements().FirstOrDefault(el => el.Element("CustomerName").Value == "Cash Sale") == null)
-            {
-                customerDB.Root.Add(
-                new XElement("Customer",
-                    new XElement("CustomerName", "Cash Sale"),
-                    new XElement("CustomerNumber", "0")));
-                customerDB.Save(customerDBLocation);
-            }
-            #endregion
-
-            #region Default Item Database Contents
-            if (itemDB.Root.Elements().FirstOrDefault(el => el.Element("ItemName").Value == "Test Item") == null)
-            {
-                itemDB.Root.Add(
-                new XElement("Item",
-                    new XElement("ItemName", "Test Item"),
-                    new XElement("ItemNumber", "TTT"),
-                    new XElement("ProductLine", "TTT"),
-                    new XElement("ItemPrice", 1.00f)));
-                itemDB.Save(itemDBLocation);
-            }
-            if (itemDB.Root.Elements().FirstOrDefault(el => el.Element("ItemName").Value == "Shop Towels") == null)
-            {
-                itemDB.Root.Add(
-                new XElement("Item",
-                    new XElement("ItemName", "Shop Towels"),
-                    new XElement("ItemNumber", "75130"),
-                    new XElement("ProductLine", "NSE"),
-                    new XElement("ItemPrice", 3.49f)));
-                itemDB.Save(itemDBLocation);
-            }
-            if (itemDB.Root.Elements().FirstOrDefault(el => el.Element("ItemName").Value == "NAPA 5w-30 Conventional") == null)
-            {
-                itemDB.Root.Add(
-                new XElement("Item",
-                    new XElement("ItemName", "NAPA 5w-30 Conventional"),
-                    new XElement("ItemNumber", "75130"),
-                    new XElement("ProductLine", "NOL"),
-                    new XElement("ItemPrice", 5.19f)));
-                itemDB.Save(itemDBLocation);
-            }
-            #endregion
-            */
-            #endregion
         }
 
         #region Login and user verification
@@ -329,6 +160,7 @@ namespace TIMS
         }
         #endregion
 
+        #region Item retrieval and modification
         public static List<Item> SqlCheckItemNumber(string itemNumber, bool connectionOpened)
         {
             string fixedIN = string.Empty;
@@ -790,7 +622,110 @@ namespace TIMS
 
             CloseConnection();
         }
+        
+        public static Item SqlRetrieveItem(string scannedBarcode)
+        {
+            OpenConnection();
+            Item item = null;
+            string barcodeType = "UPCA";
+            string barcodeData = String.Empty;
 
+            if (scannedBarcode.Substring(0, 1) == "@")
+            {
+                if (scannedBarcode.Substring(1, 1).ToLower() == "c")
+                {
+                    barcodeType = "UPCA";
+                    barcodeData = scannedBarcode.Substring(2);
+                }
+            }
+            else
+            {
+                barcodeData = scannedBarcode;
+            }
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT SCANNEDITEMNUMBER,SCANNEDPRODUCTLINE,SCANNEDQUANTITY FROM BARCODES " +
+                "WHERE (BARCODETYPE = $TYPE AND BARCODEVALUE = $VALUE)";
+            SQLiteParameter p1 = new SQLiteParameter("$TYPE", barcodeType);
+            SQLiteParameter p2 = new SQLiteParameter("$VALUE", barcodeData);
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                string d1 = reader.GetString(0);
+                string d2 = reader.GetString(1);
+                decimal d3 = reader.GetDecimal(2);
+                List<Item> itemMatches = SqlCheckItemNumber(d1, true);
+                item = itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower());
+            }
+
+            CloseConnection();
+            return item;
+        }
+
+        public static InvoiceItem SqlRetrieveInvoiceItem(string scannedBarcode)
+        {
+            OpenConnection();
+            InvoiceItem item = null;
+            string barcodeType = "UPCA";
+            string barcodeData = String.Empty;
+
+            if (scannedBarcode.Substring(0, 1) == "@")
+            {
+                if (scannedBarcode.Substring(1, 1).ToLower() == "c")
+                {
+                    barcodeType = "UPCA";
+                    barcodeData = scannedBarcode.Substring(2);
+                }
+            }
+            else
+            {
+                barcodeData = scannedBarcode;
+            }
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT SCANNEDITEMNUMBER,SCANNEDPRODUCTLINE,SCANNEDQUANTITY FROM BARCODES " +
+                "WHERE (BARCODETYPE = $TYPE AND BARCODEVALUE = $VALUE)";
+            SQLiteParameter p1 = new SQLiteParameter("$TYPE", barcodeType);
+            SQLiteParameter p2 = new SQLiteParameter("$VALUE", barcodeData);
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                string d1 = reader.GetString(0);
+                string d2 = reader.GetString(1);
+                decimal d3 = reader.GetDecimal(2);
+                List<Item> itemMatches = SqlCheckItemNumber(d1, true);
+                item = new InvoiceItem(itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower()));
+            }
+
+            CloseConnection();
+            return item;
+        }
+        
+        #endregion
+
+        #region Customer retrieval and modification
         public static Customer SqlCheckCustomerNumber(string custNo)
         {
             Customer cust = new Customer();
@@ -855,7 +790,9 @@ namespace TIMS
             CloseConnection();
             return cust;
         }
+        #endregion
 
+        #region Invoice retrieval and modification
         public static void SqlSaveReleasedInvoice(Invoice inv)
         {
             OpenConnection();
@@ -1028,70 +965,7 @@ namespace TIMS
             CloseConnection();
             return invNo;
         }
-
-        public static string SqlRetrievePropertyString(string key)
-        {
-            string property = String.Empty;
-            OpenConnection();
-
-            SQLiteCommand command = sqlite_conn.CreateCommand();
-            command.CommandText = "SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = $KEY";
-            SQLiteParameter p1 = new SQLiteParameter("$KEY");
-            p1.Value = key;
-            command.Parameters.Add(p1);
-            SQLiteDataReader reader = command.ExecuteReader();
-
-            while (reader.Read())
-            {
-                property = reader.GetString(0);
-            }
-
-            CloseConnection();
-            return property;
-        }
-
-        public static float SqlRetrievePropertyFloat(string key)
-        {
-            float property = 0;
-            OpenConnection();
-
-            SQLiteCommand command = sqlite_conn.CreateCommand();
-            command.CommandText = "SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = $KEY";
-            SQLiteParameter p1 = new SQLiteParameter("$KEY");
-            p1.Value = key;
-            command.Parameters.Add(p1);
-            SQLiteDataReader reader = command.ExecuteReader();
-
-            while (reader.Read())
-            {
-                property = reader.GetFloat(0);
-            }
-
-            CloseConnection();
-            return property;
-        }
-
-        public static int SqlRetrievePropertyInt(string key)
-        {
-            int property = 0;
-            OpenConnection();
-
-            SQLiteCommand command = sqlite_conn.CreateCommand();
-            command.CommandText = "SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = $KEY";
-            SQLiteParameter p1 = new SQLiteParameter("$KEY");
-            p1.Value = key;
-            command.Parameters.Add(p1);
-            SQLiteDataReader reader = command.ExecuteReader();
-
-            while (reader.Read())
-            {
-                property = reader.GetInt32(0);
-            }
-
-            CloseConnection();
-            return property;
-        }
-
+        
         public static Invoice SqlRetrieveInvoice(int invNumber)
         {
             Invoice inv = new Invoice();
@@ -1189,159 +1063,7 @@ namespace TIMS
             inv.employee = SqlRetrieveEmployee(inv.employee.employeeNumber.ToString());
             return inv;
         }
-
-        public static Item SqlRetrieveItem(string scannedBarcode)
-        {
-            OpenConnection();
-            Item item = null;
-            string barcodeType = "UPCA";
-            string barcodeData = String.Empty;
-
-            if (scannedBarcode.Substring(0, 1) == "@")
-            {
-                if (scannedBarcode.Substring(1, 1).ToLower() == "c")
-                {
-                    barcodeType = "UPCA";
-                    barcodeData = scannedBarcode.Substring(2);
-                }
-            }
-            else
-            {
-                barcodeData = scannedBarcode;
-            }
-
-            SQLiteCommand command = sqlite_conn.CreateCommand();
-            command.CommandText =
-                "SELECT SCANNEDITEMNUMBER,SCANNEDPRODUCTLINE,SCANNEDQUANTITY FROM BARCODES " +
-                "WHERE (BARCODETYPE = $TYPE AND BARCODEVALUE = $VALUE)";
-            SQLiteParameter p1 = new SQLiteParameter("$TYPE", barcodeType);
-            SQLiteParameter p2 = new SQLiteParameter("$VALUE", barcodeData);
-            command.Parameters.Add(p1);
-            command.Parameters.Add(p2);
-
-            SQLiteDataReader reader = command.ExecuteReader();
-
-            if (!reader.HasRows)
-            {
-                CloseConnection();
-                return null;
-            }
-
-            while (reader.Read())
-            {
-                string d1 = reader.GetString(0);
-                string d2 = reader.GetString(1);
-                decimal d3 = reader.GetDecimal(2);
-                List<Item> itemMatches = SqlCheckItemNumber(d1, true);
-                item = itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower());
-            }
-
-            CloseConnection();
-            return item;
-        }
-
-        public static InvoiceItem SqlRetrieveInvoiceItem(string scannedBarcode)
-        {
-            OpenConnection();
-            InvoiceItem item = null;
-            string barcodeType = "UPCA";
-            string barcodeData = String.Empty;
-
-            if (scannedBarcode.Substring(0, 1) == "@")
-            {
-                if (scannedBarcode.Substring(1, 1).ToLower() == "c")
-                {
-                    barcodeType = "UPCA";
-                    barcodeData = scannedBarcode.Substring(2);
-                }
-            }
-            else
-            {
-                barcodeData = scannedBarcode;
-            }
-
-            SQLiteCommand command = sqlite_conn.CreateCommand();
-            command.CommandText =
-                "SELECT SCANNEDITEMNUMBER,SCANNEDPRODUCTLINE,SCANNEDQUANTITY FROM BARCODES " +
-                "WHERE (BARCODETYPE = $TYPE AND BARCODEVALUE = $VALUE)";
-            SQLiteParameter p1 = new SQLiteParameter("$TYPE", barcodeType);
-            SQLiteParameter p2 = new SQLiteParameter("$VALUE", barcodeData);
-            command.Parameters.Add(p1);
-            command.Parameters.Add(p2);
-
-            SQLiteDataReader reader = command.ExecuteReader();
-
-            if (!reader.HasRows)
-            {
-                CloseConnection();
-                return null;
-            }
-
-            while (reader.Read())
-            {
-                string d1 = reader.GetString(0);
-                string d2 = reader.GetString(1);
-                decimal d3 = reader.GetDecimal(2);
-                List<Item> itemMatches = SqlCheckItemNumber(d1, true);
-                item = new InvoiceItem(itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower()));
-            }
-
-            CloseConnection();
-            return item;
-        }
-
-        public static void SqlAddBarcode(string itemnumber, string productline, string barcode, decimal quantity)
-        {
-            OpenConnection();
-
-            SQLiteCommand command = sqlite_conn.CreateCommand();
-            command.CommandText =
-                "INSERT INTO BARCODES ( BARCODETYPE, BARCODEVALUE, SCANNEDITEMNUMBER, SCANNEDPRODUCTLINE, SCANNEDQUANTITY) " +
-                "VALUES ($TYPE, $VALUE, $ITEMNUMBER, $PRODUCTLINE, $QUANTITY)";
-            SQLiteParameter p1 = new SQLiteParameter("$TYPE", "UPCA");
-            SQLiteParameter p2 = new SQLiteParameter("$VALUE", barcode);
-            SQLiteParameter p3 = new SQLiteParameter("$ITEMNUMBER", itemnumber);
-            SQLiteParameter p4 = new SQLiteParameter("$PRODUCTLINE", productline);
-            SQLiteParameter p5 = new SQLiteParameter("$QUANTITY", quantity);
-            command.Parameters.Add(p1);
-            command.Parameters.Add(p2);
-            command.Parameters.Add(p3);
-            command.Parameters.Add(p4);
-            command.Parameters.Add(p5);
-
-            command.ExecuteNonQuery();
-
-            CloseConnection();
-        }
-
-        public static List<string> SqlRetrieveBarcode(Item item)
-        {
-            List<string> barcodes = new List<string>();
-            OpenConnection();
-
-            SQLiteCommand command = sqlite_conn.CreateCommand();
-            command.CommandText =
-                "SELECT BARCODEVALUE FROM BARCODES WHERE SCANNEDITEMNUMBER = $ITEMNUMBER AND SCANNEDPRODUCTLINE = $LINE";
-            SQLiteParameter p1 = new SQLiteParameter("$ITEMNUMBER", item.itemNumber);
-            SQLiteParameter p2 = new SQLiteParameter("$LINE", item.productLine);
-            command.Parameters.Add(p1);
-            command.Parameters.Add(p2);
-            SQLiteDataReader reader = command.ExecuteReader();
-            if (!reader.HasRows)
-            {
-                CloseConnection();
-                return null;
-            }
-
-            while (reader.Read())
-            {
-                barcodes.Add(reader.GetString(0));
-            }
-
-            CloseConnection();
-            return barcodes;
-        }
-
+        
         public static List<Invoice> SqlRetrieveInvoicesByDateRange(DateTime startDate, DateTime endDate, bool connectionOpened = false)
         {
             List<Invoice> invoices = new List<Invoice>();
@@ -1413,6 +1135,131 @@ namespace TIMS
 
             return invoices;
         }
+        
+
+
+        #endregion
+
+        public static string SqlRetrievePropertyString(string key)
+        {
+            string property = String.Empty;
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText = "SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = $KEY";
+            SQLiteParameter p1 = new SQLiteParameter("$KEY");
+            p1.Value = key;
+            command.Parameters.Add(p1);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                property = reader.GetString(0);
+            }
+
+            CloseConnection();
+            return property;
+        }
+
+        public static float SqlRetrievePropertyFloat(string key)
+        {
+            float property = 0;
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText = "SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = $KEY";
+            SQLiteParameter p1 = new SQLiteParameter("$KEY");
+            p1.Value = key;
+            command.Parameters.Add(p1);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                property = reader.GetFloat(0);
+            }
+
+            CloseConnection();
+            return property;
+        }
+
+        public static int SqlRetrievePropertyInt(string key)
+        {
+            int property = 0;
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText = "SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = $KEY";
+            SQLiteParameter p1 = new SQLiteParameter("$KEY");
+            p1.Value = key;
+            command.Parameters.Add(p1);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                property = reader.GetInt32(0);
+            }
+
+            CloseConnection();
+            return property;
+        }
+
+        
+
+        
+
+        public static void SqlAddBarcode(string itemnumber, string productline, string barcode, decimal quantity)
+        {
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "INSERT INTO BARCODES ( BARCODETYPE, BARCODEVALUE, SCANNEDITEMNUMBER, SCANNEDPRODUCTLINE, SCANNEDQUANTITY) " +
+                "VALUES ($TYPE, $VALUE, $ITEMNUMBER, $PRODUCTLINE, $QUANTITY)";
+            SQLiteParameter p1 = new SQLiteParameter("$TYPE", "UPCA");
+            SQLiteParameter p2 = new SQLiteParameter("$VALUE", barcode);
+            SQLiteParameter p3 = new SQLiteParameter("$ITEMNUMBER", itemnumber);
+            SQLiteParameter p4 = new SQLiteParameter("$PRODUCTLINE", productline);
+            SQLiteParameter p5 = new SQLiteParameter("$QUANTITY", quantity);
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+            command.Parameters.Add(p3);
+            command.Parameters.Add(p4);
+            command.Parameters.Add(p5);
+
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+        }
+
+        public static List<string> SqlRetrieveBarcode(Item item)
+        {
+            List<string> barcodes = new List<string>();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT BARCODEVALUE FROM BARCODES WHERE SCANNEDITEMNUMBER = $ITEMNUMBER AND SCANNEDPRODUCTLINE = $LINE";
+            SQLiteParameter p1 = new SQLiteParameter("$ITEMNUMBER", item.itemNumber);
+            SQLiteParameter p2 = new SQLiteParameter("$LINE", item.productLine);
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+            SQLiteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                barcodes.Add(reader.GetString(0));
+            }
+
+            CloseConnection();
+            return barcodes;
+        }
+
+        
 
         public static Item SqlRetrieveItem(string itemNumber, string productLine, bool connectionOpened = false)
         {
@@ -1926,6 +1773,7 @@ namespace TIMS
             return items;
         }
 
+        #region Purchase orders and check-ins
         public static int SqlRetrieveNextPONumber()
         {
             int PONumber = 0;
@@ -1954,6 +1802,16 @@ namespace TIMS
             CloseConnection();
             return PONumber;
         }
+        
+        public static PurchaseOrder SqlRetrievePurchaseOrder(int PONumber)
+        {
+            PurchaseOrder po = null;
+            OpenConnection();
+
+            CloseConnection();
+            return po;
+        }
+        #endregion
 
         public static void OpenConnection()
         {
@@ -1967,4 +1825,5 @@ namespace TIMS
     
     
     }
+
 }
