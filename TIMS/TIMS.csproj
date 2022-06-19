@@ -242,6 +242,7 @@
     <Compile Include="Payment.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ItemShortcutMenu.cs" />
     <Compile Include="UPCA.cs" />
     <EmbeddedResource Include="Forms\Accounting\ChartOfAccounts.resx">
       <DependentUpon>ChartOfAccounts.cs</DependentUpon>

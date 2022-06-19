@@ -63,28 +63,28 @@ namespace TIMS.Accounting
                 Balance += amount;
         }
 
-        public static void LoadAccounts()
-        {
-            foreach (XElement acc in DatabaseHandler.accountsDB.Elements("Account"))
-            {
-                Account newAccount = new Account();
-                newAccount.Name = acc.Value;
-                newAccount.Description = acc.Element("Description").Value;
-                newAccount.ID = int.Parse(acc.Element("ID").Value);
-                string type = acc.Element("Type").Value;
-                if (type == "Asset")
-                    newAccount.Type = AccountTypes.Asset;
-                else if (type == "Equity")
-                    newAccount.Type = AccountTypes.Equity;
-                else if (type == "Liability")
-                    newAccount.Type = AccountTypes.Liability;
-                else if (type == "Income")
-                    newAccount.Type = AccountTypes.Income;
-                else if (type == "Expense")
-                    newAccount.Type = AccountTypes.Expense;
+        //public static void LoadAccounts()
+        //{
+        //    foreach (XElement acc in DatabaseHandler.accountsDB.Elements("Account"))
+        //    {
+        //        Account newAccount = new Account();
+        //        newAccount.Name = acc.Value;
+        //        newAccount.Description = acc.Element("Description").Value;
+        //        newAccount.ID = int.Parse(acc.Element("ID").Value);
+        //        string type = acc.Element("Type").Value;
+        //        if (type == "Asset")
+        //            newAccount.Type = AccountTypes.Asset;
+        //        else if (type == "Equity")
+        //            newAccount.Type = AccountTypes.Equity;
+        //        else if (type == "Liability")
+        //            newAccount.Type = AccountTypes.Liability;
+        //        else if (type == "Income")
+        //            newAccount.Type = AccountTypes.Income;
+        //        else if (type == "Expense")
+        //            newAccount.Type = AccountTypes.Expense;
 
-                Accounts.Add(newAccount);
-            }
-        }
+        //        Accounts.Add(newAccount);
+        //    }
+        //}
     }
 }

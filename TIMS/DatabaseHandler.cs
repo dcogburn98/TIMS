@@ -1813,6 +1813,39 @@ namespace TIMS
         }
         #endregion
 
+        public static List<ItemShortcutMenu> SqlRetrieveShortcutMenus()
+        {
+            List<ItemShortcutMenu> menus = new List<ItemShortcutMenu>();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT * FROM SHORTCUTMENUS";
+            SQLiteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                string[] itemsInMenu = reader.GetString(2).Split(',');
+                List<Item> items = new List<Item>();
+                foreach (string s in itemsInMenu)
+                    items.Add(SqlRetrieveItem(s.Split(':')[1], s.Split(':')[0], true));
+
+                ItemShortcutMenu menu = new ItemShortcutMenu();
+                menu.menuName = reader.GetString(1);
+                menu.menuItems = items;
+                menu.parentMenu = reader.GetString(3);
+                menus.Add(menu);
+            }
+
+            CloseConnection();
+            return menus;
+        }
+
         public static void OpenConnection()
         {
             sqlite_conn.Open();

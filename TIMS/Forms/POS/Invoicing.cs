@@ -46,7 +46,19 @@ namespace TIMS.Forms
             customerNoTB.Enabled = true;
             customerNoTB.Focus();
 
+            foreach (ItemShortcutMenu menu in DatabaseHandler.SqlRetrieveShortcutMenus())
+            {
+                ToolStripMenuItem menuItem = (ToolStripMenuItem)shortcutsToolStripMenuItem.DropDownItems.Add(menu.menuName);
+                foreach (Item item in menu.menuItems)
+                    menuItem.DropDownItems.Add(item.productLine + "|" + item.itemNumber + " - " + item.itemName).Click += AddItemFromShortcutMenu;
+            }
+
             currentState = State.NoCustomer;
+        }
+
+        private void AddItemFromShortcutMenu(object sender, EventArgs e)
+        {
+            
         }
 
         private void EnableControls()
