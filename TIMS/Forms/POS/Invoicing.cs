@@ -14,6 +14,7 @@ namespace TIMS.Forms
 
         bool addingLine;
         bool lineDeleted;
+        bool singleProductLine = false;
 
         public enum State
         {
@@ -52,13 +53,25 @@ namespace TIMS.Forms
                 foreach (Item item in menu.menuItems)
                     menuItem.DropDownItems.Add(item.productLine + "|" + item.itemNumber + " - " + item.itemName).Click += AddItemFromShortcutMenu;
             }
+            shortcutsToolStripMenuItem.Enabled = false;
+
 
             currentState = State.NoCustomer;
         }
 
         private void AddItemFromShortcutMenu(object sender, EventArgs e)
         {
-            
+            string[] plAndIn = (sender as ToolStripMenuItem).Text.Split('-')[0].Trim().Split('|');
+            InvoiceItem item = new InvoiceItem(DatabaseHandler.SqlRetrieveItem(plAndIn[1], plAndIn[0]));
+            itemNoTB.Text = item.itemNumber;
+            EnterItemNumber();
+            if (!singleProductLine)
+            {
+                productLineDropBox.Text = item.productLine;
+                SelectProductLine();
+                return;
+            }
+            singleProductLine = false;
         }
 
         private void EnableControls()
@@ -120,6 +133,8 @@ namespace TIMS.Forms
             customerNoTB.Clear();
             customerNoTB.Focus();
 
+            shortcutsToolStripMenuItem.Enabled = false;
+
             currentState = State.NoCustomer;
         }
 
@@ -150,6 +165,8 @@ namespace TIMS.Forms
             customerNoTB.Text = currentInvoice.customer.customerNumber + " " + currentInvoice.customer.customerName;
             EnableControls();
             itemNoTB.Focus();
+
+            shortcutsToolStripMenuItem.Enabled = true;
 
             currentState = State.WaitingItemNumber;
         }
@@ -211,6 +228,7 @@ namespace TIMS.Forms
                 {
                     productLineDropBox.SelectedIndex = 0;
                     SelectProductLine();
+                    singleProductLine = true;
                 }
                 else
                 {

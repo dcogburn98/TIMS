@@ -18,10 +18,9 @@ namespace TIMS
         public decimal shippingCost;
         public decimal totalItems;
 
-        public int pageRows = 45;
-
         public List<InvoiceItem> items;
 
+        public int pageRows = 45;
         public int currentPage = 1;
         public int totalPages;
 

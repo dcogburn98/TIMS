@@ -10,6 +10,8 @@ namespace TIMS.Forms.Orders
         public string criteria = string.Empty;
         public InvoiceItem workingItem;
         public decimal beforeEditValue = 0.0m;
+        public int existingPO = 0;
+        bool finalized = false;
         public OrderCreator(string supplier, string criteria)
         {
             InitializeComponent();
@@ -202,6 +204,68 @@ namespace TIMS.Forms.Orders
             }
         }
 
+        public OrderCreator(PurchaseOrder order)
+        {
+            InitializeComponent();
+            CancelButton = button3;
+            this.supplier = order.supplier;
+            supplierLabel.Text = "Supplier: " + supplier;
+            criteriaLabel.Visible = false;
+            shippingCostTB.Text = order.shippingCost.ToString();
+
+            decimal totalCost = 0;
+            decimal totalItems = 0;
+            decimal totalPotentialProfit = 0;
+            decimal totalRetail = 0;
+            decimal averageMargin = 0;
+            foreach (InvoiceItem item in order.items)
+            {
+                Item i = DatabaseHandler.SqlRetrieveItem(item.itemNumber, item.productLine);
+                int row = dataGridView1.Rows.Add();
+                dataGridView1.Rows[row].Cells[0].Value = item.itemNumber;
+                dataGridView1.Rows[row].Cells[1].Value = item.productLine;
+                dataGridView1.Rows[row].Cells[2].Value = item.itemName;
+                dataGridView1.Rows[row].Cells[3].Value = item.quantity;
+                dataGridView1.Rows[row].Cells[4].Value = i.minimum;
+                dataGridView1.Rows[row].Cells[5].Value = i.maximum;
+                dataGridView1.Rows[row].Cells[6].Value = i.onHandQty;
+                dataGridView1.Rows[row].Cells[7].Value = item.cost;
+                dataGridView1.Rows[row].Cells[8].Value = item.price;
+                dataGridView1.Rows[row].Cells[9].Value = item.cost * item.quantity;
+                dataGridView1.Rows[row].Cells[10].Value = item.price * item.quantity;
+            }
+            foreach (DataGridViewRow roww in dataGridView1.Rows)
+            {
+                totalCost += decimal.Parse(roww.Cells[9].Value.ToString());
+                totalItems += decimal.Parse(roww.Cells[3].Value.ToString());
+                totalRetail += decimal.Parse(roww.Cells[10].Value.ToString());
+                averageMargin = (totalRetail - totalCost) / totalRetail;
+            }
+            totalPotentialProfit = totalRetail - totalCost;
+            totalCostTB.Text = totalCost.ToString("C");
+            totalItemsTB.Text = totalItems.ToString();
+            totalRetailTB.Text = totalRetail.ToString("C");
+            potentialProfitTB.Text = totalPotentialProfit.ToString("C");
+            averageMarginTB.Text = averageMargin.ToString("P");
+
+            existingPO = order.PONumber;
+
+            if (order.finalized)
+            {
+                finalized = true;
+                finalizeButton.Enabled = false;
+                saveOrderButton.Enabled = false;
+                shippingCostTB.Enabled = false;
+                itemNumberTB.Enabled = false;
+                productLineCB.Enabled = false;
+                qtyTB.Enabled = false;
+                addItemButton.Enabled = false;
+                clearItemButton.Enabled = false;
+                deleteItemButton.Enabled = false;
+                dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            }
+        }
+
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Enter)
@@ -212,7 +276,7 @@ namespace TIMS.Forms.Orders
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.Rows.Count != 0)
+            if (dataGridView1.Rows.Count != 0 && !finalized)
             {
                 if (MessageBox.Show("Are you sure you want to leave order editing?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     Close();
@@ -358,7 +422,7 @@ namespace TIMS.Forms.Orders
 
         private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            if (e.ColumnIndex < 3 || e.ColumnIndex > 8)
+            if (e.ColumnIndex < 3 || e.ColumnIndex > 8 || dataGridView1.SelectionMode == DataGridViewSelectionMode.FullRowSelect)
             {
                 e.Cancel = true;
                 return;
@@ -456,7 +520,8 @@ namespace TIMS.Forms.Orders
 
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
-            deleteItemButton.Enabled = true;
+            if (!finalized)
+                deleteItemButton.Enabled = true;
         }
 
         private void deleteItemButton_Click(object sender, EventArgs e)
@@ -477,7 +542,8 @@ namespace TIMS.Forms.Orders
                 if (decimal.Parse(row.Cells[3].Value.ToString()) == 0)
                     continue;
 
-                order.items.Add(new InvoiceItem(DatabaseHandler.SqlRetrieveItem(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString())) { 
+                order.items.Add(new InvoiceItem(DatabaseHandler.SqlRetrieveItem(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString()))
+                {
                     quantity = decimal.Parse(row.Cells[3].Value.ToString()),
                     cost = decimal.Parse(row.Cells[7].Value.ToString()),
                     total = decimal.Parse(row.Cells[3].Value.ToString()) * decimal.Parse(row.Cells[7].Value.ToString())
@@ -486,8 +552,15 @@ namespace TIMS.Forms.Orders
                 order.totalItems++;
             }
             order.shippingCost = decimal.TryParse(shippingCostTB.Text, out decimal d) == false ? 0 : d;
-            ReportViewer viewer = new ReportViewer(order);
-            viewer.Show();
+
+            if (existingPO == 0)
+                DatabaseHandler.SqlSavePurchaseOrder(order);
+            else
+            {
+                order.PONumber = existingPO;
+                DatabaseHandler.SqlSavePurchaseOrder(order);
+            }
+            MessageBox.Show("Order saved with order number: " + order.PONumber);
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
@@ -507,6 +580,43 @@ namespace TIMS.Forms.Orders
             if ((e.KeyChar == '-') && ((sender as TextBox).Text.IndexOf('-') > -1))
             {
                 e.Handled = true;
+            }
+        }
+
+        private void finalizeButton_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to finalize this purchase order?\nYou will not be able to edit items it contains.", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                PurchaseOrder order = new PurchaseOrder(supplier);
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (decimal.Parse(row.Cells[3].Value.ToString()) == 0)
+                        continue;
+
+                    order.items.Add(new InvoiceItem(DatabaseHandler.SqlRetrieveItem(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString()))
+                    {
+                        quantity = decimal.Parse(row.Cells[3].Value.ToString()),
+                        cost = decimal.Parse(row.Cells[7].Value.ToString()),
+                        total = decimal.Parse(row.Cells[3].Value.ToString()) * decimal.Parse(row.Cells[7].Value.ToString())
+                    });
+                    order.totalCost += decimal.Parse(row.Cells[3].Value.ToString()) * decimal.Parse(row.Cells[7].Value.ToString());
+                    order.totalItems++;
+                }
+                order.finalized = true;
+                order.shippingCost = decimal.TryParse(shippingCostTB.Text, out decimal d) == false ? 0 : d;
+
+                if (existingPO == 0)
+                    DatabaseHandler.SqlSavePurchaseOrder(order);
+                else
+                {
+                    order.PONumber = existingPO;
+                    DatabaseHandler.SqlFinalizePurchaseOrder(order);
+                }
+
+                ReportViewer viewer = new ReportViewer(order);
+                viewer.ShowDialog();
+                this.DialogResult = DialogResult.OK;
+                Close();
             }
         }
     }

@@ -29,18 +29,18 @@ namespace TIMS.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea9 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend9 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea11 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend11 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea12 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend12 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.salesActivitiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.invoicingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -178,10 +178,15 @@ namespace TIMS.Forms
             this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.clearItemButton = new System.Windows.Forms.Button();
             this.saveItemButton = new System.Windows.Forms.Button();
             this.searchItemButton = new System.Windows.Forms.Button();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.label39 = new System.Windows.Forms.Label();
+            this.minimumAgeTB = new System.Windows.Forms.TextBox();
+            this.ageRestrictedCB = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.removerSNbtn = new System.Windows.Forms.Button();
             this.serialNumbersLB = new System.Windows.Forms.ListBox();
@@ -283,11 +288,6 @@ namespace TIMS.Forms
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.clearItemButton = new System.Windows.Forms.Button();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.ageRestrictedCB = new System.Windows.Forms.CheckBox();
-            this.minimumAgeTB = new System.Windows.Forms.TextBox();
-            this.label39 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage17.SuspendLayout();
@@ -298,13 +298,13 @@ namespace TIMS.Forms
             this.tabPage1.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -506,6 +506,7 @@ namespace TIMS.Forms
             this.openPurchaseOrdersToolStripMenuItem1.Name = "openPurchaseOrdersToolStripMenuItem1";
             this.openPurchaseOrdersToolStripMenuItem1.Size = new System.Drawing.Size(192, 22);
             this.openPurchaseOrdersToolStripMenuItem1.Text = "Open Purchase Orders";
+            this.openPurchaseOrdersToolStripMenuItem1.Click += new System.EventHandler(this.openPurchaseOrdersToolStripMenuItem1_Click);
             // 
             // selectCheckInToolStripMenuItem1
             // 
@@ -518,6 +519,7 @@ namespace TIMS.Forms
             this.createCheckInToolStripMenuItem1.Name = "createCheckInToolStripMenuItem1";
             this.createCheckInToolStripMenuItem1.Size = new System.Drawing.Size(192, 22);
             this.createCheckInToolStripMenuItem1.Text = "Create Check-In";
+            this.createCheckInToolStripMenuItem1.Click += new System.EventHandler(this.createCheckInToolStripMenuItem1_Click);
             // 
             // editPostToolStripMenuItem1
             // 
@@ -1283,68 +1285,68 @@ namespace TIMS.Forms
             // 
             // chart4
             // 
-            chartArea5.Name = "ChartArea1";
-            this.chart4.ChartAreas.Add(chartArea5);
-            legend5.Name = "Legend1";
-            this.chart4.Legends.Add(legend5);
+            chartArea9.Name = "ChartArea1";
+            this.chart4.ChartAreas.Add(chartArea9);
+            legend9.Name = "Legend1";
+            this.chart4.Legends.Add(legend9);
             this.chart4.Location = new System.Drawing.Point(402, 295);
             this.chart4.Name = "chart4";
             this.chart4.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry;
-            series5.ChartArea = "ChartArea1";
-            series5.Legend = "Legend1";
-            series5.Name = "Series1";
-            this.chart4.Series.Add(series5);
+            series9.ChartArea = "ChartArea1";
+            series9.Legend = "Legend1";
+            series9.Name = "Series1";
+            this.chart4.Series.Add(series9);
             this.chart4.Size = new System.Drawing.Size(396, 286);
             this.chart4.TabIndex = 3;
             this.chart4.Text = "chart4";
             // 
             // chart3
             // 
-            chartArea6.Name = "ChartArea1";
-            this.chart3.ChartAreas.Add(chartArea6);
-            legend6.Name = "Legend1";
-            this.chart3.Legends.Add(legend6);
+            chartArea10.Name = "ChartArea1";
+            this.chart3.ChartAreas.Add(chartArea10);
+            legend10.Name = "Legend1";
+            this.chart3.Legends.Add(legend10);
             this.chart3.Location = new System.Drawing.Point(3, 295);
             this.chart3.Name = "chart3";
             this.chart3.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Fire;
-            series6.ChartArea = "ChartArea1";
-            series6.Legend = "Legend1";
-            series6.Name = "Series1";
-            this.chart3.Series.Add(series6);
+            series10.ChartArea = "ChartArea1";
+            series10.Legend = "Legend1";
+            series10.Name = "Series1";
+            this.chart3.Series.Add(series10);
             this.chart3.Size = new System.Drawing.Size(396, 286);
             this.chart3.TabIndex = 2;
             this.chart3.Text = "chart3";
             // 
             // chart2
             // 
-            chartArea7.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea7);
-            legend7.Name = "Legend1";
-            this.chart2.Legends.Add(legend7);
+            chartArea11.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea11);
+            legend11.Name = "Legend1";
+            this.chart2.Legends.Add(legend11);
             this.chart2.Location = new System.Drawing.Point(402, 3);
             this.chart2.Name = "chart2";
             this.chart2.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Pastel;
-            series7.ChartArea = "ChartArea1";
-            series7.Legend = "Legend1";
-            series7.Name = "Series1";
-            this.chart2.Series.Add(series7);
+            series11.ChartArea = "ChartArea1";
+            series11.Legend = "Legend1";
+            series11.Name = "Series1";
+            this.chart2.Series.Add(series11);
             this.chart2.Size = new System.Drawing.Size(396, 286);
             this.chart2.TabIndex = 1;
             this.chart2.Text = "chart2";
             // 
             // chart1
             // 
-            chartArea8.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea8);
-            legend8.Name = "Legend1";
-            this.chart1.Legends.Add(legend8);
+            chartArea12.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea12);
+            legend12.Name = "Legend1";
+            this.chart1.Legends.Add(legend12);
             this.chart1.Location = new System.Drawing.Point(3, 3);
             this.chart1.Name = "chart1";
             this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
-            series8.ChartArea = "ChartArea1";
-            series8.Legend = "Legend1";
-            series8.Name = "Series1";
-            this.chart1.Series.Add(series8);
+            series12.ChartArea = "ChartArea1";
+            series12.Legend = "Legend1";
+            series12.Name = "Series1";
+            this.chart1.Series.Add(series12);
             this.chart1.Size = new System.Drawing.Size(396, 286);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -1367,6 +1369,16 @@ namespace TIMS.Forms
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Item Management";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // clearItemButton
+            // 
+            this.clearItemButton.Location = new System.Drawing.Point(642, 4);
+            this.clearItemButton.Name = "clearItemButton";
+            this.clearItemButton.Size = new System.Drawing.Size(75, 23);
+            this.clearItemButton.TabIndex = 8;
+            this.clearItemButton.Text = "Clear Item";
+            this.clearItemButton.UseVisualStyleBackColor = true;
+            this.clearItemButton.Click += new System.EventHandler(this.clearItemButton_Click);
             // 
             // saveItemButton
             // 
@@ -1420,6 +1432,44 @@ namespace TIMS.Forms
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "Overview";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.label39);
+            this.groupBox7.Controls.Add(this.minimumAgeTB);
+            this.groupBox7.Controls.Add(this.ageRestrictedCB);
+            this.groupBox7.Location = new System.Drawing.Point(264, 279);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(252, 128);
+            this.groupBox7.TabIndex = 6;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Misc";
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(156, 15);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(29, 13);
+            this.label39.TabIndex = 2;
+            this.label39.Text = "Age:";
+            // 
+            // minimumAgeTB
+            // 
+            this.minimumAgeTB.Location = new System.Drawing.Point(191, 12);
+            this.minimumAgeTB.Name = "minimumAgeTB";
+            this.minimumAgeTB.Size = new System.Drawing.Size(49, 20);
+            this.minimumAgeTB.TabIndex = 1;
+            // 
+            // ageRestrictedCB
+            // 
+            this.ageRestrictedCB.AutoSize = true;
+            this.ageRestrictedCB.Location = new System.Drawing.Point(9, 15);
+            this.ageRestrictedCB.Name = "ageRestrictedCB";
+            this.ageRestrictedCB.Size = new System.Drawing.Size(96, 17);
+            this.ageRestrictedCB.TabIndex = 0;
+            this.ageRestrictedCB.Text = "Age Restricted";
+            this.ageRestrictedCB.UseVisualStyleBackColor = true;
             // 
             // groupBox6
             // 
@@ -2289,6 +2339,7 @@ namespace TIMS.Forms
             this.productLineComboBox.Size = new System.Drawing.Size(67, 21);
             this.productLineComboBox.TabIndex = 2;
             this.productLineComboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.productLineComboBox_KeyDown);
+            this.productLineComboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.productLineComboBox_KeyPress);
             // 
             // label1
             // 
@@ -2346,54 +2397,6 @@ namespace TIMS.Forms
             this.tabPage4.Text = "Employee Management";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // clearItemButton
-            // 
-            this.clearItemButton.Location = new System.Drawing.Point(642, 4);
-            this.clearItemButton.Name = "clearItemButton";
-            this.clearItemButton.Size = new System.Drawing.Size(75, 23);
-            this.clearItemButton.TabIndex = 8;
-            this.clearItemButton.Text = "Clear Item";
-            this.clearItemButton.UseVisualStyleBackColor = true;
-            this.clearItemButton.Click += new System.EventHandler(this.clearItemButton_Click);
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.label39);
-            this.groupBox7.Controls.Add(this.minimumAgeTB);
-            this.groupBox7.Controls.Add(this.ageRestrictedCB);
-            this.groupBox7.Location = new System.Drawing.Point(264, 279);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(252, 128);
-            this.groupBox7.TabIndex = 6;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Misc";
-            // 
-            // ageRestrictedCB
-            // 
-            this.ageRestrictedCB.AutoSize = true;
-            this.ageRestrictedCB.Location = new System.Drawing.Point(9, 15);
-            this.ageRestrictedCB.Name = "ageRestrictedCB";
-            this.ageRestrictedCB.Size = new System.Drawing.Size(96, 17);
-            this.ageRestrictedCB.TabIndex = 0;
-            this.ageRestrictedCB.Text = "Age Restricted";
-            this.ageRestrictedCB.UseVisualStyleBackColor = true;
-            // 
-            // minimumAgeTB
-            // 
-            this.minimumAgeTB.Location = new System.Drawing.Point(191, 12);
-            this.minimumAgeTB.Name = "minimumAgeTB";
-            this.minimumAgeTB.Size = new System.Drawing.Size(49, 20);
-            this.minimumAgeTB.TabIndex = 1;
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(156, 15);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(29, 13);
-            this.label39.TabIndex = 2;
-            this.label39.Text = "Age:";
-            // 
             // OtherFunctions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2417,6 +2420,8 @@ namespace TIMS.Forms
             this.tabPage1.PerformLayout();
             this.tabControl2.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
@@ -2429,8 +2434,6 @@ namespace TIMS.Forms
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

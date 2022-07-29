@@ -56,6 +56,9 @@
     <Reference Include="PdfSharp.Charting-gdi, Version=1.51.5185.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp-gdi.1.51.5185-beta\lib\net20\PdfSharp.Charting-gdi.dll</HintPath>
     </Reference>
+    <Reference Include="StereoKit, Version=0.3.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StereoKit.0.3.6\lib\netstandard2.0\StereoKit.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -67,6 +70,10 @@
     </Reference>
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.115.5, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.115.5\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
@@ -82,6 +89,8 @@
   <ItemGroup>
     <Compile Include="Accounting\Account.cs" />
     <Compile Include="Accounting\Transaction.cs" />
+    <Compile Include="Checkin.cs" />
+    <Compile Include="CheckinItem.cs" />
     <Compile Include="Forms\Accounting\ChartOfAccounts.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +132,18 @@
     </Compile>
     <Compile Include="Forms\ItemMaintenance.Designer.cs">
       <DependentUpon>ItemMaintenance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Orders\CheckinCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Orders\CheckinCreator.Designer.cs">
+      <DependentUpon>CheckinCreator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Orders\OpenOrderViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Orders\OpenOrderViewer.Designer.cs">
+      <DependentUpon>OpenOrderViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Orders\OrderCreator.cs">
       <SubType>Form</SubType>
@@ -262,6 +283,12 @@
     <EmbeddedResource Include="Forms\ItemImporting\ItemImportFieldEditor.resx">
       <DependentUpon>ItemImportFieldEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Orders\CheckinCreator.resx">
+      <DependentUpon>CheckinCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Orders\OpenOrderViewer.resx">
+      <DependentUpon>OpenOrderViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Orders\OrderCreator.resx">
       <DependentUpon>OrderCreator.cs</DependentUpon>
     </EmbeddedResource>
@@ -363,7 +390,9 @@
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
     <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\StereoKit.0.3.6\build\StereoKit.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StereoKit.0.3.6\build\StereoKit.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
+  <Import Project="..\packages\StereoKit.0.3.6\build\StereoKit.targets" Condition="Exists('..\packages\StereoKit.0.3.6\build\StereoKit.targets')" />
 </Project>

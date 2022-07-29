@@ -206,6 +206,7 @@
             this.finalizeButton.TabIndex = 7;
             this.finalizeButton.Text = "Finalize";
             this.finalizeButton.UseVisualStyleBackColor = true;
+            this.finalizeButton.Click += new System.EventHandler(this.finalizeButton_Click);
             // 
             // button3
             // 

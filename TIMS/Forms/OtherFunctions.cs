@@ -15,6 +15,10 @@ namespace TIMS.Forms
         {
             InitializeComponent();
             tabControl1.Selected += ChangeManagementTab;
+            foreach (string supplier in DatabaseHandler.SqlRetrieveSuppliers())
+            {
+                supplierCB.Items.Add(supplier);
+            }
         }
 
         private void SelectProductLine()
@@ -23,8 +27,70 @@ namespace TIMS.Forms
             PopulateItemInfoFields();
         }
 
+        private void ClearAllItemFields()
+        {
+            workingItem = null;
+            itemDescriptionTB.Text = string.Empty;
+
+            productLineTBField.Text = string.Empty;
+            itemNumberTBField.Text = string.Empty;
+            itemNameTB.Text = string.Empty;
+            descriptionTB.Text = string.Empty;
+            supplierCB.Text = string.Empty;
+            groupCodeTB.Text = string.Empty;
+            velocityCodeCB.Text = string.Empty;
+            velocityCodeCB.Items.Clear();
+            prevYearVelocityCodeCB.Text = string.Empty;
+            prevYearVelocityCodeCB.Items.Clear();
+            standardPkgTB.Text = string.Empty;
+            categoryCB.Text = string.Empty;
+            categoryCB.Items.Clear();
+            departmentCB.Text = string.Empty;
+            departmentCB.Items.Clear();
+            subDepartmentCB.Text = string.Empty;
+            subDepartmentCB.Items.Clear();
+            unitTB.Text = string.Empty;
+            taxableCB.Checked = false;
+
+            dateStockedTB.Text = string.Empty;
+            lastReceiptTB.Text = string.Empty;
+            minTB.Text = string.Empty;
+            maxTB.Text = string.Empty;
+            onHandTB.Text = string.Empty;
+            wipQtyTB.Text = string.Empty;
+            onOrderQtyTB.Text = string.Empty;
+            onBackorderQtyTB.Text = string.Empty;
+            daysOnBackOrderTB.Text = string.Empty;
+            daysOnOrderTB.Text = string.Empty;
+
+            listPriceTB.Text = string.Empty;
+            redPriceTB.Text = string.Empty;
+            yellowPriceTB.Text = string.Empty;
+            greenPriceTB.Text = string.Empty;
+            pinkPriceTB.Text = string.Empty;
+            bluePriceTB.Text = string.Empty;
+            costTB.Text = string.Empty;
+            avgCostTB.Text = string.Empty;
+
+            lastLabelDateTB.Text = string.Empty;
+            lastLabelPriceTB.Text = string.Empty;
+            locationsLB.Items.Clear();
+
+            serializedCB.Checked = false;
+            serialNumberTB.Text = string.Empty;
+            serialNumbersLB.Items.Clear();
+            removerSNbtn.Enabled = false;
+
+            dateOfLastSaleTB.Text = string.Empty;
+
+            itemNumberTB.Text = string.Empty;
+            productLineComboBox.Items.Clear();
+            productLineComboBox.Text = string.Empty;
+        }
+
         private void PopulateItemInfoFields()
         {
+            itemNameTB.Focus();
             itemDescriptionTB.Text = workingItem.itemName;
 
             productLineTBField.Text = workingItem.productLine;
@@ -143,6 +209,9 @@ namespace TIMS.Forms
 
         private void itemNumberTB_Leave(object sender, EventArgs e)
         {
+            if (itemNumberTB.Text == "")
+                return;
+
             productLineComboBox.Items.Clear();
             List<Item> items = DatabaseHandler.SqlCheckItemNumber(itemNumberTB.Text, false);
             if (items == null)
@@ -180,10 +249,33 @@ namespace TIMS.Forms
                     SelectProductLine();
                 }
             }
+            else
+            {
+                if (productLineComboBox.Items.Contains(productLineComboBox.Text))
+                {
+                    productLineComboBox.SelectedIndex = productLineComboBox.Items.IndexOf(productLineComboBox.Text);
+                    SelectProductLine();
+                }
+                else
+                {
+                    if (MessageBox.Show(@"Item number """ + itemNumberTB.Text + @""" does not exist in product line " + productLineComboBox.Text + "!\nWould you like to add it?", "Add product?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        workingItem = new Item() { itemNumber = itemNumberTB.Text, productLine = productLineComboBox.Text};
+                        PopulateItemInfoFields();
+                    }
+                }
+            }
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
+            if (ageRestrictedCB.Checked && minimumAgeTB.Text == "")
+            {
+                MessageBox.Show("Minimum age is required for age restricted items!");
+                minimumAgeTB.Focus();
+                return;
+            }
+
             Item newItem = new Item();
             newItem.productLine = productLineTBField.Text == string.Empty ? "XXX" : productLineTBField.Text;
             newItem.itemNumber = itemNumberTBField.Text == string.Empty ? "XXX" : itemNumberTBField.Text;
@@ -221,63 +313,32 @@ namespace TIMS.Forms
             DatabaseHandler.SqlUpdateItem(newItem);
             MessageBox.Show("Item updated!");
         }
-        #endregion
-
+        
         private void clearItemButton_Click(object sender, EventArgs e)
         {
-            workingItem = null;
-            itemDescriptionTB.Text = string.Empty;
+            ClearAllItemFields();
+            itemNumberTB.Focus();
+        }
+        #endregion
 
-            productLineTBField.Text = string.Empty;
-            itemNumberTBField.Text = string.Empty;
-            itemNameTB.Text = string.Empty;
-            descriptionTB.Text = string.Empty;
-            supplierCB.Text = string.Empty;
-            groupCodeTB.Text = string.Empty;
-            velocityCodeCB.Text = string.Empty;
-            velocityCodeCB.Items.Clear();
-            prevYearVelocityCodeCB.Text = string.Empty;
-            prevYearVelocityCodeCB.Items.Clear();
-            standardPkgTB.Text = string.Empty;
-            categoryCB.Text = string.Empty;
-            categoryCB.Items.Clear();
-            departmentCB.Text = string.Empty;
-            departmentCB.Items.Clear();
-            subDepartmentCB.Text = string.Empty;
-            subDepartmentCB.Items.Clear();
-            unitTB.Text = string.Empty;
-            taxableCB.Checked = false;
+        private void productLineComboBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsLetter(e.KeyChar))
+            {
+                e.KeyChar = char.ToUpper(e.KeyChar);
+            }
+        }
 
-            dateStockedTB.Text = string.Empty;
-            lastReceiptTB.Text = string.Empty;
-            minTB.Text = string.Empty;
-            maxTB.Text = string.Empty;
-            onHandTB.Text = string.Empty;
-            wipQtyTB.Text = string.Empty;
-            onOrderQtyTB.Text = string.Empty;
-            onBackorderQtyTB.Text = string.Empty;
-            daysOnBackOrderTB.Text = string.Empty;
-            daysOnOrderTB.Text = string.Empty;
+        private void openPurchaseOrdersToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            OpenOrderViewer viewer = new OpenOrderViewer();
+            viewer.Show();
+        }
 
-            listPriceTB.Text = string.Empty;
-            redPriceTB.Text = string.Empty;
-            yellowPriceTB.Text = string.Empty;
-            greenPriceTB.Text = string.Empty;
-            pinkPriceTB.Text = string.Empty;
-            bluePriceTB.Text = string.Empty;
-            costTB.Text = string.Empty;
-            avgCostTB.Text = string.Empty;
-
-            lastLabelDateTB.Text = string.Empty;
-            lastLabelPriceTB.Text = string.Empty;
-            locationsLB.Items.Clear();
-
-            serializedCB.Checked = false;
-            serialNumberTB.Text = string.Empty;
-            serialNumbersLB.Items.Clear();
-            removerSNbtn.Enabled = false;
-
-            dateOfLastSaleTB.Text = string.Empty;
+        private void createCheckInToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            CheckinCreator creator = new CheckinCreator();
+            creator.Show();
         }
     }
 }
