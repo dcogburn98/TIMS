@@ -44,6 +44,11 @@ namespace TIMS.Forms.Orders
 
             dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
             dataGridView2.Sort(dataGridView2.Columns[0], ListSortDirection.Ascending);
+
+            if (dataGridView2.Rows.Count < 1)
+                saveButton.Enabled = false;
+            else
+                saveButton.Enabled = true;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -57,6 +62,19 @@ namespace TIMS.Forms.Orders
 
             dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
             dataGridView2.Sort(dataGridView2.Columns[0], ListSortDirection.Ascending);
+
+            if (dataGridView2.Rows.Count < 1)
+                saveButton.Enabled = false;
+            else
+                saveButton.Enabled = true;
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            if (dataGridView2.Rows.Count < 1)
+                return;
+
+
         }
     }
 }

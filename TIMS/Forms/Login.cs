@@ -3,6 +3,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 
+using TIMS.Server;
+
 namespace TIMS
 {
     public partial class Login : Form
@@ -93,7 +95,7 @@ namespace TIMS
                 }
                 else
                 {
-                    string response = DatabaseHandler.SqlCheckEmployee(usernameBox.Text);
+                    string response = Communication.CheckEmployee(usernameBox.Text);
                     if (response == null)
                     {
                         badLoginLabel.Text = "Invalid username/employee number!";

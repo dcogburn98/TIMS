@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TIMS
 {
-    class Checkin
+    public class Checkin
     {
         public int checkinNumber;
         public List<CheckinItem> items;

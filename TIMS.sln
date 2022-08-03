@@ -15,7 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionsTest", "Permissi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SortingAlgorithmTest", "SortingAlgorithmTest\SortingAlgorithmTest.csproj", "{314130A5-DA29-4D74-B702-E1CB2A2F3A92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreViewer", "StoreViewer\StoreViewer.csproj", "{8F4E0189-9D03-4E1F-A582-AAE6F1DCACB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreViewer", "StoreViewer\StoreViewer.csproj", "{8F4E0189-9D03-4E1F-A582-AAE6F1DCACB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIMSServerModel", "TIMSServerModel\TIMSServerModel.csproj", "{402D3F26-5D98-4072-97E1-E6240C6F2A1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{8F4E0189-9D03-4E1F-A582-AAE6F1DCACB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F4E0189-9D03-4E1F-A582-AAE6F1DCACB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F4E0189-9D03-4E1F-A582-AAE6F1DCACB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{402D3F26-5D98-4072-97E1-E6240C6F2A1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{402D3F26-5D98-4072-97E1-E6240C6F2A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{402D3F26-5D98-4072-97E1-E6240C6F2A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{402D3F26-5D98-4072-97E1-E6240C6F2A1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

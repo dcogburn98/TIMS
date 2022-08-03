@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Data.SQLite;
+using System.ServiceModel;
 
 namespace TIMSServer
 {
@@ -8,6 +10,7 @@ namespace TIMSServer
     {
         public static int alertLevel = 3;
 
+        /*
         static void Main()
         {
             Customer cust = new Customer();
@@ -245,6 +248,63 @@ namespace TIMSServer
                 Console.Beep(1800, 800);
                 System.Threading.Thread.Sleep(800);
             }
+        }
+    */
+
+        public static SQLiteConnection sqlite_conn;
+
+        static void Main()
+        {
+            sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Pooling = true; Max Pool Size = 100; Compress = True; ");
+            OpenConnection();
+            CloseConnection();
+
+            using (ServiceHost host = new ServiceHost(typeof(TIMSServiceModel)))
+            {
+                host.Open();
+                Console.WriteLine("Server is open for connections.");
+                Console.WriteLine("Press a key to close.");
+                Console.ReadKey();
+            }
+        }
+
+        public static void OpenConnection()
+        {
+            sqlite_conn.Open();
+        }
+
+        public static void CloseConnection()
+        {
+            sqlite_conn.Close();
+        }
+
+        public static string SqlCheckEmployee(string input)
+        {
+            if (!int.TryParse(input, out int v))
+                input = "'" + input + "'";
+            string value = null;
+            OpenConnection();
+            SQLiteCommand sqlite_cmd;
+            sqlite_cmd = sqlite_conn.CreateCommand();
+
+            sqlite_cmd.CommandText =
+                "SELECT FULLNAME " +
+                "FROM EMPLOYEES " +
+                "WHERE USERNAME = " + input + " " +
+                "OR EMPLOYEENUMBER = " + input;
+
+            SQLiteDataReader rdr = sqlite_cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                value = $"{rdr.GetString(0)}";
+            }
+
+            CloseConnection();
+
+            if (value == null)
+                return null;
+            else
+                return value;
         }
     }
 }

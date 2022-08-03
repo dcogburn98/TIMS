@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace TIMS
 {
-    class CheckinItem : InvoiceItem
+    public class CheckinItem : InvoiceItem
     {
+        public decimal shipped = 0;
         public decimal received = 0;
         public decimal damaged = 0;
     }
