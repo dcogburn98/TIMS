@@ -66,9 +66,5 @@ namespace TIMSServerModel
         string RetrievePropertyString(string key);
         #endregion
 
-        #region Page Rendering
-        [OperationContract]
-        void RenderInvoice(XGraphics gfx);
-        #endregion
     }
 }

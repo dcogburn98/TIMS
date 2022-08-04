@@ -6,8 +6,6 @@ using System.ServiceModel;
 using System.Text;
 using System.Data.SQLite;
 
-using PdfSharp.Drawing;
-
 using TIMSServerModel;
 
 namespace TIMSServer
@@ -814,11 +812,5 @@ namespace TIMSServer
             return property;
         }
 
-        #region Page Rendering
-        public void RenderInvoice(XGraphics gfx)
-        {
-            PDFRenderer.RenderInvoice(gfx);
-        }
-        #endregion
     }
 }

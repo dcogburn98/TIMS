@@ -88,12 +88,5 @@ namespace TIMS.Server
         {
             return proxy.RetrievePropertyString(key);
         }
-
-        #region Page Rendering
-        public static void RenderInvoice(XGraphics gfx)
-        {
-            proxy.RenderInvoice(gfx);
-        }
-        #endregion
     }
 }

@@ -34,7 +34,7 @@ namespace TIMS.Forms
             inv.currentPage = 1;
             pagePreview1.Zoom = PdfSharp.Forms.Zoom.BestFit;
             pagePreview1.PageSize = PageSizeConverter.ToSize(PageSize.Letter);
-            pagePreview1.SetRenderFunction(Communication.RenderInvoice);
+            pagePreview1.SetRenderFunction(inv.RenderPage);
         }
 
         public ReportViewer(Report reportData)

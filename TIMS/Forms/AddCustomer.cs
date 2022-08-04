@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 
+using TIMSServerModel;
+
 namespace TIMS
 {
     public partial class AddCustomer : Form
