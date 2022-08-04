@@ -4,6 +4,9 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Collections.Generic;
 
+using TIMS.Server;
+using TIMSServerModel;
+
 namespace TIMS.Forms.POS
 {
     public partial class InvoiceViewer : Form
@@ -19,7 +22,7 @@ namespace TIMS.Forms.POS
 
             this.invoices = invoices;
             currentIndex = index;
-            inv = DatabaseHandler.SqlRetrieveInvoice(invoices[index].invoiceNumber);
+            inv = Communication.RetrieveInvoice(invoices[index].invoiceNumber);
             PopulateInformationFields();
 
             if (index == 0)
@@ -143,7 +146,7 @@ namespace TIMS.Forms.POS
             dataGridView1.Rows.Clear();
             paymentsListBox.Items.Clear();
             currentIndex--;
-            inv = DatabaseHandler.SqlRetrieveInvoice(invoices[currentIndex].invoiceNumber);
+            inv = Communication.RetrieveInvoice(invoices[currentIndex].invoiceNumber);
             PopulateInformationFields();
 
             if (currentIndex == 0)
@@ -162,7 +165,7 @@ namespace TIMS.Forms.POS
             dataGridView1.Rows.Clear();
             paymentsListBox.Items.Clear();
             currentIndex++;
-            inv = DatabaseHandler.SqlRetrieveInvoice(invoices[currentIndex].invoiceNumber);
+            inv = Communication.RetrieveInvoice(invoices[currentIndex].invoiceNumber);
             PopulateInformationFields();
 
             if (currentIndex == 0)

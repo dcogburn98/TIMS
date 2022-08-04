@@ -7,6 +7,8 @@ using TIMS.Forms.POS;
 using TIMS.Forms.Reporting;
 using TIMS.Forms.Orders;
 
+using TIMSServerModel;
+
 namespace TIMS
 {
     static class Program

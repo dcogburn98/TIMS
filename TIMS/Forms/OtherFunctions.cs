@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 using TIMS.Forms.Reporting;
 using TIMS.Forms.Orders;
+using TIMS.Server;
+using TIMSServerModel;
 
 namespace TIMS.Forms
 {
@@ -213,7 +215,7 @@ namespace TIMS.Forms
                 return;
 
             productLineComboBox.Items.Clear();
-            List<Item> items = DatabaseHandler.SqlCheckItemNumber(itemNumberTB.Text, false);
+            List<Item> items = Communication.CheckItemNumber(itemNumberTB.Text, false);
             if (items == null)
                 return;
 

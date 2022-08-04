@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
+using TIMS.Server;
+using TIMSServerModel;
+
 namespace TIMS.Forms.Orders
 {
     public partial class OrderCreator : Form
@@ -38,7 +41,7 @@ namespace TIMS.Forms.Orders
                 case "all":
                     if (supplier == "Manual Order")
                         break;
-                    List<Item> itemsall = DatabaseHandler.SqlRetrieveItemsFromSupplier(supplier);
+                    List<Item> itemsall = Communication.RetrieveItemsFromSupplier(supplier);
                     if (itemsall == null)
                         break;
                     foreach (Item item in itemsall)
@@ -77,7 +80,7 @@ namespace TIMS.Forms.Orders
                 case "min":
                     if (supplier == "Manual Order")
                         break;
-                    List<Item> itemsmin = DatabaseHandler.SqlRetrieveItemsFromSupplierBelowMin(supplier);
+                    List<Item> itemsmin = Communication.RetrieveItemsFromSupplierBelowMin(supplier);
                     if (itemsmin == null)
                         break;
                     foreach (Item item in itemsmin)
@@ -114,7 +117,7 @@ namespace TIMS.Forms.Orders
                 case "max":
                     if (supplier == "Manual Order")
                         break;
-                    List<Item> itemsmax = DatabaseHandler.SqlRetrieveItemsFromSupplierBelowMax(supplier);
+                    List<Item> itemsmax = Communication.RetrieveItemsFromSupplierBelowMax(supplier);
                     if (itemsmax == null)
                         break;
                     foreach (Item item in itemsmax)
@@ -149,7 +152,7 @@ namespace TIMS.Forms.Orders
                     averageMarginTB.Text = averageMargin.ToString("P");
                     break;
                 case "items sold":
-                    List<InvoiceItem> items = DatabaseHandler.SqlRetrieveItemsFromSupplierSoldAfterLastOrderDate(supplier);
+                    List<InvoiceItem> items = Communication.RetrieveItemsFromSupplierSoldAfterLastOrderDate(supplier);
                     if (items == null)
                         break;
                     foreach (InvoiceItem item in items)
@@ -293,9 +296,9 @@ namespace TIMS.Forms.Orders
             productLineCB.Items.Clear();
             List<Item> items;
             if (supplier == string.Empty)
-                items = DatabaseHandler.SqlCheckItemNumber(itemNumberTB.Text, false);
+                items = Communication.CheckItemNumber(itemNumberTB.Text, false);
             else
-                items = DatabaseHandler.SqlCheckItemNumber(itemNumberTB.Text, supplier);
+                items = Communication.CheckItemNumber(itemNumberTB.Text, supplier);
 
             if (items == null)
             {

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using PdfSharp.Drawing;
 
+using TIMSServerModel;
+
 namespace TIMS
 {
     public class UPCA

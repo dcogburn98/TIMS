@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
+using TIMSServerModel;
+
 namespace TIMS.Forms
 {
     public partial class Checkout : Form

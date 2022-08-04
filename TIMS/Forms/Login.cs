@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using TIMS.Server;
+using TIMSServerModel;
 
 namespace TIMS
 {
@@ -30,7 +31,7 @@ namespace TIMS
             SHA256 encrypt = SHA256.Create();
             encrypt.Initialize();
             byte[] hash = encrypt.ComputeHash(Encoding.UTF8.GetBytes(passwordBox.Text));
-            Employee e = DatabaseHandler.SqlLogin(useroremployeeno, hash);
+            Employee e = Communication.Login(useroremployeeno, hash);
             if (e != null)
             {
                 Program.currentEmployee = e;

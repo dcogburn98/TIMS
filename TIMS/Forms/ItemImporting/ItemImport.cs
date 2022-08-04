@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.IO;
 using Microsoft.VisualBasic.FileIO;
 
+using TIMSServerModel;
+
 namespace TIMS.Forms
 {
     public partial class ItemImport : Form

@@ -2,6 +2,9 @@
 using System.Windows.Forms;
 using System.Collections.Generic;
 
+using TIMS.Server;
+using TIMSServerModel;
+
 namespace TIMS.Forms.POS
 {
     public partial class ReviewInvoices : Form
@@ -255,7 +258,7 @@ namespace TIMS.Forms.POS
 
             invoices.Clear();
             dataGridView1.Rows.Clear();
-            invoices = DatabaseHandler.SqlRetrieveInvoicesByCriteria(new string[] { "test" });
+            invoices = Communication.RetrieveInvoicesByCriteria(new string[] { "test" });
             if (tabControl1.TabPages.Count == 1)
                 tabControl1.TabPages.Add(tabPage2);
 

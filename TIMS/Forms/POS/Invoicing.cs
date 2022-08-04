@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 
 using TIMS.Forms.POS;
+using TIMS.Server;
+using TIMSServerModel;
 
 namespace TIMS.Forms
 {
@@ -140,7 +142,7 @@ namespace TIMS.Forms
 
         private void AddCustomer()
         {
-            Customer c = DatabaseHandler.SqlCheckCustomerNumber(customerNoTB.Text);
+            Customer c = Communication.CheckCustomerNumber(customerNoTB.Text);
             Invoice newInvoice = new Invoice();
 
             if (c == null)
@@ -210,7 +212,7 @@ namespace TIMS.Forms
                 }
                 return;
             }
-            addingItems = DatabaseHandler.SqlCheckItemNumber(itemNoTB.Text, false);
+            addingItems = Communication.CheckItemNumber(itemNoTB.Text, false);
 
             if (addingItems == null)
             {

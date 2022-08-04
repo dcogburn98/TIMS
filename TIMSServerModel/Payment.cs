@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace TIMSServer
+namespace TIMSServerModel
 {
-    [Serializable]
     public class Payment
     {
         public enum PaymentTypes
@@ -12,9 +15,11 @@ namespace TIMSServer
             PaymentCard,
             Charge,
             CashApp,
-            Venmo
+            Venmo,
+            Paypal
         }
         public PaymentTypes paymentType;
-        public float paymentAmount;
+        public decimal paymentAmount;
+        public Guid ID = Guid.NewGuid();
     }
 }
