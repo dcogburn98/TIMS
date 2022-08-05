@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 using PdfSharp.Drawing;
 
-namespace TIMS
+namespace TIMSServerModel
 {
     public class Report
     {
@@ -33,7 +35,7 @@ namespace TIMS
 
             GenerateQuery();
         }
-        
+
         public void GenerateQuery()
         {
             ColumnCount = 0;
@@ -61,7 +63,7 @@ namespace TIMS
                         date = date.AddDays(1);
                     conditionsString += @"""" + date.ToString("M/d/yyyy") + @""" AND ";
                 }
-                else if (DatabaseHandler.SqlRetrieveTableHeaders(DataSource).Contains(conArray[2]))
+                else if (Communication.RetrieveTableHeaders(DataSource).Contains(conArray[2]))
                 {
                     conditionsString += conArray[2] + " AND ";
                 }
@@ -89,9 +91,9 @@ namespace TIMS
         public void ExecuteReport()
         {
             GenerateQuery();
-            Results = DatabaseHandler.SqlReportQuery(Query, ColumnCount);
+            Results = Communication.ReportQuery(Query, ColumnCount);
         }
-    
+
         public void SaveReport(string reportName, string shortcode)
         {
             ReportName = reportName;
@@ -111,7 +113,7 @@ namespace TIMS
 
             gfx.DrawString(DateTime.Now.ToString(), font, XBrushes.Black, 10, currentLine);
             gfx.DrawString(ReportName, font, XBrushes.Black, (gfx.PageSize.Width / 2) - gfx.MeasureString(ReportName, font).Width / 2, currentLine);
-            gfx.DrawString("Page " + currentPage.ToString() + "/" + totalPages.ToString(), font, XBrushes.Black, 
+            gfx.DrawString("Page " + currentPage.ToString() + "/" + totalPages.ToString(), font, XBrushes.Black,
                 gfx.PageSize.Width - gfx.MeasureString("Page " + currentPage.ToString() + "/" + totalPages.ToString(), font).Width - 15, currentLine);
             currentLine += font.GetHeight();
 

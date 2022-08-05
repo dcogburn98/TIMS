@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using TIMS.Server;
+
 namespace TIMS.Forms
 {
     public partial class ReportCreator : Form
@@ -18,7 +20,7 @@ namespace TIMS.Forms
         {
             InitializeComponent();
             selectedDatasource = String.Empty;
-            foreach (string table in DatabaseHandler.SqlRetrieveTableNames())
+            foreach (string table in Communication.RetrieveTableNames())
             {
                 dataSourceCB.Items.Add(table);
             }
@@ -71,7 +73,7 @@ namespace TIMS.Forms
             conditionLeftComparatorCB.Text = string.Empty;
             conditionRightComparatorCB.Text = string.Empty;
 
-            foreach (string item in DatabaseHandler.SqlRetrieveTableHeaders(dataSourceCB.Text))
+            foreach (string item in Communication.RetrieveTableHeaders(dataSourceCB.Text))
             {
                 conditionLeftComparatorCB.Items.Add(item);
                 conditionRightComparatorCB.Items.Add(item);

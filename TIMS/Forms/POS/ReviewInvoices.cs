@@ -22,7 +22,7 @@ namespace TIMS.Forms.POS
 
         private void HandleProductLine()
         {
-            if (!DatabaseHandler.SqlCheckProductLine(productLineTB.Text))
+            if (!Communication.CheckProductLine(productLineTB.Text))
             {
                 productLineTB.Clear();
             }

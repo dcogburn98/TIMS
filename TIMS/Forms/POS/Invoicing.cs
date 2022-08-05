@@ -49,7 +49,7 @@ namespace TIMS.Forms
             customerNoTB.Enabled = true;
             customerNoTB.Focus();
 
-            foreach (ItemShortcutMenu menu in DatabaseHandler.SqlRetrieveShortcutMenus())
+            foreach (ItemShortcutMenu menu in Communication.RetrieveShortcutMenus())
             {
                 ToolStripMenuItem menuItem = (ToolStripMenuItem)shortcutsToolStripMenuItem.DropDownItems.Add(menu.menuName);
                 foreach (Item item in menu.menuItems)
@@ -64,7 +64,7 @@ namespace TIMS.Forms
         private void AddItemFromShortcutMenu(object sender, EventArgs e)
         {
             string[] plAndIn = (sender as ToolStripMenuItem).Text.Split('-')[0].Trim().Split('|');
-            InvoiceItem item = new InvoiceItem(DatabaseHandler.SqlRetrieveItem(plAndIn[1], plAndIn[0]));
+            InvoiceItem item = new InvoiceItem(Communication.RetrieveItem(plAndIn[1], plAndIn[0]));
             itemNoTB.Text = item.itemNumber;
             EnterItemNumber();
             if (!singleProductLine)
@@ -177,7 +177,7 @@ namespace TIMS.Forms
         {
             if (itemNoTB.Text.Substring(0, 1) == "@")
             {
-                InvoiceItem invItem = DatabaseHandler.SqlRetrieveInvoiceItem(itemNoTB.Text);
+                InvoiceItem invItem = Communication.RetrieveInvoiceItemFromBarcode(itemNoTB.Text);
                 if (invItem == null)
                 {
                     MessageBox.Show("Barcode does not exist!");

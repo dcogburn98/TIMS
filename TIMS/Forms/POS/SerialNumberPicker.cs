@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using TIMS.Server;
 using TIMSServerModel;
 
 namespace TIMS.Forms.POS
@@ -23,7 +24,7 @@ namespace TIMS.Forms.POS
             if (!invItem.serializedItem)
                 Close();
 
-            foreach (string sn in DatabaseHandler.SqlRetrieveItemSerialNumbers(invItem.productLine, invItem.itemNumber))
+            foreach (string sn in Communication.RetrieveItemSerialNumbers(invItem.productLine, invItem.itemNumber))
             {
                 comboBox1.Items.Add(sn);
             }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using PdfSharp.Drawing;
 
 using TIMSServerModel;
+using TIMS.Server;
 
 namespace TIMS
 {
@@ -304,7 +305,7 @@ namespace TIMS
 
             foreach (string barcode in barcodes)
             {
-                LabelItems.Add(DatabaseHandler.SqlRetrieveItem(barcode));
+                LabelItems.Add(Communication.RetrieveItemFromBarcode(barcode));
             }
         }
 

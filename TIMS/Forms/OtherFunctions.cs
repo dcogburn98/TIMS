@@ -17,7 +17,7 @@ namespace TIMS.Forms
         {
             InitializeComponent();
             tabControl1.Selected += ChangeManagementTab;
-            foreach (string supplier in DatabaseHandler.SqlRetrieveSuppliers())
+            foreach (string supplier in Communication.RetrieveSuppliers())
             {
                 supplierCB.Items.Add(supplier);
             }
@@ -25,7 +25,7 @@ namespace TIMS.Forms
 
         private void SelectProductLine()
         {
-            workingItem = DatabaseHandler.SqlRetrieveItem(itemNumberTB.Text, productLineComboBox.Text);
+            workingItem = Communication.RetrieveItem(itemNumberTB.Text, productLineComboBox.Text);
             PopulateItemInfoFields();
         }
 
@@ -312,7 +312,7 @@ namespace TIMS.Forms
             newItem.longDescription = descriptionTB.Text;
             newItem.serialized = serializedCB.Checked;
 
-            DatabaseHandler.SqlUpdateItem(newItem);
+            Communication.UpdateItem(newItem);
             MessageBox.Show("Item updated!");
         }
         

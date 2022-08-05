@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using TIMS.Server;
+using TIMSServerModel;
+
 namespace TIMS.Forms.Reporting
 {
     public partial class ReportManager : Form
@@ -17,7 +20,7 @@ namespace TIMS.Forms.Reporting
         {
             InitializeComponent();
 
-            foreach (string report in DatabaseHandler.SqlRetrieveAvailableReports())
+            foreach (string report in Communication.RetrieveAvailableReports())
                 reportPickerCB.Items.Add(report);
         }
 
@@ -26,7 +29,7 @@ namespace TIMS.Forms.Reporting
             if (reportPickerCB.SelectedIndex == -1)
                 return;
 
-            currentReport = DatabaseHandler.SqlRetrieveReport(reportPickerCB.Text.Split(' ')[0]);
+            currentReport = Communication.RetrieveReport(reportPickerCB.Text.Split(' ')[0]);
             conditionsLB.Items.Clear();
             foreach (string condition in currentReport.Conditions)
                 conditionsLB.Items.Add(condition);

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using Microsoft.VisualBasic.FileIO;
 
+using TIMS.Server;
 using TIMSServerModel;
 
 namespace TIMS.Forms
@@ -20,7 +21,7 @@ namespace TIMS.Forms
         {
             InitializeComponent();
             CancelButton = cancelButton;
-            foreach (string header in DatabaseHandler.SqlRetrieveTableHeaders("ITEMS"))
+            foreach (string header in Communication.RetrieveTableHeaders("ITEMS"))
                 comboBox1.Items.Add(header);
         }
 
@@ -45,7 +46,7 @@ namespace TIMS.Forms
             File.Copy(csvPathTB.Text, "tempcsv", true);
             dataGridView1.Columns.Clear();
             dataGridView1.Rows.Clear();
-            List<string> remainingHeaders = DatabaseHandler.SqlRetrieveTableHeaders("ITEMS");
+            List<string> remainingHeaders = Communication.RetrieveTableHeaders("ITEMS");
             comboBox1.Items.Clear();
             foreach (string header in remainingHeaders)
                 comboBox1.Items.Add(header);
@@ -98,7 +99,7 @@ namespace TIMS.Forms
                 calculateCheckDigit = true;
             }
 
-            List<string> availableHeaders = DatabaseHandler.SqlRetrieveTableHeaders("ITEMS");
+            List<string> availableHeaders = Communication.RetrieveTableHeaders("ITEMS");
             List<string> dataHeaders = new List<string>();
 
             foreach (string header in availableHeaders)
@@ -204,22 +205,22 @@ namespace TIMS.Forms
                 {
                     if (Program.IsStringNumeric(newItem.SKU) && newItem.SKU.Length == 11 && calculateCheckDigit)
                         newItem.SKU = UPCA.CalculateChecksumDigit(newItem.SKU);
-                    DatabaseHandler.SqlAddBarcode(newItem.itemNumber, newItem.productLine, newItem.SKU, 1);
+                    Communication.AddBarcode(newItem.itemNumber, newItem.productLine, newItem.SKU, 1);
                 }
 
-                if (!DatabaseHandler.SqlCheckProductLine(newItem.productLine.ToUpper()))
+                if (!Communication.CheckProductLine(newItem.productLine.ToUpper()))
                 {
-                    DatabaseHandler.SqlAddProductLine(newItem.productLine.ToUpper());
+                    Communication.AddProductLine(newItem.productLine.ToUpper());
                 }
 
-                if (!DatabaseHandler.SqlRetrieveSuppliers().Contains(newItem.supplier.ToUpper()))
+                if (!Communication.RetrieveSuppliers().Contains(newItem.supplier.ToUpper()))
                 {
-                    DatabaseHandler.SqlAddSupplier(newItem.supplier);
+                    Communication.AddSupplier(newItem.supplier);
                 }
 
-                if (DatabaseHandler.SqlRetrieveItem(newItem.itemNumber, newItem.productLine) == null)
+                if (Communication.RetrieveItem(newItem.itemNumber, newItem.productLine) == null)
                 {
-                    if (!DatabaseHandler.SqlAddItem(newItem))
+                    if (!Communication.AddItem(newItem))
                         skippedRows.Add(itemRow);
                 }
                 else skippedRows.Add(itemRow);

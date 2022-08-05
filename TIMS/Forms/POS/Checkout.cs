@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
+using TIMS.Server;
 using TIMSServerModel;
 
 namespace TIMS.Forms
@@ -441,20 +442,20 @@ namespace TIMS.Forms
 
             invoice.finalized = true;
             invoice.invoiceFinalizedTime = DateTime.Now;
-            invoice.invoiceNumber = DatabaseHandler.SqlRetrieveNextInvoiceNumber();
+            invoice.invoiceNumber = Communication.RetrieveNextInvoiceNumber();
             invoice.totalPayments = invoice.total;
 
             foreach (InvoiceItem invItem in invoice.items)
             {
-                Item newItem = DatabaseHandler.SqlRetrieveItem(invItem.itemNumber, invItem.productLine);
+                Item newItem = Communication.RetrieveItem(invItem.itemNumber, invItem.productLine);
                 newItem.onHandQty -= invItem.quantity;
                 invItem.cost = newItem.replacementCost;
                 invoice.cost += invItem.cost;
-                DatabaseHandler.SqlUpdateItem(newItem);
+                Communication.UpdateItem(newItem);
             }
 
             invoice.profit = invoice.subtotal - invoice.cost;
-            DatabaseHandler.SqlSaveReleasedInvoice(invoice);
+            Communication.SaveReleasedInvoice(invoice);
             ReportViewer viewer = new ReportViewer(invoice);
             viewer.ShowDialog();
             Close();

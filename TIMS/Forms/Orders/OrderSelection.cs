@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using TIMS.Server;
+
 namespace TIMS.Forms.Orders
 {
     public partial class OrderSelection : Form
@@ -19,7 +21,7 @@ namespace TIMS.Forms.Orders
         {
             InitializeComponent();
             CancelButton = button1;
-            foreach (string supp in DatabaseHandler.SqlRetrieveSuppliers())
+            foreach (string supp in Communication.RetrieveSuppliers())
                 comboBox1.Items.Add(supp);
             comboBox1.SelectedIndex = 0;
             comboBox2.SelectedIndex = 0;

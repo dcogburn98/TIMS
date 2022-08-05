@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using TIMS.Server;
 using TIMSServerModel;
 
 namespace TIMS.Forms
@@ -23,7 +24,7 @@ namespace TIMS.Forms
 
         private void button3_Click(object sender, EventArgs e)
         {
-            List<Item> LabelItems = DatabaseHandler.SqlRetrieveLabelOutOfDateItems();
+            List<Item> LabelItems = Communication.RetrieveLabelOutOfDateItems();
             sheet = new BarcodeSheet(LabelItems);
             ReportViewer viewer = new ReportViewer(sheet);
             viewer.Show();

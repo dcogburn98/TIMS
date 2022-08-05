@@ -12,7 +12,7 @@ namespace TIMSServerModel
     [ServiceContract]
     public interface ITIMSServiceModel
     {
-        #region Employee and Login Functions
+        #region Employees
         [OperationContract]
         string CheckEmployee(string input);
 
@@ -23,7 +23,7 @@ namespace TIMSServerModel
         Employee RetrieveEmployee(string employeeNumber);
         #endregion
 
-        #region Item retrieval and manipulation
+        #region Items
         [OperationContract]
         List<Item> CheckItemNumber(string itemNumber, bool connectionOpened);
 
@@ -41,6 +41,45 @@ namespace TIMSServerModel
 
         [OperationContract]
         List<InvoiceItem> RetrieveItemsFromSupplierSoldAfterLastOrderDate(string supplier);
+
+        [OperationContract]
+        List<string> RetrieveSuppliers();
+
+        [OperationContract]
+        void AddSupplier(string supplier);
+
+        [OperationContract]
+        bool CheckProductLine(string productLine);
+
+        [OperationContract]
+        void AddProductLine(string productLine);
+
+        [OperationContract]
+        Item RetrieveItemFromBarcode(string scannedBarcode);
+
+        [OperationContract]
+        InvoiceItem RetrieveInvoiceItemFromBarcode(string scannedBarcode);
+
+        [OperationContract]
+        Item RetrieveItem(string itemNumber, string productLine, bool connectionOpened = false);
+
+        [OperationContract]
+        void UpdateItem(Item newItem);
+
+        [OperationContract]
+        List<string> RetrieveItemSerialNumbers(string productLine, string itemNumber);
+
+        [OperationContract]
+        bool AddItem(Item item);
+
+        [OperationContract]
+        List<Item> RetrieveLabelOutOfDateItems();
+
+        [OperationContract]
+        void SaveReleasedInvoice(Invoice inv);
+
+        [OperationContract]
+        int RetrieveNextInvoiceNumber();
         #endregion
 
         #region Invoices
@@ -66,5 +105,37 @@ namespace TIMSServerModel
         string RetrievePropertyString(string key);
         #endregion
 
+        #region Item Shortcut Menus
+        [OperationContract]
+        List<ItemShortcutMenu> RetrieveShortcutMenus();
+        #endregion
+
+        #region Barcodes
+        [OperationContract]
+        void AddBarcode(string itemnumber, string productline, string barcode, decimal quantity);
+
+        [OperationContract]
+        List<string> RetrieveBarcode(Item item);
+        #endregion
+
+        #region Reports
+        [OperationContract]
+        List<string> RetrieveTableNames();
+
+        [OperationContract]
+        List<string> RetrieveTableHeaders(string table);
+
+        [OperationContract]
+        List<object> ReportQuery(string query, int columns);
+
+        [OperationContract]
+        void SaveReport(Report report);
+
+        [OperationContract]
+        Report RetrieveReport(string shortcode);
+
+        [OperationContract]
+        List<string> RetrieveAvailableReports();
+        #endregion
     }
 }

@@ -15,6 +15,7 @@ namespace TIMS.Server
 
         private static ITIMSServiceModel proxy = channelFactory.CreateChannel();
 
+        #region Employees
         public static string CheckEmployee(string input)
         {
             return proxy.CheckEmployee(input);
@@ -29,7 +30,9 @@ namespace TIMS.Server
         {
             return proxy.RetrieveEmployee(employeeNumber);
         }
+        #endregion
 
+        #region Items
         public static List<Item> CheckItemNumber(string itemNumber, bool connectionOpened)
         {
             return proxy.CheckItemNumber(itemNumber, connectionOpened);
@@ -59,6 +62,70 @@ namespace TIMS.Server
         {
             return proxy.RetrieveItemsFromSupplierSoldAfterLastOrderDate(supplier);
         }
+        
+        public static List<string> RetrieveSuppliers()
+        {
+            return proxy.RetrieveSuppliers();
+        }
+
+        public static void AddSupplier(string supplier)
+        {
+            proxy.AddSupplier(supplier);
+        }
+
+        public static bool CheckProductLine(string productLine)
+        {
+            return proxy.CheckProductLine(productLine);
+        }
+
+        public static void AddProductLine(string productLine)
+        {
+            proxy.AddProductLine(productLine);
+        }
+
+        public static Item RetrieveItemFromBarcode(string scannedBarcode)
+        {
+            return proxy.RetrieveItemFromBarcode(scannedBarcode);
+        }
+        
+        public static InvoiceItem RetrieveInvoiceItemFromBarcode(string scannedBarcode)
+        {
+            return proxy.RetrieveInvoiceItemFromBarcode(scannedBarcode);
+        }
+
+        public static Item RetrieveItem(string itemNumber, string productLine, bool connectionOpened = false)
+        {
+            return proxy.RetrieveItem(itemNumber, productLine, connectionOpened);
+        }
+
+        public static void UpdateItem(Item newItem)
+        {
+            proxy.UpdateItem(newItem);
+        }
+        
+        public static List<string> RetrieveItemSerialNumbers(string productLine, string itemNumber)
+        {
+            return proxy.RetrieveItemSerialNumbers(productLine, itemNumber);
+        }
+
+        public static bool AddItem(Item item)
+        {
+            return proxy.AddItem(item);
+        }
+        public static List<Item> RetrieveLabelOutOfDateItems()
+        {
+            return proxy.RetrieveLabelOutOfDateItems();
+        }
+        public static void SaveReleasedInvoice(Invoice inv)
+        {
+            proxy.SaveReleasedInvoice(inv);
+        }
+        public static int RetrieveNextInvoiceNumber()
+        {
+            return proxy.RetrieveNextInvoiceNumber();
+        }
+
+        #endregion
 
         #region Customers
 
@@ -69,6 +136,7 @@ namespace TIMS.Server
 
         #endregion
 
+        #region Invoices
         public static List<Invoice> RetrieveInvoicesByDateRange(DateTime startDate, DateTime endDate, bool connectionOpened = false)
         {
             return proxy.RetrieveInvoicesByDateRange(startDate, endDate, connectionOpened);
@@ -83,10 +151,59 @@ namespace TIMS.Server
         {
             return proxy.RetrieveInvoicesByCriteria(criteria);
         }
+        #endregion
 
+        #region Global Properties
         public static string RetrievePropertyString(string key)
         {
             return proxy.RetrievePropertyString(key);
         }
+        #endregion
+
+        #region Item Shortcut Menus
+        internal static List<ItemShortcutMenu> RetrieveShortcutMenus()
+        {
+            return proxy.RetrieveShortcutMenus();
+        }
+        #endregion
+
+        #region Barcodes
+        public static void AddBarcode(string itemnumber, string productline, string barcode, decimal quantity)
+        {
+            proxy.AddBarcode(itemnumber, productline, barcode, quantity);
+        }
+
+        public static List<string> RetrieveBarcode(Item item)
+        {
+            return proxy.RetrieveBarcode(item);
+        }
+        #endregion
+
+        #region Reports
+        public static List<string> RetrieveTableNames()
+        {
+            return proxy.RetrieveTableNames();
+        }
+        public static List<string> RetrieveTableHeaders(string table)
+        {
+            return proxy.RetrieveTableHeaders(table);
+        }
+        public static List<object> ReportQuery(string query, int columns)
+        {
+            return proxy.ReportQuery(query, columns);
+        }
+        public static void SaveReport(Report report)
+        {
+            proxy.SaveReport(report);
+        }
+        public static Report RetrieveReport(string shortcode)
+        {
+            return proxy.RetrieveReport(shortcode);
+        }
+        public static List<string> RetrieveAvailableReports()
+        {
+            return proxy.RetrieveAvailableReports();
+        }
+        #endregion
     }
 }

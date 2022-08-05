@@ -158,7 +158,7 @@ namespace TIMS.Forms.Orders
                     foreach (InvoiceItem item in items)
                     {
                         workingItem = item;
-                        Item iData = DatabaseHandler.SqlRetrieveItem(workingItem.itemNumber, workingItem.productLine);
+                        Item iData = Communication.RetrieveItem(workingItem.itemNumber, workingItem.productLine);
                         bool broken = false;
                         foreach (DataGridViewRow roww in dataGridView1.Rows)
                         {
@@ -223,7 +223,7 @@ namespace TIMS.Forms.Orders
             decimal averageMargin = 0;
             foreach (InvoiceItem item in order.items)
             {
-                Item i = DatabaseHandler.SqlRetrieveItem(item.itemNumber, item.productLine);
+                Item i = Communication.RetrieveItem(item.itemNumber, item.productLine);
                 int row = dataGridView1.Rows.Add();
                 dataGridView1.Rows[row].Cells[0].Value = item.itemNumber;
                 dataGridView1.Rows[row].Cells[1].Value = item.productLine;
@@ -374,7 +374,7 @@ namespace TIMS.Forms.Orders
                 return;
             }
 
-            Item item = DatabaseHandler.SqlRetrieveItem(itemNumberTB.Text, productLineCB.Text);
+            Item item = Communication.RetrieveItem(itemNumberTB.Text, productLineCB.Text);
             workingItem = new InvoiceItem(item);
             workingItem.quantity = decimal.Parse(qtyTB.Text);
 
@@ -449,7 +449,7 @@ namespace TIMS.Forms.Orders
             //    return;
             //}
 
-            Item item = DatabaseHandler.SqlRetrieveItem(
+            Item item = Communication.RetrieveItem(
                 dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString(),
                 dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString());
             workingItem = new InvoiceItem(item);
@@ -545,7 +545,7 @@ namespace TIMS.Forms.Orders
                 if (decimal.Parse(row.Cells[3].Value.ToString()) == 0)
                     continue;
 
-                order.items.Add(new InvoiceItem(DatabaseHandler.SqlRetrieveItem(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString()))
+                order.items.Add(new InvoiceItem(Communication.RetrieveItem(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString()))
                 {
                     quantity = decimal.Parse(row.Cells[3].Value.ToString()),
                     cost = decimal.Parse(row.Cells[7].Value.ToString()),
@@ -596,7 +596,7 @@ namespace TIMS.Forms.Orders
                     if (decimal.Parse(row.Cells[3].Value.ToString()) == 0)
                         continue;
 
-                    order.items.Add(new InvoiceItem(DatabaseHandler.SqlRetrieveItem(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString()))
+                    order.items.Add(new InvoiceItem(Communication.RetrieveItem(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString()))
                     {
                         quantity = decimal.Parse(row.Cells[3].Value.ToString()),
                         cost = decimal.Parse(row.Cells[7].Value.ToString()),
