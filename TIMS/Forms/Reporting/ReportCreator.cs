@@ -205,6 +205,8 @@ namespace TIMS.Forms
                 totals.Add(total);
                 
             report = new Report(fields, dataSourceCB.Text, conditions, totals);
+            report.tableheaders = Communication.RetrieveTableHeaders(report.DataSource);
+            report.GenerateQuery();
             MessageBox.Show(report.Query);
         }
 

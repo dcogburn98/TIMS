@@ -12,22 +12,35 @@ namespace TIMSServerModel
     [DataContract]
     public class Report
     {
+        [DataMember]
         public string ReportName;
+        [DataMember]
         public string ReportShortcode;
 
+        [DataMember]
         public List<string> Fields;
+        [DataMember]
         public string DataSource;
+        [DataMember]
         public List<string> Conditions;
+        [DataMember]
         public List<string> Totals;
 
+        [DataMember]
         public string Query;
+        [DataMember]
         public int ColumnCount;
+        [DataMember]
         public List<object> Results;
 
+        [DataMember]
         public int totalPages;
+        [DataMember]
         public int currentPage;
+        [DataMember]
         public int pageRows = 60;
 
+        [DataMember]
         public List<string> tableheaders = new List<string>();
 
         public Report(List<string> fields, string dataSource, List<string> conditions, List<string> totals)

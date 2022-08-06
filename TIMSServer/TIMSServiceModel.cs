@@ -1730,6 +1730,8 @@ namespace TIMSServer
 
             CloseConnection();
             report = new Report(fields, dataSource, conditions, totals) { ReportName = reportName, ReportShortcode = shortcode };
+            report.tableheaders = RetrieveTableHeaders(report.DataSource);
+            report.GenerateQuery();
             return report;
         }
         public List<string> RetrieveAvailableReports()
