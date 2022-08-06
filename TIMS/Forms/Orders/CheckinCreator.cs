@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using TIMS.Server;
+using TIMSServerModel;
+
 namespace TIMS.Forms.Orders
 {
     public partial class CheckinCreator : Form
@@ -15,7 +18,7 @@ namespace TIMS.Forms.Orders
         public CheckinCreator()
         {
             InitializeComponent();
-            foreach (PurchaseOrder order in DatabaseHandler.SqlRetrievePurchaseOrders())
+            foreach (PurchaseOrder order in Communication.RetrievePurchaseOrders())
             {
                 if (order.finalized)
                 {

@@ -137,5 +137,18 @@ namespace TIMSServerModel
         [OperationContract]
         List<string> RetrieveAvailableReports();
         #endregion
+
+        #region POs and Checkins
+        int RetrieveNextPONumber();
+        List<PurchaseOrder> RetrievePurchaseOrders();
+        PurchaseOrder RetrievePurchaseOrder(int PONumber, bool connectionOpened = false);
+        void SavePurchaseOrder(PurchaseOrder PO);
+        void FinalizePurchaseOrder(PurchaseOrder PO);
+        void DeletePurchaseOrder(int PONumber, bool connectionOpened = false);
+        int RetrieveNextCheckinNumber();
+        void SaveCheckin(Checkin checkin);
+        List<Checkin> RetrieveCheckins();
+        Checkin RetrieveCheckin(int checkinNumber);
+        #endregion
     }
 }

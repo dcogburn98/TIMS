@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using TIMS.Server;
+using TIMSServerModel;
 
 namespace TIMS.Forms
 {
@@ -42,7 +43,9 @@ namespace TIMS.Forms
             report.ReportName = reportNameTB.Text;
             report.ReportShortcode = shortCodeTB.Text;
 
-            report.ExecuteReport();
+            report.tableheaders = Communication.RetrieveTableHeaders(report.DataSource);
+            report.GenerateQuery();
+            report.Results = Communication.ReportQuery(report.Query, report.ColumnCount);
 
             resultsFetchedLabel.Text = "Results Fetched: " + report.Results.Count;
         }
@@ -239,6 +242,7 @@ namespace TIMS.Forms
 
             CreateReport();
             report.SaveReport(reportNameTB.Text, shortCodeTB.Text);
+            Communication.SaveReport(report);
             MessageBox.Show("Report saved! You can now print this report from the report manager.");
         }
 

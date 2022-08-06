@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using TIMS.Server;
+using TIMSServerModel;
+
 namespace TIMS.Forms.Orders
 {
     public partial class OpenOrderViewer : Form
@@ -16,7 +19,7 @@ namespace TIMS.Forms.Orders
         public OpenOrderViewer()
         {
             InitializeComponent();
-            POs = DatabaseHandler.SqlRetrievePurchaseOrders();
+            POs = Communication.RetrievePurchaseOrders();
             foreach (PurchaseOrder order in POs)
             {
                 int row = dataGridView1.Rows.Add();
@@ -34,7 +37,7 @@ namespace TIMS.Forms.Orders
         private void updatePOList()
         {
             dataGridView1.Rows.Clear();
-            POs = DatabaseHandler.SqlRetrievePurchaseOrders();
+            POs = Communication.RetrievePurchaseOrders();
             foreach (PurchaseOrder order in POs)
             {
                 int row = dataGridView1.Rows.Add();

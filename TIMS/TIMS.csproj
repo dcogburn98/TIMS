@@ -90,8 +90,6 @@
   <ItemGroup>
     <Compile Include="Accounting\Account.cs" />
     <Compile Include="Accounting\Transaction.cs" />
-    <Compile Include="Checkin.cs" />
-    <Compile Include="CheckinItem.cs" />
     <Compile Include="Forms\Accounting\ChartOfAccounts.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -217,7 +215,6 @@
     </Compile>
     <Compile Include="POs\CheckIn.cs" />
     <Compile Include="POs\PurchaseOrder.cs" />
-    <Compile Include="PurchaseOrder.cs" />
     <Compile Include="Server\Client.cs" />
     <Compile Include="Server\Communication.cs" />
     <Compile Include="EmployeePermissions.cs" />

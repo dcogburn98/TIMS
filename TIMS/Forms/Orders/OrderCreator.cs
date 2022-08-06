@@ -539,7 +539,7 @@ namespace TIMS.Forms.Orders
 
         private void saveOrderButton_Click(object sender, EventArgs e)
         {
-            PurchaseOrder order = new PurchaseOrder(supplier);
+            PurchaseOrder order = new PurchaseOrder(supplier, Communication.RetrieveNextPONumber());
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if (decimal.Parse(row.Cells[3].Value.ToString()) == 0)
@@ -557,11 +557,11 @@ namespace TIMS.Forms.Orders
             order.shippingCost = decimal.TryParse(shippingCostTB.Text, out decimal d) == false ? 0 : d;
 
             if (existingPO == 0)
-                DatabaseHandler.SqlSavePurchaseOrder(order);
+                Communication.SavePurchaseOrder(order);
             else
             {
                 order.PONumber = existingPO;
-                DatabaseHandler.SqlSavePurchaseOrder(order);
+                Communication.SavePurchaseOrder(order);
             }
             MessageBox.Show("Order saved with order number: " + order.PONumber);
         }
@@ -590,7 +590,7 @@ namespace TIMS.Forms.Orders
         {
             if (MessageBox.Show("Are you sure you want to finalize this purchase order?\nYou will not be able to edit items it contains.", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                PurchaseOrder order = new PurchaseOrder(supplier);
+                PurchaseOrder order = new PurchaseOrder(supplier, Communication.RetrieveNextPONumber());
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
                     if (decimal.Parse(row.Cells[3].Value.ToString()) == 0)
@@ -609,11 +609,11 @@ namespace TIMS.Forms.Orders
                 order.shippingCost = decimal.TryParse(shippingCostTB.Text, out decimal d) == false ? 0 : d;
 
                 if (existingPO == 0)
-                    DatabaseHandler.SqlSavePurchaseOrder(order);
+                    Communication.SavePurchaseOrder(order);
                 else
                 {
                     order.PONumber = existingPO;
-                    DatabaseHandler.SqlFinalizePurchaseOrder(order);
+                    Communication.FinalizePurchaseOrder(order);
                 }
 
                 ReportViewer viewer = new ReportViewer(order);

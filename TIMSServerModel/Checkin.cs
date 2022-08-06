@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TIMS
+namespace TIMSServerModel
 {
     public class Checkin
     {
@@ -12,9 +12,9 @@ namespace TIMS
         public List<CheckinItem> items;
         public List<PurchaseOrder> orders;
 
-        public Checkin()
+        public Checkin(int checkinNumber)
         {
-            checkinNumber = DatabaseHandler.SqlRetrieveNextCheckinNumber();
+            this.checkinNumber = checkinNumber;
             if (checkinNumber == 0)
                 checkinNumber = 10001;
             items = new List<CheckinItem>();

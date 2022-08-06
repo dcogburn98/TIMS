@@ -42,7 +42,9 @@ namespace TIMS.Forms
             InitializeComponent();
             CancelButton = closeButton;
             report = reportData;
-            report.ExecuteReport();
+            report.tableheaders = Communication.RetrieveTableHeaders(report.DataSource);
+            report.GenerateQuery();
+            report.Results = Communication.ReportQuery(report.Query, report.ColumnCount);
             reportData.totalPages = (reportData.Results.Count / reportData.ColumnCount) % report.pageRows != 0 ? 
                 (reportData.Results.Count / reportData.ColumnCount) / report.pageRows + 1 : 
                 (reportData.Results.Count / reportData.ColumnCount) / report.pageRows;
@@ -81,6 +83,12 @@ namespace TIMS.Forms
             if (POSheet.totalPages > 1)
                 nextPageBtn.Enabled = true;
             prevPageBtn.Enabled = false;
+
+            POSheet.mailingaddr = Communication.RetrievePropertyString("Mailing Address");
+            POSheet.storename = Communication.RetrievePropertyString("Store Name");
+            POSheet.storeAltNumber = Communication.RetrievePropertyString("Store Alternate Phone Number");
+            POSheet.storeAddr = Communication.RetrievePropertyString("Store Address");
+            POSheet.storePhone = Communication.RetrievePropertyString("Store Phone Number");
 
             pagePreview1.Zoom = PdfSharp.Forms.Zoom.BestFit;
             pagePreview1.PageSize = PageSizeConverter.ToSize(PageSize.Letter);

@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using TIMS.Server;
-using TIMSServerModel;
-
 using PdfSharp.Drawing;
 
-namespace TIMS
+namespace TIMSServerModel
 {
     public class PurchaseOrder
     {
@@ -27,9 +24,15 @@ namespace TIMS
         public int currentPage = 1;
         public int totalPages;
 
-        public PurchaseOrder(string supplier)
+        public string mailingaddr = string.Empty;
+        public string storename = string.Empty;
+        public string storePhone = string.Empty;
+        public string storeAltNumber = string.Empty;
+        public string storeAddr = string.Empty;
+
+        public PurchaseOrder(string supplier, int PONumber)
         {
-            PONumber = DatabaseHandler.SqlRetrieveNextPONumber();
+            this.PONumber = PONumber;
             if (PONumber == 0)
                 PONumber = 100001;
             this.supplier = supplier;
@@ -45,8 +48,8 @@ namespace TIMS
             double currentLine = font.GetHeight() + 5;
 
             #region Header Strings
-            gfx.DrawString( DateTime.Now.ToString(), font, XBrushes.Black, 10, currentLine);
-            gfx.DrawString( "Purchase Order", h1, XBrushes.Black, (gfx.PageSize.Width / 2) - gfx.MeasureString("Purchase Order", h1).Width / 2, currentLine);
+            gfx.DrawString(DateTime.Now.ToString(), font, XBrushes.Black, 10, currentLine);
+            gfx.DrawString("Purchase Order", h1, XBrushes.Black, (gfx.PageSize.Width / 2) - gfx.MeasureString("Purchase Order", h1).Width / 2, currentLine);
             gfx.DrawString("Page " + currentPage.ToString() + "/" + totalPages.ToString(), font, XBrushes.Black,
                 gfx.PageSize.Width - gfx.MeasureString("Page " + currentPage.ToString() + "/" + totalPages.ToString(), font).Width - 35,
                 currentLine);
@@ -54,12 +57,12 @@ namespace TIMS
             currentLine += font.GetHeight();
 
             gfx.DrawString("Supplier: " + supplier, font, XBrushes.Black, 10, currentLine);
-            gfx.DrawString("PO Number: " + PONumber, font, XBrushes.Black, 
-                gfx.PageSize.Width - gfx.MeasureString("PO Number: " + PONumber.ToString(), font).Width - 35, 
+            gfx.DrawString("PO Number: " + PONumber, font, XBrushes.Black,
+                gfx.PageSize.Width - gfx.MeasureString("PO Number: " + PONumber.ToString(), font).Width - 35,
                 currentLine);
 
             currentLine += font.GetHeight();
-            
+
             gfx.DrawLine(XPens.Black, 0, currentLine, gfx.PageSize.Width, currentLine);
             gfx.DrawLine(XPens.Black, (gfx.PageSize.Width - 35) * 0.33d, currentLine, (gfx.PageSize.Width - 35) * 0.33d, currentLine + 7 * font.GetHeight());
             gfx.DrawLine(XPens.Black, (gfx.PageSize.Width - 35) * 0.67d, currentLine, (gfx.PageSize.Width - 35) * 0.67d, currentLine + 7 * font.GetHeight());
@@ -76,11 +79,11 @@ namespace TIMS
                 (gfx.PageSize.Width - 35) * 0.06d, currentLine);
             currentLine = resetLine;
 
-            string[] mailingAddr = Communication.RetrievePropertyString("Mailing Address").Split(',');
+            string[] mailingAddr = mailingaddr.Split(',');
             gfx.DrawString("Purchaser Information", h1, XBrushes.Black,
-                (gfx.PageSize.Width - 35) * 0.5d  - (gfx.MeasureString("Purchaser Information", h1).Width) / 2, currentLine);
+                (gfx.PageSize.Width - 35) * 0.5d - (gfx.MeasureString("Purchaser Information", h1).Width) / 2, currentLine);
             currentLine += h1.GetHeight();
-            gfx.DrawString(Communication.RetrievePropertyString("Store Name"), font, XBrushes.Black,
+            gfx.DrawString(storename, font, XBrushes.Black,
                 (gfx.PageSize.Width - 35) * 0.40d, currentLine);
             currentLine += font.GetHeight();
             gfx.DrawString(mailingAddr[0], font, XBrushes.Black,
@@ -89,15 +92,15 @@ namespace TIMS
             gfx.DrawString(mailingAddr[1].Trim() + ", " + mailingAddr[2] + ", " + mailingAddr[3] + ", " + mailingAddr[4], font, XBrushes.Black,
                 (gfx.PageSize.Width - 35) * 0.40d, currentLine);
             currentLine += font.GetHeight();
-            gfx.DrawString(Communication.RetrievePropertyString("Store Alternate Phone Number"), font, XBrushes.Black,
+            gfx.DrawString(storeAltNumber, font, XBrushes.Black,
                 (gfx.PageSize.Width - 35) * 0.40d, currentLine);
             currentLine = resetLine;
 
-            string[] shippingAddr = Communication.RetrievePropertyString("Store Address").Split(',');
+            string[] shippingAddr = storeAddr.Split(',');
             gfx.DrawString("Shipping Information", h1, XBrushes.Black,
                 (gfx.PageSize.Width - 35) * 0.83d - (gfx.MeasureString("Shipping Information", h1).Width) / 2, currentLine);
             currentLine += h1.GetHeight();
-            gfx.DrawString(Communication.RetrievePropertyString("Store Name"), font, XBrushes.Black,
+            gfx.DrawString(storename, font, XBrushes.Black,
                 (gfx.PageSize.Width - 35) * 0.73d, currentLine);
             currentLine += font.GetHeight();
             gfx.DrawString(shippingAddr[0], font, XBrushes.Black,
@@ -106,7 +109,7 @@ namespace TIMS
             gfx.DrawString(shippingAddr[1].Trim() + ", " + shippingAddr[2] + ", " + shippingAddr[3] + ", " + shippingAddr[4], font, XBrushes.Black,
                 (gfx.PageSize.Width - 35) * 0.73d, currentLine);
             currentLine += font.GetHeight();
-            gfx.DrawString(Communication.RetrievePropertyString("Store Phone Number"), font, XBrushes.Black,
+            gfx.DrawString(storePhone, font, XBrushes.Black,
                 (gfx.PageSize.Width - 35) * 0.73d, currentLine);
             currentLine += 3 * font.GetHeight();
 

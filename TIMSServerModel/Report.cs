@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using PdfSharp.Drawing;
 
 namespace TIMSServerModel
 {
+    [DataContract]
     public class Report
     {
         public string ReportName;
@@ -25,6 +27,8 @@ namespace TIMSServerModel
         public int totalPages;
         public int currentPage;
         public int pageRows = 60;
+
+        public List<string> tableheaders = new List<string>();
 
         public Report(List<string> fields, string dataSource, List<string> conditions, List<string> totals)
         {
@@ -63,7 +67,7 @@ namespace TIMSServerModel
                         date = date.AddDays(1);
                     conditionsString += @"""" + date.ToString("M/d/yyyy") + @""" AND ";
                 }
-                else if (Communication.RetrieveTableHeaders(DataSource).Contains(conArray[2]))
+                else if (tableheaders.Contains(conArray[2]))
                 {
                     conditionsString += conArray[2] + " AND ";
                 }
@@ -88,18 +92,10 @@ namespace TIMSServerModel
                 "WHERE " + conditionsString;
         }
 
-        public void ExecuteReport()
-        {
-            GenerateQuery();
-            Results = Communication.ReportQuery(Query, ColumnCount);
-        }
-
         public void SaveReport(string reportName, string shortcode)
         {
             ReportName = reportName;
             ReportShortcode = shortcode;
-
-            DatabaseHandler.SqlSaveReport(this);
         }
 
         public void RenderPage(XGraphics gfx)

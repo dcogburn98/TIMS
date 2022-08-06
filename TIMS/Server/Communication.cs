@@ -205,5 +205,48 @@ namespace TIMS.Server
             return proxy.RetrieveAvailableReports();
         }
         #endregion
+
+        #region POs and Checkins
+        public static int RetrieveNextPONumber()
+        {
+            return proxy.RetrieveNextPONumber();
+        }
+        public static List<PurchaseOrder> RetrievePurchaseOrders()
+        {
+            return proxy.RetrievePurchaseOrders();
+        }
+        public static PurchaseOrder RetrievePurchaseOrder(int PONumber, bool connectionOpened = false)
+        {
+            return proxy.RetrievePurchaseOrder(PONumber, connectionOpened);
+        }
+        public static void SavePurchaseOrder(PurchaseOrder PO)
+        {
+            proxy.SavePurchaseOrder(PO);
+        }
+        public static void FinalizePurchaseOrder(PurchaseOrder PO)
+        {
+            proxy.FinalizePurchaseOrder(PO);
+        }
+        public static void DeletePurchaseOrder(int PONumber, bool connectionOpened = false)
+        {
+            proxy.DeletePurchaseOrder(PONumber, connectionOpened);
+        }
+        public static int RetrieveNextCheckinNumber()
+        {
+            return proxy.RetrieveNextCheckinNumber();
+        }
+        public static void SaveCheckin(Checkin checkin)
+        {
+            proxy.SaveCheckin(checkin);
+        }
+        public static List<Checkin> RetrieveCheckins()
+        {
+            return proxy.RetrieveCheckins();
+        }
+        public static Checkin RetrieveCheckin(int checkinNumber)
+        {
+            return proxy.RetrieveCheckin(checkinNumber);
+        }
+        #endregion
     }
 }

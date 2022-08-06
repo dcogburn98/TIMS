@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using TIMSServerModel;
-
-namespace TIMS
+namespace TIMSServerModel
 {
     public class CheckinItem : InvoiceItem
     {
