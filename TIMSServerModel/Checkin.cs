@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TIMSServerModel
 {
+    [DataContract]
     public class Checkin
     {
+        [DataMember]
         public int checkinNumber;
+        [DataMember]
         public List<CheckinItem> items;
+        [DataMember]
         public List<PurchaseOrder> orders;
 
         public Checkin(int checkinNumber)

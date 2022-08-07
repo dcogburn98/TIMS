@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,26 +8,43 @@ using PdfSharp.Drawing;
 
 namespace TIMSServerModel
 {
+    [DataContract]
     public class PurchaseOrder
     {
+        [DataMember]
         public int PONumber;
+        [DataMember]
         public string supplier;
+        [DataMember]
         public bool finalized;
+        [DataMember]
         public int assignedCheckin;
+        [DataMember]
         public decimal totalCost;
+        [DataMember]
         public decimal shippingCost;
+        [DataMember]
         public decimal totalItems;
 
+        [DataMember]
         public List<InvoiceItem> items;
 
+        [DataMember]
         public int pageRows = 45;
+        [DataMember]
         public int currentPage = 1;
+        [DataMember]
         public int totalPages;
 
+        [DataMember]
         public string mailingaddr = string.Empty;
+        [DataMember]
         public string storename = string.Empty;
+        [DataMember]
         public string storePhone = string.Empty;
+        [DataMember]
         public string storeAltNumber = string.Empty;
+        [DataMember]
         public string storeAddr = string.Empty;
 
         public PurchaseOrder(string supplier, int PONumber)
