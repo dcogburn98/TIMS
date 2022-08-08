@@ -6,6 +6,7 @@ using TIMS.Forms;
 using TIMS.Forms.POS;
 using TIMS.Forms.Reporting;
 using TIMS.Forms.Orders;
+using TIMS.Forms.Planogram;
 
 using TIMSServerModel;
 
@@ -22,11 +23,11 @@ namespace TIMS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Login login = new Login();
-            OpenForms.Add(login);
-            login.Show();
-            Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
-            Application.Run();
+            //Login login = new Login();
+            //OpenForms.Add(login);
+            //login.Show();
+            //Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
+            //Application.Run();
 
             #region Invoice Viewer Test Code
             //SHA256 encrypt = SHA256.Create();
@@ -91,6 +92,10 @@ namespace TIMS
             //DatabaseHandler.InitializeDatabases();
             //OrderSelection selection = new OrderSelection();
             //Application.Run(selection);
+            #endregion
+            #region Planogram Test Code
+            FloorSpaceEditor editor = new FloorSpaceEditor();
+            Application.Run(editor);
             #endregion
         }
 

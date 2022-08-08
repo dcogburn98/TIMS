@@ -1,174 +1,163 @@
-﻿using System;
-using StereoKit;
+﻿using StereoKit;
+using StereoKit.Framework;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 
 namespace StoreViewer
 {
-    internal class PointCloud
+	class Light
 	{
-		Material mat;
-		Vertex[] verts;
-		Mesh mesh;
-
-		bool distanceIndependant;
-		float pointSize;
-
-		public bool DistanceIndependantSize { get => distanceIndependant; set { mat["screen_size"] = value ? 1.0f : 0.0f; distanceIndependant = value; } }
-		public float PointSize { get => pointSize; set { mat["point_size"] = value; pointSize = value; } }
-
-		public PointCloud(float pointSizeMeters = 0.01f)
-		{
-			mat = new Material(Shader.FromFile("point_cloud.hlsl"));
-			PointSize = pointSizeMeters;
-		}
-		public PointCloud(float pointSizeMeters, Mesh fromMesh)
-			: this(pointSizeMeters) => SetPoints(fromMesh);
-		public PointCloud(float pointSizeMeters, Vertex[] fromVerts)
-			: this(pointSizeMeters) => SetPoints(fromVerts);
-		public PointCloud(float pointSizeMeters, Model fromModel)
-			: this(pointSizeMeters) => SetPoints(fromModel);
-
-		public void Draw(Matrix transform) => mesh?.Draw(mat, transform);
-
-		public void SetPoints(Vertex[] points)
-		{
-			if (verts == null)
-				verts = new Vertex[points.Length * 4];
-			if (verts.Length != points.Length * 4)
-			{
-				Log.Err("You can re-use a point cloud, but  the number of points should stay the same!");
-				return;
-			}
-
-			for (int i = 0; i < points.Length; i++)
-			{
-				Vertex p = points[i];
-				int idx = i * 4;
-				verts[idx] = new Vertex(p.pos, p.norm, V.XY(-.5f, .5f), p.col);
-				verts[idx + 1] = new Vertex(p.pos, p.norm, V.XY(.5f, .5f), p.col);
-				verts[idx + 2] = new Vertex(p.pos, p.norm, V.XY(.5f, -.5f), p.col);
-				verts[idx + 3] = new Vertex(p.pos, p.norm, V.XY(-.5f, -.5f), p.col);
-			}
-			if (mesh == null)
-			{
-				uint[] inds = new uint[points.Length * 6];
-				for (uint i = 0; i < points.Length; i++)
-				{
-					uint ind = i * 6;
-					uint vert = i * 4;
-					inds[ind] = vert + 2;
-					inds[ind + 1] = vert + 1;
-					inds[ind + 2] = vert + 0;
-
-					inds[ind + 3] = vert + 3;
-					inds[ind + 4] = vert + 2;
-					inds[ind + 5] = vert + 0;
-				}
-				mesh = new Mesh();
-				mesh.SetInds(inds);
-			}
-			mesh.SetVerts(verts);
-		}
-		public void SetPoints(Mesh fromMeshVerts)
-			=> SetPoints(fromMeshVerts.GetVerts());
-		public void SetPoints(Model fromModelVerts)
-			=> SetPoints(fromModelVerts.Visuals
-				.SelectMany(v => TransformVerts(v.ModelTransform, v.Mesh.GetVerts()))
-				.ToArray());
-
-		private static Vertex[] TransformVerts(Matrix mat, Vertex[] verts)
-		{
-			for (int i = 0; i < verts.Length; i++)
-				verts[i].pos = mat.Transform(verts[i].pos);
-			return verts;
-		}
+		public Pose pose;
+		public Vec3 color;
+	}
+	enum LightMode
+	{
+		Lights,
+		Image,
 	}
 
-	class DemoPointCloud
+	class DemoSky : ITest
 	{
-		Matrix descPose = Matrix.TR(-0.5f, 0, -0.5f, Quat.LookDir(1, 0, 1));
-		string description = "Point clouds are not a built-in feature of StereoKit, but it's not hard to do this yourself! Check out the code for this demo for a class that'll help you do this directly from data, or from a Model.";
-		Matrix titlePose = Matrix.TRS(V.XYZ(-0.5f, 0.05f, -0.5f), Quat.LookDir(1, 0, 1), 2);
-		string title = "Point Clouds";
+		static List<Light> lights = new List<Light>();
+		static Pose windowPose = new Pose(0, 0.1f, -0.3f, Quat.LookDir(-Vec3.Forward));
+		static LightMode mode = LightMode.Lights;
+		static Tex cubemap = null;
+		static bool cubelightDirty = false;
+		static Pose previewPose = new Pose(0, -0.1f, -0.3f, Quat.LookDir(-Vec3.Forward));
 
-		Pose cloudPose = new Pose(0.5f, 0, -0.5f, Quat.LookDir(-1, 0, 1));
-		float cloudScale = 1;
-		PointCloud cloud;
+		Model previewModel = Model.FromFile("DamagedHelmet.gltf");
+		Mesh lightMesh = Mesh.GenerateSphere(1);
+		Material lightProbeMat = Default.Material;
+		Material lightSrcMat = new Material(Default.ShaderUnlit);
 
-		Pose settingsPose = new Pose(0.8f, 0.05f, -0.2f, Quat.LookDir(-1, 0, 1));
-		float pointSize = 0.01f;
-
-		public void Initialize()
-		{
-			// Generate colored points in the shape of a UV sphere! This tool
-			// re-uses the Vertex type, but doesn't particularly need the
-			// normals, and will replace the UVs. You could pretty easily add
-			// lighting to the points using the normals if you wanted to :)
-			const int xCount = 24;
-			const int yCount = 16;
-			Vertex[] points = new Vertex[xCount * yCount];
-			for (int y = 0; y < yCount; y++)
-			{
-				for (int x = 0; x < xCount; x++)
-				{
-					float u = x / (float)xCount;
-					float v = y / (float)yCount;
-					int i = x + y * xCount;
-
-					float theta = u * (float)Math.PI * 2.0f;
-					float phi = (v - 0.5f) * (float)Math.PI;
-					float c = SKMath.Cos(phi);
-
-					points[i].pos = V.XYZ(c * SKMath.Cos(theta), SKMath.Sin(phi), c * SKMath.Sin(theta)) * 0.2f;
-					points[i].col = Color.HSV(u, v, 1).ToLinear();
-				}
-			}
-
-			// Make a point cloud out of the points!
-			cloud = new PointCloud(pointSize, points);
-			cloudScale = 1;
-		}
-
-		public void Shutdown()
-		{
-		}
-
+		public void Initialize() { }
+		public void Shutdown() => Platform.FilePickerClose();
 		public void Update()
 		{
-			cloud.Draw(cloudPose.ToMatrix(cloudScale));
+			UI.WindowBegin("Direction", ref windowPose, new Vec2(20 * U.cm, 0));
+			UI.Label("Mode");
+			if (UI.Radio("Lights", mode == LightMode.Lights)) mode = LightMode.Lights;
+			UI.SameLine();
+			if (UI.Radio("Image", mode == LightMode.Image)) mode = LightMode.Image;
 
-			UI.WindowBegin("Point Cloud", ref settingsPose);
+			if (mode == LightMode.Lights)
 			{
-				if (UI.Button("Load Model"))
+				UI.Label("Lights");
+				if (UI.Button("Add"))
 				{
-					Platform.FilePicker(PickerMode.Open, (file) => {
-						Model model = Model.FromFile(file);
-						cloud = new PointCloud(pointSize, model);
-						cloudScale = 0.5f / model.Bounds.dimensions.Length;
-					}, null, ".gltf", ".glb");
+					lights.Add(new Light
+					{
+						pose = new Pose(Vec3.Up * 25 * U.cm, Quat.LookDir(-Vec3.Forward)),
+						color = Vec3.One
+					});
+					UpdateLights();
 				}
-				UI.HSlider("Cloud Scale", ref cloudScale, 0.001f, 2, 0);
 
-				UI.PanelBegin();
-				UI.Label("Point Cloud Settings");
-				UI.HSeparator();
-				UI.Label("Mode:", V.XY(.04f, 0));
 				UI.SameLine();
-				if (UI.Radio("Fixed", cloud.DistanceIndependantSize)) cloud.DistanceIndependantSize = true;
-				UI.SameLine();
-				if (UI.Radio("Perspective", !cloud.DistanceIndependantSize)) cloud.DistanceIndependantSize = false;
-
-				UI.Label("Size:", V.XY(.04f, 0));
-				UI.SameLine();
-				if (UI.HSlider("Point Size", ref pointSize, 0.001f, 0.1f, 0))
-					cloud.PointSize = pointSize;
-				UI.PanelEnd();
+				if (UI.Button("Remove") && lights.Count > 1)
+				{
+					lights.RemoveAt(lights.Count - 1);
+					UpdateLights();
+				}
 			}
+
+			if (mode == LightMode.Image)
+			{
+				UI.Label("Image");
+				if (!Platform.FilePickerVisible && UI.Button("Open"))
+					ShowPicker();
+			}
+
+			if (UI.Button("Print SH"))
+			{
+				Vec3[] c = Renderer.SkyLight.ToArray();
+				string shStr = "new SphericalHarmonics(new Vec3[]{";
+				for (int i = 0; i < c.Length; i++)
+					shStr += $"new Vec3({c[i].x:F2}f, {c[i].y:F2}f, {c[i].z:F2}f),";
+				shStr += "});";
+				Log.Info(shStr);
+			}
+
 			UI.WindowEnd();
 
-			Text.Add(title, titlePose);
-			Text.Add(description, descPose, V.XY(0.4f, 0), TextFit.Wrap, TextAlign.TopCenter, TextAlign.TopLeft);
+			lightMesh.Draw(lightProbeMat, Matrix.TS(Vec3.Zero, 0.04f));
+			UI.Handle("Preview", ref previewPose, previewModel.Bounds * 0.1f);
+			previewModel.Draw(previewPose.ToMatrix(0.1f));
+
+			if (mode == LightMode.Lights)
+			{
+				bool needsUpdate = false;
+				for (int i = 0; i < lights.Count; i++)
+				{
+					needsUpdate = LightHandle(i) || needsUpdate;
+				}
+				if (needsUpdate)
+					UpdateLights();
+			}
+
+			if (cubelightDirty && cubemap.AssetState == AssetState.Loaded)
+			{
+				Renderer.SkyLight = cubemap.CubemapLighting;
+				cubelightDirty = false;
+			}
+		}
+
+		bool LightHandle(int i)
+		{
+			UI.PushId("window" + i);
+			bool dirty = UI.HandleBegin("Color", ref lights[i].pose, new Bounds(Vec3.One * 3 * U.cm));
+			UI.LayoutArea(new Vec3(6, -3, 0) * U.cm, new Vec2(10, 0) * U.cm);
+			if (lights[i].pose.position.Length > 0.5f)
+				lights[i].pose.position = lights[i].pose.position.Normalized * 0.5f;
+
+			lightMesh.Draw(lightSrcMat, Matrix.TS(Vec3.Zero, 3 * U.cm), Color.HSV(lights[i].color));
+
+			dirty = UI.HSlider("H", ref lights[i].color.v.X, 0, 1, 0, 10 * U.cm) || dirty;
+			dirty = UI.HSlider("S", ref lights[i].color.v.Y, 0, 1, 0, 10 * U.cm) || dirty;
+			dirty = UI.HSlider("V", ref lights[i].color.v.Z, 0, 1, 0, 10 * U.cm) || dirty;
+
+			UI.HandleEnd();
+			Lines.Add(
+				lights[i].pose.position, Vec3.Zero,
+				Color.HSV(lights[i].color) * LightIntensity(lights[i].pose.position) * 0.5f,
+				U.mm);
+
+			UI.PopId();
+			return dirty;
+		}
+
+		void ShowPicker()
+		{
+			Platform.FilePicker(PickerMode.Open, LoadSkyImage, null,
+				".hdr", ".jpg", ".png");
+		}
+
+		void LoadSkyImage(string file)
+		{
+			cubemap = Tex.FromCubemapEquirectangular(file);
+
+			Renderer.SkyTex = cubemap;
+			cubelightDirty = true;
+		}
+
+		void UpdateLights()
+		{
+			SphericalHarmonics lighting = SphericalHarmonics.FromLights(lights
+				.ConvertAll(a => new SHLight
+				{
+					directionTo = a.pose.position.Normalized,
+					color = Color.HSV(a.color) * LightIntensity(a.pose.position)
+				})
+				.ToArray());
+
+			Renderer.SkyTex = Tex.GenCubemap(lighting);
+			Renderer.SkyLight = lighting;
+		}
+
+		float LightIntensity(Vec3 pos)
+		{
+			return Math.Max(0, 2 - pos.Magnitude * 4);
 		}
 	}
 }

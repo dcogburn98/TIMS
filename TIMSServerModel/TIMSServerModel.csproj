@@ -60,6 +60,7 @@
     <Compile Include="ItemShortcutMenu.cs" />
     <Compile Include="ITIMSServiceModel.cs" />
     <Compile Include="Payment.cs" />
+    <Compile Include="Planogram\FloorSpace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurchaseOrder.cs" />
     <Compile Include="Report.cs" />

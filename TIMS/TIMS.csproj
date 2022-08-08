@@ -90,6 +90,7 @@
   <ItemGroup>
     <Compile Include="Accounting\Account.cs" />
     <Compile Include="Accounting\Transaction.cs" />
+    <Compile Include="ArchitecturalMath.cs" />
     <Compile Include="Forms\Accounting\ChartOfAccounts.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -167,6 +168,12 @@
     </Compile>
     <Compile Include="Forms\Mail.Designer.cs">
       <DependentUpon>Mail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Planogram\FloorSpaceEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Planogram\FloorSpaceEditor.Designer.cs">
+      <DependentUpon>FloorSpaceEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\POS\InvoiceViewer.cs">
       <SubType>Form</SubType>
@@ -284,6 +291,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Orders\OrderSelection.resx">
       <DependentUpon>OrderSelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Planogram\FloorSpaceEditor.resx">
+      <DependentUpon>FloorSpaceEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\POS\Checkout.resx">
       <DependentUpon>Checkout.cs</DependentUpon>

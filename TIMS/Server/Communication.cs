@@ -15,6 +15,12 @@ namespace TIMS.Server
 
         private static ITIMSServiceModel proxy = channelFactory.CreateChannel();
 
+        public static void ChangeEndpointAddress(EndpointAddress newAddress)
+        {
+            channelFactory = new ChannelFactory<ITIMSServiceModel>("TIMSServerEndpoint", newAddress);
+        }
+
+
         #region Employees
         public static string CheckEmployee(string input)
         {

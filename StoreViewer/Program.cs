@@ -15,7 +15,7 @@ namespace StoreViewer
             };
             if (!SK.Initialize(settings))
                 Environment.Exit(1);
-            DemoPointCloud g = new DemoPointCloud();
+            DemoSky g = new DemoSky();
 
 			g.Initialize();
 
@@ -23,6 +23,13 @@ namespace StoreViewer
             // Core application loop
             while (SK.Step(() =>
             {
+                Matrix newCam = Renderer.CameraRoot;
+                Vec3 newPos = Renderer.CameraRoot.Translation;
+                newPos.x -= (Input.Controller(Handed.Left).stick.x + Input.Head.orientation.x) / 100;
+                newPos.z -= (Input.Controller(Handed.Left).stick.y + Input.Head.orientation.x) / 100;
+                newCam.Translation = newPos;
+                Renderer.CameraRoot = newCam;
+
 				g.Update();
             })) ;
             g.Shutdown();
