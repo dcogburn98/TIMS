@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TIMSServerModel.Planogram;
 
 namespace TIMSServerModel
 {
@@ -46,5 +47,10 @@ namespace TIMSServerModel
         public bool serialized;
 
         public int locationCode;
+
+        public List<string> itemPicturePaths;
+        public string modelPath;
+        public ModelSize modelSize;
+        public bool hangingItem;
     }
 }

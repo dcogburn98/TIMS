@@ -169,11 +169,11 @@
     <Compile Include="Forms\Mail.Designer.cs">
       <DependentUpon>Mail.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Planogram\FloorSpaceEditor.cs">
+    <Compile Include="Forms\Planogram\BuildingEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Planogram\FloorSpaceEditor.Designer.cs">
-      <DependentUpon>FloorSpaceEditor.cs</DependentUpon>
+    <Compile Include="Forms\Planogram\BuildingEditor.Designer.cs">
+      <DependentUpon>BuildingEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\POS\InvoiceViewer.cs">
       <SubType>Form</SubType>
@@ -292,8 +292,8 @@
     <EmbeddedResource Include="Forms\Orders\OrderSelection.resx">
       <DependentUpon>OrderSelection.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Planogram\FloorSpaceEditor.resx">
-      <DependentUpon>FloorSpaceEditor.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Planogram\BuildingEditor.resx">
+      <DependentUpon>BuildingEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\POS\Checkout.resx">
       <DependentUpon>Checkout.cs</DependentUpon>

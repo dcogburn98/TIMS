@@ -20,70 +20,27 @@ namespace StoreViewer
 	class DemoSky : ITest
 	{
 		static List<Light> lights = new List<Light>();
-		static Pose windowPose = new Pose(0, 0.1f, -0.3f, Quat.LookDir(-Vec3.Forward));
 		static LightMode mode = LightMode.Lights;
 		static Tex cubemap = null;
 		static bool cubelightDirty = false;
 		static Pose previewPose = new Pose(0, -0.1f, -0.3f, Quat.LookDir(-Vec3.Forward));
 
-		Model previewModel = Model.FromFile("DamagedHelmet.gltf");
+		Model previewModel = Model.FromFile("Gondola4ft18in.stl");
 		Mesh lightMesh = Mesh.GenerateSphere(1);
 		Material lightProbeMat = Default.Material;
 		Material lightSrcMat = new Material(Default.ShaderUnlit);
 
-		public void Initialize() { }
+		public void Initialize() 
+		{ 
+		}
 		public void Shutdown() => Platform.FilePickerClose();
 		public void Update()
 		{
-			UI.WindowBegin("Direction", ref windowPose, new Vec2(20 * U.cm, 0));
-			UI.Label("Mode");
-			if (UI.Radio("Lights", mode == LightMode.Lights)) mode = LightMode.Lights;
-			UI.SameLine();
-			if (UI.Radio("Image", mode == LightMode.Image)) mode = LightMode.Image;
-
-			if (mode == LightMode.Lights)
-			{
-				UI.Label("Lights");
-				if (UI.Button("Add"))
-				{
-					lights.Add(new Light
-					{
-						pose = new Pose(Vec3.Up * 25 * U.cm, Quat.LookDir(-Vec3.Forward)),
-						color = Vec3.One
-					});
-					UpdateLights();
-				}
-
-				UI.SameLine();
-				if (UI.Button("Remove") && lights.Count > 1)
-				{
-					lights.RemoveAt(lights.Count - 1);
-					UpdateLights();
-				}
-			}
-
-			if (mode == LightMode.Image)
-			{
-				UI.Label("Image");
-				if (!Platform.FilePickerVisible && UI.Button("Open"))
-					ShowPicker();
-			}
-
-			if (UI.Button("Print SH"))
-			{
-				Vec3[] c = Renderer.SkyLight.ToArray();
-				string shStr = "new SphericalHarmonics(new Vec3[]{";
-				for (int i = 0; i < c.Length; i++)
-					shStr += $"new Vec3({c[i].x:F2}f, {c[i].y:F2}f, {c[i].z:F2}f),";
-				shStr += "});";
-				Log.Info(shStr);
-			}
-
-			UI.WindowEnd();
-
-			lightMesh.Draw(lightProbeMat, Matrix.TS(Vec3.Zero, 0.04f));
-			UI.Handle("Preview", ref previewPose, previewModel.Bounds * 0.1f);
-			previewModel.Draw(previewPose.ToMatrix(0.1f));
+			//lightMesh.Draw(lightProbeMat, Matrix.TS(Vec3.Zero, 0.04f));
+			previewPose.orientation.w = 0.5f;
+			previewPose.orientation.x = 0.5f;
+			UI.Handle("Preview", ref previewPose, previewModel.Bounds * 0.001f);
+			previewModel.Draw(previewPose.ToMatrix(0.001f));
 
 			if (mode == LightMode.Lights)
 			{
@@ -94,12 +51,6 @@ namespace StoreViewer
 				}
 				if (needsUpdate)
 					UpdateLights();
-			}
-
-			if (cubelightDirty && cubemap.AssetState == AssetState.Loaded)
-			{
-				Renderer.SkyLight = cubemap.CubemapLighting;
-				cubelightDirty = false;
 			}
 		}
 
@@ -127,20 +78,6 @@ namespace StoreViewer
 			return dirty;
 		}
 
-		void ShowPicker()
-		{
-			Platform.FilePicker(PickerMode.Open, LoadSkyImage, null,
-				".hdr", ".jpg", ".png");
-		}
-
-		void LoadSkyImage(string file)
-		{
-			cubemap = Tex.FromCubemapEquirectangular(file);
-
-			Renderer.SkyTex = cubemap;
-			cubelightDirty = true;
-		}
-
 		void UpdateLights()
 		{
 			SphericalHarmonics lighting = SphericalHarmonics.FromLights(lights
@@ -158,6 +95,11 @@ namespace StoreViewer
 		float LightIntensity(Vec3 pos)
 		{
 			return Math.Max(0, 2 - pos.Magnitude * 4);
+		}
+
+		void DrawShelves()
+		{
+
 		}
 	}
 }

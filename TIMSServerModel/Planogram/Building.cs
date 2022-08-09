@@ -9,14 +9,16 @@ using System.Threading.Tasks;
 namespace TIMSServerModel.Planogram
 {
     [DataContract]
-    public class FloorSpace
+    public class Building
     {
         [DataMember]
         public Rectangle floor;
         [DataMember]
         public int squareFootage;
+        public int ceilingHeight;
+        
 
-        public FloorSpace()
+        public Building()
         {
             floor = new Rectangle(240, 240, 120, 120);
         }

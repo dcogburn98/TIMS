@@ -94,7 +94,7 @@ namespace TIMS
             //Application.Run(selection);
             #endregion
             #region Planogram Test Code
-            FloorSpaceEditor editor = new FloorSpaceEditor();
+            BuildingEditor editor = new BuildingEditor();
             Application.Run(editor);
             #endregion
         }

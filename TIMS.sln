@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreViewer", "StoreViewer\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIMSServerModel", "TIMSServerModel\TIMSServerModel.csproj", "{402D3F26-5D98-4072-97E1-E6240C6F2A1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sierpinski", "Sierpinski\Sierpinski.csproj", "{B39C3A9F-A3CB-4305-BE31-B731AF857CD6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{402D3F26-5D98-4072-97E1-E6240C6F2A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{402D3F26-5D98-4072-97E1-E6240C6F2A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{402D3F26-5D98-4072-97E1-E6240C6F2A1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B39C3A9F-A3CB-4305-BE31-B731AF857CD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B39C3A9F-A3CB-4305-BE31-B731AF857CD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B39C3A9F-A3CB-4305-BE31-B731AF857CD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B39C3A9F-A3CB-4305-BE31-B731AF857CD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

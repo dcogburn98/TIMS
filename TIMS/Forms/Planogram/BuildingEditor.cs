@@ -12,12 +12,12 @@ using TIMSServerModel.Planogram;
 
 namespace TIMS.Forms.Planogram
 {
-    public partial class FloorSpaceEditor : Form
+    public partial class BuildingEditor : Form
     {
-        public FloorSpace floorspace = new FloorSpace();
+        public Building floorspace = new Building();
         Graphics gfx;
 
-        public FloorSpaceEditor()
+        public BuildingEditor()
         {
             InitializeComponent();
 
@@ -67,13 +67,6 @@ namespace TIMS.Forms.Planogram
 
         private void PopulateProperties()
         {
-            listBox1.Items.Add("Floor space properties");
-            listBox1.Items.Add("Length: " + ArchitecturalMath.FeetFromPoints(floorspace.floor.Height) + "'");
-            listBox1.Items.Add("Width: " + ArchitecturalMath.FeetFromPoints(floorspace.floor.Width) + "'");
-            listBox1.Items.Add("Floor Area: " +
-                (ArchitecturalMath.FeetFromPoints(floorspace.floor.Width) *
-                ArchitecturalMath.FeetFromPoints(floorspace.floor.Height)) + "sq ft");
-
             #region Code for non-quadrilateral floor shapes
             //listBox1.Items.Clear();
             //listBox1.Items.Add("Selected Point Properties:");
@@ -207,5 +200,6 @@ namespace TIMS.Forms.Planogram
             //    movingPoint = false;
             #endregion
         }
+
     }
 }
