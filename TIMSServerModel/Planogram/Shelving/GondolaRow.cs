@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TIMSServerModel.Planogram.Shelving
 {
-    class GondolaRow
+    public class GondolaRow
     {
         public bool doubleSided;
         public List<Gondola> shelvesSide1;

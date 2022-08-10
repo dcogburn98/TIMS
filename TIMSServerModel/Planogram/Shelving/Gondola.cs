@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TIMSServerModel.Planogram.Shelving
 {
-    class Gondola
+    public class Gondola
     {
         public int width;
         public int height;

@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+using TIMSServerModel.Planogram.Shelving;
+
 namespace StoreViewer
 {
 	class Light
@@ -21,36 +23,32 @@ namespace StoreViewer
 	{
 		static List<Light> lights = new List<Light>();
 		static LightMode mode = LightMode.Lights;
-		static Tex cubemap = null;
-		static bool cubelightDirty = false;
-		static Pose previewPose = new Pose(0, -0.1f, -0.3f, Quat.LookDir(-Vec3.Forward));
+		static Pose floorPose = new Pose(0, World.BoundsPose.position.y, -0.3f, Quat.FromAngles(0, 0, 0));
 
-		Model previewModel = Model.FromFile("Gondola4ft18in.stl");
+		Material floorMaterial = Material.Default.Copy();
+		Mesh floorMesh = Mesh.GeneratePlane(new Vec2(10));
 		Mesh lightMesh = Mesh.GenerateSphere(1);
-		Material lightProbeMat = Default.Material;
 		Material lightSrcMat = new Material(Default.ShaderUnlit);
 
+		TapeMeasure tape = new TapeMeasure();
+		GondolaShelfSK shelfSK = new GondolaShelfSK();
+
 		public void Initialize() 
-		{ 
+		{
+			floorMaterial[MatParamName.DiffuseTex] = Tex.FromFile("devgrid.jpg");
+			floorMaterial[MatParamName.TexScale] = 10.0f;
 		}
 		public void Shutdown() => Platform.FilePickerClose();
 		public void Update()
 		{
-			//lightMesh.Draw(lightProbeMat, Matrix.TS(Vec3.Zero, 0.04f));
-			previewPose.orientation.w = 0.5f;
-			previewPose.orientation.x = 0.5f;
-			UI.Handle("Preview", ref previewPose, previewModel.Bounds * 0.001f);
-			previewModel.Draw(previewPose.ToMatrix(0.001f));
+			tape.DrawTapeMeasure();
+			shelfSK.DrawGondolaShelf();
 
-			if (mode == LightMode.Lights)
+			floorMesh.Draw(floorMaterial, floorPose.ToMatrix(1.0f));
+
+			if (Input.Key(Key.Esc) == BtnState.Active)
 			{
-				bool needsUpdate = false;
-				for (int i = 0; i < lights.Count; i++)
-				{
-					needsUpdate = LightHandle(i) || needsUpdate;
-				}
-				if (needsUpdate)
-					UpdateLights();
+				Environment.Exit(0);
 			}
 		}
 
@@ -97,8 +95,108 @@ namespace StoreViewer
 			return Math.Max(0, 2 - pos.Magnitude * 4);
 		}
 
-		void DrawShelves()
+		void InitGondolaRow()
 		{
+			Gondola gondola = new Gondola();
+			gondola.baseShelf = new GondolaShelf(true);
+			gondola.shelfPoints.Add(new GondolaShelf(false) { shelfHeight = 12 });
+			gondola.shelfPoints.Add(new GondolaShelf(false) { shelfHeight = 36 });
+			gondola.shelfPoints.Add(new GondolaShelf(false) { shelfHeight = 48 });
+
+			List<Pose> shelfPoses = new List<Pose>();
+			foreach (GondolaShelf shelf in gondola.shelfPoints)
+			{
+				shelfPoses.Add(new Pose(0, shelf.shelfHeight * 0.1f, 0, Quat.FromAngles(90, 0, 0)));
+			}
+		}
+	}
+
+	public class GondolaShelfSK
+	{
+		public Gondola gondola;
+		public List<Pose> shelfPoses;
+		public List<Pose> uprightPoses;
+		public Model uprightModel = Model.FromFile("Models/Gondola Upright 6ft.stl");
+		public Model shelfModel = Model.FromFile("Models/Gondola4ft18in.stl");
+
+		public GondolaShelfSK()
+		{
+			gondola = new Gondola();
+			gondola.baseShelf = new GondolaShelf(true) { shelfHeight = 6};
+			gondola.width = 48;
+
+			gondola.shelfPoints.Add(new GondolaShelf(false) { shelfHeight = 12 });
+			gondola.shelfPoints.Add(new GondolaShelf(false) { shelfHeight = 36 });
+			gondola.shelfPoints.Add(new GondolaShelf(false) { shelfHeight = 48 });
+
+			shelfPoses = new List<Pose>();
+			foreach (GondolaShelf shelf in gondola.shelfPoints)
+			{
+				shelfPoses.Add(new Pose(0, shelf.shelfHeight * 0.04f - 1.2f, U.cm * -2.5f, Quat.FromAngles(-90, 0, 0)));
+			}
+			shelfPoses.Add(new Pose(0, gondola.baseShelf.shelfHeight * 0.04f - 1.2f, U.cm * -2.5f, Quat.FromAngles(-90, 0, 0)));
+
+			uprightPoses = new List<Pose>();
+			uprightPoses.Add(new Pose(0, World.BoundsPose.position.y, 0, Quat.FromAngles(-90, 0, 0)));
+			uprightPoses.Add(new Pose(1.2192f, World.BoundsPose.position.y, 0, Quat.FromAngles(-90, 0, 0)));
+		}
+
+		public void DrawGondolaShelf()
+		{
+			foreach (Pose shelf in shelfPoses)
+			{
+				shelfModel.Draw(shelf.ToMatrix(0.001f));
+			}
+			foreach (Pose upright in uprightPoses)
+			{
+				uprightModel.Draw(upright.ToMatrix(0.001f));
+			}
+		}
+	}
+
+	public class TapeMeasure
+	{
+		public static Pose tapeMeasurePose = new Pose(0, -0.5f, -0.3f, Quat.FromAngles(0,0,0));
+		public Model tapeMeasure = Model.FromFile("Models/Tape Measure.stl");
+
+		public Mesh tape = Mesh.GenerateCube(new Vec3(U.cm * 16.0f, U.mm * 1.0f, U.cm * 5.08f));
+		public List<Pose> tapeLinks = new List<Pose>();
+		public bool beingHeld = false;
+		public float distancePulled = 0.0f;
+
+		public TapeMeasure()
+		{
+
+		}
+
+		public void DrawTapeMeasure()
+		{
+			if (UI.Handle("TapeMeasure", ref tapeMeasurePose, tapeMeasure.Bounds * 0.001f))
+				beingHeld = true;
+			else
+				beingHeld = false;
+			tapeMeasure.Draw(tapeMeasurePose.ToMatrix(0.001f));
+
+			if (beingHeld)
+			{
+				int linksCreated = (int)Math.Floor((decimal)(distancePulled / (U.cm * 5.08f))) + 1;
+				int i = 0;
+				while (tapeLinks.Count < linksCreated)
+				{
+					tapeLinks.Add(new Pose(tapeMeasurePose.position, tapeMeasurePose.orientation));
+					i++;
+				}
+				foreach (Pose p in tapeLinks)
+				{
+					Pose pp = tapeLinks[tapeLinks.IndexOf(p)];
+					UI.Handle("TapeLink" + i, ref pp, tape.Bounds);
+					tape.Draw(Material.Default, tapeLinks[i].ToMatrix(1.0f));
+				}
+			}
+			else
+			{
+				tapeLinks.Clear();
+			}
 
 		}
 	}

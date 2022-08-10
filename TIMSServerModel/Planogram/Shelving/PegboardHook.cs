@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TIMSServerModel.Planogram.Shelving
 {
-    class PegboardHook
+    public class PegboardHook
     {
         public Point pegLocation;
         public Item hangingItem;

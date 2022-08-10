@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TIMSServerModel\TIMSServerModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <SKShader Include="Assets\floor.hlsl" />
   </ItemGroup>
 
