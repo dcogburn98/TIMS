@@ -25,8 +25,9 @@ namespace StoreViewer
             {
                 Matrix newCam = Renderer.CameraRoot;
                 Vec3 newPos = Renderer.CameraRoot.Translation;
-                newPos.x -= (Input.Controller(Handed.Left).stick.x) / 100;
-                newPos.z -= (Input.Controller(Handed.Left).stick.y) / 100;
+                newPos.x -= ((Input.Controller(Handed.Left).stick.x) / 100);
+                newPos.z -= ((Input.Controller(Handed.Left).stick.y) / 100);
+
                 newCam.Translation = newPos;
                 Renderer.CameraRoot = newCam;
                 g.Update();
