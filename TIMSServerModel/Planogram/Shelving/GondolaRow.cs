@@ -26,5 +26,17 @@ namespace TIMSServerModel.Planogram.Shelving
             gondolas.Add(new Gondola(origin));
             orientation = Orientation.Widthwise;
         }
+
+        public Gondola AddGondola()
+        {
+            Point point = new Point(0, 0);
+            if (orientation == Orientation.Widthwise)
+                point.X -= 1;
+            else
+                point.Y += 1;
+            Gondola g = new Gondola(point);
+            gondolas.Add(g);
+            return g;
+        }
     }
 }

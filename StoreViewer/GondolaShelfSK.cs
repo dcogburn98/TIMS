@@ -24,53 +24,112 @@ namespace StoreViewer
 		public GondolaShelfSK(Point position)
 		{
 			gondola = new GondolaRow(position);
-			gondola.orientation = GondolaRow.Orientation.Lengthwise;
+			gondola.orientation = GondolaRow.Orientation.Widthwise;
+			for (int j = 0; j != 3; j++)
+				gondola.AddGondola();
 
 			shelfPoses = new List<Pose>();
 			uprightPoses = new List<Pose>();
 			backboardMeshes = new List<Mesh>();
 
+			int i = 0;
 			foreach (Gondola shelfSection in gondola.gondolas)
 			{
+				int offset = shelfSection.width == GondolaShelf.ShelfWidths.in48 ? 48 :
+					shelfSection.width == GondolaShelf.ShelfWidths.in36 ? 36 :
+					shelfSection.width == GondolaShelf.ShelfWidths.in24 ? 24 : 0;
+
+				
 				foreach (GondolaShelf shelf in shelfSection.shelfPointsLeftSide)
 				{
 					if (gondola.orientation == GondolaRow.Orientation.Widthwise)
-						shelfPoses.Add(new Pose(0, World.BoundsPose.position.y + U.inch * shelf.uprightPoint, U.cm * -2.5f, Quat.FromAngles(-90, 0, 0)));
+						shelfPoses.Add(new Pose(
+							(offset * U.inch) * i, 
+							World.BoundsPose.position.y + (U.inch * shelf.uprightPoint), 
+							U.cm * -2.5f, 
+							Quat.FromAngles(-90, 0, 0)));
 					else
-						shelfPoses.Add(new Pose(U.cm * -2.5f, World.BoundsPose.position.y + U.inch * shelf.uprightPoint, 0, Quat.FromAngles(-90, 90, 0)));
+						shelfPoses.Add(new Pose(
+							U.cm * -2.5f, 
+							World.BoundsPose.position.y + U.inch * shelf.uprightPoint, 
+							0 - (offset * U.inch) * i, 
+							Quat.FromAngles(-90, 90, 0)));
+					
 				}
 				foreach (GondolaShelf shelf in shelfSection.shelfPointsRightSide)
 				{
 					if (gondola.orientation == GondolaRow.Orientation.Widthwise)
-						shelfPoses.Add(new Pose(U.ft * 4, World.BoundsPose.position.y + U.inch * shelf.uprightPoint, U.cm * 2.5f, Quat.FromAngles(-90, 180, 0)));
+						shelfPoses.Add(new Pose(
+							U.ft * 4 + (offset * U.inch) * i, 
+							World.BoundsPose.position.y + U.inch * shelf.uprightPoint, 
+							U.cm * 2.5f, 
+							Quat.FromAngles(-90, 180, 0)));
 					else
-						shelfPoses.Add(new Pose(U.cm * 2.5f, World.BoundsPose.position.y + U.inch * shelf.uprightPoint, 0 - U.ft * 4, Quat.FromAngles(-90, 270, 0)));
+						shelfPoses.Add(new Pose(
+							U.cm * 2.5f, 
+							World.BoundsPose.position.y + U.inch * shelf.uprightPoint, 
+							0 - (U.ft * 4 + (offset * U.inch) * i), 
+							Quat.FromAngles(-90, 270, 0)));
 				}
 
 				if (gondola.orientation == GondolaRow.Orientation.Widthwise)
 				{
 					if (shelfSection.baseShelfLeftSide != null)
-						shelfPoses.Add(new Pose(0, World.BoundsPose.position.y + U.inch * 6, U.cm * -2.5f, Quat.FromAngles(-90, 0, 0)));
+						shelfPoses.Add(new Pose(
+							(offset * U.inch) * i, 
+							World.BoundsPose.position.y + U.inch * 6, 
+							U.cm * -2.5f, 
+							Quat.FromAngles(-90, 0, 0)));
 					if (shelfSection.baseShelfRightSide != null)
-						shelfPoses.Add(new Pose(U.ft*4, World.BoundsPose.position.y + U.inch * 6, U.cm * -2.5f, Quat.FromAngles(-90, 180, 0)));
+						shelfPoses.Add(new Pose(
+							U.ft*4 + (offset * U.inch) * i, 
+							World.BoundsPose.position.y + U.inch * 6, 
+							U.cm * 2.5f, 
+							Quat.FromAngles(-90, 180, 0)));
 				}
 				else
 				{
 					if (shelfSection.baseShelfLeftSide != null)
-						shelfPoses.Add(new Pose(U.cm * -2.5f, World.BoundsPose.position.y + U.inch * 6, 0, Quat.FromAngles(-90, 90, 0)));
+						shelfPoses.Add(new Pose(
+							U.cm * -2.5f, 
+							World.BoundsPose.position.y + U.inch * 6,
+							0 - (offset * U.inch) * i, 
+							Quat.FromAngles(-90, 90, 0)));
 					if (shelfSection.baseShelfRightSide != null)
-						shelfPoses.Add(new Pose(U.cm * 2.5f, World.BoundsPose.position.y + U.inch * 6, 0 - U.ft * 4, Quat.FromAngles(-90, 270, 0)));
+						shelfPoses.Add(new Pose(
+							U.cm * 2.5f, 
+							World.BoundsPose.position.y + U.inch * 6, 
+							0 - (U.ft * 4 + (offset * U.inch) * i), 
+							Quat.FromAngles(-90, 270, 0)));
 				}
 
 				if (gondola.orientation == GondolaRow.Orientation.Widthwise)
 				{
-					uprightPoses.Add(new Pose(position.X, World.BoundsPose.position.y, position.Y, Quat.FromAngles(-90, 0, 0)));
-					uprightPoses.Add(new Pose(position.X + 1.2192f, World.BoundsPose.position.y, position.Y, Quat.FromAngles(-90, 0, 0)));
+					if (i == 0)
+						uprightPoses.Add(new Pose(
+							position.X + (offset * U.inch) * i, 
+							World.BoundsPose.position.y, 
+							position.Y, 
+							Quat.FromAngles(-90, 0, 0)));
+					uprightPoses.Add(new Pose(
+						position.X + 1.2192f + (offset * U.inch) * i, 
+						World.BoundsPose.position.y, 
+						position.Y, 
+						Quat.FromAngles(-90, 0, 0)));
 				}
 				else
 				{
-					uprightPoses.Add(new Pose(position.X, World.BoundsPose.position.y, position.Y, Quat.FromAngles(-90, 90, 0)));
-					uprightPoses.Add(new Pose(position.X, World.BoundsPose.position.y, position.Y - U.ft*4, Quat.FromAngles(-90, 90, 0)));
+					if (i == 0)
+						uprightPoses.Add(new Pose(
+							position.X, 
+							World.BoundsPose.position.y, 
+							position.Y - (offset * U.inch) * i, 
+							Quat.FromAngles(-90, 90, 0)));
+					uprightPoses.Add(new Pose(
+						position.X, 
+						World.BoundsPose.position.y, 
+						(position.Y - U.ft*4) - (offset * U.inch) * i, 
+						Quat.FromAngles(-90, 90, 0)));
 				}
 
 				if (gondola.orientation == GondolaRow.Orientation.Widthwise)
@@ -81,6 +140,7 @@ namespace StoreViewer
 				{
 					backboardMeshes.Add(Mesh.GenerateCube(new Vec3(U.ft * 3.9f, U.ft * 6.0f, U.inch * 1.5f)));
 				}
+				i++;
 			}
 		}
 
@@ -96,7 +156,7 @@ namespace StoreViewer
 			}
 			foreach (Mesh mesh in backboardMeshes)
 			{
-				mesh.Draw(Material.Default, new Pose()
+				//mesh.Draw(Material.Default, new Pose()
 			}
 		}
 	}
