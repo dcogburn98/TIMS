@@ -23,10 +23,11 @@ namespace StoreViewer
             // Core application loop
             while (SK.Step(() =>
             {
+                
                 Matrix newCam = Renderer.CameraRoot;
                 Vec3 newPos = Renderer.CameraRoot.Translation;
-                newPos.x -= ((Input.Controller(Handed.Left).stick.x) / 100);
-                newPos.z -= ((Input.Controller(Handed.Left).stick.y) / 100);
+                newPos.x +=  + ((Input.Controller(Handed.Left).stick.x) / 25);
+                newPos.z += Input.Head.orientation.z * ((Input.Controller(Handed.Left).stick.y) / 25);
 
                 newCam.Translation = newPos;
                 Renderer.CameraRoot = newCam;

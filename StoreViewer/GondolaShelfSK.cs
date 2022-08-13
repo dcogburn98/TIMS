@@ -15,10 +15,11 @@ namespace StoreViewer
 		public GondolaRow gondola;
 		public List<Pose> shelfPoses;
 		public List<Pose> uprightPoses;
-		public List<Mesh> backboardMeshes;
+		public List<Pose> backboardPoses;
+		public Mesh backboardMesh;
 		public Model uprightModel = Model.FromFile("Models/Gondola Upright 6ft.stl");
 		public Model shelfModel = Model.FromFile("Models/Gondola4ft18in.stl");
-
+		public Material pegboardMaterial = Material.Default.Copy();
 
 
 		public GondolaShelfSK(Point position)
@@ -30,7 +31,10 @@ namespace StoreViewer
 
 			shelfPoses = new List<Pose>();
 			uprightPoses = new List<Pose>();
-			backboardMeshes = new List<Mesh>();
+			backboardPoses = new List<Pose>();
+
+			pegboardMaterial[MatParamName.DiffuseTex] = Tex.FromFile("pegboard.jpg");
+			pegboardMaterial[MatParamName.TexScale] = 3.0f;
 
 			int i = 0;
 			foreach (Gondola shelfSection in gondola.gondolas)
@@ -134,11 +138,27 @@ namespace StoreViewer
 
 				if (gondola.orientation == GondolaRow.Orientation.Widthwise)
 				{
-					backboardMeshes.Add(Mesh.GenerateCube(new Vec3(U.ft * 1.5f, U.ft * 6.0f, U.inch * 3.9f)));
+					backboardMesh = Mesh.GenerateCube(new Vec3(
+						U.ft * 3.9f,
+						U.ft * 6.0f,
+						U.inch * 1.5f));
+					backboardPoses.Add(new Pose(
+						((U.ft * 4.0f) * i) + (2.0f*U.ft),
+						(-8.0f * U.inch),
+						0.0f,
+						Quat.FromAngles(0, 0, 0)));
 				}
 				else
 				{
-					backboardMeshes.Add(Mesh.GenerateCube(new Vec3(U.ft * 3.9f, U.ft * 6.0f, U.inch * 1.5f)));
+					backboardMesh = Mesh.GenerateCube(new Vec3(
+						U.ft * 6.0f,
+						U.ft * 3.9f,
+						U.inch * 1.5f));
+					backboardPoses.Add(new Pose(
+						0.0f * (U.ft * 4),
+						0.0f,
+						(U.ft * 4.0f) * i,
+						Quat.FromAngles(-90, 90, 0)));
 				}
 				i++;
 			}
@@ -154,9 +174,9 @@ namespace StoreViewer
 			{
 				uprightModel.Draw(upright.ToMatrix(0.001f));
 			}
-			foreach (Mesh mesh in backboardMeshes)
+			foreach (Pose pose in backboardPoses)
 			{
-				//mesh.Draw(Material.Default, new Pose()
+				backboardMesh.Draw(pegboardMaterial, pose.ToMatrix(1.0f));
 			}
 		}
 	}
