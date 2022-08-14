@@ -1,8 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.Security.Cryptography;
 using System.Data.SQLite;
 using System.ServiceModel;
+using Microsoft.Web.Administration;
 
 namespace TIMSServer
 {
@@ -262,6 +261,17 @@ namespace TIMSServer
             using (ServiceHost host = new ServiceHost(typeof(TIMSServiceModel)))
             {
                 host.Open();
+
+                ServerManager server = new ServerManager();
+                Site site = server.Sites.Add("TIMS System Management", ".\\TIMSServerManager", 8080);
+                if (site != null)
+                {
+                    //stop the site
+                    site.Stop();
+                    //start the site
+                    site.Start();
+                }
+
                 Console.WriteLine("Server is open for connections.");
                 Console.WriteLine("Press a key to close.");
                 Console.ReadKey();

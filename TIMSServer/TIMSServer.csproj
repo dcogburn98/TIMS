@@ -11,11 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Web.Administration" Version="11.1.0" />
     <PackageReference Include="PDFsharp-gdi" Version="1.51.5185-beta" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.115.5" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TIMSServerManager\TIMSServerManager.csproj" />
     <ProjectReference Include="..\TIMSServerModel\TIMSServerModel.csproj" />
   </ItemGroup>
 

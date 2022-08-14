@@ -20,12 +20,13 @@ namespace TIMSServerModel.Planogram
         [DataMember]
         public int ceilingHeight;
 
+        [DataMember]
         public List<GondolaRow> shelfRows;
         
 
         public Building()
         {
-            floor = new Rectangle(240, 240, 120, 120);
+            floor = new Rectangle(0, 0, 40, 40);
             shelfRows = new List<GondolaRow>();
             //shelfRows.Add(new GondolaRow());
         }
