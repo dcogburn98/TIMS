@@ -262,15 +262,32 @@ namespace TIMSServer
             {
                 host.Open();
 
-                ServerManager server = new ServerManager();
-                Site site = server.Sites.Add("TIMSServerManager", "TIMSServerManager", 8080);
-                if (site != null)
+                string path = @".\\TIMSServerManager";
+                string name = "TIMSServerManager";
+
+                char[] invalid = SiteCollection.InvalidSiteNameCharacters();
+                if (name.IndexOfAny(invalid) > -1)
                 {
-                    //stop the site
-                    site.Stop();
-                    //start the site
-                    site.Start();
+                    Console.WriteLine("Invalid site name: {0}", name);
                 }
+
+                if (!System.IO.Directory.Exists(path))
+                {
+                    System.IO.Directory.CreateDirectory(path);
+                }
+
+                ServerManager manager = new ServerManager();
+                manager.Sites.Clear();
+                Site hrSite = manager.Sites.Add(name, "http", "*:9090:", path);
+
+                hrSite.Applications.Clear();
+                Application app = hrSite.Applications.Add("/", "C:\\Users\\Blake\\source\\repos\\dcogburn98\\TIMS\\TIMSServer\\bin\\Debug\\net472\\TIMSServerManager");
+
+                
+
+                hrSite.ServerAutoStart = false;
+                manager.CommitChanges();
+                Console.WriteLine("Site " + name + " added to ApplicationHost.config file.");
 
                 Console.WriteLine("Server is open for connections.");
                 Console.WriteLine("Press a key to close.");

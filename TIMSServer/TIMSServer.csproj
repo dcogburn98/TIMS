@@ -16,7 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Web.Administration" Version="11.1.0" />
     <PackageReference Include="PDFsharp-gdi" Version="1.51.5185-beta" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.115.5" />
   </ItemGroup>
@@ -27,6 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Microsoft.Web.Administration">
+      <HintPath>..\..\..\..\..\..\..\Windows\System32\inetsrv\Microsoft.Web.Administration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Management">
+      <HintPath>..\..\..\..\..\..\..\Windows\System32\inetsrv\Microsoft.Web.Management.dll</HintPath>
+    </Reference>
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
 

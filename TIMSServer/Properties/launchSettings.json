@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TIMSServer": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}
