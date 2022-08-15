@@ -15,6 +15,7 @@ namespace TIMS.Forms.Planogram
     public partial class BuildingEditor : Form
     {
         public Building floorspace = new Building();
+        bool isAnimatingScale = false;
 
         public BuildingEditor()
         {
@@ -51,6 +52,9 @@ namespace TIMS.Forms.Planogram
                 (pictureBox1.Height - depthPixels) / 2,
                 widthPixels,
                 depthPixels);
+
+            if (isAnimatingScale)
+                doAnimation();
         }
 
         private void widthNumeric_ValueChanged(object sender, EventArgs e)
@@ -69,6 +73,29 @@ namespace TIMS.Forms.Planogram
         {
             floorspace.ceilingHeight = (int)ceilingHeightNumeric.Value;
             pictureBox1.Refresh();
+        }
+
+        private void acceptButton_Click(object sender, EventArgs e)
+        {
+            doAnimation();
+        }
+
+        private void doAnimation()
+        {
+            if (!isAnimatingScale)
+                isAnimatingScale = true;
+
+            if (floorspace.floor.Width*3 >= pictureBox1.Width || floorspace.floor.Height*3 >= pictureBox1.Height)
+            {
+                isAnimatingScale = false;
+            }
+            else
+            {
+                floorspace.floor.Width++;
+                floorspace.floor.Height++;
+            }
+
+            pictureBox1.Invalidate();
         }
     }
 }

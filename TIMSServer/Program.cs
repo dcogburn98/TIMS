@@ -263,7 +263,7 @@ namespace TIMSServer
                 host.Open();
 
                 ServerManager server = new ServerManager();
-                Site site = server.Sites.Add("TIMS System Management", ".\\TIMSServerManager", 8080);
+                Site site = server.Sites.Add("TIMSServerManager", "TIMSServerManager", 8080);
                 if (site != null)
                 {
                     //stop the site

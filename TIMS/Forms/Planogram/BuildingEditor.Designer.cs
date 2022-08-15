@@ -177,6 +177,7 @@
             this.acceptButton.TabIndex = 19;
             this.acceptButton.Text = "Accept";
             this.acceptButton.UseVisualStyleBackColor = true;
+            this.acceptButton.Click += new System.EventHandler(this.acceptButton_Click);
             // 
             // floorSpaceProperties
             // 
@@ -196,7 +197,6 @@
             this.floorSpaceProperties.TabIndex = 20;
             this.floorSpaceProperties.TabStop = false;
             this.floorSpaceProperties.Text = "Floor Space Properties";
-            this.floorSpaceProperties.Visible = false;
             // 
             // BuildingEditor
             // 
