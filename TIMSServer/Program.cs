@@ -262,7 +262,7 @@ namespace TIMSServer
             {
                 host.Open();
 
-                string path = @".\\TIMSServerManager";
+                string path = @"C:\\Users\\Blake\\source\\repos\\dcogburn98\\TIMS\\TIMSServerManager\\";
                 string name = "TIMSServerManager";
 
                 char[] invalid = SiteCollection.InvalidSiteNameCharacters();
@@ -277,21 +277,24 @@ namespace TIMSServer
                 }
 
                 ServerManager manager = new ServerManager();
-                manager.Sites.Clear();
-                Site hrSite = manager.Sites.Add(name, "http", "*:9090:", path);
-
-                hrSite.Applications.Clear();
-                Application app = hrSite.Applications.Add("/", "C:\\Users\\Blake\\source\\repos\\dcogburn98\\TIMS\\TIMSServer\\bin\\Debug\\net472\\TIMSServerManager");
-
                 
+                if (manager.Sites.Count > 0)
+                    manager.Sites.Clear();
+                Site managerSite = manager.Sites.Add(name, "http", "*:80:", path);
 
-                hrSite.ServerAutoStart = false;
+                managerSite.Applications.Clear();
+                Application managerApplication = managerSite.Applications.Add("/", "C:\\Users\\Blake\\source\\repos\\dcogburn98\\TIMS\\TIMSServerManager\\");
+                //managerSite.SetAttributeValue("defaultDocument", "default.aspx");
+
+                managerSite.ServerAutoStart = false;
                 manager.CommitChanges();
                 Console.WriteLine("Site " + name + " added to ApplicationHost.config file.");
+                managerSite.Start();
 
                 Console.WriteLine("Server is open for connections.");
                 Console.WriteLine("Press a key to close.");
                 Console.ReadKey();
+                managerSite.Stop();
             }
         }
 
