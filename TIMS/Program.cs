@@ -23,11 +23,11 @@ namespace TIMS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Login login = new Login();
-            //OpenForms.Add(login);
-            //login.Show();
-            //Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
-            //Application.Run();
+            Login login = new Login();
+            OpenForms.Add(login);
+            login.Show();
+            Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
+            Application.Run();
 
             #region Invoice Viewer Test Code
             //SHA256 encrypt = SHA256.Create();
@@ -94,8 +94,8 @@ namespace TIMS
             //Application.Run(selection);
             #endregion
             #region Planogram Test Code
-            BuildingEditor editor = new BuildingEditor();
-            Application.Run(editor);
+            //BuildingEditor editor = new BuildingEditor();
+            //Application.Run(editor);
             #endregion
         }
 

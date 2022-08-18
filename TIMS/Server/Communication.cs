@@ -253,6 +253,10 @@ namespace TIMS.Server
         {
             return proxy.RetrieveCheckin(checkinNumber);
         }
+        public static void DeleteCheckin(int checkinNumber)
+        {
+            proxy.DeleteCheckin(checkinNumber);
+        }
         #endregion
     }
 }

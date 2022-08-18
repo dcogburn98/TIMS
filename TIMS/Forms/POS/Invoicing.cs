@@ -449,13 +449,19 @@ namespace TIMS.Forms
             if (e.KeyCode != Keys.Enter || itemNoTB.Text == "")
                 return;
 
+            if (e.KeyCode == Keys.Enter)
+                e.SuppressKeyPress = true;
+
             EnterItemNumber();
         }
 
         private void qtyTB_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
                 acceptItemButton.Focus();
+            }
         }
 
         private void acceptItemButton_KeyDown(object sender, KeyEventArgs e)
@@ -483,6 +489,9 @@ namespace TIMS.Forms
         {
             if (e.KeyCode != Keys.Enter)
                 return;
+
+            if (e.KeyCode == Keys.Enter)
+                e.SuppressKeyPress = true;
 
             AddCustomer();
         }
@@ -595,6 +604,7 @@ namespace TIMS.Forms
                         SelectProductLine();
                     }
                 }
+                e.SuppressKeyPress = true;
             }
             else
                 return;

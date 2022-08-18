@@ -1,15 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TIMSServerModel
 {
-    public class CheckinItem : InvoiceItem
+    [DataContract]
+    public class CheckinItem
     {
-        public decimal shipped = 0;
-        public decimal received = 0;
-        public decimal damaged = 0;
+        [DataMember]
+        public string itemNumber;
+        [DataMember]
+        public string productLine;
+        [DataMember]
+        public decimal shipped;
+        [DataMember]
+        public decimal received;
+        [DataMember]
+        public decimal damaged;
+        [DataMember]
+        public decimal ordered;
+
+        public CheckinItem(string itemNumber, string productLine)
+        {
+            this.itemNumber = itemNumber;
+            this.productLine = productLine;
+            shipped = 0;
+            received = 0;
+            damaged = 0;
+            ordered = 0;
+        }
     }
 }

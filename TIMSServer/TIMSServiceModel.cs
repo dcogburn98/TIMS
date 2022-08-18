@@ -33,16 +33,15 @@ namespace TIMSServer
                 input = "'" + input + "'";
             string value = null;
             Program.OpenConnection();
-            SQLiteCommand sqlite_cmd;
-            sqlite_cmd = Program.sqlite_conn.CreateCommand();
+            SQLiteCommand command = sqlite_conn.CreateCommand();
 
-            sqlite_cmd.CommandText =
+            command.CommandText =
                 "SELECT FULLNAME " +
                 "FROM EMPLOYEES " +
                 "WHERE USERNAME = " + input + " " +
                 "OR EMPLOYEENUMBER = " + input;
 
-            SQLiteDataReader rdr = sqlite_cmd.ExecuteReader();
+            SQLiteDataReader rdr = command.ExecuteReader();
             while (rdr.Read())
             {
                 value = $"{rdr.GetString(0)}";
@@ -1959,7 +1958,7 @@ namespace TIMSServer
 
             SQLiteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
-                "SELECT MAX(PONUMBER) FROM CHECKINS";
+                "SELECT MAX(CHECKINNUMBER) FROM CHECKINS";
             SQLiteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
@@ -1982,11 +1981,52 @@ namespace TIMSServer
         }
         public void SaveCheckin(Checkin checkin)
         {
+            string POs = string.Empty;
+            foreach (PurchaseOrder po in checkin.orders)
+            {
+                POs += po.PONumber.ToString() + ",";
+            }
+            POs = POs.Trim(',');
+
             OpenConnection();
 
             SQLiteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
-                "INSERT INTO CHECKINS (CHECKINNUMBER, PONUMBERS)";
+                "INSERT INTO CHECKINS (CHECKINNUMBER, PONUMBERS) " +
+                "VALUES ($CHECKINNUMBER, $PONUMBERS)";
+            SQLiteParameter p1 = new SQLiteParameter("$CHECKINNUMBER", checkin.checkinNumber);
+            SQLiteParameter p2 = new SQLiteParameter("$PONUMBERS", POs);
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+
+            command.ExecuteNonQuery();
+
+            command.CommandText =
+                "INSERT INTO CHECKINITEMS (CHECKINNUMBER, PRODUCTLINE, ITEMNUMBER, ORDEREDQTY, SHIPPEDQTY, RECEIVEDQTY, DAMAGEDQTY) " +
+                "VALUES ($CHECKINNUMBER, $LINECODE, $ITEMNUMBER, $ORDERED, $SHIPPED, $RECEIVED, $DAMAGED)";
+            
+            foreach (CheckinItem item in checkin.items)
+            {
+                command.Parameters.Clear();
+                command.Parameters.Add(new SQLiteParameter("$CHECKINNUMBER", checkin.checkinNumber));
+                command.Parameters.Add(new SQLiteParameter("$LINECODE", item.productLine));
+                command.Parameters.Add(new SQLiteParameter("$ITEMNUMBER", item.itemNumber));
+                command.Parameters.Add(new SQLiteParameter("$ORDERED", item.ordered));
+                command.Parameters.Add(new SQLiteParameter("$SHIPPED", item.shipped));
+                command.Parameters.Add(new SQLiteParameter("$RECEIVED", item.received));
+                command.Parameters.Add(new SQLiteParameter("$DAMAGED", item.damaged));
+                command.ExecuteNonQuery();
+            }
+
+            foreach (PurchaseOrder order in checkin.orders)
+            {
+                command.CommandText =
+                    "UPDATE PURCHASEORDERS SET ASSIGNEDCHECKIN = $CHECKIN WHERE PONUMBER = $ORDER";
+                command.Parameters.Clear();
+                command.Parameters.Add(new SQLiteParameter("$CHECKIN", checkin.checkinNumber));
+                command.Parameters.Add(new SQLiteParameter("$ORDER", order.PONumber));
+                command.ExecuteNonQuery();
+            }
 
             CloseConnection();
             return;
@@ -2062,6 +2102,31 @@ namespace TIMSServer
 
             CloseConnection();
             return checkin;
+        }
+        public void DeleteCheckin(int checkinNumber)
+        {
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "DELETE FROM CHECKINS WHERE CHECKINNUMBER = $CHECKIN";
+            command.Parameters.Add(new SQLiteParameter("$CHECKIN", checkinNumber));
+            command.ExecuteNonQuery();
+
+            command.CommandText =
+                "DELETE FROM CHECKINITEMS WHERE CHECKINNUMBER = $CHECKIN";
+            command.Parameters.Clear();
+            command.Parameters.Add(new SQLiteParameter("$CHECKIN", checkinNumber));
+            command.ExecuteNonQuery();
+
+            command.CommandText =
+                "UPDATE PURCHASEORDERS SET ASSIGNEDCHECKIN = 0 WHERE ASSIGNEDCHECKIN = $CHECKIN";
+            command.Parameters.Clear();
+            command.Parameters.Add(new SQLiteParameter("$CHECKIN", checkinNumber));
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+            return;
         }
         #endregion
     }

@@ -262,39 +262,40 @@ namespace TIMSServer
             {
                 host.Open();
 
-                string path = @"C:\\Users\\Blake\\source\\repos\\dcogburn98\\TIMS\\TIMSServerManager\\";
-                string name = "TIMSServerManager";
+                //string path = @"C:\\Users\\Blake\\source\\repos\\dcogburn98\\TIMS\\TIMSServerManager\\";
+                //string name = "TIMSServer";
 
-                char[] invalid = SiteCollection.InvalidSiteNameCharacters();
-                if (name.IndexOfAny(invalid) > -1)
-                {
-                    Console.WriteLine("Invalid site name: {0}", name);
-                }
+                //char[] invalid = SiteCollection.InvalidSiteNameCharacters();
+                //if (name.IndexOfAny(invalid) > -1)
+                //{
+                //    Console.WriteLine("Invalid site name: {0}", name);
+                //}
 
-                if (!System.IO.Directory.Exists(path))
-                {
-                    System.IO.Directory.CreateDirectory(path);
-                }
+                //if (!System.IO.Directory.Exists(path))
+                //{
+                //    System.IO.Directory.CreateDirectory(path);
+                //}
 
-                ServerManager manager = new ServerManager();
+                //ServerManager manager = new ServerManager();
                 
-                if (manager.Sites.Count > 0)
-                    manager.Sites.Clear();
-                Site managerSite = manager.Sites.Add(name, "http", "*:80:", path);
+                //if (manager.Sites.Count > 0)
+                //    manager.Sites.Clear();
+                //Site managerSite = manager.Sites.Add(name + "Manager", "http", "*:9842:", path);
+                //Site shoppingSite = manager.Sites.Add(name + "Website", "http", "*:8080:*", path);
 
-                managerSite.Applications.Clear();
-                Application managerApplication = managerSite.Applications.Add("/", "C:\\Users\\Blake\\source\\repos\\dcogburn98\\TIMS\\TIMSServerManager\\");
-                //managerSite.SetAttributeValue("defaultDocument", "default.aspx");
+                //managerSite.Applications.Clear();
+                //Application managerApplication = managerSite.Applications.Add("/", "C:\\Users\\Blake\\source\\repos\\dcogburn98\\TIMS\\TIMSServerManager\\");
+                ////managerSite.SetAttributeValue("defaultDocument", "default.aspx");
 
-                managerSite.ServerAutoStart = false;
-                manager.CommitChanges();
-                Console.WriteLine("Site " + name + " added to ApplicationHost.config file.");
-                managerSite.Start();
+                //managerSite.ServerAutoStart = false;
+                //manager.CommitChanges();
+                //Console.WriteLine("Site " + name + " added to ApplicationHost.config file.");
+                //managerSite.Start();
 
                 Console.WriteLine("Server is open for connections.");
                 Console.WriteLine("Press a key to close.");
                 Console.ReadKey();
-                managerSite.Stop();
+                //managerSite.Stop();
             }
         }
 

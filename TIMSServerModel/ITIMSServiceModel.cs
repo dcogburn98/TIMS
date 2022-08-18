@@ -129,6 +129,8 @@ namespace TIMSServerModel
         List<Checkin> RetrieveCheckins();
         [OperationContract]
         Checkin RetrieveCheckin(int checkinNumber);
+        [OperationContract]
+        void DeleteCheckin(int checkinNumber);
         #endregion
     }
 }
