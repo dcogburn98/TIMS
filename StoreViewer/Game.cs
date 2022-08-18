@@ -31,7 +31,7 @@ namespace StoreViewer
 
 		public void Initialize() 
 		{
-			floorMaterial[MatParamName.DiffuseTex] = Tex.FromFile("devGrid.jpg");
+			floorMaterial[MatParamName.DiffuseTex] = Tex.FromFile("256x256devgrid.jpg");
 			floorMaterial[MatParamName.TexScale] = 80.0f;
 		}
 		
