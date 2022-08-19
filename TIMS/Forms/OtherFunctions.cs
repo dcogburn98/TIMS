@@ -342,5 +342,11 @@ namespace TIMS.Forms
             CheckinCreator creator = new CheckinCreator();
             creator.Show();
         }
+
+        private void editPostToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            CheckinPicker picker = new CheckinPicker();
+            picker.Show();
+        }
     }
 }

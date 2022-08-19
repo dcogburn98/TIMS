@@ -110,7 +110,7 @@ namespace TIMSServerModel
 
         #region POs and Checkins
         [OperationContract]
-        int RetrieveNextPONumber();
+        int RetrieveNextPONumber(bool connectionOpened = false);
         [OperationContract]
         List<PurchaseOrder> RetrievePurchaseOrders();
         [OperationContract]

@@ -289,6 +289,9 @@
     <EmbeddedResource Include="Forms\Orders\CheckinCreator.resx">
       <DependentUpon>CheckinCreator.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Orders\CheckinPicker.resx">
+      <DependentUpon>CheckinPicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Orders\OpenOrderViewer.resx">
       <DependentUpon>OpenOrderViewer.cs</DependentUpon>
     </EmbeddedResource>

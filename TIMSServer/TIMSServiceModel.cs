@@ -1753,10 +1753,11 @@ namespace TIMSServer
         #endregion
 
         #region POs and Checkins
-        public int RetrieveNextPONumber()
+        public int RetrieveNextPONumber(bool connectionOpened = false)
         {
             int PONumber = 0;
-            OpenConnection();
+            if (!connectionOpened)
+                OpenConnection();
 
             SQLiteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
@@ -1764,7 +1765,8 @@ namespace TIMSServer
             SQLiteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
-                CloseConnection();
+                if (!connectionOpened)
+                    CloseConnection();
                 return PONumber;
             }
 
@@ -1772,13 +1774,15 @@ namespace TIMSServer
             {
                 if (reader.IsDBNull(0))
                 {
-                    CloseConnection();
+                    if (!connectionOpened)
+                        CloseConnection();
                     return PONumber;
                 }
                 PONumber = reader.GetInt32(0) + 1;
             }
 
-            CloseConnection();
+            if (!connectionOpened)
+                CloseConnection();
             return PONumber;
         }
         public List<PurchaseOrder> RetrievePurchaseOrders()
@@ -1806,7 +1810,7 @@ namespace TIMSServer
         }
         public PurchaseOrder RetrievePurchaseOrder(int PONumber, bool connectionOpened = false)
         {
-            PurchaseOrder po = new PurchaseOrder("NONE", RetrieveNextPONumber());
+            PurchaseOrder po = new PurchaseOrder("NONE", RetrieveNextPONumber(connectionOpened));
             if (!connectionOpened)
                 OpenConnection();
 
@@ -2039,7 +2043,7 @@ namespace TIMSServer
 
             SQLiteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
-                "SELECT PONUMBER FROM PURCHASEORDERS";
+                "SELECT CHECKINNUMBER FROM CHECKINS";
             SQLiteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
@@ -2082,7 +2086,7 @@ namespace TIMSServer
             reader.Close();
 
             command.CommandText =
-                "SELECT * FROM PURCHASEORDERITEMS WHERE PONUMBER = $PONUMBER";
+                "SELECT * FROM CHECKINITEMS WHERE CHECKINNUMBER = $CHECKINNUMBER";
             reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
@@ -2091,13 +2095,12 @@ namespace TIMSServer
             }
             while (reader.Read())
             {
-                InvoiceItem i = new InvoiceItem();
-                i.itemNumber = reader.GetString(2);
-                i.productLine = reader.GetString(3);
-                i.quantity = reader.GetDecimal(4);
-                i.cost = reader.GetDecimal(5);
-                i.price = reader.GetDecimal(6);
-                //items.Add(i);
+                CheckinItem item = new CheckinItem(reader.GetString(2), reader.GetString(1));
+                item.ordered = reader.GetDecimal(3);
+                item.shipped = reader.GetDecimal(4);
+                item.received = reader.GetDecimal(5);
+                item.damaged = reader.GetDecimal(6);
+                checkin.items.Add(item);
             }
 
             CloseConnection();
