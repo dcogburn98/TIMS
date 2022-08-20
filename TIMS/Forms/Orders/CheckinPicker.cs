@@ -79,7 +79,7 @@ namespace TIMS.Forms.Orders
         {
             if (!decimal.TryParse(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString(), out decimal _))
             {
-                dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = prevEdit;
+                dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = prevEdit;  
             }
         }
     }
