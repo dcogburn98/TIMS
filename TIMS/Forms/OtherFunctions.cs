@@ -346,7 +346,8 @@ namespace TIMS.Forms
         private void editPostToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             CheckinPicker picker = new CheckinPicker();
-            picker.Show();
+            if (picker.DialogResult != DialogResult.Cancel)
+                picker.Show();
         }
     }
 }

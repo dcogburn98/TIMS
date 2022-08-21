@@ -31,7 +31,6 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
             this.productLine = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.itemNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -40,6 +39,9 @@
             this.receivedQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.damagedQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.purchaseOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -89,15 +91,6 @@
             this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(988, 605);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(96, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Post to Inventory";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // productLine
             // 
             this.productLine.FillWeight = 25F;
@@ -146,11 +139,44 @@
             this.purchaseOrder.HeaderText = "Purchase Order";
             this.purchaseOrder.Name = "purchaseOrder";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(988, 605);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(96, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Post to Inventory";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(249, 9);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(44, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Display:";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "All Items",
+            "Exceptions by Shipped Quantity",
+            "Exceptions by Order Quantity"});
+            this.comboBox2.Location = new System.Drawing.Point(299, 6);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(121, 21);
+            this.comboBox2.TabIndex = 5;
+            // 
             // CheckinPicker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1096, 640);
+            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label1);
@@ -177,5 +203,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn receivedQty;
         private System.Windows.Forms.DataGridViewTextBoxColumn damagedQty;
         private System.Windows.Forms.DataGridViewTextBoxColumn purchaseOrder;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox comboBox2;
     }
 }

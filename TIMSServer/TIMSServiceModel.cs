@@ -2048,7 +2048,7 @@ namespace TIMSServer
             if (!reader.HasRows)
             {
                 CloseConnection();
-                return null;
+                return checkins;
             }
             while (reader.Read())
                 checkinNumbers.Add(reader.GetInt32(0));
@@ -2130,6 +2130,25 @@ namespace TIMSServer
 
             CloseConnection();
             return;
+        }
+        public void UpdateCheckinItem(CheckinItem item, int checkinNumber)
+        {
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "UPDATE CHECKINITEMS SET ORDEREDQTY = $ORDERED, SHIPPEDQTY = $SHIPPED, RECEIVEDQTY = $RECEIVED, DAMAGEDQTY = $DAMAGED " +
+                "WHERE (CHECKINNUMBER = $CHECKIN AND ITEMNUMBER = $ITEMNO AND PRODUCTLINE = $LINE)";
+            command.Parameters.Add(new SQLiteParameter("$ORDERED", item.ordered));
+            command.Parameters.Add(new SQLiteParameter("$SHIPPED", item.shipped));
+            command.Parameters.Add(new SQLiteParameter("$RECEIVED", item.received));
+            command.Parameters.Add(new SQLiteParameter("$DAMAGED", item.damaged));
+            command.Parameters.Add(new SQLiteParameter("$CHECKIN", checkinNumber));
+            command.Parameters.Add(new SQLiteParameter("$ITEMNO", item.itemNumber));
+            command.Parameters.Add(new SQLiteParameter("$LINE", item.productLine));
+            command.ExecuteNonQuery();
+
+            CloseConnection();
         }
         #endregion
     }
