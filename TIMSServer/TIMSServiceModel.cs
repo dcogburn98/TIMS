@@ -2151,5 +2151,70 @@ namespace TIMSServer
             CloseConnection();
         }
         #endregion
+
+        #region Accounts
+        public List<Account> RetrieveAccounts()
+        {
+            List<Account> accounts = new List<Account>();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT * FROM ACCOUNTS";
+            SQLiteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                Account acct = new Account();
+                acct.ID = reader.GetInt32(0);
+                Enum.TryParse(reader.GetString(1), out acct.Type);
+                acct.Name = reader.GetString(2);
+                acct.Description = reader.GetString(3);
+                acct.Balance = reader.GetDecimal(4);
+                accounts.Add(acct);
+            }
+            CloseConnection();
+            return accounts;
+        }
+        public List<Transaction> RetrieveAccountTransactions(string accountName)
+        {
+            List<Transaction> transactions = new List<Transaction>();
+            int accountID = RetrieveAccounts().Find(el => el.Name == accountName).ID;
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT * FROM ACCOUNTTRANSACTIONS WHERE CREDITACCOUNT = $ACCT OR DEBITACCOUNT = $ACCT";
+            command.Parameters.Add(new SQLiteParameter("$ACCT", accountID));
+            SQLiteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return transactions;
+            }
+
+            while (reader.Read())
+            {
+                transactions.Add(new Transaction()
+                {
+                    ID = reader.GetInt32(0),
+                    transactionID = reader.GetInt32(1),
+                    date = DateTime.Parse(reader.GetString(2)),
+                    memo = reader.GetString(3),
+                    creditAccount = reader.GetInt32(4),
+                    debitAccount = reader.GetInt32(5),
+                    amount = reader.GetDecimal(6),
+                    referenceNumber = reader.GetInt32(7)
+                });
+            }
+
+            CloseConnection();
+            return transactions;
+        }
+        #endregion
     }
 }

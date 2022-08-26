@@ -134,5 +134,12 @@ namespace TIMSServerModel
         [OperationContract]
         void UpdateCheckinItem(CheckinItem item, int checkinNumber);
         #endregion
+
+        #region Accounts
+        [OperationContract]
+        List<Account> RetrieveAccounts();
+        [OperationContract]
+        List<Transaction> RetrieveAccountTransactions(string accountName);
+        #endregion
     }
 }

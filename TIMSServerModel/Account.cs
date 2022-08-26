@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Xml.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace TIMS.Accounting
+namespace TIMSServerModel
 {
-    class Account
+    public class Account
     {
-        public static List<Account> Accounts = new List<Account>();
-
         public enum AccountTypes
         {
             Asset,
@@ -20,9 +21,9 @@ namespace TIMS.Accounting
         public string Name;
         public string Description;
         public int ID;
-        public double Balance;
+        public decimal Balance;
 
-        public Account(string Name, string Description, int ID, double Balance)
+        public Account(string Name, string Description, int ID, decimal Balance)
         {
             this.Name = Name;
             this.Description = Description;
@@ -35,7 +36,7 @@ namespace TIMS.Accounting
             //Allows database handler to create a blank account to edit
         }
 
-        public void Debit(double amount)
+        public void Debit(decimal amount)
         {
             if (Type == AccountTypes.Asset)
                 Balance += amount;
@@ -49,7 +50,7 @@ namespace TIMS.Accounting
                 Balance -= amount;
         }
 
-        public void Credit(double amount)
+        public void Credit(decimal amount)
         {
             if (Type == AccountTypes.Asset)
                 Balance -= amount;

@@ -88,8 +88,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Accounting\Account.cs" />
-    <Compile Include="Accounting\Transaction.cs" />
     <Compile Include="ArchitecturalMath.cs" />
     <Compile Include="Forms\Accounting\ChartOfAccounts.cs">
       <SubType>Form</SubType>

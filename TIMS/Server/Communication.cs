@@ -262,5 +262,16 @@ namespace TIMS.Server
             proxy.UpdateCheckinItem(item, checkinNumber);
         }
         #endregion
+
+        #region Accounts
+        public static List<Account> RetrieveAccounts()
+        {
+            return proxy.RetrieveAccounts();
+        }
+        public static List<Transaction> RetrieveAccountTransactions(string accountName)
+        {
+            return proxy.RetrieveAccountTransactions(accountName);
+        }
+        #endregion
     }
 }

@@ -136,8 +136,6 @@ namespace TIMS.Forms
             }
         }
 
-
-
         #region Toolbar Item Click Methods and Other Form Handlers
         
         private void orderOgToolStripMenuItem_Click(object sender, EventArgs e)
@@ -198,7 +196,6 @@ namespace TIMS.Forms
             order.Show();
         }
         #endregion
-
 
         #region Item Maintenance Group Methods
         private void reviewChangeTransactionsToolStripMenuItem_Click(object sender, EventArgs e)
