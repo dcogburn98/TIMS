@@ -140,6 +140,8 @@ namespace TIMSServerModel
         List<Account> RetrieveAccounts();
         [OperationContract]
         List<Transaction> RetrieveAccountTransactions(string accountName);
+        [OperationContract]
+        void SaveTransaction(Transaction t);
         #endregion
     }
 }

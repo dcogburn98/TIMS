@@ -272,6 +272,10 @@ namespace TIMS.Server
         {
             return proxy.RetrieveAccountTransactions(accountName);
         }
+        public static void SaveTransaction(Transaction t)
+        {
+            proxy.SaveTransaction(t);
+        }
         #endregion
     }
 }

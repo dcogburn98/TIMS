@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIMSServerManager", "TIMSSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIMSMobile", "TIMSMobile\TIMSMobile.csproj", "{42F3184A-E00C-4AB7-ADD6-433137E9CD5C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CyclingHash", "CyclingHash\CyclingHash.csproj", "{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +151,22 @@ Global
 		{42F3184A-E00C-4AB7-ADD6-433137E9CD5C}.Release|x86.ActiveCfg = Release|Any CPU
 		{42F3184A-E00C-4AB7-ADD6-433137E9CD5C}.Release|x86.Build.0 = Release|Any CPU
 		{42F3184A-E00C-4AB7-ADD6-433137E9CD5C}.Release|x86.Deploy.0 = Release|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Debug|x86.Build.0 = Debug|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Release|iPhone.Build.0 = Release|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Release|x86.ActiveCfg = Release|Any CPU
+		{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

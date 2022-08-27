@@ -2215,6 +2215,49 @@ namespace TIMSServer
             CloseConnection();
             return transactions;
         }
+        public int RetrieveNextTransactionNumber()
+        {
+            int tNo = 0;
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT MAX(TRANSACTIONID) FROM ACCOUNTTRANSACTIONS";
+            SQLiteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return tNo;
+            }
+
+            while (reader.Read())
+            {
+                tNo = reader.GetInt32(0);
+            }
+
+            CloseConnection();
+            return tNo + 1;
+        }
+        public void SaveTransaction(Transaction t)
+        {
+            int tID = RetrieveNextTransactionNumber();
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "INSERT INTO ACCOUNTTRANSACTIONS (TRANSACTIONID, DATE, MEMO, CREDITACCOUNT, DEBITACCOUNT, AMOUNT, REFERENCENUMBER)" +
+                "VALUES ($TID, $DATE, $MEMO, $CA, $DA, $AMT, $REF)";
+            command.Parameters.Add(new SQLiteParameter("$TID", tID));
+            command.Parameters.Add(new SQLiteParameter("$DATE", t.date.ToString("MM/dd/yyyy")));
+            command.Parameters.Add(new SQLiteParameter("$MEMO", t.memo));
+            command.Parameters.Add(new SQLiteParameter("$CA", t.creditAccount));
+            command.Parameters.Add(new SQLiteParameter("$DA", t.debitAccount));
+            command.Parameters.Add(new SQLiteParameter("$AMT", t.amount));
+            command.Parameters.Add(new SQLiteParameter("$REF", t.referenceNumber));
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+        }
         #endregion
     }
 }
