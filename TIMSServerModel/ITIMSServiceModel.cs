@@ -141,7 +141,11 @@ namespace TIMSServerModel
         [OperationContract]
         List<Transaction> RetrieveAccountTransactions(string accountName);
         [OperationContract]
+        int RetrieveNextTransactionNumber();
+        [OperationContract]
         void SaveTransaction(Transaction t);
+        [OperationContract]
+        void UpdateAccountBalance(int accountID, decimal newBalance);
         #endregion
     }
 }

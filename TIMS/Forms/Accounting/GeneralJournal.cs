@@ -233,22 +233,21 @@ namespace TIMS.Forms
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Transaction t = new Transaction();
-            t.date = DateTime.Parse(dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[0].Value.ToString());
-            t.referenceNumber = int.Parse(dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[1].Value.ToString());
-            t.memo = dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[2].Value.ToString();
-            t.creditAccount =
-                dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[4].Value == null ?
-                accounts.Find(el => el.Name == dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[3].Value.ToString()).ID :
-                thisAccount.ID;
-            t.debitAccount =
+            int debitAccount =
                 dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[5].Value == null ?
                 accounts.Find(el => el.Name == dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[3].Value.ToString()).ID :
                 thisAccount.ID;
-            t.amount =
+            int creditAccount =
+                dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[4].Value == null ?
+                accounts.Find(el => el.Name == dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[3].Value.ToString()).ID :
+                thisAccount.ID;
+            decimal amount =
                 dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[4].Value == null ?
                 decimal.Parse(dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[5].Value.ToString()) :
                 decimal.Parse(dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[4].Value.ToString());
+            Transaction t = new Transaction(debitAccount, creditAccount, amount);
+            t.referenceNumber = int.Parse(dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[1].Value.ToString());
+            t.memo = dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[2].Value.ToString();
             Communication.SaveTransaction(t);
             AddRow();
             button3.Visible = false;

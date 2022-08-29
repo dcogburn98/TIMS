@@ -1212,16 +1212,24 @@ namespace TIMSServer
         }
         public int RetrieveNextInvoiceNumber()
         {
+            int invNo = 100000;
             OpenConnection();
             SQLiteCommand command = sqlite_conn.CreateCommand();
-
             command.CommandText = "SELECT MAX(INVOICENUMBER) FROM INVOICES";
-
             SQLiteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return invNo;
+            }
 
-            int invNo = 0;
             while (reader.Read())
-                invNo = reader.GetInt32(0) + 1;
+            {
+                if (!reader.IsDBNull(0))
+                {
+                    invNo = reader.GetInt32(0) + 1;
+                }
+            }
 
             CloseConnection();
             return invNo;
@@ -2199,15 +2207,15 @@ namespace TIMSServer
 
             while (reader.Read())
             {
-                transactions.Add(new Transaction()
+                int creditAccount = reader.GetInt32(4);
+                int debitAccount = reader.GetInt32(5);
+                decimal amount = reader.GetDecimal(6);
+                transactions.Add(new Transaction(debitAccount, creditAccount, amount)
                 {
                     ID = reader.GetInt32(0),
                     transactionID = reader.GetInt32(1),
                     date = DateTime.Parse(reader.GetString(2)),
                     memo = reader.GetString(3),
-                    creditAccount = reader.GetInt32(4),
-                    debitAccount = reader.GetInt32(5),
-                    amount = reader.GetDecimal(6),
                     referenceNumber = reader.GetInt32(7)
                 });
             }
@@ -2219,7 +2227,6 @@ namespace TIMSServer
         {
             int tNo = 0;
             OpenConnection();
-
             SQLiteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT MAX(TRANSACTIONID) FROM ACCOUNTTRANSACTIONS";
@@ -2232,7 +2239,8 @@ namespace TIMSServer
 
             while (reader.Read())
             {
-                tNo = reader.GetInt32(0);
+                if (!reader.IsDBNull(0))
+                    tNo = reader.GetInt32(0) + 1;
             }
 
             CloseConnection();
@@ -2254,6 +2262,19 @@ namespace TIMSServer
             command.Parameters.Add(new SQLiteParameter("$DA", t.debitAccount));
             command.Parameters.Add(new SQLiteParameter("$AMT", t.amount));
             command.Parameters.Add(new SQLiteParameter("$REF", t.referenceNumber));
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+        }
+        public void UpdateAccountBalance(int accountID, decimal newBalance)
+        {
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "UPDATE ACCOUNTS SET CURRENTBALANCE = $BAL WHERE ID = $ACCT";
+            command.Parameters.Add(new SQLiteParameter("$BAL", newBalance));
+            command.Parameters.Add(new SQLiteParameter("$ACCT", accountID));
             command.ExecuteNonQuery();
 
             CloseConnection();

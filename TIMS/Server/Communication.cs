@@ -272,9 +272,17 @@ namespace TIMS.Server
         {
             return proxy.RetrieveAccountTransactions(accountName);
         }
+        public static int RetrieveNextTransactionNumber()
+        {
+            return proxy.RetrieveNextTransactionNumber();
+        }
         public static void SaveTransaction(Transaction t)
         {
             proxy.SaveTransaction(t);
+        }
+        public static void UpdateAccountBalance(int accountID, decimal newBalance)
+        {
+            proxy.UpdateAccountBalance(accountID, newBalance);
         }
         #endregion
     }

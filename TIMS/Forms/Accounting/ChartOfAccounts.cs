@@ -20,8 +20,6 @@ namespace TIMS.Forms.Accounting
             TreeNode incomeNode = treeView1.Nodes.Add("Income");
             TreeNode expensesNode = treeView1.Nodes.Add("Expenses");
 
-            accounts = Communication.RetrieveAccounts();
-
             foreach (Account account in accounts.FindAll(el => el.Type == Account.AccountTypes.Asset))
             {
                 TreeNode node = assetsNode.Nodes.Add(account.Name + " (" + account.Balance.ToString("C") + ")");

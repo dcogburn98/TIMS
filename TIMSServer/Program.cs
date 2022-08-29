@@ -2,6 +2,7 @@
 using System.Data.SQLite;
 using System.ServiceModel;
 using Microsoft.Web.Administration;
+using System.IO;
 
 namespace TIMSServer
 {
@@ -257,11 +258,11 @@ namespace TIMSServer
             sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Pooling = true; Max Pool Size = 100; Compress = True; ");
             OpenConnection();
             CloseConnection();
+            CreateDatabase();
 
             using (ServiceHost host = new ServiceHost(typeof(TIMSServiceModel)))
             {
                 host.Open();
-
                 //string path = @"C:\\Users\\Blake\\source\\repos\\dcogburn98\\TIMS\\TIMSServerManager\\";
                 //string name = "TIMSServer";
 
@@ -307,6 +308,509 @@ namespace TIMSServer
         public static void CloseConnection()
         {
             sqlite_conn.Close();
+        }
+
+        public static void CreateDatabase()
+        {
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            if (!TableExists(sqlite_conn, "AccountTransactions"))
+            {
+                command.CommandText =
+                    @"CREATE TABLE ""AccountTransactions"" (
+	                ""UID""	INTEGER NOT NULL UNIQUE,
+	                ""TransactionID""	INTEGER NOT NULL,
+	                ""Date""	TEXT NOT NULL,
+	                ""Memo""	TEXT,
+	                ""CreditAccount""	INTEGER NOT NULL,
+	                ""DebitAccount""	INTEGER NOT NULL,
+	                ""Amount""	REAL NOT NULL,
+	                ""ReferenceNumber""	INTEGER,
+	                PRIMARY KEY(""UID"" AUTOINCREMENT)
+                    )";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "Accounts"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Accounts"" (
+                ""ID""    INTEGER NOT NULL UNIQUE,
+                ""Type""  TEXT NOT NULL,
+	            ""Name""  TEXT NOT NULL,
+	            ""Description""   TEXT NOT NULL,
+	            ""CurrentBalance""    REAL NOT NULL,
+	            PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "Barcodes"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Barcodes"" (
+                ""ID""    INTEGER NOT NULL,
+	            ""BarcodeType""   TEXT NOT NULL,
+	            ""BarcodeValue""  TEXT NOT NULL,
+	            ""ScannedItemNumber"" TEXT NOT NULL,
+	            ""ScannedProductLine""    TEXT NOT NULL,
+	            ""ScannedQuantity""   REAL NOT NULL,
+	            PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "CheckinItems"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""CheckinItems"" (
+                ""CheckinNumber"" INTEGER NOT NULL,
+	            ""ProductLine""   TEXT NOT NULL,
+	            ""ItemNumber""    TEXT NOT NULL,
+	            ""OrderedQty""    REAL NOT NULL,
+	            ""ShippedQty""    REAL NOT NULL,
+	            ""ReceivedQty""   REAL NOT NULL,
+	            ""DamagedQty""    REAL NOT NULL
+                )";
+                command.ExecuteNonQuery();
+
+                #region Default Account Entries
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('1', 'Asset', 'Inventory', 'Physical Inventory', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('2', 'Asset', 'Checking Account', 'Checking Account', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('3', 'Equity', 'Owner Investment', 'Investments by company owners', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('4', 'Expense', 'Electricity', 'Electricity Bill', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('5', 'Income', 'Cash Sales', 'Sales of Inventory', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('6', 'Liability', 'Credit Cards', 'Credit Card Balance', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('7', 'Liability', 'Sales Tax Payable', 'Sales Tax Owed', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('8', 'Expense', 'COGS', 'Cost of Goods Sold', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('9', 'Income', 'Charge Sales', 'Sales of Inventory on Credit', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('10', 'Income', 'Card Sales', 'Sales of Inventory on Card Sales', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('11', 'Asset', 'Accounts Receivable', 'Accounts Receivable', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('12', 'Asset', 'Savings Account', 'Savings Account', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('13', 'Asset', 'Petty Cash', 'Petty Cash', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('14', 'Asset', 'Cash Drawers', 'Cash Drawers', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('15', 'Equity', 'Retained Earnings', 'Retained Earnings', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('16', 'Income', 'Interest Income', 'Interest Income', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('17', 'Income', 'Reimbursed Expenses', 'Reimbursed Expenses', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('18', 'Income', 'Discounts', 'Discounts', '0.0');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('19', 'Liability', 'Accounts Payable', 'Accounts Payable', '0.0');";
+                command.ExecuteNonQuery();
+                #endregion
+            }
+
+            if (!TableExists(sqlite_conn, "Checkins"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Checkins"" (
+                ""CheckinNumber"" INTEGER NOT NULL,
+	            ""PONumbers"" TEXT NOT NULL,
+	            ""OpenEditing""   INTEGER,
+	            PRIMARY KEY(""CheckinNumber"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "Customers"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Customers"" (
+                ""CustomerName""  TEXT NOT NULL,
+	            ""CustomerNumber""    INTEGER NOT NULL,
+	            ""TaxExempt"" INTEGER NOT NULL,
+	            ""TaxExemptionNumber""    TEXT NOT NULL,
+	            ""PricingProfile""    TEXT NOT NULL,
+	            ""PaymentTypes""  TEXT NOT NULL,
+	            ""CanCharge"" INTEGER NOT NULL,
+	            ""CreditLimit""   REAL NOT NULL,
+	            ""AccountBalance""    REAL NOT NULL,
+	            ""PhoneNumber""   TEXT NOT NULL,
+	            ""FaxNumber"" TEXT NOT NULL,
+	            ""BillingAddress""    TEXT NOT NULL,
+	            ""ShippingAddress""   TEXT NOT NULL,
+	            ""InvoiceMessage""    TEXT,
+	            PRIMARY KEY(""CustomerNumber"")
+                )";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Customers (""CustomerName"", ""CustomerNumber"", ""TaxExempt"", ""TaxExemptionNumber"", ""PricingProfile"", ""PaymentTypes"", ""CanCharge"", ""CreditLimit"", ""AccountBalance"", ""PhoneNumber"", ""FaxNumber"", ""BillingAddress"", ""ShippingAddress"", ""InvoiceMessage"") 
+                VALUES ('Cash Sale', '0', '0', '0', 'GREEN', 'Cash,Check,PaymentCard,Venmo,CashApp,Paypal', '0', '0.0', '0.0', '870-279-1334', '0', '1002 N Walters Ave, Dierks, AR, 71833, USA', '206 Main Ave, Dierks, AR, 71833, USA', '');";
+                command.ExecuteNonQuery();
+
+            }
+
+            if (!TableExists(sqlite_conn, "Employees"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Employees"" (
+                ""EmployeeNumber""    INTEGER NOT NULL UNIQUE,
+                ""FullName""  TEXT NOT NULL,
+	            ""Username""  TEXT NOT NULL,
+	            ""Position""  TEXT NOT NULL,
+	            ""BirthDate"" TEXT NOT NULL,
+	            ""HireDate""  TEXT NOT NULL,
+	            ""TerminationDate""   TEXT NOT NULL,
+	            ""Permissions""   TEXT NOT NULL,
+	            ""StartupScreen"" INTEGER NOT NULL,
+	            ""Commissioned""  INTEGER NOT NULL,
+	            ""CommissionRate""    REAL,
+	            ""Waged"" INTEGER NOT NULL,
+	            ""HourlyWage""    REAL,
+	            ""PayPeriod"" INTEGER NOT NULL,
+	            ""PasswordHash""  BLOB NOT NULL,
+	            PRIMARY KEY(""EmployeeNumber"")
+                )";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Employees (""EmployeeNumber"", ""FullName"", ""Username"", ""Position"", ""BirthDate"", ""HireDate"", ""TerminationDate"", ""Permissions"", ""StartupScreen"", ""Commissioned"", ""CommissionRate"", ""Waged"", ""HourlyWage"", ""PayPeriod"", ""PasswordHash"") 
+                VALUES ('0', 'Administrator', 'admin', 'Administrator', '01/01/1979', '01/01/1979', '', 'ALL', '0', '0', '', '0', '', '0', X'5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9');";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "GlobalProperties"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""GlobalProperties"" (
+                ""ID""    INTEGER NOT NULL UNIQUE,
+                ""Key""   TEXT NOT NULL UNIQUE,
+                ""Value"" TEXT NOT NULL,
+	            PRIMARY KEY(""ID"")
+                )";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES ('1', 'Store Name', 'Fish N Munition');
+                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('2', 'Store Address', '206 Main Ave, Dierks, AR, 71833, USA');
+                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('3', 'Store Phone Number', '870-279-1334');
+                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('4', 'Store Alternate Phone Number', '870-279-7192');
+                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('5', 'Tax 1 Rate', '0.1025');
+                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('6', 'Tax 2 Rate', '0.0000');
+                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('7', 'Apply Tax 1', '1');
+                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('8', 'Apply Tax 2', '0');
+                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('9', 'Tax 2 Taxes Tax 1', '0');
+                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('10', 'Payment Types Available', 'Cash,Charge,PaymentCard,Paypal,Venmo,CashApp,Check');
+                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('11', 'Store Number', '000028500');
+                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('12', 'Mailing Address', '1002 N Walters Ave, Dierks, AR, 71833, USA'); ";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "InvoiceItems"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""InvoiceItems"" (
+                ""InvoiceNumber"" INTEGER NOT NULL,
+	            ""ItemNumber""    TEXT NOT NULL,
+	            ""ProductLine""   TEXT NOT NULL,
+	            ""ItemDescription""   TEXT,
+	            ""Price"" REAL NOT NULL,
+	            ""ListPrice"" REAL NOT NULL,
+	            ""Quantity""  REAL NOT NULL,
+	            ""Total"" REAL NOT NULL,
+	            ""PriceCode"" TEXT NOT NULL,
+	            ""Serialized""    INTEGER NOT NULL,
+	            ""SerialNumber""  TEXT,
+	            ""AgeRestricted"" INTEGER NOT NULL,
+	            ""MinimumAge""    INTEGER,
+	            ""Taxed"" INTEGER NOT NULL,
+	            ""InvoiceCodes""  TEXT,
+	            ""GUID""  TEXT NOT NULL UNIQUE,
+                ""Cost""  REAL,
+	            PRIMARY KEY(""GUID"")
+                )";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "Invoices"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Invoices"" (
+                ""InvoiceNumber"" INTEGER NOT NULL UNIQUE,
+                ""Subtotal""  REAL NOT NULL,
+	            ""TaxableTotal""  REAL NOT NULL,
+	            ""TaxRate""   REAL NOT NULL,
+	            ""TaxAmount"" REAL NOT NULL,
+	            ""Total"" REAL NOT NULL,
+	            ""TotalPayments"" REAL NOT NULL,
+	            ""AgeRestricted"" INTEGER NOT NULL,
+	            ""CustomerBirthdate"" TEXT,
+	            ""Attention"" TEXT,
+	            ""PO""    TEXT,
+	            ""Message""   TEXT,
+	            ""SavedInvoice""  INTEGER NOT NULL,
+	            ""SavedInvoiceTime""  TEXT,
+	            ""InvoiceCreationTime""   TEXT,
+	            ""InvoiceFinalizedTime""  TEXT,
+	            ""Finalized"" INTEGER NOT NULL,
+	            ""Voided""    INTEGER NOT NULL,
+	            ""CustomerNumber""    INTEGER NOT NULL,
+	            ""EmployeeNumber""    INTEGER NOT NULL,
+	            ""Cost""  REAL,
+	            ""Profit""    REAL,
+	            PRIMARY KEY(""InvoiceNumber"")
+                )";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "Items"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Items"" (
+                ""ProductLine""   TEXT NOT NULL,
+	            ""ItemNumber""    TEXT NOT NULL,
+	            ""ItemName""  TEXT,
+	            ""LongDescription""   TEXT,
+	            ""Supplier""  TEXT,
+	            ""GroupCode"" INTEGER,
+	            ""VelocityCode""  INTEGER,
+	            ""PreviousYearVelocityCode""  INTEGER,
+	            ""ItemsPerContainer"" INTEGER,
+	            ""StandardPackage""   INTEGER,
+	            ""DateStocked""   TEXT,
+	            ""DateLastReceipt""   TEXT,
+	            ""Minimum""   REAL,
+	            ""Maximum""   REAL,
+	            ""OnHandQuantity""    REAL,
+	            ""WIPQuantity""   REAL,
+	            ""OnOrderQuantity""   REAL,
+	            ""BackorderQuantity"" REAL,
+	            ""DaysOnOrder""   INTEGER,
+	            ""DaysOnBackOrder""   INTEGER,
+	            ""ListPrice"" REAL,
+	            ""RedPrice""  REAL,
+	            ""YellowPrice""   REAL,
+	            ""GreenPrice""    REAL,
+	            ""PinkPrice"" REAL,
+	            ""BluePrice"" REAL,
+	            ""ReplacementCost""   REAL,
+	            ""AverageCost""   REAL,
+	            ""Taxed"" INTEGER,
+	            ""AgeRestricted"" INTEGER,
+	            ""MinimumAge""    INTEGER,
+	            ""LocationCode""  INTEGER,
+	            ""Serialized""    INTEGER,
+	            ""Category""  TEXT,
+	            ""SKU""   TEXT,
+	            ""LastLabelDate"" TEXT,
+	            ""LastLabelPrice""    REAL
+                )";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                    @"INSERT INTO Items (""ProductLine"", ""ItemNumber"", ""ItemName"", ""LongDescription"", ""Supplier"", ""GroupCode"", ""VelocityCode"", ""PreviousYearVelocityCode"", ""ItemsPerContainer"", ""StandardPackage"", ""DateStocked"", ""DateLastReceipt"", ""Minimum"", ""Maximum"", ""OnHandQuantity"", ""WIPQuantity"", ""OnOrderQuantity"", ""BackorderQuantity"", ""DaysOnOrder"", ""DaysOnBackOrder"", ""ListPrice"", ""RedPrice"", ""YellowPrice"", ""GreenPrice"", ""PinkPrice"", ""BluePrice"", ""ReplacementCost"", ""AverageCost"", ""Taxed"", ""AgeRestricted"", ""MinimumAge"", ""LocationCode"", ""Serialized"", ""Category"", ""SKU"", ""LastLabelDate"", ""LastLabelPrice"") 
+                    VALUES ('XXX', 'xxx', 'xxx', 'xxx', 'Default', '0', '0', '0', '0', '0', '6/11/2022 7:43:28 PM', '6/11/2022 7:43:28 PM', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0', '0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '1', '0', '0', '0', '0', 'Etc', 'xxx', '', '');";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "Payments"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Payments"" (
+                ""InvoiceNumber"" INTEGER NOT NULL,
+	            ""ID""    BLOB NOT NULL UNIQUE,
+                ""PaymentType""   TEXT NOT NULL,
+	            ""PaymentAmount"" REAL NOT NULL,
+	            PRIMARY KEY(""ID"")
+                )";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "ProductLines"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""ProductLines"" (
+                ""ProductLine""   TEXT NOT NULL,
+	            ""ID""    INTEGER NOT NULL,
+	            ""DefaultGroupCode""  INTEGER,
+	            PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO ProductLines (""ProductLine"", ""ID"", ""DefaultGroupCode"") VALUES ('XXX', '14', '');";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "PurchaseOrderItems"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""PurchaseOrderItems"" (
+                ""PONumber""  INTEGER NOT NULL,
+	            ""ID""    BLOB NOT NULL UNIQUE,
+                ""ItemNumber""    TEXT NOT NULL,
+	            ""ProductLine""   TEXT NOT NULL,
+	            ""Quantity""  REAL NOT NULL,
+	            ""Cost""  REAL NOT NULL,
+	            ""Price"" REAL NOT NULL,
+	            PRIMARY KEY(""ID"")
+                )";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "PurchaseOrders"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""PurchaseOrders"" (
+                ""PONumber""  INTEGER NOT NULL,
+	            ""TotalCost"" REAL NOT NULL,
+	            ""TotalItems""    REAL NOT NULL,
+	            ""AssignedCheckIn""   INTEGER,
+	            ""Supplier""  TEXT,
+	            ""Finalized"" INTEGER NOT NULL,
+	            ""ShippingCost""  REAL,
+	            PRIMARY KEY(""PONumber"")
+                )";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "Reports"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Reports"" (
+                ""ReportName""    TEXT NOT NULL,
+	            ""ReportShortCode""   TEXT NOT NULL,
+	            ""DataSource""    TEXT NOT NULL,
+	            ""Conditions""    TEXT NOT NULL,
+	            ""Fields""    TEXT NOT NULL,
+	            ""Totals""    TEXT NOT NULL,
+	            PRIMARY KEY(""ReportShortCode"")
+                )";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "SerialNumbers"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""SerialNumbers"" (
+                ""ItemNumber""    TEXT NOT NULL,
+	            ""ProductLine""   TEXT NOT NULL,
+	            ""SerialNumber""  TEXT NOT NULL,
+	            ""ID""    REAL NOT NULL,
+	            PRIMARY KEY(""ID"")
+                )";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "ShortcutMenus"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""ShortcutMenus"" (
+                ""ID""    INTEGER NOT NULL UNIQUE,
+                ""MenuName""  TEXT NOT NULL,
+	            ""MenuItems"" TEXT NOT NULL,
+	            ""ParentMenu""    TEXT NOT NULL,
+	            PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "Suppliers"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Suppliers"" (
+                ""Supplier""  TEXT NOT NULL,
+	            ""LastOrderDate"" TEXT,
+	            PRIMARY KEY(""Supplier"")
+                )";
+                command.ExecuteNonQuery();
+            }
+
+            CloseConnection();
+        }
+
+        public static bool TableExists(SQLiteConnection openConnection, string tableName)
+        {
+            var sql =
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='" + tableName + "';";
+            if (openConnection.State == System.Data.ConnectionState.Open)
+            {
+                SQLiteCommand command = new SQLiteCommand(sql, openConnection);
+                SQLiteDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+                throw new System.ArgumentException("Data.ConnectionState must be open");
+            }
         }
 
         public static string SqlCheckEmployee(string input)

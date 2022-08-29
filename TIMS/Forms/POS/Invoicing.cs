@@ -49,12 +49,14 @@ namespace TIMS.Forms
             customerNoTB.Enabled = true;
             customerNoTB.Focus();
 
-            foreach (ItemShortcutMenu menu in Communication.RetrieveShortcutMenus())
-            {
-                ToolStripMenuItem menuItem = (ToolStripMenuItem)shortcutsToolStripMenuItem.DropDownItems.Add(menu.menuName);
-                foreach (Item item in menu.menuItems)
-                    menuItem.DropDownItems.Add(item.productLine + "|" + item.itemNumber + " - " + item.itemName).Click += AddItemFromShortcutMenu;
-            }
+            List<ItemShortcutMenu> iscm = Communication.RetrieveShortcutMenus();
+            if (iscm != null)
+                foreach (ItemShortcutMenu menu in Communication.RetrieveShortcutMenus())
+                {
+                    ToolStripMenuItem menuItem = (ToolStripMenuItem)shortcutsToolStripMenuItem.DropDownItems.Add(menu.menuName);
+                    foreach (Item item in menu.menuItems)
+                        menuItem.DropDownItems.Add(item.productLine + "|" + item.itemNumber + " - " + item.itemName).Click += AddItemFromShortcutMenu;
+                }
             shortcutsToolStripMenuItem.Enabled = false;
 
 
