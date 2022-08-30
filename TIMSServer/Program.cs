@@ -10,7 +10,7 @@ namespace TIMSServer
     {
         public static int alertLevel = 3;
 
-        /*
+        /* Legacy Code
         static void Main()
         {
             Customer cust = new Customer();
@@ -255,7 +255,15 @@ namespace TIMSServer
 
         static void Main()
         {
-            sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Pooling = true; Max Pool Size = 100; Compress = True; ");
+            if (!File.Exists("database.db"))
+            {
+                sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Pooling = true; Max Pool Size = 100; Compress = True; ");
+                sqlite_conn.SetPassword("3nCryqtEdT!MSPa$$w0rdFoRrev!tAc0m");
+            }
+            else
+            {
+                sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Pooling = true; Max Pool Size = 100; Compress = True; Password = 3nCryqtEdT!MSPa$$w0rdFoRrev!tAc0m");
+            }
             OpenConnection();
             CloseConnection();
             CreateDatabase();
@@ -294,6 +302,7 @@ namespace TIMSServer
                 //managerSite.Start();
 
                 Console.WriteLine("Server is open for connections.");
+                Console.WriteLine(host.Description.Endpoints[0].Address.ToString());
                 Console.WriteLine("Press a key to close.");
                 Console.ReadKey();
                 //managerSite.Stop();
@@ -751,6 +760,58 @@ namespace TIMSServer
 	            PRIMARY KEY(""ReportShortCode"")
                 )";
                 command.ExecuteNonQuery();
+
+                #region Default Reports
+                command.CommandText =
+                @"INSERT INTO Reports (""ReportName"", ""ReportShortCode"", ""DataSource"", ""Conditions"", ""Fields"", ""Totals"") 
+                VALUES ('Invoice Sales', 
+                'COM150', 
+                'Invoices', 
+                'InvoiceNumber > 1', 
+                'InvoiceNumber|Subtotal|TaxAmount|Total|TotalPayments|CustomerNumber|EmployeeNumber', 
+                'Subtotal|TaxAmount|Total|TotalPayments');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Reports (""ReportName"", ""ReportShortCode"", ""DataSource"", ""Conditions"", ""Fields"", ""Totals"") 
+                VALUES ('On-Hand Inventory Low Report', 
+                'STLO', 
+                'Items', 
+                'OnHandQuantity <= Minimum|Maximum > 0', 
+                'ProductLine|ItemNumber|ItemName|Minimum|Maximum|OnHandQuantity', 
+                '');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Reports (""ReportName"", ""ReportShortCode"", ""DataSource"", ""Conditions"", ""Fields"", ""Totals"") 
+                VALUES ('Invoice Profit and Revenue Date Span Report', 
+                'COM160', 
+                'Invoices', 
+                'InvoiceFinalizedTime <= 6/1/2022|InvoiceFinalizedTime >= 5/1/2022', 
+                'InvoiceNumber|Subtotal|TaxAmount|Total|CustomerNumber|EmployeeNumber', 
+                'Subtotal|TaxAmount|Total');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Reports (""ReportName"", ""ReportShortCode"", ""DataSource"", ""Conditions"", ""Fields"", ""Totals"") 
+                VALUES ('Daily Sales and Transactions Report', 
+                'COM170', 
+                'Invoices', 
+                'InvoiceFinalizedTime >= DateTime.Today|InvoiceFinalizedTime <= DateTime.Today', 
+                'InvoiceNumber|Subtotal|TaxableTotal|TaxAmount|Total|TotalPayments', 
+                'Subtotal|TaxableTotal|TaxAmount|Total|TotalPayments');";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Reports (""ReportName"", ""ReportShortCode"", ""DataSource"", ""Conditions"", ""Fields"", ""Totals"") 
+                VALUES ('Daily Sales and Transactions Report', 
+                'COM180', 
+                'Invoices', 
+                'InvoiceFinalizedTime >= DateTime.Today|InvoiceFinalizedTime <= DateTime.Today', 
+                'InvoiceNumber|Subtotal|TaxableTotal|TaxAmount|Total|TotalPayments|Cost|Profit', 
+                'Subtotal|TaxAmount|Total|TotalPayments|Cost|Profit');";
+                command.ExecuteNonQuery();
+                #endregion
             }
 
             if (!TableExists(sqlite_conn, "SerialNumbers"))

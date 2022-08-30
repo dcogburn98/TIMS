@@ -458,6 +458,7 @@ namespace TIMS.Forms
             Communication.SaveReleasedInvoice(invoice);
 
             #region Accounting Transactions
+
             List<Transaction> salesTransactions = new List<Transaction>();
             List<Transaction> salesTaxTransactions = new List<Transaction>();
             Transaction inventoryTransaction = null;

@@ -56,6 +56,7 @@ namespace TIMSServer
         }
         public Employee Login(string user, byte[] pass)
         {
+            Console.WriteLine("Login Called");
             //System.Threading.Thread.Sleep(1000); Uncomment before release
             Employee e = new Employee();
 
