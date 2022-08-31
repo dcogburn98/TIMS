@@ -29,6 +29,7 @@ namespace TIMSServer
         
         public string CheckEmployee(string input)
         {
+            Console.WriteLine("Validating employee: " + input);
             if (!int.TryParse(input, out int v))
                 input = "'" + input + "'";
             string value = null;
@@ -56,7 +57,7 @@ namespace TIMSServer
         }
         public Employee Login(string user, byte[] pass)
         {
-            Console.WriteLine("Login Called");
+            Console.WriteLine("Login Called for user: " + user);
             //System.Threading.Thread.Sleep(1000); Uncomment before release
             Employee e = new Employee();
 
@@ -129,6 +130,7 @@ namespace TIMSServer
         }
         public Employee RetrieveEmployee(string employeeNumber)
         {
+            Console.WriteLine("Information retrieved for employee: " + employeeNumber);
             Employee e = new Employee();
             Program.OpenConnection();
 

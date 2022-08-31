@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Data.SQLite;
 using System.ServiceModel;
+using System.Net;
+using System.Net.Http;
+using System.Collections.Generic;
 using Microsoft.Web.Administration;
 using System.IO;
 
@@ -8,6 +11,7 @@ namespace TIMSServer
 {
     class Program
     {
+        private static readonly HttpClient client = new HttpClient();
         public static int alertLevel = 3;
 
         /* Legacy Code
@@ -255,15 +259,8 @@ namespace TIMSServer
 
         static void Main()
         {
-            if (!File.Exists("database.db"))
-            {
-                sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Pooling = true; Max Pool Size = 100; Compress = True; ");
-                sqlite_conn.SetPassword("3nCryqtEdT!MSPa$$w0rdFoRrev!tAc0m");
-            }
-            else
-            {
-                sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Pooling = true; Max Pool Size = 100; Compress = True; Password = 3nCryqtEdT!MSPa$$w0rdFoRrev!tAc0m");
-            }
+            sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Pooling = true; Max Pool Size = 100; Compress = True; Password = 3nCryqtEdT!MSPa$$w0rdFoRrev!tAc0m");
+
             OpenConnection();
             CloseConnection();
             CreateDatabase();
@@ -286,11 +283,11 @@ namespace TIMSServer
                 //}
 
                 //ServerManager manager = new ServerManager();
-                
+
                 //if (manager.Sites.Count > 0)
                 //    manager.Sites.Clear();
                 //Site managerSite = manager.Sites.Add(name + "Manager", "http", "*:9842:", path);
-                //Site shoppingSite = manager.Sites.Add(name + "Website", "http", "*:8080:*", path);
+                ////Site shoppingSite = manager.Sites.Add(name + "Website", "http", "*:8080:*", path);
 
                 //managerSite.Applications.Clear();
                 //Application managerApplication = managerSite.Applications.Add("/", "C:\\Users\\Blake\\source\\repos\\dcogburn98\\TIMS\\TIMSServerManager\\");
@@ -301,6 +298,7 @@ namespace TIMSServer
                 //Console.WriteLine("Site " + name + " added to ApplicationHost.config file.");
                 //managerSite.Start();
 
+                GetTiers();
                 Console.WriteLine("Server is open for connections.");
                 Console.WriteLine(host.Description.Endpoints[0].Address.ToString());
                 Console.WriteLine("Press a key to close.");
@@ -872,6 +870,31 @@ namespace TIMSServer
             {
                 throw new System.ArgumentException("Data.ConnectionState must be open");
             }
+        }
+
+        public static void GetTiers()
+        {
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create("https://psapi.cardknox.com/boarding/v1/GetTierNames");
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+
+            using (StreamWriter streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                string json =
+                  @"{
+                        ""apiKey"": ""revitacomdevbaa4881ad5524244b867e76344f10645""
+                    }";
+
+                streamWriter.Write(json);
+            }
+
+            string result = String.Empty;
+            HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (StreamReader streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                result = streamReader.ReadToEnd();
+            }
+            Console.WriteLine(result);
         }
 
         public static string SqlCheckEmployee(string input)

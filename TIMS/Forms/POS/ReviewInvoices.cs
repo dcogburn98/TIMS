@@ -262,21 +262,22 @@ namespace TIMS.Forms.POS
             if (tabControl1.TabPages.Count == 1)
                 tabControl1.TabPages.Add(tabPage2);
 
-            foreach (Invoice inv in invoices)
-            {
-                int row = dataGridView1.Rows.Add();
-                dataGridView1.Rows[row].Cells[0].Value = inv.invoiceFinalizedTime.ToString("MM/dd/yyyy hh:mm tt");
-                dataGridView1.Rows[row].Cells[1].Value = inv.invoiceNumber;
-                dataGridView1.Rows[row].Cells[2].Value = inv.customer.customerNumber + " " + inv.customer.customerName;
-                dataGridView1.Rows[row].Cells[3].Value = inv.employee.employeeNumber;
-                dataGridView1.Rows[row].Cells[4].Value = inv.total.ToString("C");
-                string payments = "";
-                foreach (Payment p in inv.payments)
-                    payments += p.paymentType.ToString() + ", ";
-                payments = payments.Trim(' ');
-                payments = payments.Trim(',');
-                dataGridView1.Rows[row].Cells[5].Value = payments;
-            }
+            if (invoices != null)
+                foreach (Invoice inv in invoices)
+                {
+                    int row = dataGridView1.Rows.Add();
+                    dataGridView1.Rows[row].Cells[0].Value = inv.invoiceFinalizedTime.ToString("MM/dd/yyyy hh:mm tt");
+                    dataGridView1.Rows[row].Cells[1].Value = inv.invoiceNumber;
+                    dataGridView1.Rows[row].Cells[2].Value = inv.customer.customerNumber + " " + inv.customer.customerName;
+                    dataGridView1.Rows[row].Cells[3].Value = inv.employee.employeeNumber;
+                    dataGridView1.Rows[row].Cells[4].Value = inv.total.ToString("C");
+                    string payments = "";
+                    foreach (Payment p in inv.payments)
+                        payments += p.paymentType.ToString() + ", ";
+                    payments = payments.Trim(' ');
+                    payments = payments.Trim(',');
+                    dataGridView1.Rows[row].Cells[5].Value = payments;
+                }
         }
 
         private void dataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
