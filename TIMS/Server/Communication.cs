@@ -20,7 +20,6 @@ namespace TIMS.Server
             channelFactory = new ChannelFactory<ITIMSServiceModel>("TIMSServerEndpoint", newAddress);
         }
 
-
         #region Employees
         public static string CheckEmployee(string input)
         {
@@ -122,14 +121,6 @@ namespace TIMS.Server
         {
             return proxy.RetrieveLabelOutOfDateItems();
         }
-        public static void SaveReleasedInvoice(Invoice inv)
-        {
-            proxy.SaveReleasedInvoice(inv);
-        }
-        public static int RetrieveNextInvoiceNumber()
-        {
-            return proxy.RetrieveNextInvoiceNumber();
-        }
 
         #endregion
 
@@ -156,6 +147,21 @@ namespace TIMS.Server
         public static List<Invoice> RetrieveInvoicesByCriteria(string[] criteria)
         {
             return proxy.RetrieveInvoicesByCriteria(criteria);
+        }
+
+        public static void SaveReleasedInvoice(Invoice inv)
+        {
+            proxy.SaveReleasedInvoice(inv);
+        }
+
+        public static int RetrieveNextInvoiceNumber()
+        {
+            return proxy.RetrieveNextInvoiceNumber();
+        }
+
+        public static Payment InitiatePayment(Invoice inv, decimal paymentAmount)
+        {
+            return proxy.InitiatePayment(inv, paymentAmount);
         }
         #endregion
 

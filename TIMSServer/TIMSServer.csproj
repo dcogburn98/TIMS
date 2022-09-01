@@ -32,16 +32,32 @@
     <Reference Include="Microsoft.Web.Management">
       <HintPath>..\..\..\..\..\..\..\Windows\System32\inetsrv\Microsoft.Web.Management.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\..\OneDrive\Desktop\PaymentEngine\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\..\..\..\..\OneDrive\Desktop\PaymentEngine\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="PaymentEngine">
+      <HintPath>..\..\..\..\..\OneDrive\Desktop\PaymentEngine\PaymentEngine.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.SQLite">
       <HintPath>bin\Debug\net472\System.Data.SQLite.dll</HintPath>
       <SpecificVersion>false</SpecificVersion>
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="xCore">
+      <HintPath>..\..\..\..\..\OneDrive\Desktop\PaymentEngine\xCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="ServerManager\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <HarpyFiles Remove="PaymentCard.cs" />
   </ItemGroup>
 
 </Project>

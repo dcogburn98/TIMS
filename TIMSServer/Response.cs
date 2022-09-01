@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TIMSServer
+namespace TIMSServerLegacy
 {
     public class Response
     {

@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using TIMS.Server;
 using TIMSServerModel;
 
+using PaymentEngine.xTransaction;
+
 namespace TIMS.Forms
 {
     public partial class Checkout : Form
@@ -75,7 +77,7 @@ namespace TIMS.Forms
                 itemCount++;
             }
 
-            invoice.taxRate = 0.1025m;
+            invoice.taxRate = decimal.Parse(Communication.RetrievePropertyString("Tax 1 Rate"));
             invoice.taxAmount = invoice.taxableTotal * invoice.taxRate;
             invoice.total = Math.Round(invoice.subtotal + invoice.taxAmount, 2);
 
@@ -99,7 +101,6 @@ namespace TIMS.Forms
         {
             paymentTypeLB.Enabled = false;
             if ((string)paymentTypeLB.SelectedItem == "Cash" ||
-                (string)paymentTypeLB.SelectedItem == "Payment Card" ||
                 (string)paymentTypeLB.SelectedItem == "Paypal" ||
                 (string)paymentTypeLB.SelectedItem == "CashApp" ||
                 (string)paymentTypeLB.SelectedItem == "Venmo")
@@ -141,6 +142,17 @@ namespace TIMS.Forms
                 finalizeBtn.Focus();
                 remainingBalanceTB.Text = "$0.00";
             }
+            else if ((string)paymentTypeLB.SelectedItem == "Payment Card")
+            {
+                label12.Visible = true;
+                paymentAmountTB.Visible = true;
+                acceptPaymentBtn.Enabled = true;
+                acceptPaymentBtn.Visible = true;
+                cancelPaymentBtn.Visible = true;
+                paymentAmountTB.Focus();
+                paymentAmountTB.Text = (invoice.total - invoice.totalPayments).ToString();
+                paymentAmountTB.SelectAll();
+            }
         }
 
         private void AddPayment()
@@ -155,9 +167,26 @@ namespace TIMS.Forms
                     invoice.totalPayments += amt;
                     break;
                 case "Payment Card":
-                    paymentsLB.Items.Add("Payment Card: " + amt.ToString("C"));
-                    invoice.payments.Add(new Payment() { paymentAmount = amt, paymentType = Payment.PaymentTypes.PaymentCard });
-                    invoice.totalPayments += amt;
+                    if (Communication.RetrievePropertyString("Integrated Card Payments") == "1")
+                    {
+                        Payment p = Communication.InitiatePayment(invoice, amt);
+                        if (p.cardResponse.Approved())
+                        {
+                            paymentsLB.Items.Add("Payment Card: " + p.paymentAmount.ToString("C"));
+                            invoice.payments.Add(p);
+                            invoice.totalPayments += p.paymentAmount;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Payment declined. Please try again or request a different form of payment.");
+                        }
+                    }
+                    else
+                    {
+                        paymentsLB.Items.Add("Payment Card: " + amt.ToString("C"));
+                        invoice.payments.Add(new Payment() { paymentAmount = amt, paymentType = Payment.PaymentTypes.PaymentCard });
+                        invoice.totalPayments += amt;
+                    }
                     break;
                 case "Paypal":
                     paymentsLB.Items.Add("Paypal: " + amt.ToString("C"));

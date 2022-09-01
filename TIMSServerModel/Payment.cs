@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using PaymentEngine.xTransaction;
+
 namespace TIMSServerModel
 {
     public class Payment
@@ -20,6 +22,7 @@ namespace TIMSServerModel
         }
         public PaymentTypes paymentType;
         public decimal paymentAmount;
+        public Response cardResponse;
         public Guid ID = Guid.NewGuid();
     }
 }

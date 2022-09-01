@@ -298,7 +298,7 @@ namespace TIMSServer
                 //Console.WriteLine("Site " + name + " added to ApplicationHost.config file.");
                 //managerSite.Start();
 
-                GetTiers();
+                //GetTiers();
                 Console.WriteLine("Server is open for connections.");
                 Console.WriteLine(host.Description.Endpoints[0].Address.ToString());
                 Console.WriteLine("Press a key to close.");
@@ -573,7 +573,8 @@ namespace TIMSServer
                 INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('9', 'Tax 2 Taxes Tax 1', '0');
                 INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('10', 'Payment Types Available', 'Cash,Charge,PaymentCard,Paypal,Venmo,CashApp,Check');
                 INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('11', 'Store Number', '000028500');
-                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('12', 'Mailing Address', '1002 N Walters Ave, Dierks, AR, 71833, USA'); ";
+                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('12', 'Mailing Address', '1002 N Walters Ave, Dierks, AR, 71833, USA'); 
+                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('13', 'Integrated Card Payments', '1');";
                 command.ExecuteNonQuery();
             }
 

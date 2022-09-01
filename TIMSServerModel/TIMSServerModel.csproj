@@ -31,6 +31,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\OneDrive\Desktop\PaymentEngine\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\..\..\..\..\OneDrive\Desktop\PaymentEngine\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="PaymentEngine">
+      <HintPath>..\..\..\..\..\OneDrive\Desktop\PaymentEngine\PaymentEngine.dll</HintPath>
+    </Reference>
     <Reference Include="PdfSharp-gdi, Version=1.51.5185.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp-gdi.1.51.5185-beta\lib\net20\PdfSharp-gdi.dll</HintPath>
     </Reference>
@@ -48,6 +58,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="xCore">
+      <HintPath>..\..\..\..\..\OneDrive\Desktop\PaymentEngine\xCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
