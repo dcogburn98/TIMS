@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using PaymentEngine.xTransaction;
+using System.IO;
+using System.Text;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Text;
 
 using TIMSServerModel;
@@ -59,6 +62,38 @@ namespace TIMSServer
         public Employee Login(string user, byte[] pass)
         {
             Console.WriteLine("Login Called for user: " + user);
+            if (!DeviceExists(GetClientAddress()))
+            {
+                Console.WriteLine("Terminal (" + GetClientAddress() + ") being used to login for user \"" + user + "\" is not currently enrolled in the system. Please type \"accept\" + [Device Nickname] to enroll this terminal, otherwise type anything else.");
+                
+                
+                string input = Console.ReadLine();
+                if (input.Split(' ')[0].ToLower() == "accept")
+                {
+                    if (input.Split(' ').Length != 2)
+                    {
+                        Console.WriteLine("Please specify a nickname for this terminal: ");
+                        input = input + " " + Console.ReadLine();
+                    }
+                    Console.WriteLine("Enrolling device...");
+                    AddTerminal(GetClientAddress(), input.Split(' ')[1]);
+                    Console.WriteLine("Device Enrolled. Logging in.");
+                }
+                else
+                {
+                    Console.WriteLine("Device enrollment rejected. Please verify the origin of this connection, it could be malicious.");
+                    //if (!File.Exists("LoginAttempts.log")) { File.Create("LoginAttempts.log").Close(); }
+                    FileStream stream = File.Open("loginAttempts.log", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                    byte[] buffer = new byte[stream.Length];
+                    stream.Read(buffer, 0, (int)stream.Length);
+                    string text = Encoding.ASCII.GetString(buffer);
+                    byte[] data = Encoding.ASCII.GetBytes(text + "[" + DateTime.Now.ToString() + "] " + GetClientAddress() + "\n");
+                    stream.Write(new byte[0], 0, 0);
+                    stream.Write(data, 0, data.Length);
+                    stream.Close();
+                    return null;
+                }
+            }
             //System.Threading.Thread.Sleep(1000); Uncomment before release
             Employee e = new Employee();
 
@@ -1480,13 +1515,14 @@ namespace TIMSServer
             CloseConnection();
             return invNo;
         }
-        public Payment InitiatePayment(Invoice inv, decimal paymentAmount)
+        public Request InitiatePayment(Invoice inv, decimal paymentAmount)
         {
-            Payment payment = new Payment();
-            payment.cardResponse = PaymentCard.ProcessOutOfScope(inv, paymentAmount);
-            payment.paymentType = Payment.PaymentTypes.PaymentCard;
-            payment.paymentAmount = decimal.Parse(payment.cardResponse.xAuthAmount);
-            return payment;
+            return PaymentCard.ProcessOutOfScopeAsync(inv, paymentAmount);
+            //Payment payment = new Payment();
+            //payment.cardResponse = PaymentCard.ProcessOutOfScopeAsync(inv, paymentAmount);
+            //payment.paymentType = Payment.PaymentTypes.PaymentCard;
+            //payment.paymentAmount = decimal.Parse(payment.cardResponse.xAuthAmount == String.Empty ? "0" : payment.cardResponse.xAuthAmount);
+            //return payment;
         }
         
         #endregion
@@ -2293,7 +2329,53 @@ namespace TIMSServer
             CloseConnection();
         }
         #endregion
-    
-    
+
+        #region Devices
+        public bool DeviceExists(string address)
+        {
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT * FROM DEVICES WHERE IPADDRESS = $ADDR";
+            command.Parameters.Add(new SQLiteParameter("$ADDR", address));
+            SQLiteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return false;
+            }
+
+            CloseConnection();
+            return true;
+        }
+        public void AddTerminal(string address, string nickname)
+        {
+            OpenConnection();
+
+            SQLiteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "INSERT INTO DEVICES (DEVICETYPE, IPADDRESS, NICKNAME) VALUES ($TYPE, $ADDR, $NAME)";
+            command.Parameters.Add(new SQLiteParameter("$TYPE", "Terminal"));
+            command.Parameters.Add(new SQLiteParameter("$ADDR", address));
+            command.Parameters.Add(new SQLiteParameter("$NAME", nickname));
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+        }
+        #endregion
+
+        #region Misc
+        private string GetClientAddress()
+        {
+            // creating object of service when request comes   
+            OperationContext context = OperationContext.Current;
+            //Getting Incoming Message details   
+            MessageProperties prop = context.IncomingMessageProperties;
+            //Getting client endpoint details from message header   
+            RemoteEndpointMessageProperty endpoint = prop[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
+            return endpoint.Address;
+        }
+        #endregion
     }
 }

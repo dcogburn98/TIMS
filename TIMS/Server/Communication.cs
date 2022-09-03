@@ -4,6 +4,8 @@ using System.ServiceModel;
 
 using PdfSharp.Drawing;
 
+using PaymentEngine.xTransaction;
+
 using TIMSServerModel;
 
 namespace TIMS.Server
@@ -159,7 +161,7 @@ namespace TIMS.Server
             return proxy.RetrieveNextInvoiceNumber();
         }
 
-        public static Payment InitiatePayment(Invoice inv, decimal paymentAmount)
+        public static Request InitiatePayment(Invoice inv, decimal paymentAmount)
         {
             return proxy.InitiatePayment(inv, paymentAmount);
         }
@@ -289,6 +291,18 @@ namespace TIMS.Server
         public static void UpdateAccountBalance(int accountID, decimal newBalance)
         {
             proxy.UpdateAccountBalance(accountID, newBalance);
+        }
+        #endregion
+
+        #region Devices
+        public static bool DeviceExists(string address)
+        {
+            return proxy.DeviceExists(address);
+        }
+
+        public static void AddTerminal(string address, string nickname)
+        {
+            proxy.AddTerminal(address, nickname);
         }
         #endregion
     }

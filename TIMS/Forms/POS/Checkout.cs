@@ -41,20 +41,27 @@ namespace TIMS.Forms
             remainingBalanceTB.Text = invoice.total.ToString("C");
 
             #region Add Payment Types to list box
-            if (invoice.customer.availablePaymentTypes.Contains(Payment.PaymentTypes.Charge))
-                paymentTypeLB.Items.Add("Charge");
-            if (invoice.customer.availablePaymentTypes.Contains(Payment.PaymentTypes.Cash))
+            if (invoice.total != 0)
+            {
+                if (invoice.customer.availablePaymentTypes.Contains(Payment.PaymentTypes.Charge))
+                    paymentTypeLB.Items.Add("Charge");
+                if (invoice.customer.availablePaymentTypes.Contains(Payment.PaymentTypes.Cash))
+                    paymentTypeLB.Items.Add("Cash");
+                if (invoice.customer.availablePaymentTypes.Contains(Payment.PaymentTypes.Check))
+                    paymentTypeLB.Items.Add("Check");
+                if (invoice.customer.availablePaymentTypes.Contains(Payment.PaymentTypes.PaymentCard))
+                    paymentTypeLB.Items.Add("Payment Card");
+                if (invoice.customer.availablePaymentTypes.Contains(Payment.PaymentTypes.Paypal))
+                    paymentTypeLB.Items.Add("Paypal");
+                if (invoice.customer.availablePaymentTypes.Contains(Payment.PaymentTypes.CashApp))
+                    paymentTypeLB.Items.Add("CashApp");
+                if (invoice.customer.availablePaymentTypes.Contains(Payment.PaymentTypes.Venmo))
+                    paymentTypeLB.Items.Add("Venmo");
+            }
+            else
+            {
                 paymentTypeLB.Items.Add("Cash");
-            if (invoice.customer.availablePaymentTypes.Contains(Payment.PaymentTypes.Check))
-                paymentTypeLB.Items.Add("Check");
-            if (invoice.customer.availablePaymentTypes.Contains(Payment.PaymentTypes.PaymentCard))
-                paymentTypeLB.Items.Add("Payment Card");
-            if (invoice.customer.availablePaymentTypes.Contains(Payment.PaymentTypes.Paypal))
-                paymentTypeLB.Items.Add("Paypal");
-            if (invoice.customer.availablePaymentTypes.Contains(Payment.PaymentTypes.CashApp))
-                paymentTypeLB.Items.Add("CashApp");
-            if (invoice.customer.availablePaymentTypes.Contains(Payment.PaymentTypes.Venmo))
-                paymentTypeLB.Items.Add("Venmo");
+            }
             #endregion
         }
 
@@ -169,16 +176,47 @@ namespace TIMS.Forms
                 case "Payment Card":
                     if (Communication.RetrievePropertyString("Integrated Card Payments") == "1")
                     {
-                        Payment p = Communication.InitiatePayment(invoice, amt);
-                        if (p.cardResponse.Approved())
+                        Request MyRequest = Communication.InitiatePayment(invoice, amt);
+                        Response MyResponse = MyRequest.ProcessOutOfScope();
+                        if (MyResponse.xResult == "A")
                         {
-                            paymentsLB.Items.Add("Payment Card: " + p.paymentAmount.ToString("C"));
-                            invoice.payments.Add(p);
-                            invoice.totalPayments += p.paymentAmount;
+                            //Signature can be obtained via a parameter in the Manual function above (MyRequire_Signature = True) or in a separate command as shown below.
+                            if (MyResponse.xSignaturerRequired == true && string.IsNullOrEmpty(MyResponse.xSignature))
+                            {
+                                MyResponse.xSignature = MyRequest.GetSignature();
+                            }
+
+                            //Prompt for Email Address on a device
+                            string MyEmailAddress = MyRequest.Device_PromptForEmail();
+
+                            //Prompt for Phone Number on a device. Customer will be prompted to opt-in to receive promotions via text message. If they opt-in the phone number will be returned.
+                            string MyPhoneNumber_JSON = MyRequest.Device_PromptForPhone_JSON();
+                            string MyPhoneNumber_XML = MyRequest.Device_PromptForPhone_XML();
+
+                            //Prompt for Zip Code on a device
+                            string MyZipCode = MyRequest.Device_PromptForZip();
+                        }
+                        if (MyResponse.Approved())
+                        {
+                            if (MyResponse.xAuthAmount == "")
+                            {
+                                MessageBox.Show("An error has occurred.");
+                                break;
+                            }
+                            else
+                            {
+                                Payment p = new Payment();
+                                p.cardResponse = MyResponse;
+                                p.paymentAmount = decimal.Parse(MyResponse.xAuthAmount);
+                                p.paymentType = Payment.PaymentTypes.PaymentCard;
+                                paymentsLB.Items.Add("Payment Card: " + decimal.Parse(MyResponse.xAuthAmount).ToString("C"));
+                                invoice.payments.Add(p);
+                                invoice.totalPayments += decimal.Parse(MyResponse.xAuthAmount);
+                            }
                         }
                         else
                         {
-                            MessageBox.Show("Payment declined. Please try again or request a different form of payment.");
+                            MessageBox.Show(MyResponse.xError);
                         }
                     }
                     else

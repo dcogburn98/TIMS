@@ -62,7 +62,7 @@ namespace TIMSServer
             //120 Seconds
         }
 
-        public static Response ProcessOutOfScope(Invoice inv, decimal paymentAmount)
+        public static Request ProcessOutOfScopeAsync(Invoice inv, decimal paymentAmount)
         {
             Request MyRequest = new Request();
 
@@ -89,65 +89,19 @@ namespace TIMSServer
             MyRequest.EnableKeyedEntry = true;
 
             //To return control to the calling application after any device error, set to True
-            MyRequest.ExitFormOnDeviceError = false;
+            MyRequest.ExitFormOnDeviceError = true;
 
             //To enable silent mode and prevent the payment screen from showing, set to True
             MyRequest.EnableSilentMode = false;
 
-            //To allow cashier to have option of selecting a Stored Account Number, set to True
-            //Use Case: 
-            //   If application stores account numbers in a PCI compliant fashion, this feature will allow the cashier to select the Account on file.
-            //Message Format: 
-            //   Placeholder {0} will insert the masked card number (4xxxxxxxxxxx1111)
-            //   Placeholder {1} will insert the last 4 of the card number (1111)
-            //   Placeholders are optional
-            //   The "&" will create a keyboard shortcut using ALT + the letter following the ampersand.
-            //======================================================================
-            MyRequest.EnableStoredAccount = false;
-            //MyRequest.StoredAccount_Message = "Use {0} (ALT + &S)" 'Sample Message 1
-            //MyRequest.StoredAccount_Message = "Use Stored Card [ALT + &S]" 'Sample Message 2
-            //MyRequest.StoredAccount_Message = "{0} [ALT + &S]" 'Sample Message 3
-            //MyRequest.StoredAccount_Message = "ALT + &S Use Stored Card {1}" 'Sample Message 4
-            //MyRequest.xCardNum = "4444333322221111"
-            //MyRequest.xExp = "1229"
-
-
-            bool MyRequire_AVS = false; //Only affects keyed transactions
-            bool MyRequire_CVV = false; //Only affects keyed transactions
-            bool MyEnableDeviceInsertSwipeTap = true;
-            bool MyRequire_Pin = false; //TIP: Skip the signature prompt for small transactions by setting the Require_Signature parameter to false for those transactions.
-            bool MyRequire_Signature = false;
-            bool MyExitFormIfApproved = true; //Return control to the calling application if transaction is approved
-            bool MyExitFormIfNotApproved = false; //Return control to the calling application if transaction is not approved
-            Response MyResponse = MyRequest.Manual(MyRequire_AVS, MyRequire_CVV, MyEnableDeviceInsertSwipeTap, MyRequire_Pin, MyRequire_Signature, MyExitFormIfApproved, MyExitFormIfNotApproved, false);
-            if (MyResponse.xResult == "A")
-            {
-                //Signature can be obtained via a parameter in the Manual function above (MyRequire_Signature = True) or in a separate command as shown below.
-                if (MyResponse.xSignaturerRequired == true && string.IsNullOrEmpty(MyResponse.xSignature))
-                {
-                    MyResponse.xSignature = MyRequest.GetSignature();
-                }
-
-                //Prompt for Email Address on a device
-                string MyEmailAddress = MyRequest.Device_PromptForEmail();
-
-                //Prompt for Phone Number on a device. Customer will be prompted to opt-in to receive promotions via text message. If they opt-in the phone number will be returned.
-                string MyPhoneNumber_JSON = MyRequest.Device_PromptForPhone_JSON();
-                string MyPhoneNumber_XML = MyRequest.Device_PromptForPhone_XML();
-
-                //Prompt for Zip Code on a device
-                string MyZipCode = MyRequest.Device_PromptForZip();
-
-                //Receipt is split into separate parts to allow placement of each part on existing receipt
-                //Merchant Receipt
-                //MessageBox.Show(MyResponse.xReceiptHeader + MyResponse.xReceiptBody1 + MyResponse.xReceiptBody2_CVM + MyResponse.xReceiptBody3 + MyResponse.xReceiptFooterMerchant);
-                //Customer Receipt (xReceiptBody2_CVM does not need to be included on the cusotmer receipt)
-                //MessageBox.Show(MyResponse.xReceiptHeader + MyResponse.xReceiptBody1 + MyResponse.xReceiptBody3 + MyResponse.xReceiptFooterCustomer);
-                return MyResponse;
-            }
-            //Formatted Response
-            //MessageBox.Show(MyResponse.FormattedResponse());
-            return MyResponse;
+            MyRequest.RequireAVS = false; //Only affects keyed transactions
+            MyRequest.RequireCVV = false; //Only affects keyed transactions
+            MyRequest.EnableDeviceInsertSwipeTap = true;
+            MyRequest.EnableDevicePin = false;
+            MyRequest.EnableDeviceSignature = false;
+            MyRequest.ExitFormIfApproved = true;
+            MyRequest.ExitFormIfNotApproved = true;
+            return MyRequest;
         }
     }
 }

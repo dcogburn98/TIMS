@@ -6,6 +6,8 @@ using System.ServiceModel;
 using System.Text;
 using PdfSharp.Drawing;
 
+using PaymentEngine.xTransaction;
+
 namespace TIMSServerModel
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IEmployeeModel" in both code and config file together.
@@ -70,7 +72,7 @@ namespace TIMSServerModel
         [OperationContract]
         List<Invoice> RetrieveInvoicesByCriteria(string[] criteria);
         [OperationContract]
-        Payment InitiatePayment(Invoice inv, decimal paymentAmount);
+        Request InitiatePayment(Invoice inv, decimal paymentAmount);
         #endregion
 
         #region Customers
@@ -148,6 +150,13 @@ namespace TIMSServerModel
         void SaveTransaction(Transaction t);
         [OperationContract]
         void UpdateAccountBalance(int accountID, decimal newBalance);
+        #endregion
+
+        #region Devices
+        [OperationContract]
+        bool DeviceExists(string address);
+        [OperationContract]
+        void AddTerminal(string address, string nickname);
         #endregion
     }
 }

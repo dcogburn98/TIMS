@@ -850,6 +850,34 @@ namespace TIMSServer
                 command.ExecuteNonQuery();
             }
 
+            if (!TableExists(sqlite_conn, "DeviceAssignments"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""DeviceAssignments"" (
+                ""AssignmentID""  INTEGER NOT NULL,
+	            ""TerminalIP""    TEXT NOT NULL,
+	            ""ReceiptPrinterIP""  TEXT NOT NULL,
+	            ""InvoicePrinterIP""  TEXT NOT NULL,
+	            ""LineDisplayIP"" TEXT NOT NULL,
+	            ""CardReaderIP""  TEXT NOT NULL,
+	            PRIMARY KEY(""AssignmentID"" AUTOINCREMENT)
+                ); ";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "Devices"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Devices"" (
+                ""ID""    INTEGER NOT NULL,
+	            ""DeviceType""    INTEGER NOT NULL,
+	            ""IPAddress"" TEXT NOT NULL,
+                ""Nickname""	TEXT NOT NULL,
+                PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+            }
+
             CloseConnection();
         }
 
