@@ -22,12 +22,12 @@ namespace TIMSServer
         public static void LoadDeviceSettings(Request Request)
         {
             #region Device Type
-            Request.Settings.Device_Name = "";
+            //Request.Settings.Device_Name = "";
             //Request.Settings.Device_Name = "Verifone_Vx805" 'Non-EMV
             //Request.Settings.Device_Name = "Verifone_Vx805.4" 'EMV
 
             //Request.Settings.Device_Name = "Verifone_Mx915" 'Non-EMV
-            //Request.Settings.Device_Name = "Verifone_Mx915.4" 'EMV
+            Request.Settings.Device_Name = "Verifone_Mx915.4";
 
             //Request.Settings.Device_Name = "Verifone_Mx925" 'Non-EMV
             //Request.Settings.Device_Name = "Verifone_Mx925.4" 'EMV
@@ -51,8 +51,8 @@ namespace TIMSServer
             //======================================================================
             //Settings for IP Devices
             //======================================================================
-            Request.Settings.Device_IP_Address = "";
-            Request.Settings.Device_IP_Port = "";
+            Request.Settings.Device_IP_Address = "192.168.254.67";
+            Request.Settings.Device_IP_Port = "10760";
             #endregion
 
             //======================================================================

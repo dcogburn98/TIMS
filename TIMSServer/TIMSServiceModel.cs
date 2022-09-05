@@ -62,6 +62,7 @@ namespace TIMSServer
         public Employee Login(string user, byte[] pass)
         {
             Console.WriteLine("Login Called for user: " + user);
+            /*
             if (!DeviceExists(GetClientAddress()))
             {
                 Console.WriteLine("Terminal (" + GetClientAddress() + ") being used to login for user \"" + user + "\" is not currently enrolled in the system. Please type \"accept\" + [Device Nickname] to enroll this terminal, otherwise type anything else.");
@@ -94,6 +95,7 @@ namespace TIMSServer
                     return null;
                 }
             }
+            */
             //System.Threading.Thread.Sleep(1000); Uncomment before release
             Employee e = new Employee();
 

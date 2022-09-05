@@ -3,6 +3,7 @@ using System.Data.SQLite;
 using System.ServiceModel;
 using System.Net;
 using System.Net.Http;
+using ESCPOS_NET;
 using System.Collections.Generic;
 using Microsoft.Web.Administration;
 using System.IO;
@@ -299,6 +300,12 @@ namespace TIMSServer
                 //managerSite.Start();
 
                 //GetTiers();
+                // Ethernet or WiFi (This uses an Immediate Printer, no live paper status events, but is easier to use)
+                string hostnameOrIp = "192.168.254.65";
+                int port = 9100;
+                ImmediateNetworkPrinter printer = new ImmediateNetworkPrinter(new ImmediateNetworkPrinterSettings() { ConnectionString = $"{hostnameOrIp}:{port}", PrinterName = "TestPrinter" });
+                
+                
                 Console.WriteLine("Server is open for connections.");
                 Console.WriteLine(host.Description.Endpoints[0].Address.ToString());
                 Console.WriteLine("Press a key to close.");

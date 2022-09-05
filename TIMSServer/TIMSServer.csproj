@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ESCPOS_NET" Version="3.0.0" />
     <PackageReference Include="PDFsharp-gdi" Version="1.51.5185-beta" />
     <PackageReference Include="Stub.System.Data.SQLite.SEE" Version="1.0.116.1" />
   </ItemGroup>
@@ -33,13 +34,13 @@
       <HintPath>..\..\..\..\..\..\..\Windows\System32\inetsrv\Microsoft.Web.Management.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\..\OneDrive\Desktop\PaymentEngine\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\..\OneDrive\Desktop\TIMS Dev Stuff\PaymentEngine\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
-      <HintPath>..\..\..\..\..\OneDrive\Desktop\PaymentEngine\NLog.dll</HintPath>
+      <HintPath>..\..\..\..\..\OneDrive\Desktop\TIMS Dev Stuff\PaymentEngine\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PaymentEngine">
-      <HintPath>..\..\..\..\..\OneDrive\Desktop\PaymentEngine\PaymentEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\OneDrive\Desktop\TIMS Dev Stuff\PaymentEngine\PaymentEngine.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.SQLite">
       <HintPath>bin\Debug\net472\System.Data.SQLite.dll</HintPath>
@@ -48,7 +49,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="xCore">
-      <HintPath>..\..\..\..\..\OneDrive\Desktop\PaymentEngine\xCore.dll</HintPath>
+      <HintPath>..\..\..\..\..\OneDrive\Desktop\TIMS Dev Stuff\PaymentEngine\xCore.dll</HintPath>
     </Reference>
   </ItemGroup>
 
