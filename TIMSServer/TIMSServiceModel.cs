@@ -18,16 +18,17 @@ namespace TIMSServer
     public class TIMSServiceModel : ITIMSServiceModel
     {
         private static SQLiteConnection sqlite_conn = Program.sqlite_conn;
-
         private static void OpenConnection()
         {
             Program.OpenConnection();
         }
-
         private static void CloseConnection()
         {
             Program.CloseConnection();
         }
+
+        private List<AuthorizationKey> Keys = new List<AuthorizationKey>();
+        private AuthorizationKey BypassKey = AuthorizationKey.CreateBypassKey();
 
         #region Employees
         
@@ -62,6 +63,7 @@ namespace TIMSServer
         public Employee Login(string user, byte[] pass)
         {
             Console.WriteLine("Login Called for user: " + user);
+            #region GetIP
             /*
             if (!DeviceExists(GetClientAddress()))
             {
@@ -96,8 +98,15 @@ namespace TIMSServer
                 }
             }
             */
+            #endregion
             //System.Threading.Thread.Sleep(1000); Uncomment before release
             Employee e = new Employee();
+
+            #region Authorization Initialization
+            e.key = new AuthorizationKey();
+            AuthorizationKey copy = e.key;
+            Keys.Add(copy);
+            #endregion
 
             if (!int.TryParse(user, out int v))
                 user = "'" + user + "'";
@@ -164,6 +173,7 @@ namespace TIMSServer
             }
 
             Program.CloseConnection();
+            Keys.Find(el => el.ID == e.key.ID).Regenerate();
             return e;
         }
         public Employee RetrieveEmployee(string employeeNumber)
@@ -1102,9 +1112,26 @@ namespace TIMSServer
 
         #region Customers
 
-        public Customer CheckCustomerNumber(string custNo)
+        public Customer CheckCustomerNumber(string custNo, AuthorizationKey key)
         {
             Customer cust = new Customer();
+            #region Authorization Check
+            AuthorizationKey localKey = Keys.Find(el => el.ID == key.ID);
+            if (!localKey.Match(key))
+            {
+                cust.key = new AuthorizationKey();
+                cust.key.Success = false;
+                return cust;
+            }
+            else
+            {
+                cust.key = key;
+                cust.key.Success = true;
+                localKey.Regenerate();
+            }
+            #endregion
+
+            
             OpenConnection();
 
             SQLiteCommand sqlite_cmd;

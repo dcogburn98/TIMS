@@ -8,6 +8,8 @@ namespace TIMSServerModel
 {
     public class Customer
     {
+        public AuthorizationKey key;
+
         public string customerName;
         public string customerNumber;
         public bool taxExempt;

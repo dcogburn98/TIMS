@@ -5,8 +5,10 @@ using System.Collections.Generic;
 
 using TIMS.Forms.Reporting;
 using TIMS.Forms.Orders;
+using TIMS.Forms.Settings;
 using TIMS.Server;
 using TIMSServerModel;
+
 
 namespace TIMS.Forms
 {
@@ -345,6 +347,12 @@ namespace TIMS.Forms
             CheckinPicker picker = new CheckinPicker();
             if (picker.DialogResult != DialogResult.Cancel)
                 picker.Show();
+        }
+
+        private void deviceAssignmentsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DeviceAssignments assignments = new DeviceAssignments();
+            assignments.Show();
         }
     }
 }

@@ -1083,6 +1083,7 @@ namespace TIMS.Forms
             this.deviceAssignmentsToolStripMenuItem.Name = "deviceAssignmentsToolStripMenuItem";
             this.deviceAssignmentsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.deviceAssignmentsToolStripMenuItem.Text = "Device Assignments";
+            this.deviceAssignmentsToolStripMenuItem.Click += new System.EventHandler(this.deviceAssignmentsToolStripMenuItem_Click);
             // 
             // setDateTimeToolStripMenuItem
             // 

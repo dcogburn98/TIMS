@@ -68,6 +68,9 @@
     <Reference Include="PdfSharp.Charting-gdi, Version=1.51.5185.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp-gdi.1.51.5185-beta\lib\net20\PdfSharp.Charting-gdi.dll</HintPath>
     </Reference>
+    <Reference Include="Rssdp, Version=4.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rssdp.4.0.4\lib\net45\Rssdp.dll</HintPath>
+    </Reference>
     <Reference Include="StereoKit, Version=0.3.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\StereoKit.0.3.6\lib\netstandard2.0\StereoKit.dll</HintPath>
     </Reference>
@@ -246,11 +249,23 @@
     <Compile Include="Forms\Reporting\ReportViewer.Designer.cs">
       <DependentUpon>ReportViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Settings\AddDevice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Settings\AddDevice.Designer.cs">
+      <DependentUpon>AddDevice.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Settings\DeviceAssignments.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Settings\DeviceAssignments.Designer.cs">
       <DependentUpon>DeviceAssignments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Settings\FindDevice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Settings\FindDevice.Designer.cs">
+      <DependentUpon>FindDevice.cs</DependentUpon>
     </Compile>
     <Compile Include="POs\CheckIn.cs" />
     <Compile Include="POs\PurchaseOrder.cs" />
@@ -381,8 +396,14 @@
     <EmbeddedResource Include="Forms\Reporting\ReportViewer.resx">
       <DependentUpon>ReportViewer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Settings\AddDevice.resx">
+      <DependentUpon>AddDevice.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Settings\DeviceAssignments.resx">
       <DependentUpon>DeviceAssignments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Settings\FindDevice.resx">
+      <DependentUpon>FindDevice.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

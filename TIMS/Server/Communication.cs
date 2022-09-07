@@ -7,6 +7,7 @@ using PdfSharp.Drawing;
 using PaymentEngine.xTransaction;
 
 using TIMSServerModel;
+using System.Windows.Forms;
 
 namespace TIMS.Server
 {
@@ -16,6 +17,8 @@ namespace TIMS.Server
             ChannelFactory<ITIMSServiceModel>("TIMSServerEndpoint");
 
         private static ITIMSServiceModel proxy = channelFactory.CreateChannel();
+
+        private static AuthorizationKey currentKey = new AuthorizationKey();
 
         public static void ChangeEndpointAddress(EndpointAddress newAddress)
         {
@@ -30,7 +33,13 @@ namespace TIMS.Server
 
         public static Employee Login(string user, byte[] pass)
         {
-            return proxy.Login(user, pass);
+            Employee e = proxy.Login(user, pass);
+            if (e != null)
+            {
+                currentKey = e.key;
+                currentKey.Regenerate();
+            }
+            return e;
         }
 
         public static Employee RetrieveEmployee(string employeeNumber)
@@ -130,7 +139,17 @@ namespace TIMS.Server
 
         public static Customer CheckCustomerNumber(string custNo)
         {
-            return proxy.CheckCustomerNumber(custNo);
+            Customer c = proxy.CheckCustomerNumber(custNo, currentKey);
+            if (c.key.Success)
+            {
+                currentKey.Regenerate();
+                return c;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
         }
 
         #endregion
