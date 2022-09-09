@@ -25,11 +25,11 @@ namespace TIMSServerModel
 
         #region Items
         [OperationContract]
-        List<Item> CheckItemNumber(string itemNumber, bool connectionOpened);
+        List<Item> CheckItemNumber(string itemNumber, bool connectionOpened, AuthKey key);
         [OperationContract]
-        List<Item> CheckItemNumberFromSupplier(string itemNumber, string supplier);
+        List<Item> CheckItemNumberFromSupplier(string itemNumber, string supplier, AuthKey key);
         [OperationContract]
-        List<Item> RetrieveItemsFromSupplier(string supplier);
+        List<Item> RetrieveItemsFromSupplier(string supplier, AuthKey key);
         [OperationContract]
         List<Item> RetrieveItemsFromSupplierBelowMin(string supplier);
         [OperationContract]
@@ -77,7 +77,7 @@ namespace TIMSServerModel
 
         #region Customers
         [OperationContract]
-        Customer CheckCustomerNumber(string custNo, AuthorizationKey key);
+        Customer CheckCustomerNumber(string custNo, AuthKey key);
         #endregion
 
         #region Global Properties

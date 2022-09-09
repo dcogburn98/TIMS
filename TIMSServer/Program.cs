@@ -4,6 +4,7 @@ using System.ServiceModel;
 using System.Net;
 using System.Net.Http;
 using ESCPOS_NET;
+using ESCPOS_NET.Emitters;
 using System.Collections.Generic;
 using Microsoft.Web.Administration;
 using System.IO;
@@ -14,6 +15,7 @@ namespace TIMSServer
     {
         private static readonly HttpClient client = new HttpClient();
         public static int alertLevel = 3;
+        public static bool waitingForRegister;
 
         /* Legacy Code
         static void Main()
@@ -269,6 +271,7 @@ namespace TIMSServer
             using (ServiceHost host = new ServiceHost(typeof(TIMSServiceModel)))
             {
                 host.Open();
+                #region Web Host
                 //string path = @"C:\\Users\\Blake\\source\\repos\\dcogburn98\\TIMS\\TIMSServerManager\\";
                 //string name = "TIMSServer";
 
@@ -298,19 +301,108 @@ namespace TIMSServer
                 //manager.CommitChanges();
                 //Console.WriteLine("Site " + name + " added to ApplicationHost.config file.");
                 //managerSite.Start();
+                #endregion
 
                 //GetTiers();
                 // Ethernet or WiFi (This uses an Immediate Printer, no live paper status events, but is easier to use)
-                string hostnameOrIp = "192.168.254.65";
+                string hostnameOrIp = "192.168.254.75";
                 int port = 9100;
-                ImmediateNetworkPrinter printer = new ImmediateNetworkPrinter(new ImmediateNetworkPrinterSettings() { ConnectionString = $"{hostnameOrIp}:{port}", PrinterName = "TestPrinter" });
-                
-                
+                ICommandEmitter e = new EPSON();
+                BasePrinter printer = new NetworkPrinter(new NetworkPrinterSettings()
+                    { ConnectionString = $"{hostnameOrIp}:{port}", PrinterName = "TestPrinter" });
+                //printer = null; //Uncomment to disable printer
+                printer?.Write(e.Initialize());
+                printer?.Write(e.Enable());
+                byte[][] Receipt() => new byte[][] {
+                    e.CenterAlign(),
+                    e.PrintLine(),
+                    e.SetBarcodeHeightInDots(360),
+                    e.SetBarWidth(BarWidth.Default),
+                    e.SetBarLabelPosition(BarLabelPrintPosition.None),
+                    e.PrintBarcode(BarcodeType.ITF, "0123456789"),
+                    e.PrintLine(),
+                    e.PrintLine("B&H PHOTO & VIDEO"),
+                    e.PrintLine("420 NINTH AVE."),
+                    e.PrintLine("NEW YORK, NY 10001"),
+                    e.PrintLine("(212) 502-6380 - (800)947-9975"),
+                    e.SetStyles(PrintStyle.Underline),
+                    e.PrintLine("www.bhphotovideo.com"),
+                    e.SetStyles(PrintStyle.None),
+                    e.PrintLine(),
+                    e.LeftAlign(),
+                    e.PrintLine("Order: 123456789        Date: 02/01/19"),
+                    e.PrintLine(),
+                    e.PrintLine(),
+                    e.SetStyles(PrintStyle.FontB),
+                    e.PrintLine("1   TRITON LOW-NOISE IN-LINE MICROPHONE PREAMP"),
+                    e.PrintLine("    TRFETHEAD/FETHEAD                        89.95         89.95"),
+                    e.PrintLine("----------------------------------------------------------------"),
+                    e.RightAlign(),
+                    e.PrintLine("SUBTOTAL         89.95"),
+                    e.PrintLine("Total Order:         89.95"),
+                    e.PrintLine("Total Payment:         89.95"),
+                    e.PrintLine(),
+                    e.LeftAlign(),
+                    e.SetStyles(PrintStyle.Bold | PrintStyle.FontB),
+                    e.PrintLine("SOLD TO:                        SHIP TO:"),
+                    e.SetStyles(PrintStyle.FontB),
+                    e.PrintLine("  LUKE PAIREEPINART               LUKE PAIREEPINART"),
+                    e.PrintLine("  123 FAKE ST.                    123 FAKE ST."),
+                    e.PrintLine("  DECATUR, IL 12345               DECATUR, IL 12345"),
+                    e.PrintLine("  (123)456-7890                   (123)456-7890"),
+                    e.PrintLine("  CUST: 87654321"),
+                    e.PrintLine(),
+                    e.PrintLine()
+                };
+                printer?.Write(Receipt());
+                printer?.Write(e.FeedLines(2));
+                printer?.Write(e.FullCut());
+
                 Console.WriteLine("Server is open for connections.");
                 Console.WriteLine(host.Description.Endpoints[0].Address.ToString());
                 Console.WriteLine("Press a key to close.");
-                Console.ReadKey();
-                //managerSite.Stop();
+                while (true)
+                {
+                    Console.Write("TIMS@" + host.Description.Endpoints[0].Address.ToString() + ">");
+                    string input = Console.ReadLine();
+                    string[] split = input.Split(' ');
+                    switch (split[0].ToLower())
+                    {
+                        case "exit":
+                            {
+                                Environment.Exit(0);
+                                break;
+                            }
+                        case "reg":
+                            {
+                                if (split.Length == 3)
+                                {
+                                    if (split[1].ToLower() == "-t")
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Invalid useage of register command.");
+                                    }
+                                }
+                                else if (split.Length == 5)
+                                {
+
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid useage of register command.");
+                                }
+                                break;
+                            }
+                        default:
+                            {
+                                Console.WriteLine("Invalid input...");
+                                break;
+                            }
+                    }
+                }
             }
         }
 

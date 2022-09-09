@@ -9,6 +9,7 @@ namespace TIMSServerModel
 {
     public class Item
     {
+        public AuthKey key;
         public string productLine;
         public string itemNumber;
         public string itemName;

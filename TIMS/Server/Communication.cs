@@ -18,7 +18,7 @@ namespace TIMS.Server
 
         private static ITIMSServiceModel proxy = channelFactory.CreateChannel();
 
-        private static AuthorizationKey currentKey = new AuthorizationKey();
+        private static AuthKey currentKey = new AuthKey();
 
         public static void ChangeEndpointAddress(EndpointAddress newAddress)
         {
@@ -36,7 +36,7 @@ namespace TIMS.Server
             Employee e = proxy.Login(user, pass);
             if (e != null)
             {
-                currentKey = e.key;
+                currentKey = new AuthKey(e.key);
                 currentKey.Regenerate();
             }
             return e;
@@ -51,17 +51,74 @@ namespace TIMS.Server
         #region Items
         public static List<Item> CheckItemNumber(string itemNumber, bool connectionOpened)
         {
-            return proxy.CheckItemNumber(itemNumber, connectionOpened);
+            List<Item> c = proxy.CheckItemNumber(itemNumber, connectionOpened, currentKey);
+            if (c == null)
+            {
+                currentKey.Regenerate();
+                return null;
+            }
+
+            if (c[0].key.Success)
+            {
+                currentKey.Regenerate();
+                c.RemoveAt(0);
+                if (c.Count == 0)
+                    return null;
+                return c;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
         }
 
-        public static List<Item> CheckItemNumber(string itemNumber, string supplier)
+        public static List<Item> CheckItemNumberFromSupplier(string itemNumber, string supplier)
         {
-            return proxy.CheckItemNumberFromSupplier(itemNumber, supplier);
+            List<Item> c = proxy.CheckItemNumberFromSupplier(itemNumber, supplier, currentKey);
+            if (c == null)
+            {
+                currentKey.Regenerate();
+                return null;
+            }
+
+            if (c[0].key.Success)
+            {
+                currentKey.Regenerate();
+                c.RemoveAt(0);
+                if (c.Count == 0)
+                    return null;
+                return c;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
         }
 
         public static List<Item> RetrieveItemsFromSupplier(string supplier)
         {
-            return proxy.RetrieveItemsFromSupplier(supplier);
+            List<Item> c = proxy.RetrieveItemsFromSupplier(supplier, currentKey);
+            if (c == null)
+            {
+                currentKey.Regenerate();
+                return null;
+            }
+
+            if (c[0].key.Success)
+            {
+                currentKey.Regenerate();
+                c.RemoveAt(0);
+                if (c.Count == 0)
+                    return null;
+                return c;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
         }
 
         public static List<Item> RetrieveItemsFromSupplierBelowMin(string supplier)
@@ -139,7 +196,16 @@ namespace TIMS.Server
 
         public static Customer CheckCustomerNumber(string custNo)
         {
+            if (custNo == string.Empty)
+                return null;
+
             Customer c = proxy.CheckCustomerNumber(custNo, currentKey);
+            if (c == null)
+            {
+                currentKey.Regenerate();
+                return null;
+            }
+
             if (c.key.Success)
             {
                 currentKey.Regenerate();

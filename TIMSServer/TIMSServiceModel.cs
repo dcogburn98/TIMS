@@ -8,7 +8,6 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Text;
 
 using TIMSServerModel;
 
@@ -27,8 +26,8 @@ namespace TIMSServer
             Program.CloseConnection();
         }
 
-        private List<AuthorizationKey> Keys = new List<AuthorizationKey>();
-        private AuthorizationKey BypassKey = AuthorizationKey.CreateBypassKey();
+        private static List<AuthKey> Keys = new List<AuthKey>();
+        private static AuthKey BypassKey = new AuthKey("3ncrYqtEdbypa$$K3yF0rInt3rna1u$e");
 
         #region Employees
         
@@ -64,22 +63,22 @@ namespace TIMSServer
         {
             Console.WriteLine("Login Called for user: " + user);
             #region GetIP
-            /*
-            if (!DeviceExists(GetClientAddress()))
+            string addr = "";
+            if (!DeviceExists(addr))
             {
-                Console.WriteLine("Terminal (" + GetClientAddress() + ") being used to login for user \"" + user + "\" is not currently enrolled in the system. Please type \"accept\" + [Device Nickname] to enroll this terminal, otherwise type anything else.");
+                Console.WriteLine("Terminal (" + addr + ") being used to login for user \"" + user + "\" is not currently enrolled in the system. Please type \"accept\" + [Device Nickname] to enroll this terminal, otherwise type anything else.");
                 
                 
                 string input = Console.ReadLine();
                 if (input.Split(' ')[0].ToLower() == "accept")
                 {
-                    if (input.Split(' ').Length != 2)
+                    if (input.Split(' ').Length < 2)
                     {
                         Console.WriteLine("Please specify a nickname for this terminal: ");
                         input = input + " " + Console.ReadLine();
                     }
                     Console.WriteLine("Enrolling device...");
-                    AddTerminal(GetClientAddress(), input.Split(' ')[1]);
+                    AddTerminal(addr, input.Split(' ')[1]);
                     Console.WriteLine("Device Enrolled. Logging in.");
                 }
                 else
@@ -90,21 +89,20 @@ namespace TIMSServer
                     byte[] buffer = new byte[stream.Length];
                     stream.Read(buffer, 0, (int)stream.Length);
                     string text = Encoding.ASCII.GetString(buffer);
-                    byte[] data = Encoding.ASCII.GetBytes(text + "[" + DateTime.Now.ToString() + "] " + GetClientAddress() + "\n");
+                    byte[] data = Encoding.ASCII.GetBytes(text + "[" + DateTime.Now.ToString() + "] " + addr + "\n");
                     stream.Write(new byte[0], 0, 0);
                     stream.Write(data, 0, data.Length);
                     stream.Close();
                     return null;
                 }
             }
-            */
             #endregion
             //System.Threading.Thread.Sleep(1000); Uncomment before release
             Employee e = new Employee();
 
             #region Authorization Initialization
-            e.key = new AuthorizationKey();
-            AuthorizationKey copy = e.key;
+            e.key = new AuthKey();
+            AuthKey copy = new AuthKey(e.key);
             Keys.Add(copy);
             #endregion
 
@@ -214,8 +212,31 @@ namespace TIMSServer
 
         #region Items
         
-        public List<Item> CheckItemNumber(string itemNumber, bool connectionOpened)
+        public List<Item> CheckItemNumber(string itemNumber, bool connectionOpened, AuthKey key)
         {
+            List<Item> invItems = new List<Item>();
+
+            #region Authorization Check
+            AuthKey localKey = Keys.Find(el => el.ID == key.ID);
+            if (!localKey.Match(key))
+            {
+                Item i = new Item();
+                i.key = new AuthKey();
+                i.key.Success = false;
+                invItems.Add(i);
+                return invItems;
+            }
+            else
+            {
+                Console.WriteLine("Key Match");
+                Item i = new Item();
+                i.key = key;
+                i.key.Success = true;
+                invItems.Add(i);
+                localKey.Regenerate();
+            }
+            #endregion
+
             string fixedIN = string.Empty;
             foreach (char c in itemNumber)
             {
@@ -238,8 +259,6 @@ namespace TIMSServer
             SQLiteParameter itemParam = new SQLiteParameter("$ITEM", fixedIN[0] + "%" + fixedIN[fixedIN.Length - 1]);
             sqlite_cmd.Parameters.Add(itemParam);
             SQLiteDataReader reader = sqlite_cmd.ExecuteReader();
-
-            List<Item> invItems = new List<Item>();
 
             while (reader.Read())
             {
@@ -297,8 +316,31 @@ namespace TIMSServer
             else
                 return invItems;
         }    
-        public List<Item> CheckItemNumberFromSupplier(string itemNumber, string supplier)
+        public List<Item> CheckItemNumberFromSupplier(string itemNumber, string supplier, AuthKey key)
         {
+            List<Item> invItems = new List<Item>();
+
+            #region Authorization Check
+            AuthKey localKey = Keys.Find(el => el.ID == key.ID);
+            if (!localKey.Match(key))
+            {
+                Item i = new Item();
+                i.key = new AuthKey();
+                i.key.Success = false;
+                invItems.Add(i);
+                return invItems;
+            }
+            else
+            {
+                Console.WriteLine("Key Match");
+                Item i = new Item();
+                i.key = key;
+                i.key.Success = true;
+                invItems.Add(i);
+                localKey.Regenerate();
+            }
+            #endregion
+
             string fixedIN = string.Empty;
             foreach (char c in itemNumber)
             {
@@ -321,8 +363,6 @@ namespace TIMSServer
             sqlite_cmd.Parameters.Add(itemParam);
             sqlite_cmd.Parameters.Add(supplierParam);
             SQLiteDataReader reader = sqlite_cmd.ExecuteReader();
-
-            List<Item> invItems = new List<Item>();
 
             while (reader.Read())
             {
@@ -379,8 +419,31 @@ namespace TIMSServer
             else
                 return invItems;
         }
-        public List<Item> RetrieveItemsFromSupplier(string supplier)
+        public List<Item> RetrieveItemsFromSupplier(string supplier, AuthKey key)
         {
+            List<Item> invItems = new List<Item>();
+
+            #region Authorization Check
+            AuthKey localKey = Keys.Find(el => el.ID == key.ID);
+            if (!localKey.Match(key))
+            {
+                Item i = new Item();
+                i.key = new AuthKey();
+                i.key.Success = false;
+                invItems.Add(i);
+                return invItems;
+            }
+            else
+            {
+                Console.WriteLine("Key Match");
+                Item i = new Item();
+                i.key = key;
+                i.key.Success = true;
+                invItems.Add(i);
+                localKey.Regenerate();
+            }
+            #endregion
+
             Program.OpenConnection();
             SQLiteCommand sqlite_cmd;
             sqlite_cmd = Program.sqlite_conn.CreateCommand();
@@ -393,8 +456,6 @@ namespace TIMSServer
             SQLiteParameter supplierParam = new SQLiteParameter("$SUPPLIER", supplier);
             sqlite_cmd.Parameters.Add(supplierParam);
             SQLiteDataReader reader = sqlite_cmd.ExecuteReader();
-
-            List<Item> invItems = new List<Item>();
 
             while (reader.Read())
             {
@@ -588,7 +649,7 @@ namespace TIMSServer
 
             CloseConnection();
 
-            supplierItems = RetrieveItemsFromSupplier(supplier);
+            supplierItems = RetrieveItemsFromSupplier(supplier, BypassKey);
             List<Invoice> invoices = RetrieveInvoicesByDateRange(lastOrderDate, DateTime.Now);
 
             foreach (Invoice inv in invoices)
@@ -708,7 +769,7 @@ namespace TIMSServer
                 string d1 = reader.GetString(0);
                 string d2 = reader.GetString(1);
                 decimal d3 = reader.GetDecimal(2);
-                List<Item> itemMatches = CheckItemNumber(d1, true);
+                List<Item> itemMatches = CheckItemNumber(d1, true, BypassKey);
                 item = itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower());
             }
 
@@ -757,7 +818,7 @@ namespace TIMSServer
                 string d1 = reader.GetString(0);
                 string d2 = reader.GetString(1);
                 decimal d3 = reader.GetDecimal(2);
-                List<Item> itemMatches = CheckItemNumber(d1, true);
+                List<Item> itemMatches = CheckItemNumber(d1, true, BypassKey);
                 item = new InvoiceItem(itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower()));
             }
 
@@ -1112,19 +1173,20 @@ namespace TIMSServer
 
         #region Customers
 
-        public Customer CheckCustomerNumber(string custNo, AuthorizationKey key)
+        public Customer CheckCustomerNumber(string custNo, AuthKey key)
         {
             Customer cust = new Customer();
             #region Authorization Check
-            AuthorizationKey localKey = Keys.Find(el => el.ID == key.ID);
+            AuthKey localKey = Keys.Find(el => el.ID == key.ID);
             if (!localKey.Match(key))
             {
-                cust.key = new AuthorizationKey();
+                cust.key = new AuthKey();
                 cust.key.Success = false;
                 return cust;
             }
             else
             {
+                Console.WriteLine("Key Match");
                 cust.key = key;
                 cust.key.Success = true;
                 localKey.Regenerate();
@@ -1330,7 +1392,7 @@ namespace TIMSServer
 
             CloseConnection();
 
-            inv.customer = CheckCustomerNumber(inv.customer.customerNumber);
+            inv.customer = CheckCustomerNumber(inv.customer.customerNumber, BypassKey);
             inv.employee = RetrieveEmployee(inv.employee.employeeNumber.ToString());
             return inv;
         }        

@@ -298,7 +298,7 @@ namespace TIMS.Forms.Orders
             if (supplier == string.Empty)
                 items = Communication.CheckItemNumber(itemNumberTB.Text, false);
             else
-                items = Communication.CheckItemNumber(itemNumberTB.Text, supplier);
+                items = Communication.CheckItemNumberFromSupplier(itemNumberTB.Text, supplier);
 
             if (items == null)
             {

@@ -8,7 +8,7 @@ namespace TIMSServerModel
 {
     public class Employee
     {
-        public AuthorizationKey key;
+        public AuthKey key;
         public int employeeNumber;
         public string fullName;
         public string username;

@@ -8,7 +8,7 @@ namespace TIMSServerModel
 {
     public class Customer
     {
-        public AuthorizationKey key;
+        public AuthKey key;
 
         public string customerName;
         public string customerNumber;
