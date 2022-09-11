@@ -15,7 +15,7 @@ namespace TIMSServer
     {
         private static readonly HttpClient client = new HttpClient();
         public static int alertLevel = 3;
-        public static bool waitingForRegister;
+        public static string regName = string.Empty;
 
         /* Legacy Code
         static void Main()
@@ -305,12 +305,10 @@ namespace TIMSServer
 
                 //GetTiers();
                 // Ethernet or WiFi (This uses an Immediate Printer, no live paper status events, but is easier to use)
-                string hostnameOrIp = "192.168.254.75";
-                int port = 9100;
                 ICommandEmitter e = new EPSON();
                 BasePrinter printer = new NetworkPrinter(new NetworkPrinterSettings()
-                    { ConnectionString = $"{hostnameOrIp}:{port}", PrinterName = "TestPrinter" });
-                //printer = null; //Uncomment to disable printer
+                    { ConnectionString = $"192.168.254.75:9100", PrinterName = "TestPrinter" });
+                printer = null; //Uncomment to disable printer
                 printer?.Write(e.Initialize());
                 printer?.Write(e.Enable());
                 byte[][] Receipt() => new byte[][] {
@@ -370,7 +368,10 @@ namespace TIMSServer
                     {
                         case "exit":
                             {
-                                Environment.Exit(0);
+                                Console.WriteLine("Please type exit again to confirm termination.");
+                                if (Console.ReadLine().ToLower() == "exit")
+                                    Environment.Exit(0);
+                                Console.WriteLine("Exit aborted.");
                                 break;
                             }
                         case "reg":
@@ -379,26 +380,59 @@ namespace TIMSServer
                                 {
                                     if (split[1].ToLower() == "-t")
                                     {
-
+                                        string terminalName = split[2].ToUpper();
+                                        if (IsAlphanumeric(terminalName))
+                                        {
+                                            Console.WriteLine("The next unknown terminal to connect to the server will be registered with nickname \"" + terminalName + "\".");
+                                            regName = terminalName;
+                                        }
+                                        else
+                                            Console.WriteLine("Terminal nickname must be alphanumeric (no symbols or special characters).");
                                     }
                                     else
-                                    {
                                         Console.WriteLine("Invalid useage of register command.");
-                                    }
-                                }
+                                } //reg -t Term01
                                 else if (split.Length == 5)
                                 {
+                                    if (split[1].ToLower() == "-t")
+                                    {
+                                        if (split[2].ToLower() == "-ip")
+                                        {
+                                            if (IPAddress.TryParse(split[3].ToLower(), out IPAddress ip))
+                                            {
+                                                string terminalName = split[4].ToUpper();
+                                                if (IsAlphanumeric(terminalName))
+                                                {
+                                                    OpenConnection();
 
-                                }
+                                                    SQLiteCommand command = sqlite_conn.CreateCommand();
+                                                    command.CommandText =
+                                                        "INSERT INTO DEVICES (DEVICETYPE, IPADDRESS, NICKNAME) VALUES ('TERMINAL', $ADDR, $NAME)";
+                                                    command.Parameters.Add(new SQLiteParameter("$ADDR", ip.ToString()));
+                                                    command.Parameters.Add(new SQLiteParameter("$NAME", terminalName));
+                                                    command.ExecuteNonQuery();
+
+                                                    CloseConnection();
+                                                }
+                                                else
+                                                    Console.WriteLine("Terminal nickname must be alphanumeric (no symbols or special characters).");
+                                            }
+                                            else
+                                                Console.WriteLine("IP Address was malformed.");
+                                        }
+                                        else
+                                            Console.WriteLine("Invalid useage of register command.");
+                                    }
+                                    else
+                                        Console.WriteLine("Invalid useage of register command.");
+                                } //reg -t -ip 192.168.254.75 Term01
                                 else
-                                {
                                     Console.WriteLine("Invalid useage of register command.");
-                                }
                                 break;
                             }
                         default:
                             {
-                                Console.WriteLine("Invalid input...");
+                                Console.WriteLine("Unknown command");
                                 break;
                             }
                     }
@@ -1023,6 +1057,14 @@ namespace TIMSServer
                 result = streamReader.ReadToEnd();
             }
             Console.WriteLine(result);
+        }
+
+        public static bool IsAlphanumeric(string str)
+        {
+            foreach (char c in str)
+                if (!Char.IsLetterOrDigit(c))
+                    return false;
+            return true;
         }
 
         public static string SqlCheckEmployee(string input)

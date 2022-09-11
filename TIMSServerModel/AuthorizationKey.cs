@@ -7,9 +7,6 @@ using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 
-
-
-
 namespace TIMSServerModel
 {
     [DataContract]

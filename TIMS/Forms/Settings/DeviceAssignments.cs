@@ -18,7 +18,10 @@ namespace TIMS.Forms.Settings
         {
             InitializeComponent();
 
-            
+            foreach (string term in Communication.RetrieveTerminals())
+            {
+                terminalsLB.Items.Add(term);
+            }
         }
 
         private void addReceiptPrinter_Click(object sender, EventArgs e)

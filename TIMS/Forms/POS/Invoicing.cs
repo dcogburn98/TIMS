@@ -17,6 +17,7 @@ namespace TIMS.Forms
         bool addingLine;
         bool lineDeleted;
         bool singleProductLine = false;
+        bool zeroPriceAck = false;
 
         public enum State
         {
@@ -409,16 +410,25 @@ namespace TIMS.Forms
 
         private void Checkout()
         {
+            foreach (InvoiceItem i in currentInvoice.items)
+            {
+                if (i.price == 0 && !zeroPriceAck)
+                {
+                    MessageBox.Show("You have items in the cart with a 0.00 price. Please make sure this is correct.");
+                    zeroPriceAck = true;
+                    return;
+                }
+            }
             Checkout checkoutForm = new Checkout(currentInvoice, this);
             checkoutForm.ShowDialog();
             if (currentInvoice.finalized)
             {
                 CancelInvoice();
                 customerNoTB.Focus();
+                zeroPriceAck = false;
             }
+            
         }
-
-
 
         private void extraFunctionsDropBox_SelectedIndexChanged(object sender, EventArgs e)
         {

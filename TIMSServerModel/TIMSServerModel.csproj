@@ -71,6 +71,7 @@
     <Compile Include="Checkin.cs" />
     <Compile Include="CheckinItem.cs" />
     <Compile Include="Customer.cs" />
+    <Compile Include="Device.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="Invoice.cs" />
     <Compile Include="InvoiceItem.cs" />

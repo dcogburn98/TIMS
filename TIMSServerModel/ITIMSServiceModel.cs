@@ -156,7 +156,7 @@ namespace TIMSServerModel
         [OperationContract]
         bool DeviceExists(string address);
         [OperationContract]
-        void AddTerminal(string address, string nickname);
+        List<string> RetrieveTerminals();
         #endregion
     }
 }

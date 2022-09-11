@@ -78,7 +78,7 @@ namespace TIMSServer
                         input = input + " " + Console.ReadLine();
                     }
                     Console.WriteLine("Enrolling device...");
-                    AddTerminal(addr, input.Split(' ')[1]);
+                    //AddTerminal(addr, input.Split(' ')[1]);
                     Console.WriteLine("Device Enrolled. Logging in.");
                 }
                 else
@@ -2440,20 +2440,22 @@ namespace TIMSServer
             CloseConnection();
             return true;
         }
-        public void AddTerminal(string address, string nickname)
+        public List<string> RetrieveTerminals()
         {
+            List<string> terms = new List<string>();
             OpenConnection();
 
             SQLiteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
-                "INSERT INTO DEVICES (DEVICETYPE, IPADDRESS, NICKNAME) VALUES ($TYPE, $ADDR, $NAME)";
-            command.Parameters.Add(new SQLiteParameter("$TYPE", "Terminal"));
-            command.Parameters.Add(new SQLiteParameter("$ADDR", address));
-            command.Parameters.Add(new SQLiteParameter("$NAME", nickname));
-            command.ExecuteNonQuery();
+                "SELECT NICKNAME FROM DEVICES WHERE DEVICETYPE = 'TERMINAL'";
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+                terms.Add(reader.GetString(0));
 
             CloseConnection();
+            return terms;
         }
+
         #endregion
 
         #region Misc

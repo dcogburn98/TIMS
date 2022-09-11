@@ -9,6 +9,7 @@ using TIMS.Forms.Orders;
 using TIMS.Forms.Planogram;
 using TIMS.Forms.Accounting;
 using TIMS.Forms.Settings;
+using TIMS.Forms.Cameras;
 
 using TIMSServerModel;
 
@@ -106,6 +107,10 @@ namespace TIMS
             #region Device Management Test Code
             //DeviceAssignments assignments = new DeviceAssignments();
             //Application.Run(assignments);
+            #endregion
+            #region Camera Viewer Test Code
+            //CameraViewer viewer = new CameraViewer();
+            //Application.Run(viewer);
             #endregion
         }
 

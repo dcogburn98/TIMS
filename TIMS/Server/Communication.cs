@@ -385,9 +385,9 @@ namespace TIMS.Server
             return proxy.DeviceExists(address);
         }
 
-        public static void AddTerminal(string address, string nickname)
+        public static List<string> RetrieveTerminals()
         {
-            proxy.AddTerminal(address, nickname);
+            return proxy.RetrieveTerminals();
         }
         #endregion
     }
