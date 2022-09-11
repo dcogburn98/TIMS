@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 using PaymentEngine.xTransaction;
 using System.IO;
 using System.Text;
@@ -16,7 +16,7 @@ namespace TIMSServer
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "EmployeeModel" in both code and config file together.
     public class TIMSServiceModel : ITIMSServiceModel
     {
-        private static SQLiteConnection sqlite_conn = Program.sqlite_conn;
+        private static SqliteConnection sqlite_conn = Program.sqlite_conn;
         private static void OpenConnection()
         {
             Program.OpenConnection();
@@ -38,7 +38,7 @@ namespace TIMSServer
                 input = "'" + input + "'";
             string value = null;
             Program.OpenConnection();
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
 
             command.CommandText =
                 "SELECT FULLNAME " +
@@ -46,7 +46,7 @@ namespace TIMSServer
                 "WHERE USERNAME = " + input + " " +
                 "OR EMPLOYEENUMBER = " + input;
 
-            SQLiteDataReader rdr = command.ExecuteReader();
+            SqliteDataReader rdr = command.ExecuteReader();
             while (rdr.Read())
             {
                 value = $"{rdr.GetString(0)}";
@@ -110,7 +110,7 @@ namespace TIMSServer
                 user = "'" + user + "'";
             Program.OpenConnection();
 
-            SQLiteCommand sqlite_cmd;
+            SqliteCommand sqlite_cmd;
             sqlite_cmd = Program.sqlite_conn.CreateCommand();
 
             sqlite_cmd.CommandText =
@@ -120,13 +120,13 @@ namespace TIMSServer
                 "OR EMPLOYEENUMBER = " + user + ") " +
                 "AND PASSWORDHASH = $pass";
 
-            SQLiteParameter hash = new SQLiteParameter("$pass", System.Data.DbType.Binary)
+            SqliteParameter hash = new SqliteParameter("$pass", System.Data.DbType.Binary)
             {
                 Value = pass
             };
             sqlite_cmd.Parameters.Add(hash);
 
-            SQLiteDataReader rdr = sqlite_cmd.ExecuteReader(System.Data.CommandBehavior.Default);
+            SqliteDataReader rdr = sqlite_cmd.ExecuteReader(System.Data.CommandBehavior.Default);
             if (!rdr.HasRows)
             {
                 Program.CloseConnection();
@@ -180,12 +180,12 @@ namespace TIMSServer
             Employee e = new Employee();
             Program.OpenConnection();
 
-            SQLiteCommand command = Program.sqlite_conn.CreateCommand();
+            SqliteCommand command = Program.sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT * FROM EMPLOYEES WHERE EMPLOYEENUMBER = $NUMBER";
-            SQLiteParameter p1 = new SQLiteParameter("$NUMBER", employeeNumber);
+            SqliteParameter p1 = new SqliteParameter("$NUMBER", employeeNumber);
             command.Parameters.Add(p1);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
 
             if (!reader.HasRows)
             {
@@ -248,7 +248,7 @@ namespace TIMSServer
             if (!connectionOpened)
                 Program.OpenConnection();
 
-            SQLiteCommand sqlite_cmd;
+            SqliteCommand sqlite_cmd;
             sqlite_cmd = Program.sqlite_conn.CreateCommand();
 
             sqlite_cmd.CommandText =
@@ -256,9 +256,9 @@ namespace TIMSServer
                 "FROM ITEMS" + " " +
                 "WHERE ITEMNUMBER LIKE $ITEM";
 
-            SQLiteParameter itemParam = new SQLiteParameter("$ITEM", fixedIN[0] + "%" + fixedIN[fixedIN.Length - 1]);
+            SqliteParameter itemParam = new SqliteParameter("$ITEM", fixedIN[0] + "%" + fixedIN[fixedIN.Length - 1]);
             sqlite_cmd.Parameters.Add(itemParam);
-            SQLiteDataReader reader = sqlite_cmd.ExecuteReader();
+            SqliteDataReader reader = sqlite_cmd.ExecuteReader();
 
             while (reader.Read())
             {
@@ -350,7 +350,7 @@ namespace TIMSServer
             fixedIN = fixedIN.ToUpper();
 
             Program.OpenConnection();
-            SQLiteCommand sqlite_cmd;
+            SqliteCommand sqlite_cmd;
             sqlite_cmd = Program.sqlite_conn.CreateCommand();
 
             sqlite_cmd.CommandText =
@@ -358,11 +358,11 @@ namespace TIMSServer
                 "FROM ITEMS" + " " +
                 "WHERE ITEMNUMBER LIKE $ITEM AND SUPPLIER == $SUPPLIER";
 
-            SQLiteParameter itemParam = new SQLiteParameter("$ITEM", fixedIN[0] + "%" + fixedIN[fixedIN.Length - 1]);
-            SQLiteParameter supplierParam = new SQLiteParameter("$SUPPLIER", supplier);
+            SqliteParameter itemParam = new SqliteParameter("$ITEM", fixedIN[0] + "%" + fixedIN[fixedIN.Length - 1]);
+            SqliteParameter supplierParam = new SqliteParameter("$SUPPLIER", supplier);
             sqlite_cmd.Parameters.Add(itemParam);
             sqlite_cmd.Parameters.Add(supplierParam);
-            SQLiteDataReader reader = sqlite_cmd.ExecuteReader();
+            SqliteDataReader reader = sqlite_cmd.ExecuteReader();
 
             while (reader.Read())
             {
@@ -445,7 +445,7 @@ namespace TIMSServer
             #endregion
 
             Program.OpenConnection();
-            SQLiteCommand sqlite_cmd;
+            SqliteCommand sqlite_cmd;
             sqlite_cmd = Program.sqlite_conn.CreateCommand();
 
             sqlite_cmd.CommandText =
@@ -453,9 +453,9 @@ namespace TIMSServer
                 FROM ITEMS 
                 WHERE SUPPLIER == $SUPPLIER";
 
-            SQLiteParameter supplierParam = new SQLiteParameter("$SUPPLIER", supplier);
+            SqliteParameter supplierParam = new SqliteParameter("$SUPPLIER", supplier);
             sqlite_cmd.Parameters.Add(supplierParam);
-            SQLiteDataReader reader = sqlite_cmd.ExecuteReader();
+            SqliteDataReader reader = sqlite_cmd.ExecuteReader();
 
             while (reader.Read())
             {
@@ -505,7 +505,7 @@ namespace TIMSServer
         public List<Item> RetrieveItemsFromSupplierBelowMin(string supplier)
         {
             OpenConnection();
-            SQLiteCommand sqlite_cmd;
+            SqliteCommand sqlite_cmd;
             sqlite_cmd = sqlite_conn.CreateCommand();
 
             sqlite_cmd.CommandText =
@@ -513,9 +513,9 @@ namespace TIMSServer
                 "FROM ITEMS" + " " +
                 "WHERE SUPPLIER == $SUPPLIER AND ONHANDQUANTITY < MINIMUM";
 
-            SQLiteParameter supplierParam = new SQLiteParameter("$SUPPLIER", supplier);
+            SqliteParameter supplierParam = new SqliteParameter("$SUPPLIER", supplier);
             sqlite_cmd.Parameters.Add(supplierParam);
-            SQLiteDataReader reader = sqlite_cmd.ExecuteReader();
+            SqliteDataReader reader = sqlite_cmd.ExecuteReader();
 
             List<Item> invItems = new List<Item>();
 
@@ -567,7 +567,7 @@ namespace TIMSServer
         public List<Item> RetrieveItemsFromSupplierBelowMax(string supplier)
         {
             OpenConnection();
-            SQLiteCommand sqlite_cmd;
+            SqliteCommand sqlite_cmd;
             sqlite_cmd = sqlite_conn.CreateCommand();
 
             sqlite_cmd.CommandText =
@@ -575,9 +575,9 @@ namespace TIMSServer
                 "FROM ITEMS" + " " +
                 "WHERE SUPPLIER == $SUPPLIER AND ONHANDQUANTITY < MAXIMUM";
 
-            SQLiteParameter supplierParam = new SQLiteParameter("$SUPPLIER", supplier);
+            SqliteParameter supplierParam = new SqliteParameter("$SUPPLIER", supplier);
             sqlite_cmd.Parameters.Add(supplierParam);
-            SQLiteDataReader reader = sqlite_cmd.ExecuteReader();
+            SqliteDataReader reader = sqlite_cmd.ExecuteReader();
 
             List<Item> invItems = new List<Item>();
 
@@ -635,12 +635,12 @@ namespace TIMSServer
             OpenConnection();
 
             //Retrieve last order date for supplier
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT LASTORDERDATE FROM SUPPLIERS WHERE SUPPLIER = $SUPPLIER";
-            SQLiteParameter p1 = new SQLiteParameter("$SUPPLIER", supplier);
+            SqliteParameter p1 = new SqliteParameter("$SUPPLIER", supplier);
             command.Parameters.Add(p1);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
                 lastOrderDate = DateTime.MinValue;
             else
@@ -666,10 +666,10 @@ namespace TIMSServer
             List<string> suppliers = new List<string>();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT SUPPLIER FROM SUPPLIERS";
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
                 suppliers.Add(reader.GetString(0));
@@ -683,10 +683,10 @@ namespace TIMSServer
         {
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "INSERT INTO SUPPLIERS (SUPPLIER) VALUES ($SUPPLIER)";
-            SQLiteParameter p1 = new SQLiteParameter("$SUPPLIER", supplier);
+            SqliteParameter p1 = new SqliteParameter("$SUPPLIER", supplier);
             command.Parameters.Add(p1);
             command.ExecuteNonQuery();
 
@@ -696,12 +696,12 @@ namespace TIMSServer
         {
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT * FROM PRODUCTLINES WHERE PRODUCTLINE = $LINE";
-            SQLiteParameter p1 = new SQLiteParameter("$LINE", productLine);
+            SqliteParameter p1 = new SqliteParameter("$LINE", productLine);
             command.Parameters.Add(p1);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
 
             if (!reader.HasRows)
             {
@@ -718,10 +718,10 @@ namespace TIMSServer
         {
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "INSERT INTO PRODUCTLINES (PRODUCTLINE) VALUES ($LINE)";
-            SQLiteParameter p1 = new SQLiteParameter("$LINE", productLine);
+            SqliteParameter p1 = new SqliteParameter("$LINE", productLine);
             command.Parameters.Add(p1);
             command.ExecuteNonQuery();
 
@@ -747,16 +747,16 @@ namespace TIMSServer
                 barcodeData = scannedBarcode;
             }
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT SCANNEDITEMNUMBER,SCANNEDPRODUCTLINE,SCANNEDQUANTITY FROM BARCODES " +
                 "WHERE (BARCODETYPE = $TYPE AND BARCODEVALUE = $VALUE)";
-            SQLiteParameter p1 = new SQLiteParameter("$TYPE", barcodeType);
-            SQLiteParameter p2 = new SQLiteParameter("$VALUE", barcodeData);
+            SqliteParameter p1 = new SqliteParameter("$TYPE", barcodeType);
+            SqliteParameter p2 = new SqliteParameter("$VALUE", barcodeData);
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
 
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
 
             if (!reader.HasRows)
             {
@@ -796,16 +796,16 @@ namespace TIMSServer
                 barcodeData = scannedBarcode;
             }
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT SCANNEDITEMNUMBER,SCANNEDPRODUCTLINE,SCANNEDQUANTITY FROM BARCODES " +
                 "WHERE (BARCODETYPE = $TYPE AND BARCODEVALUE = $VALUE)";
-            SQLiteParameter p1 = new SQLiteParameter("$TYPE", barcodeType);
-            SQLiteParameter p2 = new SQLiteParameter("$VALUE", barcodeData);
+            SqliteParameter p1 = new SqliteParameter("$TYPE", barcodeType);
+            SqliteParameter p2 = new SqliteParameter("$VALUE", barcodeData);
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
 
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
 
             if (!reader.HasRows)
             {
@@ -839,14 +839,14 @@ namespace TIMSServer
             if (!connectionOpened)
                 OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT * FROM ITEMS WHERE (ITEMNUMBER LIKE $ITEMNO AND PRODUCTLINE = $LINE)";
-            SQLiteParameter p1 = new SQLiteParameter("$ITEMNO", fixedIN[0] + "%" + fixedIN[fixedIN.Length - 1]);
-            SQLiteParameter p2 = new SQLiteParameter("$LINE", productLine);
+            SqliteParameter p1 = new SqliteParameter("$ITEMNO", fixedIN[0] + "%" + fixedIN[fixedIN.Length - 1]);
+            SqliteParameter p2 = new SqliteParameter("$LINE", productLine);
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 if (!connectionOpened)
@@ -927,7 +927,7 @@ namespace TIMSServer
             }
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "UPDATE ITEMS SET " +
                 "ITEMNAME = $ITEMNAME, LONGDESCRIPTION = $LONGDESCRIPTION, " +
@@ -944,41 +944,41 @@ namespace TIMSServer
                 "SERIALIZED = $SERIALIZED, CATEGORY = $CATEGORY, SKU = $SKU " +
                 "WHERE (ITEMNUMBER = $ITEMNUMBER AND PRODUCTLINE = $PRODUCTLINE)";
 
-            SQLiteParameter p1 = new SQLiteParameter("$ITEMNAME", newItem.itemName);
-            SQLiteParameter p2 = new SQLiteParameter("$LONGDESCRIPTION", newItem.longDescription);
-            SQLiteParameter p3 = new SQLiteParameter("$SUPPLIER", newItem.supplier);
-            SQLiteParameter p4 = new SQLiteParameter("$GROUPCODE", newItem.groupCode);
-            SQLiteParameter p5 = new SQLiteParameter("$VELOCITYCODE", newItem.velocityCode);
-            SQLiteParameter p6 = new SQLiteParameter("$PREVIOUSVELOCITYCODE", newItem.previousYearVelocityCode);
-            SQLiteParameter p7 = new SQLiteParameter("$ITEMSPERCONTAINER", newItem.itemsPerContainer);
-            SQLiteParameter p8 = new SQLiteParameter("$STANDARDPACKAGE", newItem.standardPackage);
-            SQLiteParameter p9 = new SQLiteParameter("$DATESTOCKED", newItem.dateStocked.ToString());
-            SQLiteParameter p10 = new SQLiteParameter("$DATELASTRECEIPT", newItem.dateLastReceipt.ToString());
-            SQLiteParameter p11 = new SQLiteParameter("$MIN", newItem.minimum);
-            SQLiteParameter p12 = new SQLiteParameter("$MAX", newItem.maximum);
-            SQLiteParameter p13 = new SQLiteParameter("$ONHANDQTY", newItem.onHandQty);
-            SQLiteParameter p14 = new SQLiteParameter("$WIPQTY", newItem.WIPQty);
-            SQLiteParameter p15 = new SQLiteParameter("$ONORDERQTY", newItem.onOrderQty);
-            SQLiteParameter p16 = new SQLiteParameter("$BACKORDERQTY", newItem.onBackorderQty);
-            SQLiteParameter p17 = new SQLiteParameter("$DAYSONORDER", newItem.daysOnOrder);
-            SQLiteParameter p18 = new SQLiteParameter("$DAYSONBACKORDER", newItem.daysOnBackorder);
-            SQLiteParameter p19 = new SQLiteParameter("$LIST", newItem.listPrice);
-            SQLiteParameter p20 = new SQLiteParameter("$RED", newItem.redPrice);
-            SQLiteParameter p21 = new SQLiteParameter("$YELLOW", newItem.yellowPrice);
-            SQLiteParameter p22 = new SQLiteParameter("$GREEN", newItem.greenPrice);
-            SQLiteParameter p23 = new SQLiteParameter("$PINK", newItem.pinkPrice);
-            SQLiteParameter p24 = new SQLiteParameter("$BLUE", newItem.bluePrice);
-            SQLiteParameter p25 = new SQLiteParameter("$COST", newItem.replacementCost);
-            SQLiteParameter p26 = new SQLiteParameter("$AVERAGECOST", newItem.averageCost);
-            SQLiteParameter p27 = new SQLiteParameter("$TAXED", newItem.taxed);
-            SQLiteParameter p28 = new SQLiteParameter("$RESTRICTED", newItem.ageRestricted);
-            SQLiteParameter p29 = new SQLiteParameter("$MINAGE", newItem.minimumAge);
-            SQLiteParameter p30 = new SQLiteParameter("$LOCATION", newItem.locationCode);
-            SQLiteParameter p31 = new SQLiteParameter("$ITEMNUMBER", newItem.itemNumber);
-            SQLiteParameter p32 = new SQLiteParameter("$PRODUCTLINE", newItem.productLine);
-            SQLiteParameter p33 = new SQLiteParameter("$SERIALIZED", newItem.serialized);
-            SQLiteParameter p34 = new SQLiteParameter("$CATEGORY", newItem.category);
-            SQLiteParameter p35 = new SQLiteParameter("$SKU", newItem.SKU);
+            SqliteParameter p1 = new SqliteParameter("$ITEMNAME", newItem.itemName);
+            SqliteParameter p2 = new SqliteParameter("$LONGDESCRIPTION", newItem.longDescription);
+            SqliteParameter p3 = new SqliteParameter("$SUPPLIER", newItem.supplier);
+            SqliteParameter p4 = new SqliteParameter("$GROUPCODE", newItem.groupCode);
+            SqliteParameter p5 = new SqliteParameter("$VELOCITYCODE", newItem.velocityCode);
+            SqliteParameter p6 = new SqliteParameter("$PREVIOUSVELOCITYCODE", newItem.previousYearVelocityCode);
+            SqliteParameter p7 = new SqliteParameter("$ITEMSPERCONTAINER", newItem.itemsPerContainer);
+            SqliteParameter p8 = new SqliteParameter("$STANDARDPACKAGE", newItem.standardPackage);
+            SqliteParameter p9 = new SqliteParameter("$DATESTOCKED", newItem.dateStocked.ToString());
+            SqliteParameter p10 = new SqliteParameter("$DATELASTRECEIPT", newItem.dateLastReceipt.ToString());
+            SqliteParameter p11 = new SqliteParameter("$MIN", newItem.minimum);
+            SqliteParameter p12 = new SqliteParameter("$MAX", newItem.maximum);
+            SqliteParameter p13 = new SqliteParameter("$ONHANDQTY", newItem.onHandQty);
+            SqliteParameter p14 = new SqliteParameter("$WIPQTY", newItem.WIPQty);
+            SqliteParameter p15 = new SqliteParameter("$ONORDERQTY", newItem.onOrderQty);
+            SqliteParameter p16 = new SqliteParameter("$BACKORDERQTY", newItem.onBackorderQty);
+            SqliteParameter p17 = new SqliteParameter("$DAYSONORDER", newItem.daysOnOrder);
+            SqliteParameter p18 = new SqliteParameter("$DAYSONBACKORDER", newItem.daysOnBackorder);
+            SqliteParameter p19 = new SqliteParameter("$LIST", newItem.listPrice);
+            SqliteParameter p20 = new SqliteParameter("$RED", newItem.redPrice);
+            SqliteParameter p21 = new SqliteParameter("$YELLOW", newItem.yellowPrice);
+            SqliteParameter p22 = new SqliteParameter("$GREEN", newItem.greenPrice);
+            SqliteParameter p23 = new SqliteParameter("$PINK", newItem.pinkPrice);
+            SqliteParameter p24 = new SqliteParameter("$BLUE", newItem.bluePrice);
+            SqliteParameter p25 = new SqliteParameter("$COST", newItem.replacementCost);
+            SqliteParameter p26 = new SqliteParameter("$AVERAGECOST", newItem.averageCost);
+            SqliteParameter p27 = new SqliteParameter("$TAXED", newItem.taxed);
+            SqliteParameter p28 = new SqliteParameter("$RESTRICTED", newItem.ageRestricted);
+            SqliteParameter p29 = new SqliteParameter("$MINAGE", newItem.minimumAge);
+            SqliteParameter p30 = new SqliteParameter("$LOCATION", newItem.locationCode);
+            SqliteParameter p31 = new SqliteParameter("$ITEMNUMBER", newItem.itemNumber);
+            SqliteParameter p32 = new SqliteParameter("$PRODUCTLINE", newItem.productLine);
+            SqliteParameter p33 = new SqliteParameter("$SERIALIZED", newItem.serialized);
+            SqliteParameter p34 = new SqliteParameter("$CATEGORY", newItem.category);
+            SqliteParameter p35 = new SqliteParameter("$SKU", newItem.SKU);
 
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
@@ -1026,14 +1026,14 @@ namespace TIMSServer
             List<string> serialNumbers = new List<string>();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT SERIALNUMBER FROM SERIALNUMBERS WHERE ITEMNUMBER = $ITEM AND PRODUCTLINE = $LINE";
-            SQLiteParameter p1 = new SQLiteParameter("$ITEM", itemNumber);
-            SQLiteParameter p2 = new SQLiteParameter("$LINE", productLine);
+            SqliteParameter p1 = new SqliteParameter("$ITEM", itemNumber);
+            SqliteParameter p2 = new SqliteParameter("$LINE", productLine);
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 CloseConnection();
@@ -1052,7 +1052,7 @@ namespace TIMSServer
         {
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "INSERT INTO ITEMS (" +
                 "PRODUCTLINE, ITEMNUMBER, ITEMNAME, LONGDESCRIPTION, SUPPLIER, GROUPCODE, VELOCITYCODE, PREVIOUSYEARVELOCITYCODE, " +
@@ -1065,41 +1065,41 @@ namespace TIMSServer
                 "$ONORDERQTY, $BACKORDERQTY, $DAYSONORDER, $DAYSONBACKORDER, $LIST, $RED, $YELLOW, $GREEN, " +
                 "$PINK, $BLUE, $COST, $AVERAGECOST, $TAXED, $AGERESTRICTED, $MINAGE, $LOCATION, $SERIALIZED, $CATEGORY, $SKU)";
 
-            SQLiteParameter p1 = new SQLiteParameter("$PRODUCTLINE", item.productLine);
-            SQLiteParameter p2 = new SQLiteParameter("$ITEMNUMBER", item.itemNumber);
-            SQLiteParameter p3 = new SQLiteParameter("$ITEMNAME", item.itemName);
-            SQLiteParameter p4 = new SQLiteParameter("$DESCRIPTION", item.longDescription);
-            SQLiteParameter p5 = new SQLiteParameter("$SUPPLIER", item.supplier);
-            SQLiteParameter p6 = new SQLiteParameter("$GROUP", item.groupCode);
-            SQLiteParameter p7 = new SQLiteParameter("$VELOCITY", item.velocityCode);
-            SQLiteParameter p8 = new SQLiteParameter("$PREVIOUSVELOCITY", item.previousYearVelocityCode);
-            SQLiteParameter p9 = new SQLiteParameter("$ITEMSPERCONTAINER", item.itemsPerContainer);
-            SQLiteParameter p10 = new SQLiteParameter("$STDPKG", item.standardPackage);
-            SQLiteParameter p11 = new SQLiteParameter("$DATESTOCKED", item.dateStocked.ToString());
-            SQLiteParameter p12 = new SQLiteParameter("$DATELASTRECEIPT", item.dateLastReceipt.ToString());
-            SQLiteParameter p13 = new SQLiteParameter("$MIN", item.minimum);
-            SQLiteParameter p14 = new SQLiteParameter("$MAX", item.maximum);
-            SQLiteParameter p15 = new SQLiteParameter("$ONHAND", item.onHandQty);
-            SQLiteParameter p16 = new SQLiteParameter("$WIPQUANTITY", item.WIPQty);
-            SQLiteParameter p17 = new SQLiteParameter("$ONORDERQTY", item.onOrderQty);
-            SQLiteParameter p18 = new SQLiteParameter("$BACKORDERQTY", item.onBackorderQty);
-            SQLiteParameter p19 = new SQLiteParameter("$DAYSONORDER", item.daysOnOrder);
-            SQLiteParameter p20 = new SQLiteParameter("$DAYSONBACKORDER", item.daysOnBackorder);
-            SQLiteParameter p21 = new SQLiteParameter("$LIST", item.listPrice);
-            SQLiteParameter p22 = new SQLiteParameter("$RED", item.redPrice);
-            SQLiteParameter p23 = new SQLiteParameter("$YELLOW", item.yellowPrice);
-            SQLiteParameter p24 = new SQLiteParameter("$GREEN", item.greenPrice);
-            SQLiteParameter p25 = new SQLiteParameter("$PINK", item.pinkPrice);
-            SQLiteParameter p26 = new SQLiteParameter("$BLUE", item.bluePrice);
-            SQLiteParameter p27 = new SQLiteParameter("$COST", item.replacementCost);
-            SQLiteParameter p28 = new SQLiteParameter("$AVERAGECOST", item.averageCost);
-            SQLiteParameter p29 = new SQLiteParameter("$TAXED", item.taxed);
-            SQLiteParameter p30 = new SQLiteParameter("$AGERESTRICTED", item.ageRestricted);
-            SQLiteParameter p31 = new SQLiteParameter("$MINAGE", item.minimumAge);
-            SQLiteParameter p32 = new SQLiteParameter("$LOCATION", item.locationCode);
-            SQLiteParameter p33 = new SQLiteParameter("$SERIALIZED", item.serialized);
-            SQLiteParameter p34 = new SQLiteParameter("$CATEGORY", item.category);
-            SQLiteParameter p35 = new SQLiteParameter("$SKU", item.SKU);
+            SqliteParameter p1 = new SqliteParameter("$PRODUCTLINE", item.productLine);
+            SqliteParameter p2 = new SqliteParameter("$ITEMNUMBER", item.itemNumber);
+            SqliteParameter p3 = new SqliteParameter("$ITEMNAME", item.itemName);
+            SqliteParameter p4 = new SqliteParameter("$DESCRIPTION", item.longDescription);
+            SqliteParameter p5 = new SqliteParameter("$SUPPLIER", item.supplier);
+            SqliteParameter p6 = new SqliteParameter("$GROUP", item.groupCode);
+            SqliteParameter p7 = new SqliteParameter("$VELOCITY", item.velocityCode);
+            SqliteParameter p8 = new SqliteParameter("$PREVIOUSVELOCITY", item.previousYearVelocityCode);
+            SqliteParameter p9 = new SqliteParameter("$ITEMSPERCONTAINER", item.itemsPerContainer);
+            SqliteParameter p10 = new SqliteParameter("$STDPKG", item.standardPackage);
+            SqliteParameter p11 = new SqliteParameter("$DATESTOCKED", item.dateStocked.ToString());
+            SqliteParameter p12 = new SqliteParameter("$DATELASTRECEIPT", item.dateLastReceipt.ToString());
+            SqliteParameter p13 = new SqliteParameter("$MIN", item.minimum);
+            SqliteParameter p14 = new SqliteParameter("$MAX", item.maximum);
+            SqliteParameter p15 = new SqliteParameter("$ONHAND", item.onHandQty);
+            SqliteParameter p16 = new SqliteParameter("$WIPQUANTITY", item.WIPQty);
+            SqliteParameter p17 = new SqliteParameter("$ONORDERQTY", item.onOrderQty);
+            SqliteParameter p18 = new SqliteParameter("$BACKORDERQTY", item.onBackorderQty);
+            SqliteParameter p19 = new SqliteParameter("$DAYSONORDER", item.daysOnOrder);
+            SqliteParameter p20 = new SqliteParameter("$DAYSONBACKORDER", item.daysOnBackorder);
+            SqliteParameter p21 = new SqliteParameter("$LIST", item.listPrice);
+            SqliteParameter p22 = new SqliteParameter("$RED", item.redPrice);
+            SqliteParameter p23 = new SqliteParameter("$YELLOW", item.yellowPrice);
+            SqliteParameter p24 = new SqliteParameter("$GREEN", item.greenPrice);
+            SqliteParameter p25 = new SqliteParameter("$PINK", item.pinkPrice);
+            SqliteParameter p26 = new SqliteParameter("$BLUE", item.bluePrice);
+            SqliteParameter p27 = new SqliteParameter("$COST", item.replacementCost);
+            SqliteParameter p28 = new SqliteParameter("$AVERAGECOST", item.averageCost);
+            SqliteParameter p29 = new SqliteParameter("$TAXED", item.taxed);
+            SqliteParameter p30 = new SqliteParameter("$AGERESTRICTED", item.ageRestricted);
+            SqliteParameter p31 = new SqliteParameter("$MINAGE", item.minimumAge);
+            SqliteParameter p32 = new SqliteParameter("$LOCATION", item.locationCode);
+            SqliteParameter p33 = new SqliteParameter("$SERIALIZED", item.serialized);
+            SqliteParameter p34 = new SqliteParameter("$CATEGORY", item.category);
+            SqliteParameter p35 = new SqliteParameter("$SKU", item.SKU);
 
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
@@ -1147,10 +1147,10 @@ namespace TIMSServer
             List<Item> items = new List<Item>();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT PRODUCTLINE, ITEMNUMBER FROM ITEMS WHERE LASTLABELPRICE != GREENPRICE";
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 CloseConnection();
@@ -1196,7 +1196,7 @@ namespace TIMSServer
             
             OpenConnection();
 
-            SQLiteCommand sqlite_cmd;
+            SqliteCommand sqlite_cmd;
             sqlite_cmd = sqlite_conn.CreateCommand();
 
             sqlite_cmd.CommandText =
@@ -1204,9 +1204,9 @@ namespace TIMSServer
                 "FROM CUSTOMERS" + " " +
                 "WHERE CUSTOMERNUMBER = $CUSTNO";
 
-            SQLiteParameter itemParam = new SQLiteParameter("$CUSTNO", custNo);
+            SqliteParameter itemParam = new SqliteParameter("$CUSTNO", custNo);
             sqlite_cmd.Parameters.Add(itemParam);
-            SQLiteDataReader reader = sqlite_cmd.ExecuteReader();
+            SqliteDataReader reader = sqlite_cmd.ExecuteReader();
 
             if (!reader.HasRows)
             {
@@ -1266,14 +1266,14 @@ namespace TIMSServer
             if (!connectionOpened)
                 OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT INVOICENUMBER FROM INVOICES WHERE INVOICEFINALIZEDTIME > $STARTTIME AND INVOICEFINALIZEDTIME < $ENDTIME";
-            SQLiteParameter p1 = new SQLiteParameter("$STARTTIME", startDate.ToString());
-            SQLiteParameter p2 = new SQLiteParameter("$ENDTIME", endDate.AddDays(1).ToString());
+            SqliteParameter p1 = new SqliteParameter("$STARTTIME", startDate.ToString());
+            SqliteParameter p2 = new SqliteParameter("$ENDTIME", endDate.AddDays(1).ToString());
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 if (!connectionOpened)
@@ -1304,14 +1304,14 @@ namespace TIMSServer
             Invoice inv = new Invoice();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
 
             command.CommandText =
                 "SELECT * FROM INVOICES WHERE INVOICENUMBER = $INVOICENUMBER";
 
-            SQLiteParameter p1 = new SQLiteParameter("$INVOICENUMBER", invNumber);
+            SqliteParameter p1 = new SqliteParameter("$INVOICENUMBER", invNumber);
             command.Parameters.Add(p1);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 CloseConnection();
@@ -1401,9 +1401,9 @@ namespace TIMSServer
             List<Invoice> invoices = new List<Invoice>();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText = "SELECT INVOICENUMBER FROM INVOICES";
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
 
             if (!reader.HasRows)
             {
@@ -1430,7 +1430,7 @@ namespace TIMSServer
         public void SaveReleasedInvoice(Invoice inv)
         {
             OpenConnection();
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
 
             #region Add General Invoice Information to INVOICES tables
             command.CommandText =
@@ -1446,28 +1446,28 @@ namespace TIMSServer
                 "$SAVEDINVOICE,$SAVEDINVOICETIME,$INVOICECREATIONTIME,$INVOICEFINALIZEDTIME,$FINALIZED,$VOIDED,$CUSTOMERNUMBER,$EMPLOYEENUMBER, " +
                 "$COST, $PROFIT)";
 
-            SQLiteParameter p1 = new SQLiteParameter("$INVOICENUMBER", inv.invoiceNumber);
-            SQLiteParameter p2 = new SQLiteParameter("$SUBTOTAL", inv.subtotal);
-            SQLiteParameter p3 = new SQLiteParameter("$TAXABLETOTAL", inv.taxableTotal);
-            SQLiteParameter p4 = new SQLiteParameter("$TAXRATE", inv.taxRate);
-            SQLiteParameter p5 = new SQLiteParameter("$TAXAMOUNT", inv.taxAmount);
-            SQLiteParameter p6 = new SQLiteParameter("$TOTAL", inv.total);
-            SQLiteParameter p7 = new SQLiteParameter("$TOTALPAYMENTS", inv.totalPayments);
-            SQLiteParameter p8 = new SQLiteParameter("$AGERESTRICTED", inv.containsAgeRestrictedItem);
-            SQLiteParameter p9 = new SQLiteParameter("$CUSTOMERBIRTHDATE", inv.customerBirthdate.ToString());
-            SQLiteParameter p10 = new SQLiteParameter("$ATTENTION", inv.attentionLine);
-            SQLiteParameter p11 = new SQLiteParameter("$PO", inv.PONumber);
-            SQLiteParameter p12 = new SQLiteParameter("$MESSAGE", inv.invoiceMessage);
-            SQLiteParameter p13 = new SQLiteParameter("$SAVEDINVOICE", inv.savedInvoice);
-            SQLiteParameter p14 = new SQLiteParameter("$SAVEDINVOICETIME", inv.savedInvoiceTime.ToString());
-            SQLiteParameter p15 = new SQLiteParameter("$INVOICECREATIONTIME", inv.invoiceCreationTime.ToString());
-            SQLiteParameter p16 = new SQLiteParameter("$INVOICEFINALIZEDTIME", inv.invoiceFinalizedTime.ToString());
-            SQLiteParameter p17 = new SQLiteParameter("$FINALIZED", inv.finalized);
-            SQLiteParameter p18 = new SQLiteParameter("$VOIDED", inv.voided);
-            SQLiteParameter p19 = new SQLiteParameter("$CUSTOMERNUMBER", inv.customer.customerNumber);
-            SQLiteParameter p20 = new SQLiteParameter("$EMPLOYEENUMBER", inv.employee.employeeNumber);
-            SQLiteParameter p21 = new SQLiteParameter("$COST", inv.cost);
-            SQLiteParameter p22 = new SQLiteParameter("$PROFIT", inv.profit);
+            SqliteParameter p1 = new SqliteParameter("$INVOICENUMBER", inv.invoiceNumber);
+            SqliteParameter p2 = new SqliteParameter("$SUBTOTAL", inv.subtotal);
+            SqliteParameter p3 = new SqliteParameter("$TAXABLETOTAL", inv.taxableTotal);
+            SqliteParameter p4 = new SqliteParameter("$TAXRATE", inv.taxRate);
+            SqliteParameter p5 = new SqliteParameter("$TAXAMOUNT", inv.taxAmount);
+            SqliteParameter p6 = new SqliteParameter("$TOTAL", inv.total);
+            SqliteParameter p7 = new SqliteParameter("$TOTALPAYMENTS", inv.totalPayments);
+            SqliteParameter p8 = new SqliteParameter("$AGERESTRICTED", inv.containsAgeRestrictedItem);
+            SqliteParameter p9 = new SqliteParameter("$CUSTOMERBIRTHDATE", inv.customerBirthdate.ToString());
+            SqliteParameter p10 = new SqliteParameter("$ATTENTION", inv.attentionLine);
+            SqliteParameter p11 = new SqliteParameter("$PO", inv.PONumber);
+            SqliteParameter p12 = new SqliteParameter("$MESSAGE", inv.invoiceMessage);
+            SqliteParameter p13 = new SqliteParameter("$SAVEDINVOICE", inv.savedInvoice);
+            SqliteParameter p14 = new SqliteParameter("$SAVEDINVOICETIME", inv.savedInvoiceTime.ToString());
+            SqliteParameter p15 = new SqliteParameter("$INVOICECREATIONTIME", inv.invoiceCreationTime.ToString());
+            SqliteParameter p16 = new SqliteParameter("$INVOICEFINALIZEDTIME", inv.invoiceFinalizedTime.ToString());
+            SqliteParameter p17 = new SqliteParameter("$FINALIZED", inv.finalized);
+            SqliteParameter p18 = new SqliteParameter("$VOIDED", inv.voided);
+            SqliteParameter p19 = new SqliteParameter("$CUSTOMERNUMBER", inv.customer.customerNumber);
+            SqliteParameter p20 = new SqliteParameter("$EMPLOYEENUMBER", inv.employee.employeeNumber);
+            SqliteParameter p21 = new SqliteParameter("$COST", inv.cost);
+            SqliteParameter p22 = new SqliteParameter("$PROFIT", inv.profit);
 
 
             command.Parameters.Add(p1);
@@ -1510,28 +1510,28 @@ namespace TIMSServer
                     "$QUANTITY,$TOTAL,$PRICECODE,$SERIALIZED,$SERIALNUMBER,$AGERESTRICTED," +
                     "$MINIMUMAGE,$TAXED,$INVOICECODES,$GUID,$COST)";
 
-                SQLiteParameter pp1 = new SQLiteParameter("$INVOICENUMBER", inv.invoiceNumber);
-                SQLiteParameter pp2 = new SQLiteParameter("$ITEMNUMBER", item.itemNumber);
-                SQLiteParameter pp3 = new SQLiteParameter("$PRODUCTLINE", item.productLine);
-                SQLiteParameter pp4 = new SQLiteParameter("$ITEMDESCRIPTION", item.itemName);
-                SQLiteParameter pp5 = new SQLiteParameter("$PRICE", item.price);
-                SQLiteParameter pp6 = new SQLiteParameter("$LISTPRICE", item.listPrice);
-                SQLiteParameter pp7 = new SQLiteParameter("$QUANTITY", item.quantity);
-                SQLiteParameter pp8 = new SQLiteParameter("$TOTAL", item.total);
-                SQLiteParameter pp9 = new SQLiteParameter("$PRICECODE", item.pricingCode);
-                SQLiteParameter pp10 = new SQLiteParameter("$SERIALIZED", item.serializedItem);
-                SQLiteParameter pp11 = new SQLiteParameter("$SERIALNUMBER", item.serialNumber);
-                SQLiteParameter pp12 = new SQLiteParameter("$AGERESTRICTED", item.ageRestricted);
-                SQLiteParameter pp13 = new SQLiteParameter("$MINIMUMAGE", item.minimumAge);
-                SQLiteParameter pp14 = new SQLiteParameter("$TAXED", item.taxed);
+                SqliteParameter pp1 = new SqliteParameter("$INVOICENUMBER", inv.invoiceNumber);
+                SqliteParameter pp2 = new SqliteParameter("$ITEMNUMBER", item.itemNumber);
+                SqliteParameter pp3 = new SqliteParameter("$PRODUCTLINE", item.productLine);
+                SqliteParameter pp4 = new SqliteParameter("$ITEMDESCRIPTION", item.itemName);
+                SqliteParameter pp5 = new SqliteParameter("$PRICE", item.price);
+                SqliteParameter pp6 = new SqliteParameter("$LISTPRICE", item.listPrice);
+                SqliteParameter pp7 = new SqliteParameter("$QUANTITY", item.quantity);
+                SqliteParameter pp8 = new SqliteParameter("$TOTAL", item.total);
+                SqliteParameter pp9 = new SqliteParameter("$PRICECODE", item.pricingCode);
+                SqliteParameter pp10 = new SqliteParameter("$SERIALIZED", item.serializedItem);
+                SqliteParameter pp11 = new SqliteParameter("$SERIALNUMBER", item.serialNumber);
+                SqliteParameter pp12 = new SqliteParameter("$AGERESTRICTED", item.ageRestricted);
+                SqliteParameter pp13 = new SqliteParameter("$MINIMUMAGE", item.minimumAge);
+                SqliteParameter pp14 = new SqliteParameter("$TAXED", item.taxed);
                 string invCodes = string.Empty;
                 if (item.codes != null)
                     foreach (string code in item.codes)
                         invCodes += code + ",";
                 invCodes = invCodes.Trim(',');
-                SQLiteParameter pp15 = new SQLiteParameter("$INVOICECODES", invCodes);
-                SQLiteParameter pp16 = new SQLiteParameter("$GUID", item.ID);
-                SQLiteParameter pp17 = new SQLiteParameter("$GUID", item.ID);
+                SqliteParameter pp15 = new SqliteParameter("$INVOICECODES", invCodes);
+                SqliteParameter pp16 = new SqliteParameter("$GUID", item.ID);
+                SqliteParameter pp17 = new SqliteParameter("$GUID", item.ID);
 
                 command.Parameters.Add(pp1);
                 command.Parameters.Add(pp2);
@@ -1565,10 +1565,10 @@ namespace TIMSServer
 
                     "VALUES ($INVOICENUMBER,$ID,$PAYMENTTYPE,$PAYMENTAMOUNT)";
 
-                SQLiteParameter ppp1 = new SQLiteParameter("$INVOICENUMBER", inv.invoiceNumber);
-                SQLiteParameter ppp2 = new SQLiteParameter("$ID", pay.ID);
-                SQLiteParameter ppp3 = new SQLiteParameter("$PAYMENTTYPE", pay.paymentType.ToString());
-                SQLiteParameter ppp4 = new SQLiteParameter("$PAYMENTAMOUNT", pay.paymentAmount);
+                SqliteParameter ppp1 = new SqliteParameter("$INVOICENUMBER", inv.invoiceNumber);
+                SqliteParameter ppp2 = new SqliteParameter("$ID", pay.ID);
+                SqliteParameter ppp3 = new SqliteParameter("$PAYMENTTYPE", pay.paymentType.ToString());
+                SqliteParameter ppp4 = new SqliteParameter("$PAYMENTAMOUNT", pay.paymentAmount);
 
                 command.Parameters.Add(ppp1);
                 command.Parameters.Add(ppp2);
@@ -1586,9 +1586,9 @@ namespace TIMSServer
         {
             int invNo = 100000;
             OpenConnection();
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText = "SELECT MAX(INVOICENUMBER) FROM INVOICES";
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 CloseConnection();
@@ -1625,12 +1625,12 @@ namespace TIMSServer
             string property = String.Empty;
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText = "SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = $KEY";
-            SQLiteParameter p1 = new SQLiteParameter("$KEY");
+            SqliteParameter p1 = new SqliteParameter("$KEY", key);
             p1.Value = key;
             command.Parameters.Add(p1);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
             {
@@ -1649,10 +1649,10 @@ namespace TIMSServer
             List<ItemShortcutMenu> menus = new List<ItemShortcutMenu>();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT * FROM SHORTCUTMENUS";
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 CloseConnection();
@@ -1683,15 +1683,15 @@ namespace TIMSServer
         {
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "INSERT INTO BARCODES ( BARCODETYPE, BARCODEVALUE, SCANNEDITEMNUMBER, SCANNEDPRODUCTLINE, SCANNEDQUANTITY) " +
                 "VALUES ($TYPE, $VALUE, $ITEMNUMBER, $PRODUCTLINE, $QUANTITY)";
-            SQLiteParameter p1 = new SQLiteParameter("$TYPE", "UPCA");
-            SQLiteParameter p2 = new SQLiteParameter("$VALUE", barcode);
-            SQLiteParameter p3 = new SQLiteParameter("$ITEMNUMBER", itemnumber);
-            SQLiteParameter p4 = new SQLiteParameter("$PRODUCTLINE", productline);
-            SQLiteParameter p5 = new SQLiteParameter("$QUANTITY", quantity);
+            SqliteParameter p1 = new SqliteParameter("$TYPE", "UPCA");
+            SqliteParameter p2 = new SqliteParameter("$VALUE", barcode);
+            SqliteParameter p3 = new SqliteParameter("$ITEMNUMBER", itemnumber);
+            SqliteParameter p4 = new SqliteParameter("$PRODUCTLINE", productline);
+            SqliteParameter p5 = new SqliteParameter("$QUANTITY", quantity);
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
             command.Parameters.Add(p3);
@@ -1707,14 +1707,14 @@ namespace TIMSServer
             List<string> barcodes = new List<string>();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT BARCODEVALUE FROM BARCODES WHERE SCANNEDITEMNUMBER = $ITEMNUMBER AND SCANNEDPRODUCTLINE = $LINE";
-            SQLiteParameter p1 = new SQLiteParameter("$ITEMNUMBER", item.itemNumber);
-            SQLiteParameter p2 = new SQLiteParameter("$LINE", item.productLine);
+            SqliteParameter p1 = new SqliteParameter("$ITEMNUMBER", item.itemNumber);
+            SqliteParameter p2 = new SqliteParameter("$LINE", item.productLine);
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 CloseConnection();
@@ -1737,10 +1737,10 @@ namespace TIMSServer
             List<string> tables = new List<string>();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT NAME FROM sqlite_master WHERE TYPE = 'table'";
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
             {
@@ -1755,12 +1755,12 @@ namespace TIMSServer
             List<string> headers = new List<string>();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 $"PRAGMA table_info({table})";
-            //SQLiteParameter p1 = new SQLiteParameter("$TABLE", table);
+            //SqliteParameter p1 = new SqliteParameter("$TABLE", table);
             //command.Parameters.Add(p1);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
 
             if (!reader.HasRows)
             {
@@ -1779,9 +1779,9 @@ namespace TIMSServer
             List<object> data = new List<object>();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText = query;
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
                 for (int i = 0; i != columns; i++)
@@ -1811,18 +1811,18 @@ namespace TIMSServer
                 totals += total + "|";
             totals = totals.Trim('|');
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "INSERT INTO REPORTS " +
                 "(REPORTNAME,REPORTSHORTCODE,DATASOURCE,CONDITIONS,FIELDS,TOTALS) " +
                 "VALUES ($REPORTNAME,$REPORTSHORTCODE,$DATASOURCE,$CONDITIONS,$FIELDS,$TOTALS)";
 
-            SQLiteParameter p1 = new SQLiteParameter("$REPORTNAME", report.ReportName);
-            SQLiteParameter p2 = new SQLiteParameter("$REPORTSHORTCODE", report.ReportShortcode);
-            SQLiteParameter p3 = new SQLiteParameter("$DATASOURCE", report.DataSource);
-            SQLiteParameter p4 = new SQLiteParameter("$CONDITIONS", conditions);
-            SQLiteParameter p5 = new SQLiteParameter("$FIELDS", fields);
-            SQLiteParameter p6 = new SQLiteParameter("$TOTALS", totals);
+            SqliteParameter p1 = new SqliteParameter("$REPORTNAME", report.ReportName);
+            SqliteParameter p2 = new SqliteParameter("$REPORTSHORTCODE", report.ReportShortcode);
+            SqliteParameter p3 = new SqliteParameter("$DATASOURCE", report.DataSource);
+            SqliteParameter p4 = new SqliteParameter("$CONDITIONS", conditions);
+            SqliteParameter p5 = new SqliteParameter("$FIELDS", fields);
+            SqliteParameter p6 = new SqliteParameter("$TOTALS", totals);
 
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
@@ -1841,12 +1841,12 @@ namespace TIMSServer
             Report report;
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT * FROM REPORTS WHERE REPORTSHORTCODE = $CODE";
-            SQLiteParameter p1 = new SQLiteParameter("$CODE", shortcode);
+            SqliteParameter p1 = new SqliteParameter("$CODE", shortcode);
             command.Parameters.Add(p1);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
 
             if (!reader.HasRows)
             {
@@ -1886,10 +1886,10 @@ namespace TIMSServer
             List<string> reports = new List<string>();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT REPORTSHORTCODE, REPORTNAME FROM REPORTS";
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
                 reports.Add(reader.GetString(0) + " " + reader.GetString(1));
@@ -1907,10 +1907,10 @@ namespace TIMSServer
             if (!connectionOpened)
                 OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT MAX(PONUMBER) FROM PURCHASEORDERS";
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 if (!connectionOpened)
@@ -1939,10 +1939,10 @@ namespace TIMSServer
             List<PurchaseOrder> order = new List<PurchaseOrder>();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT PONUMBER FROM PURCHASEORDERS";
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 CloseConnection();
@@ -1962,12 +1962,12 @@ namespace TIMSServer
             if (!connectionOpened)
                 OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT * FROM PURCHASEORDERS WHERE PONUMBER = $PONUMBER";
-            SQLiteParameter p1 = new SQLiteParameter("$PONUMBER", PONumber);
+            SqliteParameter p1 = new SqliteParameter("$PONUMBER", PONumber);
             command.Parameters.Add(p1);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 if (!connectionOpened)
@@ -2015,12 +2015,12 @@ namespace TIMSServer
             bool exists = false;
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT * FROM PURCHASEORDERS WHERE PONUMBER = $PO";
-            SQLiteParameter p8 = new SQLiteParameter("$PO", PO.PONumber);
+            SqliteParameter p8 = new SqliteParameter("$PO", PO.PONumber);
             command.Parameters.Add(p8);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
                 exists = true;
             reader.Close();
@@ -2033,13 +2033,13 @@ namespace TIMSServer
                 "INSERT INTO PURCHASEORDERS (" +
                 "PONUMBER, TOTALCOST, TOTALITEMS, ASSIGNEDCHECKIN, SUPPLIER, FINALIZED, SHIPPINGCOST) " +
                 "VALUES ($PONUMBER, $COST, $TOTALITEMS, $CHECKIN, $SUPPLIER, $FINALIZED, $SHIPPING)";
-            SQLiteParameter p1 = new SQLiteParameter("$PONUMBER", PO.PONumber);
-            SQLiteParameter p2 = new SQLiteParameter("$COST", PO.totalCost);
-            SQLiteParameter p3 = new SQLiteParameter("$TOTALITEMS", PO.totalItems);
-            SQLiteParameter p4 = new SQLiteParameter("$CHECKIN", PO.assignedCheckin);
-            SQLiteParameter p5 = new SQLiteParameter("$SUPPLIER", PO.supplier);
-            SQLiteParameter p6 = new SQLiteParameter("$FINALIZED", PO.finalized);
-            SQLiteParameter p7 = new SQLiteParameter("$SHIPPING", PO.shippingCost);
+            SqliteParameter p1 = new SqliteParameter("$PONUMBER", PO.PONumber);
+            SqliteParameter p2 = new SqliteParameter("$COST", PO.totalCost);
+            SqliteParameter p3 = new SqliteParameter("$TOTALITEMS", PO.totalItems);
+            SqliteParameter p4 = new SqliteParameter("$CHECKIN", PO.assignedCheckin);
+            SqliteParameter p5 = new SqliteParameter("$SUPPLIER", PO.supplier);
+            SqliteParameter p6 = new SqliteParameter("$FINALIZED", PO.finalized);
+            SqliteParameter p7 = new SqliteParameter("$SHIPPING", PO.shippingCost);
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
             command.Parameters.Add(p3);
@@ -2057,13 +2057,13 @@ namespace TIMSServer
 
             foreach (InvoiceItem item in PO.items)
             {
-                p1 = new SQLiteParameter("$PONUMBER", PO.PONumber);
-                p2 = new SQLiteParameter("$ID", Guid.NewGuid());
-                p3 = new SQLiteParameter("$ITEMNUMBER", item.itemNumber);
-                p4 = new SQLiteParameter("$PRODUCTLINE", item.productLine);
-                p5 = new SQLiteParameter("$QTY", item.quantity);
-                p6 = new SQLiteParameter("$COST", item.cost);
-                p7 = new SQLiteParameter("$PRICE", item.price);
+                p1 = new SqliteParameter("$PONUMBER", PO.PONumber);
+                p2 = new SqliteParameter("$ID", Guid.NewGuid());
+                p3 = new SqliteParameter("$ITEMNUMBER", item.itemNumber);
+                p4 = new SqliteParameter("$PRODUCTLINE", item.productLine);
+                p5 = new SqliteParameter("$QTY", item.quantity);
+                p6 = new SqliteParameter("$COST", item.cost);
+                p7 = new SqliteParameter("$PRICE", item.price);
                 command.Parameters.Clear();
                 command.Parameters.Add(p1);
                 command.Parameters.Add(p2);
@@ -2088,10 +2088,10 @@ namespace TIMSServer
             if (!connectionOpened)
                 OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "DELETE FROM PURCHASEORDERS WHERE PONUMBER = $PO";
-            SQLiteParameter p1 = new SQLiteParameter("$PO", PONumber);
+            SqliteParameter p1 = new SqliteParameter("$PO", PONumber);
             command.Parameters.Add(p1);
 
             command.ExecuteNonQuery();
@@ -2108,10 +2108,10 @@ namespace TIMSServer
             int checkinNumber = 10000;
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT MAX(CHECKINNUMBER) FROM CHECKINS";
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 CloseConnection();
@@ -2142,12 +2142,12 @@ namespace TIMSServer
 
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "INSERT INTO CHECKINS (CHECKINNUMBER, PONUMBERS) " +
                 "VALUES ($CHECKINNUMBER, $PONUMBERS)";
-            SQLiteParameter p1 = new SQLiteParameter("$CHECKINNUMBER", checkin.checkinNumber);
-            SQLiteParameter p2 = new SQLiteParameter("$PONUMBERS", POs);
+            SqliteParameter p1 = new SqliteParameter("$CHECKINNUMBER", checkin.checkinNumber);
+            SqliteParameter p2 = new SqliteParameter("$PONUMBERS", POs);
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
 
@@ -2160,13 +2160,13 @@ namespace TIMSServer
             foreach (CheckinItem item in checkin.items)
             {
                 command.Parameters.Clear();
-                command.Parameters.Add(new SQLiteParameter("$CHECKINNUMBER", checkin.checkinNumber));
-                command.Parameters.Add(new SQLiteParameter("$LINECODE", item.productLine));
-                command.Parameters.Add(new SQLiteParameter("$ITEMNUMBER", item.itemNumber));
-                command.Parameters.Add(new SQLiteParameter("$ORDERED", item.ordered));
-                command.Parameters.Add(new SQLiteParameter("$SHIPPED", item.shipped));
-                command.Parameters.Add(new SQLiteParameter("$RECEIVED", item.received));
-                command.Parameters.Add(new SQLiteParameter("$DAMAGED", item.damaged));
+                command.Parameters.Add(new SqliteParameter("$CHECKINNUMBER", checkin.checkinNumber));
+                command.Parameters.Add(new SqliteParameter("$LINECODE", item.productLine));
+                command.Parameters.Add(new SqliteParameter("$ITEMNUMBER", item.itemNumber));
+                command.Parameters.Add(new SqliteParameter("$ORDERED", item.ordered));
+                command.Parameters.Add(new SqliteParameter("$SHIPPED", item.shipped));
+                command.Parameters.Add(new SqliteParameter("$RECEIVED", item.received));
+                command.Parameters.Add(new SqliteParameter("$DAMAGED", item.damaged));
                 command.ExecuteNonQuery();
             }
 
@@ -2175,8 +2175,8 @@ namespace TIMSServer
                 command.CommandText =
                     "UPDATE PURCHASEORDERS SET ASSIGNEDCHECKIN = $CHECKIN WHERE PONUMBER = $ORDER";
                 command.Parameters.Clear();
-                command.Parameters.Add(new SQLiteParameter("$CHECKIN", checkin.checkinNumber));
-                command.Parameters.Add(new SQLiteParameter("$ORDER", order.PONumber));
+                command.Parameters.Add(new SqliteParameter("$CHECKIN", checkin.checkinNumber));
+                command.Parameters.Add(new SqliteParameter("$ORDER", order.PONumber));
                 command.ExecuteNonQuery();
             }
 
@@ -2189,10 +2189,10 @@ namespace TIMSServer
             List<Checkin> checkins = new List<Checkin>();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT CHECKINNUMBER FROM CHECKINS";
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 CloseConnection();
@@ -2211,12 +2211,12 @@ namespace TIMSServer
             Checkin checkin = new Checkin(RetrieveNextCheckinNumber());
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT * FROM CHECKINS WHERE CHECKINNUMBER = $CHECKINNUMBER";
-            SQLiteParameter p1 = new SQLiteParameter("$CHECKINNUMBER", checkinNumber);
+            SqliteParameter p1 = new SqliteParameter("$CHECKINNUMBER", checkinNumber);
             command.Parameters.Add(p1);
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 CloseConnection();
@@ -2258,22 +2258,22 @@ namespace TIMSServer
         {
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "DELETE FROM CHECKINS WHERE CHECKINNUMBER = $CHECKIN";
-            command.Parameters.Add(new SQLiteParameter("$CHECKIN", checkinNumber));
+            command.Parameters.Add(new SqliteParameter("$CHECKIN", checkinNumber));
             command.ExecuteNonQuery();
 
             command.CommandText =
                 "DELETE FROM CHECKINITEMS WHERE CHECKINNUMBER = $CHECKIN";
             command.Parameters.Clear();
-            command.Parameters.Add(new SQLiteParameter("$CHECKIN", checkinNumber));
+            command.Parameters.Add(new SqliteParameter("$CHECKIN", checkinNumber));
             command.ExecuteNonQuery();
 
             command.CommandText =
                 "UPDATE PURCHASEORDERS SET ASSIGNEDCHECKIN = 0 WHERE ASSIGNEDCHECKIN = $CHECKIN";
             command.Parameters.Clear();
-            command.Parameters.Add(new SQLiteParameter("$CHECKIN", checkinNumber));
+            command.Parameters.Add(new SqliteParameter("$CHECKIN", checkinNumber));
             command.ExecuteNonQuery();
 
             CloseConnection();
@@ -2283,17 +2283,17 @@ namespace TIMSServer
         {
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "UPDATE CHECKINITEMS SET ORDEREDQTY = $ORDERED, SHIPPEDQTY = $SHIPPED, RECEIVEDQTY = $RECEIVED, DAMAGEDQTY = $DAMAGED " +
                 "WHERE (CHECKINNUMBER = $CHECKIN AND ITEMNUMBER = $ITEMNO AND PRODUCTLINE = $LINE)";
-            command.Parameters.Add(new SQLiteParameter("$ORDERED", item.ordered));
-            command.Parameters.Add(new SQLiteParameter("$SHIPPED", item.shipped));
-            command.Parameters.Add(new SQLiteParameter("$RECEIVED", item.received));
-            command.Parameters.Add(new SQLiteParameter("$DAMAGED", item.damaged));
-            command.Parameters.Add(new SQLiteParameter("$CHECKIN", checkinNumber));
-            command.Parameters.Add(new SQLiteParameter("$ITEMNO", item.itemNumber));
-            command.Parameters.Add(new SQLiteParameter("$LINE", item.productLine));
+            command.Parameters.Add(new SqliteParameter("$ORDERED", item.ordered));
+            command.Parameters.Add(new SqliteParameter("$SHIPPED", item.shipped));
+            command.Parameters.Add(new SqliteParameter("$RECEIVED", item.received));
+            command.Parameters.Add(new SqliteParameter("$DAMAGED", item.damaged));
+            command.Parameters.Add(new SqliteParameter("$CHECKIN", checkinNumber));
+            command.Parameters.Add(new SqliteParameter("$ITEMNO", item.itemNumber));
+            command.Parameters.Add(new SqliteParameter("$LINE", item.productLine));
             command.ExecuteNonQuery();
 
             CloseConnection();
@@ -2306,10 +2306,10 @@ namespace TIMSServer
             List<Account> accounts = new List<Account>();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT * FROM ACCOUNTS";
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 return null;
@@ -2334,11 +2334,11 @@ namespace TIMSServer
             int accountID = RetrieveAccounts().Find(el => el.Name == accountName).ID;
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT * FROM ACCOUNTTRANSACTIONS WHERE CREDITACCOUNT = $ACCT OR DEBITACCOUNT = $ACCT";
-            command.Parameters.Add(new SQLiteParameter("$ACCT", accountID));
-            SQLiteDataReader reader = command.ExecuteReader();
+            command.Parameters.Add(new SqliteParameter("$ACCT", accountID));
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 CloseConnection();
@@ -2367,10 +2367,10 @@ namespace TIMSServer
         {
             int tNo = 0;
             OpenConnection();
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT MAX(TRANSACTIONID) FROM ACCOUNTTRANSACTIONS";
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 CloseConnection();
@@ -2391,17 +2391,17 @@ namespace TIMSServer
             int tID = RetrieveNextTransactionNumber();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "INSERT INTO ACCOUNTTRANSACTIONS (TRANSACTIONID, DATE, MEMO, CREDITACCOUNT, DEBITACCOUNT, AMOUNT, REFERENCENUMBER)" +
                 "VALUES ($TID, $DATE, $MEMO, $CA, $DA, $AMT, $REF)";
-            command.Parameters.Add(new SQLiteParameter("$TID", tID));
-            command.Parameters.Add(new SQLiteParameter("$DATE", t.date.ToString("MM/dd/yyyy")));
-            command.Parameters.Add(new SQLiteParameter("$MEMO", t.memo));
-            command.Parameters.Add(new SQLiteParameter("$CA", t.creditAccount));
-            command.Parameters.Add(new SQLiteParameter("$DA", t.debitAccount));
-            command.Parameters.Add(new SQLiteParameter("$AMT", t.amount));
-            command.Parameters.Add(new SQLiteParameter("$REF", t.referenceNumber));
+            command.Parameters.Add(new SqliteParameter("$TID", tID));
+            command.Parameters.Add(new SqliteParameter("$DATE", t.date.ToString("MM/dd/yyyy")));
+            command.Parameters.Add(new SqliteParameter("$MEMO", t.memo));
+            command.Parameters.Add(new SqliteParameter("$CA", t.creditAccount));
+            command.Parameters.Add(new SqliteParameter("$DA", t.debitAccount));
+            command.Parameters.Add(new SqliteParameter("$AMT", t.amount));
+            command.Parameters.Add(new SqliteParameter("$REF", t.referenceNumber));
             command.ExecuteNonQuery();
 
             CloseConnection();
@@ -2410,11 +2410,11 @@ namespace TIMSServer
         {
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "UPDATE ACCOUNTS SET CURRENTBALANCE = $BAL WHERE ID = $ACCT";
-            command.Parameters.Add(new SQLiteParameter("$BAL", newBalance));
-            command.Parameters.Add(new SQLiteParameter("$ACCT", accountID));
+            command.Parameters.Add(new SqliteParameter("$BAL", newBalance));
+            command.Parameters.Add(new SqliteParameter("$ACCT", accountID));
             command.ExecuteNonQuery();
 
             CloseConnection();
@@ -2426,11 +2426,11 @@ namespace TIMSServer
         {
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT * FROM DEVICES WHERE IPADDRESS = $ADDR";
-            command.Parameters.Add(new SQLiteParameter("$ADDR", address));
-            SQLiteDataReader reader = command.ExecuteReader();
+            command.Parameters.Add(new SqliteParameter("$ADDR", address));
+            SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 CloseConnection();
@@ -2445,10 +2445,10 @@ namespace TIMSServer
             List<string> terms = new List<string>();
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT NICKNAME FROM DEVICES WHERE DEVICETYPE = 'TERMINAL'";
-            SQLiteDataReader reader = command.ExecuteReader();
+            SqliteDataReader reader = command.ExecuteReader();
             while (reader.Read())
                 terms.Add(reader.GetString(0));
 

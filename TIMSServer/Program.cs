@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 using System.ServiceModel;
 using System.Net;
 using System.Net.Http;
@@ -17,6 +17,7 @@ namespace TIMSServer
         public static int alertLevel = 3;
         public static string regName = string.Empty;
 
+        #region legacy code
         /* Legacy Code
         static void Main()
         {
@@ -257,12 +258,16 @@ namespace TIMSServer
             }
         }
     */
+        #endregion
 
-        public static SQLiteConnection sqlite_conn;
+        public static SqliteConnection sqlite_conn;
 
         static void Main()
         {
-            sqlite_conn = new SQLiteConnection("Data Source=database.db; Version = 3; New = True; Pooling = true; Max Pool Size = 100; Compress = True; Password = 3nCryqtEdT!MSPa$$w0rdFoRrev!tAc0m");
+            sqlite_conn = new SqliteConnection(
+              @"Data Source=database.db; 
+                Pooling = true; 
+                Password = 3nCryqtEdT!MSPa$$w0rdFoRrev!tAc0m;");
 
             OpenConnection();
             CloseConnection();
@@ -405,11 +410,11 @@ namespace TIMSServer
                                                 {
                                                     OpenConnection();
 
-                                                    SQLiteCommand command = sqlite_conn.CreateCommand();
+                                                    SqliteCommand command = sqlite_conn.CreateCommand();
                                                     command.CommandText =
                                                         "INSERT INTO DEVICES (DEVICETYPE, IPADDRESS, NICKNAME) VALUES ('TERMINAL', $ADDR, $NAME)";
-                                                    command.Parameters.Add(new SQLiteParameter("$ADDR", ip.ToString()));
-                                                    command.Parameters.Add(new SQLiteParameter("$NAME", terminalName));
+                                                    command.Parameters.Add(new SqliteParameter("$ADDR", ip.ToString()));
+                                                    command.Parameters.Add(new SqliteParameter("$NAME", terminalName));
                                                     command.ExecuteNonQuery();
 
                                                     CloseConnection();
@@ -454,7 +459,7 @@ namespace TIMSServer
         {
             OpenConnection();
 
-            SQLiteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = sqlite_conn.CreateCommand();
             if (!TableExists(sqlite_conn, "AccountTransactions"))
             {
                 command.CommandText =
@@ -1014,14 +1019,14 @@ namespace TIMSServer
             CloseConnection();
         }
 
-        public static bool TableExists(SQLiteConnection openConnection, string tableName)
+        public static bool TableExists(SqliteConnection openConnection, string tableName)
         {
             var sql =
             "SELECT name FROM sqlite_master WHERE type='table' AND name='" + tableName + "';";
             if (openConnection.State == System.Data.ConnectionState.Open)
             {
-                SQLiteCommand command = new SQLiteCommand(sql, openConnection);
-                SQLiteDataReader reader = command.ExecuteReader();
+                SqliteCommand command = new SqliteCommand(sql, openConnection);
+                SqliteDataReader reader = command.ExecuteReader();
                 if (reader.HasRows)
                 {
                     return true;
@@ -1073,7 +1078,7 @@ namespace TIMSServer
                 input = "'" + input + "'";
             string value = null;
             OpenConnection();
-            SQLiteCommand sqlite_cmd;
+            SqliteCommand sqlite_cmd;
             sqlite_cmd = sqlite_conn.CreateCommand();
 
             sqlite_cmd.CommandText =
@@ -1082,7 +1087,7 @@ namespace TIMSServer
                 "WHERE USERNAME = " + input + " " +
                 "OR EMPLOYEENUMBER = " + input;
 
-            SQLiteDataReader rdr = sqlite_cmd.ExecuteReader();
+            SqliteDataReader rdr = sqlite_cmd.ExecuteReader();
             while (rdr.Read())
             {
                 value = $"{rdr.GetString(0)}";
