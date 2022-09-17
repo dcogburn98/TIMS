@@ -26,11 +26,11 @@ namespace TIMS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Login login = new Login();
-            OpenForms.Add(login);
-            login.Show();
-            Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
-            Application.Run();
+            //Login login = new Login();
+            //OpenForms.Add(login);
+            //login.Show();
+            //Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
+            //Application.Run();
 
             #region Invoice Viewer Test Code
             //SHA256 encrypt = SHA256.Create();
@@ -111,6 +111,10 @@ namespace TIMS
             #region Camera Viewer Test Code
             //CameraViewer viewer = new CameraViewer();
             //Application.Run(viewer);
+            #endregion
+            #region Tile Display Test Code
+            TileDisplay display = new TileDisplay();
+            Application.Run(display);
             #endregion
         }
 

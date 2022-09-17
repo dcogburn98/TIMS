@@ -63,45 +63,17 @@ namespace TIMSServer
         {
             Console.WriteLine("Login Called for user: " + user);
             #region GetIP
-            string addr = "";
+            string addr = GetClientAddress();
             if (!DeviceExists(addr))
             {
-                Console.WriteLine("Terminal (" + addr + ") being used to login for user \"" + user + "\" is not currently enrolled in the system. Please type \"accept\" + [Device Nickname] to enroll this terminal, otherwise type anything else.");
-                
-                
-                string input = Console.ReadLine();
-                if (input.Split(' ')[0].ToLower() == "accept")
-                {
-                    if (input.Split(' ').Length < 2)
-                    {
-                        Console.WriteLine("Please specify a nickname for this terminal: ");
-                        input = input + " " + Console.ReadLine();
-                    }
-                    Console.WriteLine("Enrolling device...");
-                    //AddTerminal(addr, input.Split(' ')[1]);
-                    Console.WriteLine("Device Enrolled. Logging in.");
-                }
-                else
-                {
-                    Console.WriteLine("Device enrollment rejected. Please verify the origin of this connection, it could be malicious.");
-                    //if (!File.Exists("LoginAttempts.log")) { File.Create("LoginAttempts.log").Close(); }
-                    FileStream stream = File.Open("loginAttempts.log", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                    byte[] buffer = new byte[stream.Length];
-                    stream.Read(buffer, 0, (int)stream.Length);
-                    string text = Encoding.ASCII.GetString(buffer);
-                    byte[] data = Encoding.ASCII.GetBytes(text + "[" + DateTime.Now.ToString() + "] " + addr + "\n");
-                    stream.Write(new byte[0], 0, 0);
-                    stream.Write(data, 0, data.Length);
-                    stream.Close();
-                    return null;
-                }
+                return new Employee() { key = new AuthKey() { Success = false } };
             }
             #endregion
             //System.Threading.Thread.Sleep(1000); Uncomment before release
             Employee e = new Employee();
 
             #region Authorization Initialization
-            e.key = new AuthKey();
+            e.key = new AuthKey() { Success = true };
             AuthKey copy = new AuthKey(e.key);
             Keys.Add(copy);
             #endregion

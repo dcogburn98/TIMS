@@ -36,6 +36,11 @@ namespace TIMS.Server
             Employee e = proxy.Login(user, pass);
             if (e != null)
             {
+                if (!e.key.Success)
+                {
+                    MessageBox.Show("Terminal is not registered to server. Please refer to the TIMS user manual or consult Revitacom help.");
+                    return null;
+                }
                 currentKey = new AuthKey(e.key);
                 currentKey.Regenerate();
             }

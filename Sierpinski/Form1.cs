@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
+//using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Sierpinski
@@ -14,6 +14,7 @@ namespace Sierpinski
     {
         Random rng = new Random();
         Timer timer = new Timer();
+        Bitmap image;
 
         List<PointF> initialPoints = new List<PointF>();
         PointF lastPoint;
@@ -35,15 +36,14 @@ namespace Sierpinski
             gfx.Clear(Color.Black);
 
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            image = new Bitmap(pictureBox1.Image);
 
-            pictureBox1.Refresh();
+            pictureBox1.Invalidate();
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            using (Bitmap image = new Bitmap(pictureBox1.Image))
-            {
-
+                Size s = image.Size;
                 using (Graphics gfx = Graphics.FromImage(image))
                 {
                     gfx.FillEllipse(Brushes.Black, initialPoints[0].X, initialPoints[0].Y, 2, 2);
@@ -53,16 +53,14 @@ namespace Sierpinski
                     PointF newPoint = CalculateMidpoint(lastPoint, initialPoints[rng.Next(0, 3)]);
                     gfx.FillEllipse(Brushes.Black, newPoint.X, newPoint.Y, 2, 2);
                     lastPoint = newPoint;
+                    pictureBox1.Image = image;
                 }
-            
-            pictureBox1.Image = image;
-            }
             //pictureBox1.Refresh();
         }
     
         private void AddPoint(object sender, EventArgs e)
         {
-            pictureBox1.Refresh();
+            pictureBox1.Invalidate();
         }
 
         private PointF CalculateMidpoint(PointF p1, PointF p2)
