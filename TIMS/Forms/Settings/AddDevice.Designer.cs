@@ -39,6 +39,7 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.deviceTypeField = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -106,6 +107,7 @@
             this.testButton.TabIndex = 12;
             this.testButton.Text = "Test";
             this.testButton.UseVisualStyleBackColor = true;
+            this.testButton.Click += new System.EventHandler(this.testButton_Click);
             // 
             // cancelButton
             // 
@@ -135,11 +137,21 @@
             this.deviceTypeField.Size = new System.Drawing.Size(121, 20);
             this.deviceTypeField.TabIndex = 15;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(216, 88);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(99, 13);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Default is port 9100";
+            // 
             // AddDevice
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(333, 145);
+            this.ClientSize = new System.Drawing.Size(334, 145);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.deviceTypeField);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.cancelButton);
@@ -171,5 +183,6 @@
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.TextBox deviceTypeField;
+        private System.Windows.Forms.Label label5;
     }
 }

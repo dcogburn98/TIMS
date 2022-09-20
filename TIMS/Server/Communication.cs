@@ -13,16 +13,17 @@ namespace TIMS.Server
 {
     class Communication
     {
-        private static ChannelFactory<ITIMSServiceModel> channelFactory = new
-            ChannelFactory<ITIMSServiceModel>("TIMSServerEndpoint");
-
-        private static ITIMSServiceModel proxy = channelFactory.CreateChannel();
-
+        private static ChannelFactory<ITIMSServiceModel> channelFactory;
+        private static ITIMSServiceModel proxy;
         private static AuthKey currentKey = new AuthKey();
 
-        public static void ChangeEndpointAddress(EndpointAddress newAddress)
+        public static void SetEndpointAddress(string newAddress)
         {
-            channelFactory = new ChannelFactory<ITIMSServiceModel>("TIMSServerEndpoint", newAddress);
+            EndpointIdentity spn = EndpointIdentity.CreateSpnIdentity("TIMSServerEndpoint");
+            Uri uri = new Uri(newAddress);
+            var address = new EndpointAddress(uri, spn);
+            channelFactory = new ChannelFactory<ITIMSServiceModel>("TIMSServerEndpoint", address);
+            proxy = channelFactory.CreateChannel();
         }
 
         #region Employees
@@ -390,7 +391,7 @@ namespace TIMS.Server
             return proxy.DeviceExists(address);
         }
 
-        public static List<string> RetrieveTerminals()
+        public static List<Device> RetrieveTerminals()
         {
             return proxy.RetrieveTerminals();
         }

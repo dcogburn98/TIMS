@@ -20,6 +20,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ServerManager\**" />
+    <EmbeddedResource Remove="ServerManager\**" />
+    <None Remove="ServerManager\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ESCPOS_NET" Version="3.0.0" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.8" />
     <PackageReference Include="PDFsharp-gdi" Version="1.51.5185-beta" />
@@ -57,10 +63,6 @@
     <Reference Include="xCore">
       <HintPath>..\..\..\..\..\OneDrive\Desktop\TIMS Dev Stuff\PaymentEngine\xCore.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ServerManager\" />
   </ItemGroup>
 
   <ItemGroup>

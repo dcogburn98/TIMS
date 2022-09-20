@@ -11,20 +11,18 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-using TIMSServerModel;
-
 namespace TIMSMobile
 {
     class Communication
     {
-        private static ChannelFactory<ITIMSServiceModel> channelFactory = new
-            ChannelFactory<ITIMSServiceModel>("TIMSServerEndpoint");
+        //private static ChannelFactory<ITIMSServiceModel> channelFactory = new
+        //    ChannelFactory<ITIMSServiceModel>("TIMSServerEndpoint");
 
-        private static ITIMSServiceModel proxy = channelFactory.CreateChannel();
+        //private static ITIMSServiceModel proxy = channelFactory.CreateChannel();
 
-        public static List<Checkin> RetrieveCheckins()
-        {
-            return proxy.RetrieveCheckins();
-        }
+        //public static List<Checkin> RetrieveCheckins()
+        //{
+        //    return proxy.RetrieveCheckins();
+        //}
     }
 }

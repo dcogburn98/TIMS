@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using Microsoft.Data.Sqlite;
 using PaymentEngine.xTransaction;
 using System.IO;
@@ -66,6 +67,7 @@ namespace TIMSServer
             string addr = GetClientAddress();
             if (!DeviceExists(addr))
             {
+                Console.WriteLine("Terminal: " + addr + " is not registered with the server. Please refer to the user manual on how to register devices.");
                 return new Employee() { key = new AuthKey() { Success = false } };
             }
             #endregion
@@ -1150,6 +1152,12 @@ namespace TIMSServer
             Customer cust = new Customer();
             #region Authorization Check
             AuthKey localKey = Keys.Find(el => el.ID == key.ID);
+            if (localKey == null)
+            {
+                cust.key = new AuthKey();
+                cust.key.Success = false;
+                return cust;
+            }
             if (!localKey.Match(key))
             {
                 cust.key = new AuthKey();
@@ -1418,52 +1426,28 @@ namespace TIMSServer
                 "$SAVEDINVOICE,$SAVEDINVOICETIME,$INVOICECREATIONTIME,$INVOICEFINALIZEDTIME,$FINALIZED,$VOIDED,$CUSTOMERNUMBER,$EMPLOYEENUMBER, " +
                 "$COST, $PROFIT)";
 
-            SqliteParameter p1 = new SqliteParameter("$INVOICENUMBER", inv.invoiceNumber);
-            SqliteParameter p2 = new SqliteParameter("$SUBTOTAL", inv.subtotal);
-            SqliteParameter p3 = new SqliteParameter("$TAXABLETOTAL", inv.taxableTotal);
-            SqliteParameter p4 = new SqliteParameter("$TAXRATE", inv.taxRate);
-            SqliteParameter p5 = new SqliteParameter("$TAXAMOUNT", inv.taxAmount);
-            SqliteParameter p6 = new SqliteParameter("$TOTAL", inv.total);
-            SqliteParameter p7 = new SqliteParameter("$TOTALPAYMENTS", inv.totalPayments);
-            SqliteParameter p8 = new SqliteParameter("$AGERESTRICTED", inv.containsAgeRestrictedItem);
-            SqliteParameter p9 = new SqliteParameter("$CUSTOMERBIRTHDATE", inv.customerBirthdate.ToString());
-            SqliteParameter p10 = new SqliteParameter("$ATTENTION", inv.attentionLine);
-            SqliteParameter p11 = new SqliteParameter("$PO", inv.PONumber);
-            SqliteParameter p12 = new SqliteParameter("$MESSAGE", inv.invoiceMessage);
-            SqliteParameter p13 = new SqliteParameter("$SAVEDINVOICE", inv.savedInvoice);
-            SqliteParameter p14 = new SqliteParameter("$SAVEDINVOICETIME", inv.savedInvoiceTime.ToString());
-            SqliteParameter p15 = new SqliteParameter("$INVOICECREATIONTIME", inv.invoiceCreationTime.ToString());
-            SqliteParameter p16 = new SqliteParameter("$INVOICEFINALIZEDTIME", inv.invoiceFinalizedTime.ToString());
-            SqliteParameter p17 = new SqliteParameter("$FINALIZED", inv.finalized);
-            SqliteParameter p18 = new SqliteParameter("$VOIDED", inv.voided);
-            SqliteParameter p19 = new SqliteParameter("$CUSTOMERNUMBER", inv.customer.customerNumber);
-            SqliteParameter p20 = new SqliteParameter("$EMPLOYEENUMBER", inv.employee.employeeNumber);
-            SqliteParameter p21 = new SqliteParameter("$COST", inv.cost);
-            SqliteParameter p22 = new SqliteParameter("$PROFIT", inv.profit);
-
-
-            command.Parameters.Add(p1);
-            command.Parameters.Add(p2);
-            command.Parameters.Add(p3);
-            command.Parameters.Add(p4);
-            command.Parameters.Add(p5);
-            command.Parameters.Add(p6);
-            command.Parameters.Add(p7);
-            command.Parameters.Add(p8);
-            command.Parameters.Add(p9);
-            command.Parameters.Add(p10);
-            command.Parameters.Add(p11);
-            command.Parameters.Add(p12);
-            command.Parameters.Add(p13);
-            command.Parameters.Add(p14);
-            command.Parameters.Add(p15);
-            command.Parameters.Add(p16);
-            command.Parameters.Add(p17);
-            command.Parameters.Add(p18);
-            command.Parameters.Add(p19);
-            command.Parameters.Add(p20);
-            command.Parameters.Add(p21);
-            command.Parameters.Add(p22);
+            command.Parameters.Add(new SqliteParameter("$INVOICENUMBER", inv.invoiceNumber));
+            command.Parameters.Add(new SqliteParameter("$SUBTOTAL", inv.subtotal));
+            command.Parameters.Add(new SqliteParameter("$TAXABLETOTAL", inv.taxableTotal));
+            command.Parameters.Add(new SqliteParameter("$TAXRATE", inv.taxRate));
+            command.Parameters.Add(new SqliteParameter("$TAXAMOUNT", inv.taxAmount));
+            command.Parameters.Add(new SqliteParameter("$TOTAL", inv.total));
+            command.Parameters.Add(new SqliteParameter("$TOTALPAYMENTS", inv.totalPayments));
+            command.Parameters.Add(new SqliteParameter("$AGERESTRICTED", inv.containsAgeRestrictedItem));
+            command.Parameters.Add(new SqliteParameter("$CUSTOMERBIRTHDATE", inv.customerBirthdate.ToString()));
+            command.Parameters.Add(new SqliteParameter("$ATTENTION", inv.attentionLine));
+            command.Parameters.Add(new SqliteParameter("$PO", inv.PONumber));
+            command.Parameters.Add(new SqliteParameter("$MESSAGE", inv.invoiceMessage));
+            command.Parameters.Add(new SqliteParameter("$SAVEDINVOICE", inv.savedInvoice));
+            command.Parameters.Add(new SqliteParameter("$SAVEDINVOICETIME", inv.savedInvoiceTime.ToString()));
+            command.Parameters.Add(new SqliteParameter("$INVOICECREATIONTIME", inv.invoiceCreationTime.ToString()));
+            command.Parameters.Add(new SqliteParameter("$INVOICEFINALIZEDTIME", inv.invoiceFinalizedTime.ToString()));
+            command.Parameters.Add(new SqliteParameter("$FINALIZED", inv.finalized));
+            command.Parameters.Add(new SqliteParameter("$VOIDED", inv.voided));
+            command.Parameters.Add(new SqliteParameter("$CUSTOMERNUMBER", inv.customer.customerNumber));
+            command.Parameters.Add(new SqliteParameter("$EMPLOYEENUMBER", inv.employee.employeeNumber));
+            command.Parameters.Add(new SqliteParameter("$COST", inv.cost));
+            command.Parameters.Add(new SqliteParameter("$PROFIT", inv.profit));
 
             command.ExecuteNonQuery();
             #endregion
@@ -1475,53 +1459,37 @@ namespace TIMSServer
                     "INSERT INTO INVOICEITEMS (" +
 
                     "INVOICENUMBER,ITEMNUMBER,PRODUCTLINE,ITEMDESCRIPTION,PRICE,LISTPRICE," +
-                    "QUANTITY,TOTAL,PRICECODE,SERIALIZED,SERIALNUMBER,AGERESTRICTED," +
+                    "QUANTITY,TOTAL,PRICECODE,SERIALIZED,AGERESTRICTED," +
                     "MINIMUMAGE,TAXED,INVOICECODES,GUID,COST) " +
 
                     "VALUES ($INVOICENUMBER,$ITEMNUMBER,$PRODUCTLINE,$ITEMDESCRIPTION,$PRICE,$LISTPRICE," +
-                    "$QUANTITY,$TOTAL,$PRICECODE,$SERIALIZED,$SERIALNUMBER,$AGERESTRICTED," +
+                    "$QUANTITY,$TOTAL,$PRICECODE,$SERIALIZED,$AGERESTRICTED," +
                     "$MINIMUMAGE,$TAXED,$INVOICECODES,$GUID,$COST)";
 
-                SqliteParameter pp1 = new SqliteParameter("$INVOICENUMBER", inv.invoiceNumber);
-                SqliteParameter pp2 = new SqliteParameter("$ITEMNUMBER", item.itemNumber);
-                SqliteParameter pp3 = new SqliteParameter("$PRODUCTLINE", item.productLine);
-                SqliteParameter pp4 = new SqliteParameter("$ITEMDESCRIPTION", item.itemName);
-                SqliteParameter pp5 = new SqliteParameter("$PRICE", item.price);
-                SqliteParameter pp6 = new SqliteParameter("$LISTPRICE", item.listPrice);
-                SqliteParameter pp7 = new SqliteParameter("$QUANTITY", item.quantity);
-                SqliteParameter pp8 = new SqliteParameter("$TOTAL", item.total);
-                SqliteParameter pp9 = new SqliteParameter("$PRICECODE", item.pricingCode);
-                SqliteParameter pp10 = new SqliteParameter("$SERIALIZED", item.serializedItem);
-                SqliteParameter pp11 = new SqliteParameter("$SERIALNUMBER", item.serialNumber);
-                SqliteParameter pp12 = new SqliteParameter("$AGERESTRICTED", item.ageRestricted);
-                SqliteParameter pp13 = new SqliteParameter("$MINIMUMAGE", item.minimumAge);
-                SqliteParameter pp14 = new SqliteParameter("$TAXED", item.taxed);
+                command.Parameters.Clear();
+
+                command.Parameters.Add(new SqliteParameter("$INVOICENUMBER", inv.invoiceNumber));
+                command.Parameters.Add(new SqliteParameter("$ITEMNUMBER", item.itemNumber));
+                command.Parameters.Add(new SqliteParameter("$PRODUCTLINE", item.productLine));
+                command.Parameters.Add(new SqliteParameter("$ITEMDESCRIPTION", item.itemName));
+                command.Parameters.Add(new SqliteParameter("$PRICE", item.price));
+                command.Parameters.Add(new SqliteParameter("$LISTPRICE", item.listPrice));
+                command.Parameters.Add(new SqliteParameter("$QUANTITY", item.quantity));
+                command.Parameters.Add(new SqliteParameter("$TOTAL", item.total));
+                command.Parameters.Add(new SqliteParameter("$PRICECODE", item.pricingCode));
+                command.Parameters.Add(new SqliteParameter("$SERIALIZED", item.serializedItem));
+                //command.Parameters.Add(new SqliteParameter("$SERIALNUMBER", item.serialNumber));
+                command.Parameters.Add(new SqliteParameter("$AGERESTRICTED", item.ageRestricted));
+                command.Parameters.Add(new SqliteParameter("$MINIMUMAGE", item.minimumAge));
+                command.Parameters.Add(new SqliteParameter("$TAXED", item.taxed));
                 string invCodes = string.Empty;
                 if (item.codes != null)
                     foreach (string code in item.codes)
                         invCodes += code + ",";
                 invCodes = invCodes.Trim(',');
-                SqliteParameter pp15 = new SqliteParameter("$INVOICECODES", invCodes);
-                SqliteParameter pp16 = new SqliteParameter("$GUID", item.ID);
-                SqliteParameter pp17 = new SqliteParameter("$GUID", item.ID);
-
-                command.Parameters.Add(pp1);
-                command.Parameters.Add(pp2);
-                command.Parameters.Add(pp3);
-                command.Parameters.Add(pp4);
-                command.Parameters.Add(pp5);
-                command.Parameters.Add(pp6);
-                command.Parameters.Add(pp7);
-                command.Parameters.Add(pp8);
-                command.Parameters.Add(pp9);
-                command.Parameters.Add(pp10);
-                command.Parameters.Add(pp11);
-                command.Parameters.Add(pp12);
-                command.Parameters.Add(pp13);
-                command.Parameters.Add(pp14);
-                command.Parameters.Add(pp15);
-                command.Parameters.Add(pp16);
-                command.Parameters.Add(pp17);
+                command.Parameters.Add(new SqliteParameter("$INVOICECODES", invCodes));
+                command.Parameters.Add(new SqliteParameter("$GUID", item.ID));
+                command.Parameters.Add(new SqliteParameter("$COST", item.cost));
 
                 command.ExecuteNonQuery();
             }
@@ -1537,15 +1505,12 @@ namespace TIMSServer
 
                     "VALUES ($INVOICENUMBER,$ID,$PAYMENTTYPE,$PAYMENTAMOUNT)";
 
-                SqliteParameter ppp1 = new SqliteParameter("$INVOICENUMBER", inv.invoiceNumber);
-                SqliteParameter ppp2 = new SqliteParameter("$ID", pay.ID);
-                SqliteParameter ppp3 = new SqliteParameter("$PAYMENTTYPE", pay.paymentType.ToString());
-                SqliteParameter ppp4 = new SqliteParameter("$PAYMENTAMOUNT", pay.paymentAmount);
+                command.Parameters.Clear();
 
-                command.Parameters.Add(ppp1);
-                command.Parameters.Add(ppp2);
-                command.Parameters.Add(ppp3);
-                command.Parameters.Add(ppp4);
+                command.Parameters.Add(new SqliteParameter("$INVOICENUMBER", inv.invoiceNumber));
+                command.Parameters.Add(new SqliteParameter("$ID", pay.ID));
+                command.Parameters.Add(new SqliteParameter("$PAYMENTTYPE", pay.paymentType.ToString()));
+                command.Parameters.Add(new SqliteParameter("$PAYMENTAMOUNT", pay.paymentAmount));
 
                 command.ExecuteNonQuery();
             }
@@ -2412,17 +2377,22 @@ namespace TIMSServer
             CloseConnection();
             return true;
         }
-        public List<string> RetrieveTerminals()
+        public List<Device> RetrieveTerminals()
         {
-            List<string> terms = new List<string>();
+            List<Device> terms = new List<Device>();
             OpenConnection();
 
             SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
-                "SELECT NICKNAME FROM DEVICES WHERE DEVICETYPE = 'TERMINAL'";
+                "SELECT NICKNAME, IPADDRESS FROM DEVICES WHERE DEVICETYPE = 'TERMINAL'";
             SqliteDataReader reader = command.ExecuteReader();
             while (reader.Read())
-                terms.Add(reader.GetString(0));
+            {
+                Device term = new Device();
+                term.Nickname = reader.GetString(0);
+                term.address = IPAddress.Parse(reader.GetString(1));
+                terms.Add(term);
+            }
 
             CloseConnection();
             return terms;

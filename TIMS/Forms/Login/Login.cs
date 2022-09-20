@@ -3,18 +3,32 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 
+using TIMS.Forms.Login;
 using TIMS.Server;
 using TIMSServerModel;
 
-namespace TIMS
+namespace TIMS.Forms.Login
 {
     public partial class Login : Form
     {
         public string launch;
         public string useroremployeeno;
+
         public Login()
         {
-            DatabaseHandler.InitializeDatabases();
+            Communication.SetEndpointAddress("http://localhost:9999/endpoint");
+            try
+            {
+                Communication.CheckEmployee("12ascxd900xed");
+            }
+            catch
+            {
+                MessageBox.Show("Server did not respond. Please enter the IP address of your TIMS server.");
+                ServerAddressEntry entry = new ServerAddressEntry();
+                if (entry.ShowDialog() == DialogResult.Cancel)
+                    Environment.Exit(0);
+            }
+
             InitializeComponent();
             badLoginLabel.Visible = false;
             exceptionBox.Visible = false;

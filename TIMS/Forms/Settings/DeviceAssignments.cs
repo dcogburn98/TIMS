@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using TIMSServerModel;
 using TIMS.Server;
 
 namespace TIMS.Forms.Settings
@@ -18,9 +19,9 @@ namespace TIMS.Forms.Settings
         {
             InitializeComponent();
 
-            foreach (string term in Communication.RetrieveTerminals())
+            foreach (Device term in Communication.RetrieveTerminals())
             {
-                terminalsLB.Items.Add(term);
+                int i = terminalsLB.Items.Add(term.Nickname + " (" + term.address.ToString() + ")");
             }
         }
 

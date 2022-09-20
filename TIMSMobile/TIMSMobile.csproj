@@ -128,12 +128,6 @@
   <ItemGroup>
     <AndroidResource Include="Resources\layout\checkin_main.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TIMSServerModel\TIMSServerModel.csproj">
-      <Project>{402d3f26-5d98-4072-97e1-e6240c6f2a1e}</Project>
-      <Name>TIMSServerModel</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
     Other similar extension points exist, see Microsoft.Common.targets.

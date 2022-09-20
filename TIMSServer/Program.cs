@@ -2,6 +2,10 @@
 using Microsoft.Data.Sqlite;
 using System.ServiceModel;
 using System.Net;
+using System.Net.Sockets;
+using System.Security.Cryptography;
+using System.Text;
+using System.Linq;
 using System.Net.Http;
 using ESCPOS_NET;
 using ESCPOS_NET.Emitters;
@@ -13,7 +17,6 @@ namespace TIMSServer
 {
     class Program
     {
-        private static readonly HttpClient client = new HttpClient();
         public static int alertLevel = 3;
         public static string regName = string.Empty;
 
@@ -362,7 +365,7 @@ namespace TIMSServer
                 printer?.Write(e.FullCut());
 
                 Console.WriteLine("Server is open for connections.");
-                Console.WriteLine(host.Description.Endpoints[0].Address.ToString());
+                Console.WriteLine(GetLocalIPAddress());
                 Console.WriteLine("Press a key to close.");
                 while (true)
                 {
@@ -412,12 +415,28 @@ namespace TIMSServer
 
                                                     SqliteCommand command = sqlite_conn.CreateCommand();
                                                     command.CommandText =
-                                                        "INSERT INTO DEVICES (DEVICETYPE, IPADDRESS, NICKNAME) VALUES ('TERMINAL', $ADDR, $NAME)";
+                                                        "SELECT NICKNAME FROM DEVICES WHERE IPADDRESS = $ADDR OR NICKNAME = $NAME";
                                                     command.Parameters.Add(new SqliteParameter("$ADDR", ip.ToString()));
                                                     command.Parameters.Add(new SqliteParameter("$NAME", terminalName));
-                                                    command.ExecuteNonQuery();
+                                                    SqliteDataReader reader = command.ExecuteReader();
+                                                    if (reader.HasRows)
+                                                    {
+                                                        Console.WriteLine("Terminal nickname or IP address is already registered in your server.");
+                                                        CloseConnection();
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        reader.Close();
+                                                        command.CommandText =
+                                                        "INSERT INTO DEVICES (DEVICETYPE, IPADDRESS, NICKNAME) VALUES ('TERMINAL', $ADDR, $NAME)";
+                                                        if (command.ExecuteNonQuery() > 0)
+                                                            Console.WriteLine("Registered " + ip.ToString() + " with nickname " + terminalName);
+                                                        else
+                                                            Console.WriteLine("Error registering device.");
 
-                                                    CloseConnection();
+                                                        CloseConnection();
+                                                    }
                                                 }
                                                 else
                                                     Console.WriteLine("Terminal nickname must be alphanumeric (no symbols or special characters).");
@@ -433,6 +452,50 @@ namespace TIMSServer
                                 } //reg -t -ip 192.168.254.75 Term01
                                 else
                                     Console.WriteLine("Invalid useage of register command.");
+                                break;
+                            }
+                        case "dereg":
+                            {
+                                if (split.Length == 3)
+                                {
+                                    if (split[1] == "-ip")
+                                    {
+                                        if (IPAddress.TryParse(split[2], out IPAddress ip))
+                                        {
+                                            OpenConnection();
+
+                                            SqliteCommand command = sqlite_conn.CreateCommand();
+                                            command.CommandText =
+                                                "SELECT NICKNAME FROM DEVICES WHERE IPADDRESS = $ADDR";
+                                            command.Parameters.Add(new SqliteParameter("$ADDR", ip.ToString()));
+                                            SqliteDataReader reader = command.ExecuteReader();
+                                            if (!reader.HasRows)
+                                            {
+                                                Console.WriteLine("IP address is not registered in your server.");
+                                                CloseConnection();
+                                                break;
+                                            }
+                                            else
+                                            {
+                                                reader.Close();
+                                                command.CommandText =
+                                                    "DELETE FROM DEVICES WHERE IPADDRESS = $ADDR";
+                                                if (command.ExecuteNonQuery() > 0)
+                                                    Console.WriteLine("Successfully unregistered ip address from your server.");
+                                                else
+                                                    Console.WriteLine("Error unregistering IP address.");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Invalid IP address.");
+                                        }
+                                    }
+                                    else
+                                        Console.WriteLine("Invalid useage of the deregister command.");
+                                }
+                                else
+                                    Console.WriteLine("Invalid useage of the deregister command.");
                                 break;
                             }
                         default:
@@ -698,21 +761,23 @@ namespace TIMSServer
 	            PRIMARY KEY(""ID"")
                 )";
                 command.ExecuteNonQuery();
-
+                string APIKey = GetRandomAlphanumericString(32);
+                
                 command.CommandText =
-                @"INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES ('1', 'Store Name', 'Fish N Munition');
-                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('2', 'Store Address', '206 Main Ave, Dierks, AR, 71833, USA');
-                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('3', 'Store Phone Number', '870-279-1334');
-                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('4', 'Store Alternate Phone Number', '870-279-7192');
-                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('5', 'Tax 1 Rate', '0.1025');
-                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('6', 'Tax 2 Rate', '0.0000');
-                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('7', 'Apply Tax 1', '1');
-                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('8', 'Apply Tax 2', '0');
-                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('9', 'Tax 2 Taxes Tax 1', '0');
-                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('10', 'Payment Types Available', 'Cash,Charge,PaymentCard,Paypal,Venmo,CashApp,Check');
-                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('11', 'Store Number', '000028500');
-                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('12', 'Mailing Address', '1002 N Walters Ave, Dierks, AR, 71833, USA'); 
-                INSERT INTO ""main"".""GlobalProperties""(""ID"", ""Key"", ""Value"") VALUES('13', 'Integrated Card Payments', '1');";
+              @"INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES ('1', 'Store Name', 'Fish N Munition');
+                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('2', 'Store Address', '206 Main Ave, Dierks, AR, 71833, USA');
+                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('3', 'Store Phone Number', '870-279-1334');
+                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('4', 'Store Alternate Phone Number', '870-279-7192');
+                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('5', 'Tax 1 Rate', '0.1025');
+                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('6', 'Tax 2 Rate', '0.0000');
+                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('7', 'Apply Tax 1', '1');
+                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('8', 'Apply Tax 2', '0');
+                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('9', 'Tax 2 Taxes Tax 1', '0');
+                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('10', 'Payment Types Available', 'Cash,Charge,PaymentCard,Paypal,Venmo,CashApp,Check');
+                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('11', 'Store Number', '000028500');
+                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('12', 'Mailing Address', '1002 N Walters Ave, Dierks, AR, 71833, USA'); 
+                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('13', 'Integrated Card Payments', '1');
+                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('14', 'Server Relationship Key', '" + APIKey + @"')";
                 command.ExecuteNonQuery();
             }
 
@@ -1016,6 +1081,18 @@ namespace TIMSServer
                 command.ExecuteNonQuery();
             }
 
+            if (!TableExists(sqlite_conn, "ServerRelationships"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""ServerRelationships"" (
+                ""ID""    INTEGER NOT NULL,
+	            ""DeviceType""    INTEGER NOT NULL,
+	            ""IPAddress"" TEXT NOT NULL,
+                ""Nickname""	TEXT NOT NULL,
+                PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+            }
             CloseConnection();
         }
 
@@ -1099,6 +1176,55 @@ namespace TIMSServer
                 return null;
             else
                 return value;
+        }
+
+        public static string GetLocalIPAddress()
+        {
+            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("No network adapters with an IPv4 address in the system!");
+        }
+
+        public static string GetRandomAlphanumericString(int length)
+        {
+            const string alphanumericCharacters =
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+                "abcdefghijklmnopqrstuvwxyz" +
+                "0123456789";
+            return GetRandomString(length, alphanumericCharacters);
+        }
+
+        public static string GetRandomString(int length, IEnumerable<char> characterSet)
+        {
+            if (length < 0)
+                throw new ArgumentException("length must not be negative", "length");
+            if (length > int.MaxValue / 8) // 250 million chars ought to be enough for anybody
+                throw new ArgumentException("length is too big", "length");
+            if (characterSet == null)
+                throw new ArgumentNullException("characterSet");
+            var characterArray = characterSet.Distinct().ToArray();
+            
+            if (characterArray.Length == 0)
+                throw new ArgumentException("characterSet must not be empty", "characterSet");
+
+            var bytes = new byte[length * 8];
+            var result = new char[length];
+            using (var cryptoProvider = new RNGCryptoServiceProvider())
+            {
+                cryptoProvider.GetBytes(bytes);
+            }
+            for (int i = 0; i < length; i++)
+            {
+                ulong value = BitConverter.ToUInt64(bytes, i * 8);
+                result[i] = characterArray[value % (uint)characterArray.Length];
+            }
+            return new string(result);
         }
     }
 }

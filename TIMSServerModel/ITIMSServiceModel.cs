@@ -156,7 +156,7 @@ namespace TIMSServerModel
         [OperationContract]
         bool DeviceExists(string address);
         [OperationContract]
-        List<string> RetrieveTerminals();
+        List<Device> RetrieveTerminals();
         #endregion
     }
 }

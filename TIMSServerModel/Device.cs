@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace TIMSServerModel
 {
     [DataContract]
-    class Device
+    public class Device
     {
         public enum DeviceType
         {

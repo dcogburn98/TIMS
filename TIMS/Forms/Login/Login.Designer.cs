@@ -1,5 +1,5 @@
 ﻿
-namespace TIMS
+namespace TIMS.Forms.Login
 {
     partial class Login
     {

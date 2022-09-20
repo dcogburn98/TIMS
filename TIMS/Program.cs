@@ -10,8 +10,11 @@ using TIMS.Forms.Planogram;
 using TIMS.Forms.Accounting;
 using TIMS.Forms.Settings;
 using TIMS.Forms.Cameras;
+using TIMS.Forms.Login;
+using TIMS.Forms.ServerRelations;
 
 using TIMSServerModel;
+using TIMS.Server;
 
 namespace TIMS
 {
@@ -24,6 +27,7 @@ namespace TIMS
         [STAThread]
         static void Main()
         {
+            Communication.SetEndpointAddress("http://localhost:9999/endpoint");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Login login = new Login();
@@ -105,16 +109,20 @@ namespace TIMS
             //Application.Run(accts);
             #endregion
             #region Device Management Test Code
-            //DeviceAssignments assignments = new DeviceAssignments();
-            //Application.Run(assignments);
+            DeviceAssignments assignments = new DeviceAssignments();
+            Application.Run(assignments);
             #endregion
             #region Camera Viewer Test Code
             //CameraViewer viewer = new CameraViewer();
             //Application.Run(viewer);
             #endregion
             #region Tile Display Test Code
-            TileDisplay display = new TileDisplay();
-            Application.Run(display);
+            //TileDisplay display = new TileDisplay();
+            //Application.Run(display);
+            #endregion
+            #region Server Relation Test Code
+            //ServerConnectionSettings connections = new ServerConnectionSettings();
+            //Application.Run(connections);
             #endregion
         }
 

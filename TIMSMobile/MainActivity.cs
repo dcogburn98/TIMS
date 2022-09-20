@@ -8,7 +8,6 @@ using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 
-using TIMSServerModel;
 
 namespace TIMSMobile
 {
@@ -49,13 +48,13 @@ namespace TIMSMobile
                 case Resource.Id.navigation_checkins:
                     {
                         Spinner checkinSpinner = FindViewById<Spinner>(Resource.Id.selectcheckin);
-                        List<Checkin> checkins = Communication.RetrieveCheckins();
-                        string[] checkinNumbers = new string[checkins.Count];
-                        for (int i = 0; i != checkins.Count; i++)
-                            checkinNumbers[i] = checkins[i].checkinNumber.ToString();
+                        //List<Checkin> checkins = Communication.RetrieveCheckins();
+                        //string[] checkinNumbers = new string[checkins.Count];
+                        //for (int i = 0; i != checkins.Count; i++)
+                        //    checkinNumbers[i] = checkins[i].checkinNumber.ToString();
 
-                        ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, checkinNumbers);
-                        checkinSpinner.Adapter = adapter;
+                        //ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, checkinNumbers);
+                        //checkinSpinner.Adapter = adapter;
                         textMessage.SetText(Resource.String.title_checkins);
                         SetContentView(Resource.Layout.checkin_main);
                         return true;

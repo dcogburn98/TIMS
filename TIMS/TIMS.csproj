@@ -46,6 +46,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="ESCPOS_NET">
+      <HintPath>..\..\..\..\..\OneDrive\Desktop\TIMS Dev Stuff\ESC-POS-.NET-master\ESCPOS_NET\bin\Debug\netstandard2.0\ESCPOS_NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.2, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.2\lib\net461\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -74,10 +80,16 @@
     <Reference Include="Rssdp, Version=4.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Rssdp.4.0.4\lib\net45\Rssdp.dll</HintPath>
     </Reference>
+    <Reference Include="SimpleTcp">
+      <HintPath>..\..\..\..\..\OneDrive\Desktop\TIMS Dev Stuff\ESC-POS-.NET-master\ESCPOS_NET.ConsoleTest\bin\Debug\net472\SimpleTcp.dll</HintPath>
+    </Reference>
     <Reference Include="StereoKit, Version=0.3.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\StereoKit.0.3.6\lib\netstandard2.0\StereoKit.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.116.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -90,9 +102,15 @@
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.116.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -176,6 +194,12 @@
     <Compile Include="Forms\ItemMaintenance.Designer.cs">
       <DependentUpon>ItemMaintenance.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Login\ServerAddressEntry.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Login\ServerAddressEntry.Designer.cs">
+      <DependentUpon>ServerAddressEntry.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Orders\CheckinCreator.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -253,6 +277,7 @@
     </Compile>
     <Compile Include="Forms\POS\TileControls\ItemButton.cs" />
     <Compile Include="Forms\POS\TileControls\ItemList.cs" />
+    <Compile Include="Forms\POS\TileControls\TileLayout.cs" />
     <Compile Include="Forms\POS\TileDisplay.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -282,6 +307,12 @@
     </Compile>
     <Compile Include="Forms\Reporting\ReportViewer.Designer.cs">
       <DependentUpon>ReportViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ServerRelations\ServerConnectionSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ServerRelations\ServerConnectionSettings.Designer.cs">
+      <DependentUpon>ServerConnectionSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Settings\AddDevice.cs">
       <SubType>Form</SubType>
@@ -328,10 +359,10 @@
     <Compile Include="Forms\POS\Invoicing.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Login.cs">
+    <Compile Include="Forms\Login\Login.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Login.Designer.cs">
+    <Compile Include="Forms\Login\Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\PermissionsEditor.cs">
@@ -363,6 +394,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ItemImporting\ItemImportFieldEditor.resx">
       <DependentUpon>ItemImportFieldEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Login\ServerAddressEntry.resx">
+      <DependentUpon>ServerAddressEntry.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Orders\CheckinCreator.resx">
       <DependentUpon>CheckinCreator.cs</DependentUpon>
@@ -403,7 +437,7 @@
     <EmbeddedResource Include="Forms\ItemMaintenance.resx">
       <DependentUpon>ItemMaintenance.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Login.resx">
+    <EmbeddedResource Include="Forms\Login\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OtherFunctions.resx">
@@ -435,6 +469,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Reporting\ReportViewer.resx">
       <DependentUpon>ReportViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ServerRelations\ServerConnectionSettings.resx">
+      <DependentUpon>ServerConnectionSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Settings\AddDevice.resx">
       <DependentUpon>AddDevice.cs</DependentUpon>
@@ -500,8 +537,10 @@
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
     <Error Condition="!Exists('..\packages\StereoKit.0.3.6\build\StereoKit.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StereoKit.0.3.6\build\StereoKit.targets'))" />
     <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.2\build\Microsoft.Extensions.Logging.Abstractions.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.2\build\Microsoft.Extensions.Logging.Abstractions.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <Import Project="..\packages\StereoKit.0.3.6\build\StereoKit.targets" Condition="Exists('..\packages\StereoKit.0.3.6\build\StereoKit.targets')" />
   <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
+  <Import Project="..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.2\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.2\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
 </Project>

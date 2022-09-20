@@ -530,72 +530,80 @@ namespace TIMS.Forms
             List<Transaction> salesTaxTransactions = new List<Transaction>();
             Transaction inventoryTransaction = null;
 
-            foreach (Payment p in invoice.payments)
-            {
-                if (p.paymentType == Payment.PaymentTypes.PaymentCard)
+            if (invoice.total != 0)
+                foreach (Payment p in invoice.payments)
                 {
+                    if (p.paymentType == Payment.PaymentTypes.PaymentCard)
+                    {
 
-                    salesTransactions.Add(new Transaction(2, 5, p.paymentAmount) //2 - Checking Account  5 - Cash Sales Account
+                        salesTransactions.Add(new Transaction(2, 5, p.paymentAmount) //2 - Checking Account  5 - Cash Sales Account
+                        {
+                            transactionID = Communication.RetrieveNextTransactionNumber(),
+                            referenceNumber = invoice.invoiceNumber,
+                            memo = "Subtotal transaction for card sale"
+                        });
+                        salesTaxTransactions.Add(new Transaction(2, 7, Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2)) //2 - Checking Account  7 - Sales Tax Payable Account
+                        {
+                            transactionID = Communication.RetrieveNextTransactionNumber(),
+                            referenceNumber = invoice.invoiceNumber,
+                            memo = "Tax transaction for card sale"
+                        });
+                    }
+                    else if (p.paymentType == Payment.PaymentTypes.Charge)
                     {
-                        transactionID = Communication.RetrieveNextTransactionNumber(),
-                        referenceNumber = invoice.invoiceNumber,
-                        memo = "Subtotal transaction for card sale"
-                    });
-                    salesTaxTransactions.Add(new Transaction(2, 7, Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2)) //2 - Checking Account  7 - Sales Tax Payable Account
+                        salesTransactions.Add(new Transaction(11, 6, p.paymentAmount) //11 - A/R Account  6 - Credit Sales Account
+                        {
+                            transactionID = Communication.RetrieveNextTransactionNumber(),
+                            referenceNumber = invoice.invoiceNumber,
+                            memo = "Subtotal transaction for charge sale"
+                        });
+                        salesTaxTransactions.Add(new Transaction(11, 7, Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2)) //11 - A/R Account  7 - Sales Tax Payable Account
+                        {
+                            transactionID = Communication.RetrieveNextTransactionNumber(),
+                            referenceNumber = invoice.invoiceNumber,
+                            memo = "Tax transaction for charge sale"
+                        });
+                    }
+                    else
                     {
-                        transactionID = Communication.RetrieveNextTransactionNumber(),
-                        referenceNumber = invoice.invoiceNumber,
-                        memo = "Tax transaction for card sale"
-                    });
+                        salesTransactions.Add(new Transaction(14, 5, p.paymentAmount) //14 - Cash Drawer Account  5 - Cash Sales Account
+                        {
+                            transactionID = Communication.RetrieveNextTransactionNumber(),
+                            referenceNumber = invoice.invoiceNumber,
+                            memo = "Subtotal transaction for cash sale"
+                        });
+                        salesTaxTransactions.Add(new Transaction(14, 7, Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2) ) //14 - Cash Drawer Account  7 - Sales Tax Payable Account
+                        {
+                            transactionID = Communication.RetrieveNextTransactionNumber(),
+                            referenceNumber = invoice.invoiceNumber,
+                            memo = "Tax transaction for cash sale"
+                        });
+                    }
                 }
-                else if (p.paymentType == Payment.PaymentTypes.Charge)
-                {
-                    salesTransactions.Add(new Transaction(11, 6, p.paymentAmount) //11 - A/R Account  6 - Credit Sales Account
-                    {
-                        transactionID = Communication.RetrieveNextTransactionNumber(),
-                        referenceNumber = invoice.invoiceNumber,
-                        memo = "Subtotal transaction for charge sale"
-                    });
-                    salesTaxTransactions.Add(new Transaction(11, 7, Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2)) //11 - A/R Account  7 - Sales Tax Payable Account
-                    {
-                        transactionID = Communication.RetrieveNextTransactionNumber(),
-                        referenceNumber = invoice.invoiceNumber,
-                        memo = "Tax transaction for charge sale"
-                    });
-                }
-                else
-                {
-                    salesTransactions.Add(new Transaction(14, 5, p.paymentAmount) //14 - Cash Drawer Account  5 - Cash Sales Account
-                    {
-                        transactionID = Communication.RetrieveNextTransactionNumber(),
-                        referenceNumber = invoice.invoiceNumber,
-                        memo = "Subtotal transaction for cash sale"
-                    });
-                    salesTaxTransactions.Add(new Transaction(14, 7, Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2) ) //14 - Cash Drawer Account  7 - Sales Tax Payable Account
-                    {
-                        transactionID = Communication.RetrieveNextTransactionNumber(),
-                        referenceNumber = invoice.invoiceNumber,
-                        memo = "Tax transaction for cash sale"
-                    });
-                }
-            }
             
-            inventoryTransaction = new Transaction(8, 1, invoice.cost)
-            {
-                transactionID = Communication.RetrieveNextTransactionNumber(),
-                referenceNumber = invoice.invoiceNumber,
-                memo = "Inventory transaction"
-            };
+            if (invoice.cost != 0)
+                inventoryTransaction = new Transaction(8, 1, invoice.cost)
+                {
+                    transactionID = Communication.RetrieveNextTransactionNumber(),
+                    referenceNumber = invoice.invoiceNumber,
+                    memo = "Inventory transaction"
+                };
 
-            if (salesTaxTransactions.Count < 1 || salesTransactions.Count < 1 || inventoryTransaction == null)
+            if (((salesTaxTransactions.Count < 1 || salesTransactions.Count < 1) && invoice.total != 0) || 
+                 (inventoryTransaction == null && invoice.cost != 0))
                 MessageBox.Show("There was an error completing transactions for this sale in accounting. Please make sure to enter those transactions in the ledger in order to keep records accurate.");
             else
             {
-                foreach (Transaction t in salesTransactions)
-                    Communication.SaveTransaction(t);
-                foreach (Transaction t in salesTaxTransactions)
-                    Communication.SaveTransaction(t);
-                Communication.SaveTransaction(inventoryTransaction);
+                if (invoice.total != 0)
+                    foreach (Transaction t in salesTransactions)
+                        Communication.SaveTransaction(t);
+
+                if (invoice.total != 0)
+                    foreach (Transaction t in salesTaxTransactions)
+                        Communication.SaveTransaction(t);
+
+                if (invoice.cost != 0)
+                    Communication.SaveTransaction(inventoryTransaction);
             }
             
             #endregion
