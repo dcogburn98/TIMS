@@ -269,8 +269,8 @@ namespace TIMSServer
         {
             sqlite_conn = new SqliteConnection(
               @"Data Source=database.db; 
-                Pooling = true; 
-                Password = 3nCryqtEdT!MSPa$$w0rdFoRrev!tAc0m;");
+                Pooling = true;");
+            //Password = 3nCryqtEdT!MSPa$$w0rdFoRrev!tAc0m;
 
             OpenConnection();
             CloseConnection();
@@ -1058,11 +1058,8 @@ namespace TIMSServer
                 command.CommandText =
                 @"CREATE TABLE ""DeviceAssignments"" (
                 ""AssignmentID""  INTEGER NOT NULL,
-	            ""TerminalIP""    TEXT NOT NULL,
-	            ""ReceiptPrinterIP""  TEXT NOT NULL,
-	            ""InvoicePrinterIP""  TEXT NOT NULL,
-	            ""LineDisplayIP"" TEXT NOT NULL,
-	            ""CardReaderIP""  TEXT NOT NULL,
+	            ""DeviceID""    INTEGER NOT NULL,
+                ""TerminalID""  INTEGER NOT NULL,
 	            PRIMARY KEY(""AssignmentID"" AUTOINCREMENT)
                 ); ";
                 command.ExecuteNonQuery();
@@ -1079,6 +1076,10 @@ namespace TIMSServer
                 PRIMARY KEY(""ID"" AUTOINCREMENT)
                 )";
                 command.ExecuteNonQuery();
+
+                command.CommandText =
+                    "INSERT INTO DEVICES (DEVICETYPE, IPADDRESS, NICKNAME) VALUES ('TERMINAL', '::1', 'SERVER')";
+                command.ExecuteNonQuery();
             }
 
             if (!TableExists(sqlite_conn, "ServerRelationships"))
@@ -1088,7 +1089,7 @@ namespace TIMSServer
                 ""ID""    INTEGER NOT NULL,
 	            ""DeviceType""    INTEGER NOT NULL,
 	            ""IPAddress"" TEXT NOT NULL,
-                ""Nickname""	TEXT NOT NULL,
+                ""Relationship""	TEXT NOT NULL,
                 PRIMARY KEY(""ID"" AUTOINCREMENT)
                 )";
                 command.ExecuteNonQuery();

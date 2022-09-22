@@ -157,6 +157,16 @@ namespace TIMSServerModel
         bool DeviceExists(string address);
         [OperationContract]
         List<Device> RetrieveTerminals();
+        [OperationContract]
+        List<Device> RetrieveDevices();
+        [OperationContract]
+        bool RegisterDevice(Device device);
+        [OperationContract]
+        bool DeleteDevice(Device device);
+        [OperationContract]
+        bool AssignDevice(Device terminal, Device device);
+        [OperationContract]
+        bool RemoveDeviceAssignment(Device terminal, Device device);
         #endregion
     }
 }

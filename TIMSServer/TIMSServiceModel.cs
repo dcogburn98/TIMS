@@ -2359,6 +2359,7 @@ namespace TIMSServer
         #endregion
 
         #region Devices
+
         public bool DeviceExists(string address)
         {
             OpenConnection();
@@ -2379,25 +2380,161 @@ namespace TIMSServer
         }
         public List<Device> RetrieveTerminals()
         {
+            List<Device> devices = RetrieveDevices();
             List<Device> terms = new List<Device>();
             OpenConnection();
 
             SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
-                "SELECT NICKNAME, IPADDRESS FROM DEVICES WHERE DEVICETYPE = 'TERMINAL'";
+                "SELECT NICKNAME, IPADDRESS, ID FROM DEVICES WHERE DEVICETYPE = 'TERMINAL'";
             SqliteDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
                 Device term = new Device();
+                term.Type = Device.DeviceType.Terminal;
                 term.Nickname = reader.GetString(0);
-                term.address = IPAddress.Parse(reader.GetString(1));
+                term.address = new IPEndPoint(IPAddress.Parse(reader.GetString(1)), 0);
+                term.ID = reader.GetInt32(2);
                 terms.Add(term);
+            }
+            reader.Close();
+
+            foreach (Device term in terms)
+            {
+                command.Parameters.Clear();
+                command.CommandText =
+                    "SELECT DEVICEID FROM DEVICEASSIGNMENTS WHERE TERMINALID = $TERM";
+                command.Parameters.Add(new SqliteParameter("$TERM", term.ID));
+                reader = command.ExecuteReader();
+                if (reader.HasRows)
+                    term.AssignedDevices.Add(devices.First(el => el.ID == reader.GetInt32(0)));
+
+                reader.Close();
             }
 
             CloseConnection();
             return terms;
         }
+        public List<Device> RetrieveDevices()
+        {
+            List<Device> devices = new List<Device>();
+            OpenConnection();
 
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT NICKNAME, IPADDRESS, DEVICETYPE, ID FROM DEVICES WHERE DEVICETYPE != 'TERMINAL'";
+            SqliteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Device device = new Device();
+                device.Nickname = reader.GetString(0);
+                string[] split = reader.GetString(1).Split(':');
+                device.address = new IPEndPoint(IPAddress.Parse(split[0]), int.Parse(split[1]));
+                switch (reader.GetString(2).ToUpper())
+                {
+                    case ("THERMALPRINTER"):
+                        device.Type = Device.DeviceType.ThermalPrinter;
+                        break;
+                    case ("PRINTER"):
+                        device.Type = Device.DeviceType.ConventionalPrinter;
+                        break;
+                    case ("LINEDISPLAY"):
+                        device.Type = Device.DeviceType.LineDisplay;
+                        break;
+                    case ("CARDREADER"):
+                        device.Type = Device.DeviceType.CardReader;
+                        break;
+                    default:
+                        device.Type = Device.DeviceType.Other;
+                        break;
+                }
+                device.ID = reader.GetInt32(3);
+                devices.Add(device);
+            }
+
+            CloseConnection();
+            return devices;
+        }
+        public bool RegisterDevice(Device device)
+        {
+            if (DeviceExists(device.address.ToString()))
+                return false;
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "INSERT INTO DEVICES (DEVICETYPE, IPADDRESS, NICKNAME) VALUES ($TYPE, $ADDR, $NAME)";
+            command.Parameters.Add(new SqliteParameter("$TYPE", Enum.GetName(typeof (Device.DeviceType), device.Type)));
+            command.Parameters.Add(new SqliteParameter("$ADDR", device.address.ToString()));
+            command.Parameters.Add(new SqliteParameter("$NAME", device.Nickname));
+            if (command.ExecuteNonQuery() < 1)
+            {
+                CloseConnection();
+                return false;
+            }
+
+            CloseConnection();
+
+            return true;
+        }
+        public bool DeleteDevice(Device device)
+        {
+            if (!DeviceExists(device.address.ToString()))
+                return false;
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "DELETE FROM DEVICES WHERE NICKNAME = $NAME";
+            command.Parameters.Add(new SqliteParameter("$NAME", device.Nickname));
+            if (command.ExecuteNonQuery() < 1)
+            {
+                CloseConnection();
+                return false;
+            }
+
+            CloseConnection();
+            return true;
+        }
+        
+        public bool AssignDevice(Device terminal, Device device)
+        {
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "INSERT INTO DEVICEASSIGNMENTS (DEVICEID, TERMINALID) VALUES ($DEVICE, $TERM)";
+            command.Parameters.Add(new SqliteParameter("$DEVICE", device.ID));
+            command.Parameters.Add(new SqliteParameter("$TERM", terminal.ID));
+            if (command.ExecuteNonQuery() < 1)
+            {
+                CloseConnection();
+                return false;
+            }
+
+            CloseConnection();
+            return true;
+        }
+        public bool RemoveDeviceAssignment(Device terminal, Device device)
+        {
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "DELETE FROM DEVICEASSIGNMENTS WHERE TERMINALID = $TERM & DEVICEID = $DEVICE";
+            command.Parameters.Add(new SqliteParameter("$TERM", terminal.ID));
+            command.Parameters.Add(new SqliteParameter("$DEVICE", device.ID));
+            if (command.ExecuteNonQuery() < 1)
+            {
+                CloseConnection();
+                return false;
+            }
+
+            CloseConnection();
+            return true;
+        }
         #endregion
 
         #region Misc

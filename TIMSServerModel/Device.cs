@@ -24,15 +24,26 @@ namespace TIMSServerModel
             BarcodeScanner,
             Scale,
             CustomerDisplay,
-            LabelPrinter
+            LabelPrinter,
+            Other
         }
         [DataMember]
         public DeviceType Type;
         [DataMember]
         public string Nickname;
         [DataMember]
-        public IPAddress address;
+        public IPEndPoint address;
+        [DataMember]
+        public int ID;
         [DataMember]
         public List<Device> AssignedDevices = new List<Device>();
+
+        public override string ToString()
+        {
+            if (Type != DeviceType.Terminal)
+                return Nickname + " (" + address.ToString() + ")";
+            else
+                return Nickname + " (" + address.Address.ToString() + ")";
+        }
     }
 }

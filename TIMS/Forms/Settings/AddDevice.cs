@@ -33,6 +33,60 @@ namespace TIMS.Forms.Settings
 
         private void saveButton_Click(object sender, EventArgs e)
         {
+            string port = string.Empty;
+            if (!IPAddress.TryParse(ipAddressField.Text, out IPAddress ip))
+            {
+                MessageBox.Show("IP address is malformed.\nPlease enter a correctly formed IP address.");
+                return;
+            }
+            if (nicknameField.Text == string.Empty || !Program.IsStringAlphaNumeric(nicknameField.Text))
+            {
+                MessageBox.Show("Please enter a valid nickname for the device.\nOnly numbers and letters are allowed nicknames.");
+                return;
+            }
+            if (portField.Text != string.Empty)
+                foreach (char c in portField.Text)
+                {
+                    if (!Char.IsDigit(c))
+                    {
+                        MessageBox.Show("Please enter a valid port number.\nLeave blank for common default port for device.");
+                        return;
+                    }
+                }
+            switch (deviceTypeField.Text)
+            {
+                case ("Receipt Printer"):
+                    port = "9100";
+                    break;
+                case ("Printer"):
+                    port = "9100";
+                    break;
+                case ("Card Reader"):
+                    port = "9100";
+                    break;
+                case ("Line Display"):
+                    port = "9100";
+                    break;
+                default:
+                    port = "9100";
+                    break;
+            }
+
+            Device device = new Device();
+            device.address = new IPEndPoint(ip, int.Parse(port));
+            device.Nickname = nicknameField.Text;
+            if (deviceTypeField.Text == "Receipt Printer")
+                device.Type = Device.DeviceType.ThermalPrinter;
+            else if (deviceTypeField.Text == "Printer")
+                device.Type = Device.DeviceType.ConventionalPrinter;
+            else if (deviceTypeField.Text == "Card Reader")
+                device.Type = Device.DeviceType.CardReader;
+            else if (deviceTypeField.Text == "Line Display")
+                device.Type = Device.DeviceType.LineDisplay;
+            else
+                device.Type = Device.DeviceType.Other;
+
+            Communication.RegisterDevice(device);
             DialogResult = DialogResult.OK;
             Close();
         }

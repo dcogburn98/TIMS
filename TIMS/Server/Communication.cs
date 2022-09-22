@@ -390,10 +390,29 @@ namespace TIMS.Server
         {
             return proxy.DeviceExists(address);
         }
-
         public static List<Device> RetrieveTerminals()
         {
             return proxy.RetrieveTerminals();
+        }
+        public static List<Device> RetrieveDevices()
+        {
+            return proxy.RetrieveDevices();
+        }
+        public static bool RegisterDevice(Device device)
+        {
+            return proxy.RegisterDevice(device);
+        }
+        public static bool DeleteDevice(Device device)
+        {
+            return proxy.DeleteDevice(device);
+        }
+        public static bool AssignDevice(Device terminal, Device device)
+        {
+            return proxy.AssignDevice(terminal, device);
+        }
+        public static bool RemoveDeviceAssignment(Device terminal, Device device)
+        {
+            return proxy.RemoveDeviceAssignment(terminal, device);
         }
         #endregion
     }
