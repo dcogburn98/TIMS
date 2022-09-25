@@ -2406,7 +2406,7 @@ namespace TIMSServer
                     "SELECT DEVICEID FROM DEVICEASSIGNMENTS WHERE TERMINALID = $TERM";
                 command.Parameters.Add(new SqliteParameter("$TERM", term.ID));
                 reader = command.ExecuteReader();
-                if (reader.HasRows)
+                while (reader.Read())
                     term.AssignedDevices.Add(devices.First(el => el.ID == reader.GetInt32(0)));
 
                 reader.Close();
@@ -2523,7 +2523,7 @@ namespace TIMSServer
 
             SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
-                "DELETE FROM DEVICEASSIGNMENTS WHERE TERMINALID = $TERM & DEVICEID = $DEVICE";
+                "DELETE FROM DEVICEASSIGNMENTS WHERE TERMINALID = $TERM AND DEVICEID = $DEVICE";
             command.Parameters.Add(new SqliteParameter("$TERM", terminal.ID));
             command.Parameters.Add(new SqliteParameter("$DEVICE", device.ID));
             if (command.ExecuteNonQuery() < 1)

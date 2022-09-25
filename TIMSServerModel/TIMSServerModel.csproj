@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
+    <Compile Include="AuthContainer.cs" />
     <Compile Include="AuthorizationKey.cs" />
     <Compile Include="Checkin.cs" />
     <Compile Include="CheckinItem.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="ITIMSDownstreamServiceModel.cs" />
     <Compile Include="ITIMSServiceModel.cs" />
     <Compile Include="Payment.cs" />
+    <Compile Include="Permissions.cs" />
     <Compile Include="Planogram\Building.cs" />
     <Compile Include="Planogram\Shelving\GondolaRow.cs" />
     <Compile Include="Planogram\Shelving\GondolaShelf.cs" />

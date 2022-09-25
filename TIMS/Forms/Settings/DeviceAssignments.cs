@@ -85,6 +85,8 @@ namespace TIMS.Forms.Settings
             }
 
             Communication.AssignDevice(selectedTerminal, (Device)receiptPrintersLB.SelectedItem);
+            int termID = selectedTerminal.ID;
+            selectedTerminal = Communication.RetrieveTerminals().First(el => el.ID == termID);
             receiptPrintersLB.Items.Clear();
             foreach (Device device in Communication.RetrieveDevices().Where(el => el.Type == Device.DeviceType.ThermalPrinter))
             {
@@ -95,7 +97,8 @@ namespace TIMS.Forms.Settings
         private void receiptPrintersLB_DrawItem(object sender, DrawItemEventArgs e)
         {
             Font f = e.Font;
-            if (selectedTerminal.AssignedDevices.Contains(receiptPrintersLB.Items[e.Index])) //TODO: Your condition to make text bold
+            Device device = (Device)receiptPrintersLB.Items[e.Index];
+            if (selectedTerminal.AssignedDevices.Where(el => el.ID == device.ID).Count() > 0)
                 f = new Font(e.Font, FontStyle.Bold);
             e.DrawBackground();
             e.Graphics.DrawString(((ListBox)(sender)).Items[e.Index].ToString(), f, new SolidBrush(e.ForeColor), e.Bounds);
