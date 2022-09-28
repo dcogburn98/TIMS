@@ -11,20 +11,45 @@ namespace TIMSServerModel
         public static List<Permission> Permissions;
 
         public string Name;
+        public string FriendlyName;
         public string Description;
-        public Permission Parent;
-        public List<Permission> Children;
-        public enum Test
+
+        public Permission(string Name, string FriendlyName, string Description)
         {
-            Test1,
-            Test2
+            this.Name = Name;
+            this.FriendlyName = FriendlyName;
+            this.Description = Description;
+            Permissions.Add(this);
         }
 
-        public Permission(string name)
+        public static List<Permission> Parse(string PermissionName)
         {
+            if (PermissionName == "*")
+                return Permissions;
+            else
+            {
+                List<Permission> ParsedPermissions = Permissions;
+                string[] split = PermissionName.Split('.');
+                for (int i = 0; i != split.Length; i++)
+                {
+                    if (split[i] == "*")
+                        break;
+                    else
+                    {
 
+                    }
+                }
+                return ParsedPermissions;
+            }
         }
 
+        public string ToString(bool FriendlyName)
+        {
+            if (FriendlyName)
+                return this.FriendlyName;
+            else
+                return Name;
+        }
         public override string ToString()
         {
             return Name; 
@@ -32,48 +57,42 @@ namespace TIMSServerModel
     }
     class Permissions
     {
+        public static Permission EditGlobalProperties = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission InstallPlugins = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission RemovePlugins = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
 
-        public bool EditGlobalProperties =          false;
-        public bool InstallPlugins =                false;
-        public bool RemovePlugins =                 false;
+        public static Permission CreateInvoices = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission SellAgeRestrictedItems = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission UseAdvancedInvoicing = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission ProcessReturns = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission ProcessReturnsWithoutInvoice = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
 
-        public bool CreateInvoices =                false;
-        public bool SellAgeRestrictedItems =        false;
-        public bool UseComplexInvoicing =           false;
-        public bool ProcessReturns =                false;
-        public bool ProcessReturnsWithoutInvoice =  false;
+        public static Permission AddReceiptPrinters = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission AddCardReaders = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission AddLineDisplays = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission AddConventionalPrinters = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission DeleteReceiptPrinters = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission DeleteCardReaders = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission DeleteLineDisplays = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission DeleteConventionalPrinters = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission AssignReceiptPrinters = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission AssignCardReaders = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission AssignLineDisplays = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission AssignConventionalPrinters = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
 
-        public bool AddReceiptPrinters =            false;
-        public bool AddCardReaders =                false;
-        public bool AddLineDisplays =               false;
-        public bool AddConventionalPrinters =       false;
-        public bool DeleteReceiptPrinters =         false;
-        public bool DeleteCardReaders =             false;
-        public bool DeleteLineDisplays =            false;
-        public bool DeleteConventionalPrinters =    false;
-        public bool AssignReceiptPrinters =         false;
-        public bool AssignCardReaders =             false;
-        public bool AssignLineDisplays =            false;
-        public bool AssignConventionalPrinters =    false;
+        public static Permission CreateCustomers = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission DeleteCustomers = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission EditCustomers = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission AssignPricingProfiles = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
 
-        public bool CreateCustomers =               false;
-        public bool DeleteCustomers =               false;
-        public bool EditCustomers =                 false;
-        public bool AssignPricingProfiles =         false;
+        public static Permission CreatePricingProfiles = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission DeletePricingProfiles = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission EditPricingProfiles = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
 
-        public bool CreatePricingProfiles =         false;
-        public bool DeletePricingProfiles =         false;
-        public bool EditPricingProfiles =           false;
-
-        public bool AddEmployees =                  false;
-        public bool DeleteEmployees =               false;
-        public bool EditEmployees =                 false;
-        public bool ChangeEmployeeHireStatus =      false;
-        public bool EditEmployeeWageDetails =       false;
-
-        public override string ToString()
-        {
-            return base.ToString();
-        }
+        public static Permission AddEmployees = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission DeleteEmployees = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission EditEmployees = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission ChangeEmployeeHireStatus = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
+        public static Permission EditEmployeeWageDetails = new Permission("properties.edit", "Edit Global Properties", "Allow editing of global system properties.");
     }
 }

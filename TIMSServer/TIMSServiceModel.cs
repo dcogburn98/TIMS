@@ -28,7 +28,7 @@ namespace TIMSServer
         }
 
         private static List<AuthKey> Keys = new List<AuthKey>();
-        private static AuthKey BypassKey = new AuthKey("3ncrYqtEdbypa$$K3yF0rInt3rna1u$e");
+        internal static AuthKey BypassKey = new AuthKey("3ncrYqtEdbypa$$K3yF0rInt3rna1u$e");
 
         #region Employees
         
