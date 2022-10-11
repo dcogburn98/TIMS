@@ -170,6 +170,15 @@
     <Compile Include="Forms\Cameras\CameraViewer.Designer.cs">
       <DependentUpon>CameraViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CustomerSearch.Designer.cs">
+      <DependentUpon>CustomerSearch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Customers\CustomerInformation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Customers\CustomerInformation.Designer.cs">
+      <DependentUpon>CustomerInformation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ItemImporting\DefaultFieldValuesEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -253,6 +262,9 @@
     </Compile>
     <Compile Include="Forms\POS\CardPayment.Designer.cs">
       <DependentUpon>CardPayment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CustomerSearch.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\POS\InvoiceViewer.cs">
       <SubType>Form</SubType>
@@ -356,12 +368,6 @@
       <DependentUpon>Checkout.cs</DependentUpon>
     </Compile>
     <Compile Include="DatabaseHandler.cs" />
-    <Compile Include="Forms\CustomerSearch.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\CustomerSearch.Designer.cs">
-      <DependentUpon>CustomerSearch.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\POS\Invoicing.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -391,6 +397,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Cameras\CameraViewer.resx">
       <DependentUpon>CameraViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CustomerSearch.resx">
+      <DependentUpon>CustomerSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Customers\CustomerInformation.resx">
+      <DependentUpon>CustomerInformation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ItemImporting\DefaultFieldValuesEditor.resx">
       <DependentUpon>DefaultFieldValuesEditor.cs</DependentUpon>
@@ -427,9 +439,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\POS\Checkout.resx">
       <DependentUpon>Checkout.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\CustomerSearch.resx">
-      <DependentUpon>CustomerSearch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Accounting\GeneralJournal.resx">
       <DependentUpon>GeneralJournal.cs</DependentUpon>

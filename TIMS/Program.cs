@@ -30,11 +30,11 @@ namespace TIMS
             Communication.SetEndpointAddress("http://localhost:9999/endpoint");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Login login = new Login();
-            //OpenForms.Add(login);
-            //login.Show();
-            //Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
-            //Application.Run();
+            Login login = new Login();
+            OpenForms.Add(login);
+            login.Show();
+            Application.RegisterMessageLoop(new Application.MessageLoopCallback(CheckOpenForms));
+            Application.Run();
 
             #region Invoice Viewer Test Code
             //SHA256 encrypt = SHA256.Create();
@@ -109,8 +109,8 @@ namespace TIMS
             //Application.Run(accts);
             #endregion
             #region Device Management Test Code
-            DeviceAssignments assignments = new DeviceAssignments();
-            Application.Run(assignments);
+            //DeviceAssignments assignments = new DeviceAssignments();
+            //Application.Run(assignments);
             #endregion
             #region Camera Viewer Test Code
             //CameraViewer viewer = new CameraViewer();

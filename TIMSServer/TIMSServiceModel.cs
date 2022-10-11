@@ -915,7 +915,7 @@ namespace TIMSServer
                 "REDPRICE = $RED, YELLOWPRICE = $YELLOW, GREENPRICE = $GREEN, PINKPRICE = $PINK, " +
                 "BLUEPRICE = $BLUE, REPLACEMENTCOST = $COST, AVERAGECOST = $AVERAGECOST, " +
                 "TAXED = $TAXED, AGERESTRICTED = $RESTRICTED, MINIMUMAGE = $MINAGE, LOCATIONCODE = $LOCATION, " +
-                "SERIALIZED = $SERIALIZED, CATEGORY = $CATEGORY, SKU = $SKU " +
+                "SERIALIZED = $SERIALIZED, CATEGORY = $CATEGORY " +
                 "WHERE (ITEMNUMBER = $ITEMNUMBER AND PRODUCTLINE = $PRODUCTLINE)";
 
             SqliteParameter p1 = new SqliteParameter("$ITEMNAME", newItem.itemName);
@@ -952,7 +952,6 @@ namespace TIMSServer
             SqliteParameter p32 = new SqliteParameter("$PRODUCTLINE", newItem.productLine);
             SqliteParameter p33 = new SqliteParameter("$SERIALIZED", newItem.serialized);
             SqliteParameter p34 = new SqliteParameter("$CATEGORY", newItem.category);
-            SqliteParameter p35 = new SqliteParameter("$SKU", newItem.SKU);
 
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
@@ -988,7 +987,6 @@ namespace TIMSServer
             command.Parameters.Add(p32);
             command.Parameters.Add(p33);
             command.Parameters.Add(p34);
-            command.Parameters.Add(p35);
 
             command.ExecuteNonQuery();
 

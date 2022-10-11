@@ -108,12 +108,18 @@ namespace TIMS.Forms.POS
                 birthdateLabel.Text = "N/A";
             contactPhoneLabel.Text = inv.customer.phoneNumber;
             faxLabel.Text = inv.customer.faxNumber;
-            string[] mailing = inv.customer.mailingAddress.Split(',');
-            mailingAddressLn1Label.Text = mailing[0].Trim();
-            mailingAddressLn2Label.Text = mailing[1].Trim() + "," + mailing[2] + mailing[3] + "," + mailing[4];
-            string[] shipping = inv.customer.shippingAddress.Split(',');
-            shippingAddressLn1Label.Text = shipping[0].Trim();
-            shippingAddressLn2Label.Text = shipping[1].Trim() + "," + shipping[2] + shipping[3] + "," + shipping[4];
+            string[] mailing = inv.customer.mailingAddress?.Split(',');
+            if (mailing != null)
+            {
+                mailingAddressLn1Label.Text = mailing[0].Trim();
+                mailingAddressLn2Label.Text = mailing[1].Trim() + "," + mailing[2] + mailing[3] + "," + mailing[4];
+            }
+            string[] shipping = inv.customer.shippingAddress?.Split(',');
+            if (shipping != null)
+            {
+                shippingAddressLn1Label.Text = shipping[0].Trim();
+                shippingAddressLn2Label.Text = shipping[1].Trim() + "," + shipping[2] + shipping[3] + "," + shipping[4];
+            }
 
             #endregion
 

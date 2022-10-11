@@ -1,4 +1,4 @@
-﻿namespace TIMS.Forms
+namespace TIMS.Forms
 {
     partial class CustomerSearch
     {

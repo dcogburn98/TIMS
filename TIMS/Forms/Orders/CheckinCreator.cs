@@ -21,19 +21,28 @@ namespace TIMS.Forms.Orders
         public CheckinCreator()
         {
             InitializeComponent();
-            foreach (PurchaseOrder order in Communication.RetrievePurchaseOrders())
-            {
-                if (order.finalized)
+            List<PurchaseOrder> POs = Communication.RetrievePurchaseOrders();
+            if (POs != null)
+                foreach (PurchaseOrder order in POs)
                 {
-                    int row = dataGridView1.Rows.Add();
-                    dataGridView1.Rows[row].Cells[0].Value = order.PONumber;
-                    dataGridView1.Rows[row].Cells[1].Value = order.totalCost;
-                    dataGridView1.Rows[row].Cells[2].Value = order.totalItems;
-                    dataGridView1.Rows[row].Cells[3].Value = order.assignedCheckin == 0 ? "UNASSIGNED" : order.assignedCheckin.ToString();
-                    dataGridView1.Rows[row].Cells[4].Value = order.supplier;
-                    dataGridView1.Rows[row].Cells[5].Value = order.finalized;
-                    dataGridView1.Rows[row].Cells[6].Value = order.shippingCost;
+                    if (order.finalized)
+                    {
+                        int row = dataGridView1.Rows.Add();
+                        dataGridView1.Rows[row].Cells[0].Value = order.PONumber;
+                        dataGridView1.Rows[row].Cells[1].Value = order.totalCost;
+                        dataGridView1.Rows[row].Cells[2].Value = order.totalItems;
+                        dataGridView1.Rows[row].Cells[3].Value = order.assignedCheckin == 0 ? "UNASSIGNED" : order.assignedCheckin.ToString();
+                        dataGridView1.Rows[row].Cells[4].Value = order.supplier;
+                        dataGridView1.Rows[row].Cells[5].Value = order.finalized;
+                        dataGridView1.Rows[row].Cells[6].Value = order.shippingCost;
+                    }
                 }
+            else
+            {
+                MessageBox.Show("There are no purchase orders available to create a checkin with!");
+                DialogResult = DialogResult.Cancel;
+                Close();
+                return;
             }
 
             dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);

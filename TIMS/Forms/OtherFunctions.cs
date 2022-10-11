@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using TIMS.Forms.Reporting;
 using TIMS.Forms.Orders;
 using TIMS.Forms.Settings;
+using TIMS.Forms.Customers;
 using TIMS.Server;
 using TIMSServerModel;
 
@@ -339,7 +340,8 @@ namespace TIMS.Forms
         private void createCheckInToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             CheckinCreator creator = new CheckinCreator();
-            creator.Show();
+            if (creator.DialogResult != DialogResult.Cancel)
+                creator.Show();
         }
 
         private void editPostToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -353,6 +355,24 @@ namespace TIMS.Forms
         {
             DeviceAssignments assignments = new DeviceAssignments();
             assignments.Show();
+        }
+
+        private void receivePaymentOnAccountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReceiveOnAccount roa = new ReceiveOnAccount();
+            roa.Show();
+        }
+
+        private void customerInformationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CustomerInformation ci = new CustomerInformation();
+            ci.Show();
+        }
+
+        private void tabletInvoicingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.OpenForm(new TileDisplay());
+            
         }
     }
 }

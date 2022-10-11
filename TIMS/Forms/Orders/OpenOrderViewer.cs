@@ -20,17 +20,18 @@ namespace TIMS.Forms.Orders
         {
             InitializeComponent();
             POs = Communication.RetrievePurchaseOrders();
-            foreach (PurchaseOrder order in POs)
-            {
-                int row = dataGridView1.Rows.Add();
-                dataGridView1.Rows[row].Cells[0].Value = order.PONumber.ToString();
-                dataGridView1.Rows[row].Cells[1].Value = order.totalCost.ToString();
-                dataGridView1.Rows[row].Cells[2].Value = order.totalItems.ToString();
-                dataGridView1.Rows[row].Cells[3].Value = order.assignedCheckin.ToString();
-                dataGridView1.Rows[row].Cells[4].Value = order.supplier.ToString();
-                dataGridView1.Rows[row].Cells[5].Value = order.finalized.ToString();
-                dataGridView1.Rows[row].Cells[6].Value = order.shippingCost.ToString();
-            }
+            if (POs != null)
+                foreach (PurchaseOrder order in POs)
+                {
+                    int row = dataGridView1.Rows.Add();
+                    dataGridView1.Rows[row].Cells[0].Value = order.PONumber.ToString();
+                    dataGridView1.Rows[row].Cells[1].Value = order.totalCost.ToString();
+                    dataGridView1.Rows[row].Cells[2].Value = order.totalItems.ToString();
+                    dataGridView1.Rows[row].Cells[3].Value = order.assignedCheckin.ToString();
+                    dataGridView1.Rows[row].Cells[4].Value = order.supplier.ToString();
+                    dataGridView1.Rows[row].Cells[5].Value = order.finalized.ToString();
+                    dataGridView1.Rows[row].Cells[6].Value = order.shippingCost.ToString();
+                }
             dataGridView1.Sort(dataGridView1.Columns[0], ListSortDirection.Ascending);
         }
 

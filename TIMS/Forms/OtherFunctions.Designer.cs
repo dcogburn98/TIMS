@@ -288,6 +288,7 @@ namespace TIMS.Forms
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabletInvoicingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage17.SuspendLayout();
@@ -329,6 +330,7 @@ namespace TIMS.Forms
             // 
             this.salesActivitiesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.invoicingToolStripMenuItem,
+            this.tabletInvoicingToolStripMenuItem,
             this.dashboardToolStripMenuItem,
             this.receivePaymentOnAccountToolStripMenuItem,
             this.reviewTodaysSalesToolStripMenuItem,
@@ -361,6 +363,7 @@ namespace TIMS.Forms
             this.receivePaymentOnAccountToolStripMenuItem.Name = "receivePaymentOnAccountToolStripMenuItem";
             this.receivePaymentOnAccountToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
             this.receivePaymentOnAccountToolStripMenuItem.Text = "Receive Payment on Account";
+            this.receivePaymentOnAccountToolStripMenuItem.Click += new System.EventHandler(this.receivePaymentOnAccountToolStripMenuItem_Click);
             // 
             // reviewTodaysSalesToolStripMenuItem
             // 
@@ -806,6 +809,7 @@ namespace TIMS.Forms
             this.customerInformationToolStripMenuItem.Name = "customerInformationToolStripMenuItem";
             this.customerInformationToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.customerInformationToolStripMenuItem.Text = "Customer Information";
+            this.customerInformationToolStripMenuItem.Click += new System.EventHandler(this.customerInformationToolStripMenuItem_Click);
             // 
             // pricingProfileInformationToolStripMenuItem
             // 
@@ -2399,6 +2403,13 @@ namespace TIMS.Forms
             this.tabPage4.Text = "Employee Management";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // tabletInvoicingToolStripMenuItem
+            // 
+            this.tabletInvoicingToolStripMenuItem.Name = "tabletInvoicingToolStripMenuItem";
+            this.tabletInvoicingToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.tabletInvoicingToolStripMenuItem.Text = "Tablet Invoicing";
+            this.tabletInvoicingToolStripMenuItem.Click += new System.EventHandler(this.tabletInvoicingToolStripMenuItem_Click);
+            // 
             // OtherFunctions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2690,5 +2701,6 @@ namespace TIMS.Forms
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.TextBox minimumAgeTB;
         private System.Windows.Forms.CheckBox ageRestrictedCB;
+        private System.Windows.Forms.ToolStripMenuItem tabletInvoicingToolStripMenuItem;
     }
 }

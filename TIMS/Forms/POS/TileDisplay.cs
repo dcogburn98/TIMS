@@ -105,5 +105,11 @@ namespace TIMS.Forms.POS
                 pictureBox1.Image = image;
             }
         }
+
+        private void TileDisplay_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Program.OpenForms.Remove(this);
+            Program.CheckOpenForms();
+        }
     }
 }

@@ -49,6 +49,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "TileDisplay";
             this.Text = "TileDisplay";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TileDisplay_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 

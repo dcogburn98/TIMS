@@ -472,7 +472,11 @@ namespace TIMS.Forms.Orders
                 totalItems += decimal.Parse(roww.Cells[3].Value.ToString());
                 totalRetail += decimal.Parse(roww.Cells[10].Value.ToString());
             }
-            averageMargin = (totalRetail - totalCost) / totalRetail;
+            if (totalRetail != 0)
+                averageMargin = (totalRetail - totalCost) / totalRetail;
+            else
+                averageMargin = 0;
+
             totalPotentialProfit = totalRetail - totalCost;
             totalCostTB.Text = totalCost.ToString("C");
             totalItemsTB.Text = totalItems.ToString();
