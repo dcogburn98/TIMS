@@ -83,5 +83,10 @@ namespace TIMSServerModel
 
         public Invoice[] currentSavedInvoices;
         public Invoice[] invoiceHistory;
+
+        public Customer()
+        {
+            availablePaymentTypes = new List<Payment.PaymentTypes>();
+        }
     }
 }

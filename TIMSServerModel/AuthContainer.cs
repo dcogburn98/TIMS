@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TIMSServerModel
 {
-    class AuthContainer<DataType>
+    public class AuthContainer<DataType>
     {
         public DataType Data;
         public AuthKey Key;

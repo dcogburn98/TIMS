@@ -698,9 +698,8 @@ namespace TIMSServer
                 command.CommandText =
                     @"CREATE TABLE ""Customers""(
                     ""CustomerName""  TEXT NOT NULL,
-                    ""CustomerNumber""    INTEGER NOT NULL,
+                    ""CustomerNumber""    TEXT NOT NULL,
                     ""PricingProfile""    TEXT NOT NULL,
-                    ""PaymentTypes""  TEXT NOT NULL,
                     ""CanCharge"" INTEGER NOT NULL,
                     ""CreditLimit""   REAL NOT NULL,
                     ""AccountBalance""    REAL NOT NULL,
@@ -841,7 +840,7 @@ namespace TIMSServer
                     ""EnableTIMSRelations"",
                     ""RelationshipKey"",
                     ""AutomaticallySendPriceUpdates"",
-                    ""AutomaticallySendMedia"" 
+                    ""AutomaticallySendMedia"")  
                 VALUES (
                     'Cash Sale',
                     '0',
@@ -879,7 +878,7 @@ namespace TIMSServer
                     '0',
                     '1',
                     '0',
-                    '0',
+                    'Cash Only',
                     '0',
                     '',
                     '0',

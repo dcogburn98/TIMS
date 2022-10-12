@@ -42,14 +42,14 @@ namespace TIMS
             customer.customerName = textBox1.Text; //Name
             customer.phoneNumber = textBox4.Text; //Phone
             string address = textBox5.Text + ", " + textBox6.Text + ", " + comboBox2.Text + ", " + comboBox1.Text;
-            customer.mailingAddress = address;
+            customer.billingAddress = address;
             customer.shippingAddress = address;
             customer.pricingProfile = comboBox1.Text; //Pricing Profile
             if (checkBox1.Checked) //Tax Exempt
-                customer.taxExempt = true;
+                customer.primaryTaxStatus = "Exempt";
             else
-                customer.taxExempt = false;
-            customer.taxExemptionNumber = textBox3.Text; //Tax Exempt Number
+                customer.primaryTaxStatus = "Non-Exempt";
+            customer.primaryTaxExemptionNumber = textBox3.Text; //Tax Exempt Number
 
             //DatabaseHandler.AddCustomer(customer);
 

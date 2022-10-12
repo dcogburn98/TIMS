@@ -85,8 +85,8 @@ namespace TIMS.Forms.POS
             #region Customer Information Section
             customerNoLabel.Text = inv.customer.customerNumber;
             customerNameLabel.Text = inv.customer.customerName;
-            if (inv.customer.taxExempt)
-                taxExemptionLabel.Text = "True (" + inv.customer.taxExemptionNumber + ")";
+            if (inv.customer.primaryTaxStatus == "Exempt")
+                taxExemptionLabel.Text = "True (" + inv.customer.primaryTaxExemptionNumber + ")";
             else
                 taxExemptionLabel.Text = "False";
             pricingProfileLabel.Text = inv.customer.pricingProfile;
@@ -108,7 +108,7 @@ namespace TIMS.Forms.POS
                 birthdateLabel.Text = "N/A";
             contactPhoneLabel.Text = inv.customer.phoneNumber;
             faxLabel.Text = inv.customer.faxNumber;
-            string[] mailing = inv.customer.mailingAddress?.Split(',');
+            string[] mailing = inv.customer.billingAddress?.Split(',');
             if (mailing != null)
             {
                 mailingAddressLn1Label.Text = mailing[0].Trim();

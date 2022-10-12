@@ -113,12 +113,12 @@ namespace TIMSServerModel
             gfx.DrawRectangle(pen, XBrushes.White, rect);
             gfx.DrawString(customer.customerNumber, font, XBrushes.Black, new PointF(customerInfoOrigin.X + 4, customerInfoOrigin.Y + 10));
             gfx.DrawString(customer.customerName, font, XBrushes.Black, new PointF(customerInfoOrigin.X + 4, customerInfoOrigin.Y + 10 + (float)font.GetHeight()));
-            gfx.DrawString(customer.mailingAddress.Split(',')[0], font, XBrushes.Black, new PointF(customerInfoOrigin.X + 4, customerInfoOrigin.Y + 10 + 2 * (float)font.GetHeight()));
+            gfx.DrawString(customer.billingAddress.Split(',')[0], font, XBrushes.Black, new PointF(customerInfoOrigin.X + 4, customerInfoOrigin.Y + 10 + 2 * (float)font.GetHeight()));
             gfx.DrawString(
-                customer.mailingAddress.Split(',')[1].Trim() + "," +
-                customer.mailingAddress.Split(',')[2] +
-                customer.mailingAddress.Split(',')[3] + "," +
-                customer.mailingAddress.Split(',')[4], font, XBrushes.Black, new PointF(customerInfoOrigin.X + 4, customerInfoOrigin.Y + 10 + 3 * (float)font.GetHeight()));
+                customer.billingAddress.Split(',')[1].Trim() + "," +
+                customer.billingAddress.Split(',')[2] +
+                customer.billingAddress.Split(',')[3] + "," +
+                customer.billingAddress.Split(',')[4], font, XBrushes.Black, new PointF(customerInfoOrigin.X + 4, customerInfoOrigin.Y + 10 + 3 * (float)font.GetHeight()));
             gfx.DrawString("Anticipated Delivery:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 224.5f, customerInfoOrigin.Y + 10));
             gfx.DrawString("Attention:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 260, customerInfoOrigin.Y + 10 + (float)font.GetHeight()));
             gfx.DrawString("Tax Exemption:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 241.5f, customerInfoOrigin.Y + 10 + 2 * (float)font.GetHeight()));
@@ -127,7 +127,7 @@ namespace TIMSServerModel
 
             //gfx.DrawString("Anticipated Delivery:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 224.5f, customerInfoOrigin.Y + 10));
             gfx.DrawString(attentionLine, font, XBrushes.Black, new PointF(customerInfoOrigin.X + 300, customerInfoOrigin.Y + 10 + (float)font.GetHeight()));
-            gfx.DrawString(customer.taxExempt ? "True" : "False", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 300, customerInfoOrigin.Y + 10 + 2 * (float)font.GetHeight()));
+            gfx.DrawString(customer.primaryTaxStatus == "Exempt" ? "True" : "False", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 300, customerInfoOrigin.Y + 10 + 2 * (float)font.GetHeight()));
             gfx.DrawString(PONumber, font, XBrushes.Black, new PointF(customerInfoOrigin.X + 300, customerInfoOrigin.Y + 10 + 3 * (float)font.GetHeight()));
             //gfx.DrawString("Terms:", font, XBrushes.Black, new PointF(customerInfoOrigin.X + 269.5f, customerInfoOrigin.Y + 10 + 4 * (float)font.GetHeight()));
 

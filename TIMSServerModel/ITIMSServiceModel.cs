@@ -77,7 +77,7 @@ namespace TIMSServerModel
 
         #region Customers
         [OperationContract]
-        Customer CheckCustomerNumber(string custNo, AuthKey key);
+        AuthContainer<Customer> CheckCustomerNumber(string custNo, AuthKey key);
         #endregion
 
         #region Global Properties

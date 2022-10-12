@@ -205,17 +205,14 @@ namespace TIMS.Server
             if (custNo == string.Empty)
                 return null;
 
-            Customer c = proxy.CheckCustomerNumber(custNo, currentKey);
-            if (c == null)
+            AuthContainer<Customer> c = proxy.CheckCustomerNumber(custNo, currentKey);
+            if (c.Key.Success)
             {
                 currentKey.Regenerate();
-                return null;
-            }
+                if (c.Data == null)
+                    return null;
 
-            if (c.key.Success)
-            {
-                currentKey.Regenerate();
-                return c;
+                return c.Data;
             }
             else
             {

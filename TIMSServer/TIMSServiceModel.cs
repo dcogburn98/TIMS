@@ -71,7 +71,7 @@ namespace TIMSServer
                 return new Employee() { key = new AuthKey() { Success = false } };
             }
             #endregion
-            //System.Threading.Thread.Sleep(1000); Uncomment before release
+
             Employee e = new Employee();
 
             #region Authorization Initialization
@@ -1145,33 +1145,28 @@ namespace TIMSServer
 
         #region Customers
 
-        public Customer CheckCustomerNumber(string custNo, AuthKey key)
+        public AuthContainer<Customer> CheckCustomerNumber(string custNo, AuthKey key)
         {
-            Customer cust = new Customer();
+            AuthContainer<Customer> container = new AuthContainer<Customer>();
+            container.Data = new Customer();
+
             #region Authorization Check
             AuthKey localKey = Keys.Find(el => el.ID == key.ID);
-            if (localKey == null)
+            if (localKey == null || !localKey.Match(key))
             {
-                cust.key = new AuthKey();
-                cust.key.Success = false;
-                return cust;
-            }
-            if (!localKey.Match(key))
-            {
-                cust.key = new AuthKey();
-                cust.key.Success = false;
-                return cust;
+                container.Key = new AuthKey();
+                container.Key.Success = false;
+                return container;
             }
             else
             {
                 Console.WriteLine("Key Match");
-                cust.key = key;
-                cust.key.Success = true;
+                container.Key = key;
+                container.Key.Success = true;
                 localKey.Regenerate();
             }
             #endregion
 
-            
             OpenConnection();
 
             SqliteCommand sqlite_cmd;
@@ -1189,49 +1184,120 @@ namespace TIMSServer
             if (!reader.HasRows)
             {
                 CloseConnection();
-                return null;
+                container.Data = null;
+                return container;
             }
 
             while (reader.Read())
             {
-                cust.availablePaymentTypes = new List<Payment.PaymentTypes>();
-                string[] paymentTypes = reader.GetString(5).Split(',');
-                foreach (string p in paymentTypes)
+                container.Data.customerName = reader.GetString(0);
+                container.Data.customerNumber = reader.GetString(1);
+                container.Data.pricingProfile = reader.GetString(2);
+                container.Data.canCharge = reader.GetInt32(3) != 0;
+                container.Data.creditLimit = reader.GetDecimal(4);
+                container.Data.accountBalance = reader.GetDecimal(5);
+                container.Data.phoneNumber = reader.GetString(6);
+                container.Data.faxNumber = reader.GetString(7);
+                container.Data.billingAddress = reader.GetString(8);
+                container.Data.shippingAddress = reader.GetString(9);
+                container.Data.invoiceMessage = reader.GetString(10);
+                container.Data.website = reader.GetString(11);
+                container.Data.email = reader.GetString(12);
+                container.Data.assignedRep = reader.GetString(13);
+                container.Data.businessCategory = reader.GetString(14);
+                container.Data.dateAdded = DateTime.Parse(reader.GetString(15));
+                container.Data.dateOfLastSale = DateTime.Parse(reader.GetString(16));
+                container.Data.dateOfLastROA = DateTime.Parse(reader.GetString(17));
+                container.Data.preferredLanguage = reader.GetString(18);
+                container.Data.authorizedBuyers = reader.GetString(19).Split(',').ToList();
+                container.Data.defaultTaxTable = reader.GetString(20);
+                container.Data.deliveryTaxTable = reader.GetString(21);
+                container.Data.primaryTaxStatus = reader.GetString(22);
+                container.Data.secondaryTaxStatus = reader.GetString(23);
+                container.Data.primaryTaxExemptionNumber = reader.GetString(24);
+                container.Data.secondaryTaxExemptionNumber = reader.GetString(25);
+                container.Data.primaryTaxExemptionExpiration = reader.GetString(26) == string.Empty ? DateTime.MinValue : DateTime.Parse(reader.GetString(26));
+                container.Data.secondaryTaxExemptionExpiration = reader.GetString(27) == string.Empty ? DateTime.MinValue : DateTime.Parse(reader.GetString(27));
+                container.Data.printCatalogNotes = reader.GetInt32(28) != 0;
+                container.Data.printBalance = reader.GetInt32(29) != 0;
+                container.Data.emailInvoices = reader.GetInt32(30) != 0;
+                container.Data.allowBackorders = reader.GetInt32(31) != 0;
+                container.Data.allowSpecialOrders = reader.GetInt32(32) != 0;
+                container.Data.exemptFromInvoiceSurcharges = reader.GetInt32(33) != 0;
+                container.Data.extraInvoiceCopies = reader.GetInt32(34);
+                container.Data.PORequiredThresholdAmount = reader.GetDecimal(35);
+
+                switch (reader.GetString(36))
                 {
-                    switch (p)
-                    {
-                        case "Cash":
-                            cust.availablePaymentTypes.Add(Payment.PaymentTypes.Cash);
-                            break;
-                        case "Check":
-                            cust.availablePaymentTypes.Add(Payment.PaymentTypes.Check);
-                            break;
-                        case "PaymentCard":
-                            cust.availablePaymentTypes.Add(Payment.PaymentTypes.PaymentCard);
-                            break;
-                        case "CashApp":
-                            cust.availablePaymentTypes.Add(Payment.PaymentTypes.CashApp);
-                            break;
-                        case "Venmo":
-                            cust.availablePaymentTypes.Add(Payment.PaymentTypes.Venmo);
-                            break;
-                        case "Paypal":
-                            cust.availablePaymentTypes.Add(Payment.PaymentTypes.Paypal);
-                            break;
-                        case "Charge":
-                            cust.availablePaymentTypes.Add(Payment.PaymentTypes.Charge);
-                            break;
-                    }
+                    case ("Cash Only"):
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Cash);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Check);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.PaymentCard);
+                        break;
+                    case ("Cash Only(Include Mobile Payments)"):
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Cash);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Check);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.PaymentCard);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Venmo);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.CashApp);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Paypal);
+                        break;
+                    case ("Charge Only"):
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Charge);
+                        break;
+                    case ("Cash Or Charge"):
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Cash);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Check);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.PaymentCard);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Charge);
+                        break;
+                    case ("Cash Or Charge(Include Mobile Payments)"):
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Cash);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Check);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.PaymentCard);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Charge);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Venmo);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.CashApp);
+                        container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Paypal);
+                        break;
                 }
 
-                cust.customerNumber = reader.GetInt32(1).ToString();
-                cust.customerName = reader.GetString(0);
-                cust.mailingAddress = reader.GetString(11);
-                cust.shippingAddress = reader.GetString(12);
+                container.Data.defaultToDeliver = reader.GetInt32(37) != 0;
+                container.Data.deliveryRoute = reader.GetString(38);
+                container.Data.travelTime = reader.GetInt32(39);
+                container.Data.travelDistance = reader.GetInt32(40);
+                container.Data.minimumSaleFreeDelivery = reader.GetDecimal(41);
+                container.Data.deliveryCharge = reader.GetDecimal(42);
+                container.Data.statementType = reader.GetString(43);
+                container.Data.percentDiscount = reader.GetDecimal(44);
+                container.Data.paidForByDiscount = reader.GetInt32(45);
+                container.Data.dueDate = reader.GetInt32(46);
+                container.Data.extraStatementCopies = reader.GetInt32(47);
+                container.Data.sendInvoicesEvery_Days = reader.GetInt32(48);
+                container.Data.sendAccountSummaryEvery_Days = reader.GetInt32(49);
+                container.Data.emailStatements = reader.GetInt32(50) != 0;
+                container.Data.statementMailingAddress = reader.GetString(51);
+                container.Data.lastPaymentAmount = reader.GetDecimal(52);
+                container.Data.lastPaymentDate = reader.GetString(53) == string.Empty ? DateTime.MinValue : DateTime.Parse(reader.GetString(53));
+                container.Data.highestAmountOwed = reader.GetDecimal(54);
+                container.Data.highestAmountOwedDate = reader.GetString(55) == string.Empty ? DateTime.MinValue : DateTime.Parse(reader.GetString(55));
+                container.Data.highestAmountPaid = reader.GetDecimal(56);
+                container.Data.highestAmountPaidDate = reader.GetString(57) == string.Empty ? DateTime.MinValue : DateTime.Parse(reader.GetString(57));
+                container.Data.lastStatementAmount = reader.GetDecimal(58);
+                container.Data.totalDue = reader.GetDecimal(59);
+                container.Data.due30 = reader.GetDecimal(60);
+                container.Data.due60 = reader.GetDecimal(61);
+                container.Data.due90 = reader.GetDecimal(62);
+                container.Data.furtherDue = reader.GetDecimal(63);
+                container.Data.serviceCharge = reader.GetDecimal(64);
+                container.Data.enabledTIMSServerRelations = reader.GetInt32(65) != 0;
+                container.Data.relationshipKey = reader.GetString(66);
+                container.Data.automaticallySendPriceUpdates = reader.GetInt32(67) != 0;
+                container.Data.automaticallySendMedia = reader.GetInt32(68) != 0;
             }
 
             CloseConnection();
-            return cust;
+            return container;
         }
         
         #endregion
@@ -1370,7 +1436,7 @@ namespace TIMSServer
 
             CloseConnection();
 
-            inv.customer = CheckCustomerNumber(inv.customer.customerNumber, BypassKey);
+            inv.customer = CheckCustomerNumber(inv.customer.customerNumber, BypassKey).Data;
             inv.employee = RetrieveEmployee(inv.employee.employeeNumber.ToString());
             return inv;
         }        
