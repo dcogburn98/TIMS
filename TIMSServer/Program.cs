@@ -275,6 +275,7 @@ namespace TIMSServer
             OpenConnection();
             CloseConnection();
             CreateDatabase();
+            TIMSServiceModel.Init();
 
             using (ServiceHost host = new ServiceHost(typeof(TIMSServiceModel)))
             {

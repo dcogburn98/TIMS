@@ -30,6 +30,11 @@ namespace TIMSServer
         private static List<AuthKey> Keys = new List<AuthKey>();
         internal static AuthKey BypassKey = new AuthKey("3ncrYqtEdbypa$$K3yF0rInt3rna1u$e");
 
+        public static void Init()
+        {
+            Keys.Add(BypassKey);
+        }
+
         #region Employees
         
         public string CheckEmployee(string input)
@@ -1297,6 +1302,54 @@ namespace TIMSServer
             }
 
             CloseConnection();
+            return container;
+        }
+        public AuthContainer<List<Customer>> GetCustomers(AuthKey key)
+        {
+            AuthContainer<List<Customer>> container = new AuthContainer<List<Customer>>();
+            container.Data = new List<Customer>();
+
+            #region Authorization Check
+            AuthKey localKey = Keys.Find(el => el.ID == key.ID);
+            if (localKey == null || !localKey.Match(key))
+            {
+                container.Key = new AuthKey();
+                container.Key.Success = false;
+                return container;
+            }
+            else
+            {
+                Console.WriteLine("Key Match");
+                container.Key = key;
+                container.Key.Success = true;
+                localKey.Regenerate();
+            }
+            #endregion
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT CustomerNumber FROM CUSTOMERS";
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                container.Data = null;
+                return container;
+            }
+
+            List<string> CustomerNumbers = new List<string>();
+            while (reader.Read())
+            {
+                CustomerNumbers.Add(reader.GetString(0));
+            }
+            CloseConnection();
+
+            foreach (string number in CustomerNumbers)
+            {
+                container.Data.Add(CheckCustomerNumber(number, BypassKey).Data);
+            }
             return container;
         }
         

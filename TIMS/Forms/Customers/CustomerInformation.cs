@@ -72,5 +72,20 @@ namespace TIMS.Forms.Customers
                 }
             }
         }
+
+        private void searchCustomerButton_Click(object sender, EventArgs e)
+        {
+            CustomerSearch search = new CustomerSearch();
+            if (search.ShowDialog() == DialogResult.OK)
+                currentCustomer = search.selectedCustomer;
+            else
+                return;
+
+            accountNumberTB.Text = currentCustomer.customerNumber;
+            accountNameTB.Text = currentCustomer.customerName;
+            customerNumber2TB.Text = currentCustomer.customerNumber;
+            customerName2TB.Text = currentCustomer.customerName;
+
+        }
     }
 }

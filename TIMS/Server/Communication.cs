@@ -209,9 +209,20 @@ namespace TIMS.Server
             if (c.Key.Success)
             {
                 currentKey.Regenerate();
-                if (c.Data == null)
-                    return null;
-
+                return c.Data;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
+        }
+        public static List<Customer> GetCustomers()
+        {
+            AuthContainer<List<Customer>> c = proxy.GetCustomers(currentKey);
+            if (c.Key.Success)
+            {
+                currentKey.Regenerate();
                 return c.Data;
             }
             else

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.searchCustomerButton = new System.Windows.Forms.Button();
@@ -36,104 +36,104 @@
             this.accountNumberTB = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.removeBuyerButton = new System.Windows.Forms.Button();
+            this.addBuyerButton = new System.Windows.Forms.Button();
+            this.authorizedBuyersLB = new System.Windows.Forms.ListBox();
             this.label20 = new System.Windows.Forms.Label();
-            this.textBox20 = new System.Windows.Forms.TextBox();
+            this.languagePreferenceTB = new System.Windows.Forms.TextBox();
             this.label31 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
-            this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
+            this.dateLastPayment = new System.Windows.Forms.DateTimePicker();
             this.label22 = new System.Windows.Forms.Label();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dateLasteSale = new System.Windows.Forms.DateTimePicker();
             this.label21 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox14 = new System.Windows.Forms.TextBox();
+            this.dateAdded = new System.Windows.Forms.DateTimePicker();
+            this.changeCustomerNumberButton = new System.Windows.Forms.Button();
+            this.invoiceNoteTB = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
-            this.textBox13 = new System.Windows.Forms.TextBox();
+            this.businessCategoryTB = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
-            this.textBox12 = new System.Windows.Forms.TextBox();
+            this.salesRepTB = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.textBox11 = new System.Windows.Forms.TextBox();
+            this.emailTB = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.websiteTB = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.faxNumberTB = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.phoneNumberTB = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.physicalZipTB = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.physicalCountryTB = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.physicalStateTB = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.physicalCityTB = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.physicalAddressTB = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.customerName2TB = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.customerNumber2TB = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.textBox24 = new System.Windows.Forms.TextBox();
+            this.deliveryChargeTB = new System.Windows.Forms.TextBox();
             this.label38 = new System.Windows.Forms.Label();
-            this.textBox23 = new System.Windows.Forms.TextBox();
+            this.minSaleFreeDeliveryTB = new System.Windows.Forms.TextBox();
             this.label37 = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
             this.label35 = new System.Windows.Forms.Label();
-            this.textBox22 = new System.Windows.Forms.TextBox();
+            this.travelDistanceTB = new System.Windows.Forms.TextBox();
             this.label34 = new System.Windows.Forms.Label();
-            this.textBox21 = new System.Windows.Forms.TextBox();
+            this.travelTimeTB = new System.Windows.Forms.TextBox();
             this.label33 = new System.Windows.Forms.Label();
-            this.comboBox6 = new System.Windows.Forms.ComboBox();
+            this.deliveryRouteCB = new System.Windows.Forms.ComboBox();
             this.label32 = new System.Windows.Forms.Label();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.defaultDeliverCB = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.exemptFromSurchargesCB = new System.Windows.Forms.CheckBox();
+            this.allowSpecialOrdersCB = new System.Windows.Forms.CheckBox();
+            this.allowBackordersCB = new System.Windows.Forms.CheckBox();
+            this.emailInvoicesCB = new System.Windows.Forms.CheckBox();
             this.label30 = new System.Windows.Forms.Label();
-            this.textBox19 = new System.Windows.Forms.TextBox();
+            this.extraInvoiceCopiesTB = new System.Windows.Forms.TextBox();
             this.label29 = new System.Windows.Forms.Label();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.textBox15 = new System.Windows.Forms.TextBox();
+            this.printBalanceCB = new System.Windows.Forms.CheckBox();
+            this.printCatalogNotesCB = new System.Windows.Forms.CheckBox();
+            this.poReqdOverAmountTB = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.billingTypeCB = new System.Windows.Forms.ComboBox();
             this.label18 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label28 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.dateTimePicker5 = new System.Windows.Forms.DateTimePicker();
-            this.textBox18 = new System.Windows.Forms.TextBox();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
+            this.secondaryTaxExemptExpiration = new System.Windows.Forms.DateTimePicker();
+            this.secondaryTaxExemptNumberTB = new System.Windows.Forms.TextBox();
+            this.secondaryTaxStatusCB = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.dateTimePicker4 = new System.Windows.Forms.DateTimePicker();
-            this.textBox17 = new System.Windows.Forms.TextBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.primaryTaxExemptExpiration = new System.Windows.Forms.DateTimePicker();
+            this.primaryTaxExemptNumberTB = new System.Windows.Forms.TextBox();
+            this.primaryTaxStatusCB = new System.Windows.Forms.ComboBox();
             this.label25 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.defaultTaxTableCB = new System.Windows.Forms.ComboBox();
             this.label24 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.deliveryTaxTableCB = new System.Windows.Forms.ComboBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.textBox44 = new System.Windows.Forms.TextBox();
+            this.accountBalanceTB = new System.Windows.Forms.TextBox();
             this.label91 = new System.Windows.Forms.Label();
-            this.dueFurther = new System.Windows.Forms.TextBox();
+            this.dueFurtherTB = new System.Windows.Forms.TextBox();
             this.label84 = new System.Windows.Forms.Label();
-            this.serviceCharge = new System.Windows.Forms.TextBox();
-            this.due90 = new System.Windows.Forms.TextBox();
-            this.due60 = new System.Windows.Forms.TextBox();
-            this.due30 = new System.Windows.Forms.TextBox();
+            this.serviceChargeTB = new System.Windows.Forms.TextBox();
+            this.due90TB = new System.Windows.Forms.TextBox();
+            this.due60TB = new System.Windows.Forms.TextBox();
+            this.due30TB = new System.Windows.Forms.TextBox();
             this.lastStatementAmount = new System.Windows.Forms.TextBox();
-            this.defaultTerms = new System.Windows.Forms.TextBox();
+            this.totalDueTB = new System.Windows.Forms.TextBox();
             this.label85 = new System.Windows.Forms.Label();
             this.label86 = new System.Windows.Forms.Label();
             this.label87 = new System.Windows.Forms.Label();
@@ -141,31 +141,29 @@
             this.label89 = new System.Windows.Forms.Label();
             this.label90 = new System.Windows.Forms.Label();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.checkBox10 = new System.Windows.Forms.CheckBox();
-            this.textBox38 = new System.Windows.Forms.TextBox();
+            this.useDifferentAddressCB = new System.Windows.Forms.CheckBox();
+            this.mailingZipTB = new System.Windows.Forms.TextBox();
             this.label78 = new System.Windows.Forms.Label();
-            this.textBox39 = new System.Windows.Forms.TextBox();
+            this.mailingCountryTB = new System.Windows.Forms.TextBox();
             this.label79 = new System.Windows.Forms.Label();
-            this.textBox40 = new System.Windows.Forms.TextBox();
+            this.mailingStateTB = new System.Windows.Forms.TextBox();
             this.label80 = new System.Windows.Forms.Label();
-            this.textBox41 = new System.Windows.Forms.TextBox();
+            this.mailingCityTB = new System.Windows.Forms.TextBox();
             this.label81 = new System.Windows.Forms.Label();
-            this.textBox42 = new System.Windows.Forms.TextBox();
+            this.mailingAddressTB = new System.Windows.Forms.TextBox();
             this.label82 = new System.Windows.Forms.Label();
-            this.textBox43 = new System.Windows.Forms.TextBox();
-            this.label83 = new System.Windows.Forms.Label();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.textBox36 = new System.Windows.Forms.TextBox();
+            this.highestAmountPaidDateTB = new System.Windows.Forms.TextBox();
             this.label76 = new System.Windows.Forms.Label();
-            this.textBox37 = new System.Windows.Forms.TextBox();
+            this.highestAmountPaidTB = new System.Windows.Forms.TextBox();
             this.label77 = new System.Windows.Forms.Label();
-            this.textBox34 = new System.Windows.Forms.TextBox();
+            this.highestAmountOwedDateTB = new System.Windows.Forms.TextBox();
             this.label74 = new System.Windows.Forms.Label();
-            this.textBox35 = new System.Windows.Forms.TextBox();
+            this.highestAmountOwedTB = new System.Windows.Forms.TextBox();
             this.label75 = new System.Windows.Forms.Label();
-            this.textBox33 = new System.Windows.Forms.TextBox();
+            this.lastPaymentDateTB = new System.Windows.Forms.TextBox();
             this.label73 = new System.Windows.Forms.Label();
-            this.textBox32 = new System.Windows.Forms.TextBox();
+            this.lastPaymentAmountTB = new System.Windows.Forms.TextBox();
             this.label72 = new System.Windows.Forms.Label();
             this.label64 = new System.Windows.Forms.Label();
             this.label65 = new System.Windows.Forms.Label();
@@ -187,29 +185,29 @@
             this.label54 = new System.Windows.Forms.Label();
             this.label53 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.emailStatementsCB = new System.Windows.Forms.CheckBox();
             this.label51 = new System.Windows.Forms.Label();
-            this.textBox31 = new System.Windows.Forms.TextBox();
+            this.sendAccountSummaryEvery_DaysTB = new System.Windows.Forms.TextBox();
             this.label52 = new System.Windows.Forms.Label();
             this.label50 = new System.Windows.Forms.Label();
-            this.textBox30 = new System.Windows.Forms.TextBox();
+            this.sendInvoicesEvery_DaysTB = new System.Windows.Forms.TextBox();
             this.label49 = new System.Windows.Forms.Label();
-            this.textBox29 = new System.Windows.Forms.TextBox();
+            this.extraStatementCopiesTB = new System.Windows.Forms.TextBox();
             this.label48 = new System.Windows.Forms.Label();
-            this.checkBox8 = new System.Windows.Forms.CheckBox();
+            this.doNotChargeCB = new System.Windows.Forms.CheckBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.label46 = new System.Windows.Forms.Label();
-            this.textBox28 = new System.Windows.Forms.TextBox();
+            this.dueByTB = new System.Windows.Forms.TextBox();
             this.label47 = new System.Windows.Forms.Label();
             this.label44 = new System.Windows.Forms.Label();
-            this.textBox27 = new System.Windows.Forms.TextBox();
+            this.discountDaysTB = new System.Windows.Forms.TextBox();
             this.label45 = new System.Windows.Forms.Label();
             this.label43 = new System.Windows.Forms.Label();
-            this.textBox26 = new System.Windows.Forms.TextBox();
+            this.discountPercentTB = new System.Windows.Forms.TextBox();
             this.label42 = new System.Windows.Forms.Label();
-            this.comboBox7 = new System.Windows.Forms.ComboBox();
+            this.statementTypeCB = new System.Windows.Forms.ComboBox();
             this.label40 = new System.Windows.Forms.Label();
-            this.textBox25 = new System.Windows.Forms.TextBox();
+            this.creditLimitTB = new System.Windows.Forms.TextBox();
             this.label39 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -354,6 +352,7 @@
             this.searchCustomerButton.TabIndex = 7;
             this.searchCustomerButton.Text = "Search";
             this.searchCustomerButton.UseVisualStyleBackColor = true;
+            this.searchCustomerButton.Click += new System.EventHandler(this.searchCustomerButton_Click);
             // 
             // accountNameTB
             // 
@@ -390,46 +389,46 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.button3);
-            this.tabPage1.Controls.Add(this.button2);
-            this.tabPage1.Controls.Add(this.listBox1);
+            this.tabPage1.Controls.Add(this.removeBuyerButton);
+            this.tabPage1.Controls.Add(this.addBuyerButton);
+            this.tabPage1.Controls.Add(this.authorizedBuyersLB);
             this.tabPage1.Controls.Add(this.label20);
-            this.tabPage1.Controls.Add(this.textBox20);
+            this.tabPage1.Controls.Add(this.languagePreferenceTB);
             this.tabPage1.Controls.Add(this.label31);
             this.tabPage1.Controls.Add(this.label23);
-            this.tabPage1.Controls.Add(this.dateTimePicker3);
+            this.tabPage1.Controls.Add(this.dateLastPayment);
             this.tabPage1.Controls.Add(this.label22);
-            this.tabPage1.Controls.Add(this.dateTimePicker2);
+            this.tabPage1.Controls.Add(this.dateLasteSale);
             this.tabPage1.Controls.Add(this.label21);
-            this.tabPage1.Controls.Add(this.dateTimePicker1);
-            this.tabPage1.Controls.Add(this.button1);
-            this.tabPage1.Controls.Add(this.textBox14);
+            this.tabPage1.Controls.Add(this.dateAdded);
+            this.tabPage1.Controls.Add(this.changeCustomerNumberButton);
+            this.tabPage1.Controls.Add(this.invoiceNoteTB);
             this.tabPage1.Controls.Add(this.label16);
-            this.tabPage1.Controls.Add(this.textBox13);
+            this.tabPage1.Controls.Add(this.businessCategoryTB);
             this.tabPage1.Controls.Add(this.label15);
-            this.tabPage1.Controls.Add(this.textBox12);
+            this.tabPage1.Controls.Add(this.salesRepTB);
             this.tabPage1.Controls.Add(this.label14);
-            this.tabPage1.Controls.Add(this.textBox11);
+            this.tabPage1.Controls.Add(this.emailTB);
             this.tabPage1.Controls.Add(this.label13);
-            this.tabPage1.Controls.Add(this.textBox10);
+            this.tabPage1.Controls.Add(this.websiteTB);
             this.tabPage1.Controls.Add(this.label12);
-            this.tabPage1.Controls.Add(this.textBox9);
+            this.tabPage1.Controls.Add(this.faxNumberTB);
             this.tabPage1.Controls.Add(this.label11);
-            this.tabPage1.Controls.Add(this.textBox4);
+            this.tabPage1.Controls.Add(this.phoneNumberTB);
             this.tabPage1.Controls.Add(this.label6);
-            this.tabPage1.Controls.Add(this.textBox8);
+            this.tabPage1.Controls.Add(this.physicalZipTB);
             this.tabPage1.Controls.Add(this.label10);
-            this.tabPage1.Controls.Add(this.textBox7);
+            this.tabPage1.Controls.Add(this.physicalCountryTB);
             this.tabPage1.Controls.Add(this.label9);
-            this.tabPage1.Controls.Add(this.textBox6);
+            this.tabPage1.Controls.Add(this.physicalStateTB);
             this.tabPage1.Controls.Add(this.label8);
-            this.tabPage1.Controls.Add(this.textBox5);
+            this.tabPage1.Controls.Add(this.physicalCityTB);
             this.tabPage1.Controls.Add(this.label7);
-            this.tabPage1.Controls.Add(this.textBox3);
+            this.tabPage1.Controls.Add(this.physicalAddressTB);
             this.tabPage1.Controls.Add(this.label5);
-            this.tabPage1.Controls.Add(this.textBox2);
+            this.tabPage1.Controls.Add(this.customerName2TB);
             this.tabPage1.Controls.Add(this.label4);
-            this.tabPage1.Controls.Add(this.textBox1);
+            this.tabPage1.Controls.Add(this.customerNumber2TB);
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
@@ -439,31 +438,31 @@
             this.tabPage1.Text = "Account Information";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // removeBuyerButton
             // 
-            this.button3.Location = new System.Drawing.Point(768, 361);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(89, 23);
-            this.button3.TabIndex = 42;
-            this.button3.Text = "Remove Buyer";
-            this.button3.UseVisualStyleBackColor = true;
+            this.removeBuyerButton.Location = new System.Drawing.Point(768, 361);
+            this.removeBuyerButton.Name = "removeBuyerButton";
+            this.removeBuyerButton.Size = new System.Drawing.Size(89, 23);
+            this.removeBuyerButton.TabIndex = 42;
+            this.removeBuyerButton.Text = "Remove Buyer";
+            this.removeBuyerButton.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // addBuyerButton
             // 
-            this.button2.Location = new System.Drawing.Point(687, 361);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 41;
-            this.button2.Text = "Add Buyer";
-            this.button2.UseVisualStyleBackColor = true;
+            this.addBuyerButton.Location = new System.Drawing.Point(687, 361);
+            this.addBuyerButton.Name = "addBuyerButton";
+            this.addBuyerButton.Size = new System.Drawing.Size(75, 23);
+            this.addBuyerButton.TabIndex = 41;
+            this.addBuyerButton.Text = "Add Buyer";
+            this.addBuyerButton.UseVisualStyleBackColor = true;
             // 
-            // listBox1
+            // authorizedBuyersLB
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(687, 159);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(296, 199);
-            this.listBox1.TabIndex = 40;
+            this.authorizedBuyersLB.FormattingEnabled = true;
+            this.authorizedBuyersLB.Location = new System.Drawing.Point(687, 159);
+            this.authorizedBuyersLB.Name = "authorizedBuyersLB";
+            this.authorizedBuyersLB.Size = new System.Drawing.Size(296, 199);
+            this.authorizedBuyersLB.TabIndex = 40;
             // 
             // label20
             // 
@@ -475,12 +474,12 @@
             this.label20.TabIndex = 39;
             this.label20.Text = "Authorized Buyers (Leave Empty for Any Purchaser)";
             // 
-            // textBox20
+            // languagePreferenceTB
             // 
-            this.textBox20.Location = new System.Drawing.Point(783, 97);
-            this.textBox20.Name = "textBox20";
-            this.textBox20.Size = new System.Drawing.Size(200, 20);
-            this.textBox20.TabIndex = 38;
+            this.languagePreferenceTB.Location = new System.Drawing.Point(783, 97);
+            this.languagePreferenceTB.Name = "languagePreferenceTB";
+            this.languagePreferenceTB.Size = new System.Drawing.Size(200, 20);
+            this.languagePreferenceTB.TabIndex = 38;
             // 
             // label31
             // 
@@ -502,13 +501,13 @@
             this.label23.TabIndex = 36;
             this.label23.Text = "Date of Last ROA Payment";
             // 
-            // dateTimePicker3
+            // dateLastPayment
             // 
-            this.dateTimePicker3.Enabled = false;
-            this.dateTimePicker3.Location = new System.Drawing.Point(783, 61);
-            this.dateTimePicker3.Name = "dateTimePicker3";
-            this.dateTimePicker3.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker3.TabIndex = 35;
+            this.dateLastPayment.Enabled = false;
+            this.dateLastPayment.Location = new System.Drawing.Point(783, 61);
+            this.dateLastPayment.Name = "dateLastPayment";
+            this.dateLastPayment.Size = new System.Drawing.Size(200, 20);
+            this.dateLastPayment.TabIndex = 35;
             // 
             // label22
             // 
@@ -520,13 +519,13 @@
             this.label22.TabIndex = 34;
             this.label22.Text = "Date of Last Sale";
             // 
-            // dateTimePicker2
+            // dateLasteSale
             // 
-            this.dateTimePicker2.Enabled = false;
-            this.dateTimePicker2.Location = new System.Drawing.Point(783, 35);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker2.TabIndex = 33;
+            this.dateLasteSale.Enabled = false;
+            this.dateLasteSale.Location = new System.Drawing.Point(783, 35);
+            this.dateLasteSale.Name = "dateLasteSale";
+            this.dateLasteSale.Size = new System.Drawing.Size(200, 20);
+            this.dateLasteSale.TabIndex = 33;
             // 
             // label21
             // 
@@ -538,29 +537,29 @@
             this.label21.TabIndex = 32;
             this.label21.Text = "Date Added";
             // 
-            // dateTimePicker1
+            // dateAdded
             // 
-            this.dateTimePicker1.Enabled = false;
-            this.dateTimePicker1.Location = new System.Drawing.Point(783, 9);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 31;
+            this.dateAdded.Enabled = false;
+            this.dateAdded.Location = new System.Drawing.Point(783, 9);
+            this.dateAdded.Name = "dateAdded";
+            this.dateAdded.Size = new System.Drawing.Size(200, 20);
+            this.dateAdded.TabIndex = 31;
             // 
-            // button1
+            // changeCustomerNumberButton
             // 
-            this.button1.Location = new System.Drawing.Point(240, 4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(145, 23);
-            this.button1.TabIndex = 30;
-            this.button1.Text = "Change Customer Number";
-            this.button1.UseVisualStyleBackColor = true;
+            this.changeCustomerNumberButton.Location = new System.Drawing.Point(240, 4);
+            this.changeCustomerNumberButton.Name = "changeCustomerNumberButton";
+            this.changeCustomerNumberButton.Size = new System.Drawing.Size(145, 23);
+            this.changeCustomerNumberButton.TabIndex = 30;
+            this.changeCustomerNumberButton.Text = "Change Customer Number";
+            this.changeCustomerNumberButton.UseVisualStyleBackColor = true;
             // 
-            // textBox14
+            // invoiceNoteTB
             // 
-            this.textBox14.Location = new System.Drawing.Point(134, 344);
-            this.textBox14.Name = "textBox14";
-            this.textBox14.Size = new System.Drawing.Size(347, 20);
-            this.textBox14.TabIndex = 29;
+            this.invoiceNoteTB.Location = new System.Drawing.Point(134, 344);
+            this.invoiceNoteTB.Name = "invoiceNoteTB";
+            this.invoiceNoteTB.Size = new System.Drawing.Size(347, 20);
+            this.invoiceNoteTB.TabIndex = 29;
             // 
             // label16
             // 
@@ -572,12 +571,12 @@
             this.label16.TabIndex = 28;
             this.label16.Text = "Invoice Note";
             // 
-            // textBox13
+            // businessCategoryTB
             // 
-            this.textBox13.Location = new System.Drawing.Point(134, 318);
-            this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new System.Drawing.Size(347, 20);
-            this.textBox13.TabIndex = 27;
+            this.businessCategoryTB.Location = new System.Drawing.Point(134, 318);
+            this.businessCategoryTB.Name = "businessCategoryTB";
+            this.businessCategoryTB.Size = new System.Drawing.Size(347, 20);
+            this.businessCategoryTB.TabIndex = 27;
             // 
             // label15
             // 
@@ -589,12 +588,12 @@
             this.label15.TabIndex = 26;
             this.label15.Text = "Business Category";
             // 
-            // textBox12
+            // salesRepTB
             // 
-            this.textBox12.Location = new System.Drawing.Point(134, 292);
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(347, 20);
-            this.textBox12.TabIndex = 25;
+            this.salesRepTB.Location = new System.Drawing.Point(134, 292);
+            this.salesRepTB.Name = "salesRepTB";
+            this.salesRepTB.Size = new System.Drawing.Size(347, 20);
+            this.salesRepTB.TabIndex = 25;
             // 
             // label14
             // 
@@ -606,12 +605,12 @@
             this.label14.TabIndex = 24;
             this.label14.Text = "Sales Rep.";
             // 
-            // textBox11
+            // emailTB
             // 
-            this.textBox11.Location = new System.Drawing.Point(134, 266);
-            this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(347, 20);
-            this.textBox11.TabIndex = 23;
+            this.emailTB.Location = new System.Drawing.Point(134, 266);
+            this.emailTB.Name = "emailTB";
+            this.emailTB.Size = new System.Drawing.Size(347, 20);
+            this.emailTB.TabIndex = 23;
             // 
             // label13
             // 
@@ -623,12 +622,12 @@
             this.label13.TabIndex = 22;
             this.label13.Text = "E-mail Address";
             // 
-            // textBox10
+            // websiteTB
             // 
-            this.textBox10.Location = new System.Drawing.Point(134, 240);
-            this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(347, 20);
-            this.textBox10.TabIndex = 21;
+            this.websiteTB.Location = new System.Drawing.Point(134, 240);
+            this.websiteTB.Name = "websiteTB";
+            this.websiteTB.Size = new System.Drawing.Size(347, 20);
+            this.websiteTB.TabIndex = 21;
             // 
             // label12
             // 
@@ -640,12 +639,12 @@
             this.label12.TabIndex = 20;
             this.label12.Text = "Web Site";
             // 
-            // textBox9
+            // faxNumberTB
             // 
-            this.textBox9.Location = new System.Drawing.Point(134, 214);
-            this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(347, 20);
-            this.textBox9.TabIndex = 19;
+            this.faxNumberTB.Location = new System.Drawing.Point(134, 214);
+            this.faxNumberTB.Name = "faxNumberTB";
+            this.faxNumberTB.Size = new System.Drawing.Size(347, 20);
+            this.faxNumberTB.TabIndex = 19;
             // 
             // label11
             // 
@@ -657,12 +656,12 @@
             this.label11.TabIndex = 18;
             this.label11.Text = "Fax number";
             // 
-            // textBox4
+            // phoneNumberTB
             // 
-            this.textBox4.Location = new System.Drawing.Point(134, 188);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(347, 20);
-            this.textBox4.TabIndex = 17;
+            this.phoneNumberTB.Location = new System.Drawing.Point(134, 188);
+            this.phoneNumberTB.Name = "phoneNumberTB";
+            this.phoneNumberTB.Size = new System.Drawing.Size(347, 20);
+            this.phoneNumberTB.TabIndex = 17;
             // 
             // label6
             // 
@@ -674,12 +673,12 @@
             this.label6.TabIndex = 16;
             this.label6.Text = "Phone Number";
             // 
-            // textBox8
+            // physicalZipTB
             // 
-            this.textBox8.Location = new System.Drawing.Point(134, 162);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(347, 20);
-            this.textBox8.TabIndex = 15;
+            this.physicalZipTB.Location = new System.Drawing.Point(134, 162);
+            this.physicalZipTB.Name = "physicalZipTB";
+            this.physicalZipTB.Size = new System.Drawing.Size(347, 20);
+            this.physicalZipTB.TabIndex = 15;
             // 
             // label10
             // 
@@ -691,12 +690,12 @@
             this.label10.TabIndex = 14;
             this.label10.Text = "Zip Code";
             // 
-            // textBox7
+            // physicalCountryTB
             // 
-            this.textBox7.Location = new System.Drawing.Point(134, 136);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(347, 20);
-            this.textBox7.TabIndex = 13;
+            this.physicalCountryTB.Location = new System.Drawing.Point(134, 136);
+            this.physicalCountryTB.Name = "physicalCountryTB";
+            this.physicalCountryTB.Size = new System.Drawing.Size(347, 20);
+            this.physicalCountryTB.TabIndex = 13;
             // 
             // label9
             // 
@@ -708,12 +707,12 @@
             this.label9.TabIndex = 12;
             this.label9.Text = "Country";
             // 
-            // textBox6
+            // physicalStateTB
             // 
-            this.textBox6.Location = new System.Drawing.Point(134, 110);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(347, 20);
-            this.textBox6.TabIndex = 11;
+            this.physicalStateTB.Location = new System.Drawing.Point(134, 110);
+            this.physicalStateTB.Name = "physicalStateTB";
+            this.physicalStateTB.Size = new System.Drawing.Size(347, 20);
+            this.physicalStateTB.TabIndex = 11;
             // 
             // label8
             // 
@@ -725,12 +724,12 @@
             this.label8.TabIndex = 10;
             this.label8.Text = "State";
             // 
-            // textBox5
+            // physicalCityTB
             // 
-            this.textBox5.Location = new System.Drawing.Point(134, 84);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(347, 20);
-            this.textBox5.TabIndex = 9;
+            this.physicalCityTB.Location = new System.Drawing.Point(134, 84);
+            this.physicalCityTB.Name = "physicalCityTB";
+            this.physicalCityTB.Size = new System.Drawing.Size(347, 20);
+            this.physicalCityTB.TabIndex = 9;
             // 
             // label7
             // 
@@ -742,12 +741,12 @@
             this.label7.TabIndex = 8;
             this.label7.Text = "City";
             // 
-            // textBox3
+            // physicalAddressTB
             // 
-            this.textBox3.Location = new System.Drawing.Point(134, 58);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(347, 20);
-            this.textBox3.TabIndex = 5;
+            this.physicalAddressTB.Location = new System.Drawing.Point(134, 58);
+            this.physicalAddressTB.Name = "physicalAddressTB";
+            this.physicalAddressTB.Size = new System.Drawing.Size(347, 20);
+            this.physicalAddressTB.TabIndex = 5;
             // 
             // label5
             // 
@@ -759,12 +758,12 @@
             this.label5.TabIndex = 4;
             this.label5.Text = "Address";
             // 
-            // textBox2
+            // customerName2TB
             // 
-            this.textBox2.Location = new System.Drawing.Point(134, 32);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(347, 20);
-            this.textBox2.TabIndex = 3;
+            this.customerName2TB.Location = new System.Drawing.Point(134, 32);
+            this.customerName2TB.Name = "customerName2TB";
+            this.customerName2TB.Size = new System.Drawing.Size(347, 20);
+            this.customerName2TB.TabIndex = 3;
             // 
             // label4
             // 
@@ -776,12 +775,12 @@
             this.label4.TabIndex = 2;
             this.label4.Text = "Customer Name";
             // 
-            // textBox1
+            // customerNumber2TB
             // 
-            this.textBox1.Location = new System.Drawing.Point(134, 6);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 1;
+            this.customerNumber2TB.Location = new System.Drawing.Point(134, 6);
+            this.customerNumber2TB.Name = "customerNumber2TB";
+            this.customerNumber2TB.Size = new System.Drawing.Size(100, 20);
+            this.customerNumber2TB.TabIndex = 1;
             // 
             // label3
             // 
@@ -808,19 +807,19 @@
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.textBox24);
+            this.groupBox5.Controls.Add(this.deliveryChargeTB);
             this.groupBox5.Controls.Add(this.label38);
-            this.groupBox5.Controls.Add(this.textBox23);
+            this.groupBox5.Controls.Add(this.minSaleFreeDeliveryTB);
             this.groupBox5.Controls.Add(this.label37);
             this.groupBox5.Controls.Add(this.label36);
             this.groupBox5.Controls.Add(this.label35);
-            this.groupBox5.Controls.Add(this.textBox22);
+            this.groupBox5.Controls.Add(this.travelDistanceTB);
             this.groupBox5.Controls.Add(this.label34);
-            this.groupBox5.Controls.Add(this.textBox21);
+            this.groupBox5.Controls.Add(this.travelTimeTB);
             this.groupBox5.Controls.Add(this.label33);
-            this.groupBox5.Controls.Add(this.comboBox6);
+            this.groupBox5.Controls.Add(this.deliveryRouteCB);
             this.groupBox5.Controls.Add(this.label32);
-            this.groupBox5.Controls.Add(this.checkBox7);
+            this.groupBox5.Controls.Add(this.defaultDeliverCB);
             this.groupBox5.Location = new System.Drawing.Point(663, 145);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(320, 394);
@@ -828,12 +827,12 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Delivery Information";
             // 
-            // textBox24
+            // deliveryChargeTB
             // 
-            this.textBox24.Location = new System.Drawing.Point(170, 147);
-            this.textBox24.Name = "textBox24";
-            this.textBox24.Size = new System.Drawing.Size(141, 20);
-            this.textBox24.TabIndex = 19;
+            this.deliveryChargeTB.Location = new System.Drawing.Point(170, 147);
+            this.deliveryChargeTB.Name = "deliveryChargeTB";
+            this.deliveryChargeTB.Size = new System.Drawing.Size(141, 20);
+            this.deliveryChargeTB.TabIndex = 19;
             // 
             // label38
             // 
@@ -845,12 +844,12 @@
             this.label38.TabIndex = 18;
             this.label38.Text = "Delivery Charge";
             // 
-            // textBox23
+            // minSaleFreeDeliveryTB
             // 
-            this.textBox23.Location = new System.Drawing.Point(170, 121);
-            this.textBox23.Name = "textBox23";
-            this.textBox23.Size = new System.Drawing.Size(141, 20);
-            this.textBox23.TabIndex = 17;
+            this.minSaleFreeDeliveryTB.Location = new System.Drawing.Point(170, 121);
+            this.minSaleFreeDeliveryTB.Name = "minSaleFreeDeliveryTB";
+            this.minSaleFreeDeliveryTB.Size = new System.Drawing.Size(141, 20);
+            this.minSaleFreeDeliveryTB.TabIndex = 17;
             // 
             // label37
             // 
@@ -882,12 +881,12 @@
             this.label35.TabIndex = 14;
             this.label35.Text = "Miles";
             // 
-            // textBox22
+            // travelDistanceTB
             // 
-            this.textBox22.Location = new System.Drawing.Point(170, 95);
-            this.textBox22.Name = "textBox22";
-            this.textBox22.Size = new System.Drawing.Size(63, 20);
-            this.textBox22.TabIndex = 13;
+            this.travelDistanceTB.Location = new System.Drawing.Point(170, 95);
+            this.travelDistanceTB.Name = "travelDistanceTB";
+            this.travelDistanceTB.Size = new System.Drawing.Size(63, 20);
+            this.travelDistanceTB.TabIndex = 13;
             // 
             // label34
             // 
@@ -899,12 +898,12 @@
             this.label34.TabIndex = 12;
             this.label34.Text = "Distance to Customer";
             // 
-            // textBox21
+            // travelTimeTB
             // 
-            this.textBox21.Location = new System.Drawing.Point(170, 69);
-            this.textBox21.Name = "textBox21";
-            this.textBox21.Size = new System.Drawing.Size(63, 20);
-            this.textBox21.TabIndex = 11;
+            this.travelTimeTB.Location = new System.Drawing.Point(170, 69);
+            this.travelTimeTB.Name = "travelTimeTB";
+            this.travelTimeTB.Size = new System.Drawing.Size(63, 20);
+            this.travelTimeTB.TabIndex = 11;
             // 
             // label33
             // 
@@ -916,18 +915,19 @@
             this.label33.TabIndex = 10;
             this.label33.Text = "Travel Time";
             // 
-            // comboBox6
+            // deliveryRouteCB
             // 
-            this.comboBox6.FormattingEnabled = true;
-            this.comboBox6.Items.AddRange(new object[] {
+            this.deliveryRouteCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.deliveryRouteCB.FormattingEnabled = true;
+            this.deliveryRouteCB.Items.AddRange(new object[] {
             "Cash Only",
             "Charge Only",
             "Cash Or Charge",
             "Cash Or Charge (Include Mobile Payments)"});
-            this.comboBox6.Location = new System.Drawing.Point(170, 42);
-            this.comboBox6.Name = "comboBox6";
-            this.comboBox6.Size = new System.Drawing.Size(141, 21);
-            this.comboBox6.TabIndex = 8;
+            this.deliveryRouteCB.Location = new System.Drawing.Point(170, 42);
+            this.deliveryRouteCB.Name = "deliveryRouteCB";
+            this.deliveryRouteCB.Size = new System.Drawing.Size(141, 21);
+            this.deliveryRouteCB.TabIndex = 8;
             // 
             // label32
             // 
@@ -939,32 +939,32 @@
             this.label32.TabIndex = 9;
             this.label32.Text = "Delivery Route";
             // 
-            // checkBox7
+            // defaultDeliverCB
             // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox7.Location = new System.Drawing.Point(59, 19);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(126, 17);
-            this.checkBox7.TabIndex = 1;
-            this.checkBox7.Text = "Default to Deliver";
-            this.checkBox7.UseVisualStyleBackColor = true;
+            this.defaultDeliverCB.AutoSize = true;
+            this.defaultDeliverCB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.defaultDeliverCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.defaultDeliverCB.Location = new System.Drawing.Point(59, 19);
+            this.defaultDeliverCB.Name = "defaultDeliverCB";
+            this.defaultDeliverCB.Size = new System.Drawing.Size(126, 17);
+            this.defaultDeliverCB.TabIndex = 1;
+            this.defaultDeliverCB.Text = "Default to Deliver";
+            this.defaultDeliverCB.UseVisualStyleBackColor = true;
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.checkBox6);
-            this.groupBox4.Controls.Add(this.checkBox5);
-            this.groupBox4.Controls.Add(this.checkBox4);
-            this.groupBox4.Controls.Add(this.checkBox3);
+            this.groupBox4.Controls.Add(this.exemptFromSurchargesCB);
+            this.groupBox4.Controls.Add(this.allowSpecialOrdersCB);
+            this.groupBox4.Controls.Add(this.allowBackordersCB);
+            this.groupBox4.Controls.Add(this.emailInvoicesCB);
             this.groupBox4.Controls.Add(this.label30);
-            this.groupBox4.Controls.Add(this.textBox19);
+            this.groupBox4.Controls.Add(this.extraInvoiceCopiesTB);
             this.groupBox4.Controls.Add(this.label29);
-            this.groupBox4.Controls.Add(this.checkBox2);
-            this.groupBox4.Controls.Add(this.checkBox1);
-            this.groupBox4.Controls.Add(this.textBox15);
+            this.groupBox4.Controls.Add(this.printBalanceCB);
+            this.groupBox4.Controls.Add(this.printCatalogNotesCB);
+            this.groupBox4.Controls.Add(this.poReqdOverAmountTB);
             this.groupBox4.Controls.Add(this.label17);
-            this.groupBox4.Controls.Add(this.comboBox1);
+            this.groupBox4.Controls.Add(this.billingTypeCB);
             this.groupBox4.Controls.Add(this.label18);
             this.groupBox4.Location = new System.Drawing.Point(6, 145);
             this.groupBox4.Name = "groupBox4";
@@ -973,53 +973,53 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Miscellaneous";
             // 
-            // checkBox6
+            // exemptFromSurchargesCB
             // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox6.Location = new System.Drawing.Point(348, 65);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(212, 17);
-            this.checkBox6.TabIndex = 12;
-            this.checkBox6.Text = "Exempt From Invoice Surcharges";
-            this.checkBox6.UseVisualStyleBackColor = true;
+            this.exemptFromSurchargesCB.AutoSize = true;
+            this.exemptFromSurchargesCB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.exemptFromSurchargesCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exemptFromSurchargesCB.Location = new System.Drawing.Point(348, 65);
+            this.exemptFromSurchargesCB.Name = "exemptFromSurchargesCB";
+            this.exemptFromSurchargesCB.Size = new System.Drawing.Size(212, 17);
+            this.exemptFromSurchargesCB.TabIndex = 12;
+            this.exemptFromSurchargesCB.Text = "Exempt From Invoice Surcharges";
+            this.exemptFromSurchargesCB.UseVisualStyleBackColor = true;
             // 
-            // checkBox5
+            // allowSpecialOrdersCB
             // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox5.Location = new System.Drawing.Point(417, 42);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(143, 17);
-            this.checkBox5.TabIndex = 11;
-            this.checkBox5.Text = "Allow Special Orders";
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.allowSpecialOrdersCB.AutoSize = true;
+            this.allowSpecialOrdersCB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.allowSpecialOrdersCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.allowSpecialOrdersCB.Location = new System.Drawing.Point(417, 42);
+            this.allowSpecialOrdersCB.Name = "allowSpecialOrdersCB";
+            this.allowSpecialOrdersCB.Size = new System.Drawing.Size(143, 17);
+            this.allowSpecialOrdersCB.TabIndex = 11;
+            this.allowSpecialOrdersCB.Text = "Allow Special Orders";
+            this.allowSpecialOrdersCB.UseVisualStyleBackColor = true;
             // 
-            // checkBox4
+            // allowBackordersCB
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox4.Location = new System.Drawing.Point(436, 19);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(124, 17);
-            this.checkBox4.TabIndex = 10;
-            this.checkBox4.Text = "Allow Backorders";
-            this.checkBox4.UseVisualStyleBackColor = true;
+            this.allowBackordersCB.AutoSize = true;
+            this.allowBackordersCB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.allowBackordersCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.allowBackordersCB.Location = new System.Drawing.Point(436, 19);
+            this.allowBackordersCB.Name = "allowBackordersCB";
+            this.allowBackordersCB.Size = new System.Drawing.Size(124, 17);
+            this.allowBackordersCB.TabIndex = 10;
+            this.allowBackordersCB.Text = "Allow Backorders";
+            this.allowBackordersCB.UseVisualStyleBackColor = true;
             // 
-            // checkBox3
+            // emailInvoicesCB
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox3.Location = new System.Drawing.Point(94, 65);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(112, 17);
-            this.checkBox3.TabIndex = 9;
-            this.checkBox3.Text = "E-mail Invoices";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.emailInvoicesCB.AutoSize = true;
+            this.emailInvoicesCB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.emailInvoicesCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.emailInvoicesCB.Location = new System.Drawing.Point(94, 65);
+            this.emailInvoicesCB.Name = "emailInvoicesCB";
+            this.emailInvoicesCB.Size = new System.Drawing.Size(112, 17);
+            this.emailInvoicesCB.TabIndex = 9;
+            this.emailInvoicesCB.Text = "E-mail Invoices";
+            this.emailInvoicesCB.UseVisualStyleBackColor = true;
             // 
             // label30
             // 
@@ -1031,12 +1031,12 @@
             this.label30.TabIndex = 8;
             this.label30.Text = "Extra Invoice Copies";
             // 
-            // textBox19
+            // extraInvoiceCopiesTB
             // 
-            this.textBox19.Location = new System.Drawing.Point(45, 86);
-            this.textBox19.Name = "textBox19";
-            this.textBox19.Size = new System.Drawing.Size(37, 20);
-            this.textBox19.TabIndex = 7;
+            this.extraInvoiceCopiesTB.Location = new System.Drawing.Point(45, 86);
+            this.extraInvoiceCopiesTB.Name = "extraInvoiceCopiesTB";
+            this.extraInvoiceCopiesTB.Size = new System.Drawing.Size(37, 20);
+            this.extraInvoiceCopiesTB.TabIndex = 7;
             // 
             // label29
             // 
@@ -1048,36 +1048,36 @@
             this.label29.TabIndex = 2;
             this.label29.Text = "Print";
             // 
-            // checkBox2
+            // printBalanceCB
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox2.Location = new System.Drawing.Point(40, 42);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(166, 17);
-            this.checkBox2.TabIndex = 1;
-            this.checkBox2.Text = "Print Balance on Invoice";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.printBalanceCB.AutoSize = true;
+            this.printBalanceCB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.printBalanceCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.printBalanceCB.Location = new System.Drawing.Point(40, 42);
+            this.printBalanceCB.Name = "printBalanceCB";
+            this.printBalanceCB.Size = new System.Drawing.Size(166, 17);
+            this.printBalanceCB.TabIndex = 1;
+            this.printBalanceCB.Text = "Print Balance on Invoice";
+            this.printBalanceCB.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // printCatalogNotesCB
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.Location = new System.Drawing.Point(6, 19);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(200, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Print Catalog Notes on Invoice";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.printCatalogNotesCB.AutoSize = true;
+            this.printCatalogNotesCB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.printCatalogNotesCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.printCatalogNotesCB.Location = new System.Drawing.Point(6, 19);
+            this.printCatalogNotesCB.Name = "printCatalogNotesCB";
+            this.printCatalogNotesCB.Size = new System.Drawing.Size(200, 17);
+            this.printCatalogNotesCB.TabIndex = 0;
+            this.printCatalogNotesCB.Text = "Print Catalog Notes on Invoice";
+            this.printCatalogNotesCB.UseVisualStyleBackColor = true;
             // 
-            // textBox15
+            // poReqdOverAmountTB
             // 
-            this.textBox15.Location = new System.Drawing.Point(204, 114);
-            this.textBox15.Name = "textBox15";
-            this.textBox15.Size = new System.Drawing.Size(111, 20);
-            this.textBox15.TabIndex = 5;
+            this.poReqdOverAmountTB.Location = new System.Drawing.Point(204, 114);
+            this.poReqdOverAmountTB.Name = "poReqdOverAmountTB";
+            this.poReqdOverAmountTB.Size = new System.Drawing.Size(111, 20);
+            this.poReqdOverAmountTB.TabIndex = 5;
             // 
             // label17
             // 
@@ -1089,19 +1089,20 @@
             this.label17.TabIndex = 4;
             this.label17.Text = "PO Required for Purchases Over";
             // 
-            // comboBox1
+            // billingTypeCB
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.billingTypeCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.billingTypeCB.FormattingEnabled = true;
+            this.billingTypeCB.Items.AddRange(new object[] {
             "0 Cash Only",
             "1 Cash Only (Include Mobile Payments)",
             "2 Charge Only",
             "3 Cash Or Charge",
             "4 Cash Or Charge (Include Mobile Payments)"});
-            this.comboBox1.Location = new System.Drawing.Point(204, 140);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(189, 21);
-            this.comboBox1.TabIndex = 6;
+            this.billingTypeCB.Location = new System.Drawing.Point(204, 140);
+            this.billingTypeCB.Name = "billingTypeCB";
+            this.billingTypeCB.Size = new System.Drawing.Size(189, 21);
+            this.billingTypeCB.TabIndex = 6;
             // 
             // label18
             // 
@@ -1121,9 +1122,9 @@
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.label25);
-            this.groupBox1.Controls.Add(this.comboBox3);
+            this.groupBox1.Controls.Add(this.defaultTaxTableCB);
             this.groupBox1.Controls.Add(this.label24);
-            this.groupBox1.Controls.Add(this.comboBox2);
+            this.groupBox1.Controls.Add(this.deliveryTaxTableCB);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(845, 133);
@@ -1163,9 +1164,9 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.dateTimePicker5);
-            this.groupBox3.Controls.Add(this.textBox18);
-            this.groupBox3.Controls.Add(this.comboBox5);
+            this.groupBox3.Controls.Add(this.secondaryTaxExemptExpiration);
+            this.groupBox3.Controls.Add(this.secondaryTaxExemptNumberTB);
+            this.groupBox3.Controls.Add(this.secondaryTaxStatusCB);
             this.groupBox3.Location = new System.Drawing.Point(635, 15);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(200, 106);
@@ -1173,36 +1174,37 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Secondary Tax";
             // 
-            // dateTimePicker5
+            // secondaryTaxExemptExpiration
             // 
-            this.dateTimePicker5.Location = new System.Drawing.Point(6, 76);
-            this.dateTimePicker5.Name = "dateTimePicker5";
-            this.dateTimePicker5.Size = new System.Drawing.Size(188, 20);
-            this.dateTimePicker5.TabIndex = 10;
+            this.secondaryTaxExemptExpiration.Location = new System.Drawing.Point(6, 76);
+            this.secondaryTaxExemptExpiration.Name = "secondaryTaxExemptExpiration";
+            this.secondaryTaxExemptExpiration.Size = new System.Drawing.Size(188, 20);
+            this.secondaryTaxExemptExpiration.TabIndex = 10;
             // 
-            // textBox18
+            // secondaryTaxExemptNumberTB
             // 
-            this.textBox18.Location = new System.Drawing.Point(6, 50);
-            this.textBox18.Name = "textBox18";
-            this.textBox18.Size = new System.Drawing.Size(188, 20);
-            this.textBox18.TabIndex = 9;
+            this.secondaryTaxExemptNumberTB.Location = new System.Drawing.Point(6, 50);
+            this.secondaryTaxExemptNumberTB.Name = "secondaryTaxExemptNumberTB";
+            this.secondaryTaxExemptNumberTB.Size = new System.Drawing.Size(188, 20);
+            this.secondaryTaxExemptNumberTB.TabIndex = 9;
             // 
-            // comboBox5
+            // secondaryTaxStatusCB
             // 
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Items.AddRange(new object[] {
+            this.secondaryTaxStatusCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.secondaryTaxStatusCB.FormattingEnabled = true;
+            this.secondaryTaxStatusCB.Items.AddRange(new object[] {
             "Non-Exempt",
             "Exempt"});
-            this.comboBox5.Location = new System.Drawing.Point(6, 23);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(188, 21);
-            this.comboBox5.TabIndex = 8;
+            this.secondaryTaxStatusCB.Location = new System.Drawing.Point(6, 23);
+            this.secondaryTaxStatusCB.Name = "secondaryTaxStatusCB";
+            this.secondaryTaxStatusCB.Size = new System.Drawing.Size(188, 21);
+            this.secondaryTaxStatusCB.TabIndex = 8;
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.dateTimePicker4);
-            this.groupBox2.Controls.Add(this.textBox17);
-            this.groupBox2.Controls.Add(this.comboBox4);
+            this.groupBox2.Controls.Add(this.primaryTaxExemptExpiration);
+            this.groupBox2.Controls.Add(this.primaryTaxExemptNumberTB);
+            this.groupBox2.Controls.Add(this.primaryTaxStatusCB);
             this.groupBox2.Location = new System.Drawing.Point(429, 19);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(200, 102);
@@ -1210,30 +1212,31 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Primary Tax";
             // 
-            // dateTimePicker4
+            // primaryTaxExemptExpiration
             // 
-            this.dateTimePicker4.Location = new System.Drawing.Point(6, 72);
-            this.dateTimePicker4.Name = "dateTimePicker4";
-            this.dateTimePicker4.Size = new System.Drawing.Size(188, 20);
-            this.dateTimePicker4.TabIndex = 7;
+            this.primaryTaxExemptExpiration.Location = new System.Drawing.Point(6, 72);
+            this.primaryTaxExemptExpiration.Name = "primaryTaxExemptExpiration";
+            this.primaryTaxExemptExpiration.Size = new System.Drawing.Size(188, 20);
+            this.primaryTaxExemptExpiration.TabIndex = 7;
             // 
-            // textBox17
+            // primaryTaxExemptNumberTB
             // 
-            this.textBox17.Location = new System.Drawing.Point(6, 46);
-            this.textBox17.Name = "textBox17";
-            this.textBox17.Size = new System.Drawing.Size(188, 20);
-            this.textBox17.TabIndex = 6;
+            this.primaryTaxExemptNumberTB.Location = new System.Drawing.Point(6, 46);
+            this.primaryTaxExemptNumberTB.Name = "primaryTaxExemptNumberTB";
+            this.primaryTaxExemptNumberTB.Size = new System.Drawing.Size(188, 20);
+            this.primaryTaxExemptNumberTB.TabIndex = 6;
             // 
-            // comboBox4
+            // primaryTaxStatusCB
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Items.AddRange(new object[] {
+            this.primaryTaxStatusCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.primaryTaxStatusCB.FormattingEnabled = true;
+            this.primaryTaxStatusCB.Items.AddRange(new object[] {
             "Non-Exempt",
             "Exempt"});
-            this.comboBox4.Location = new System.Drawing.Point(6, 19);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(188, 21);
-            this.comboBox4.TabIndex = 0;
+            this.primaryTaxStatusCB.Location = new System.Drawing.Point(6, 19);
+            this.primaryTaxStatusCB.Name = "primaryTaxStatusCB";
+            this.primaryTaxStatusCB.Size = new System.Drawing.Size(188, 21);
+            this.primaryTaxStatusCB.TabIndex = 0;
             // 
             // label25
             // 
@@ -1245,13 +1248,14 @@
             this.label25.TabIndex = 10;
             this.label25.Text = "Default Tax Table";
             // 
-            // comboBox3
+            // defaultTaxTableCB
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(126, 50);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(121, 21);
-            this.comboBox3.TabIndex = 9;
+            this.defaultTaxTableCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.defaultTaxTableCB.FormattingEnabled = true;
+            this.defaultTaxTableCB.Location = new System.Drawing.Point(126, 50);
+            this.defaultTaxTableCB.Name = "defaultTaxTableCB";
+            this.defaultTaxTableCB.Size = new System.Drawing.Size(121, 21);
+            this.defaultTaxTableCB.TabIndex = 9;
             // 
             // label24
             // 
@@ -1263,13 +1267,14 @@
             this.label24.TabIndex = 8;
             this.label24.Text = "Delivery Tax Table";
             // 
-            // comboBox2
+            // deliveryTaxTableCB
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(126, 23);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
-            this.comboBox2.TabIndex = 0;
+            this.deliveryTaxTableCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.deliveryTaxTableCB.FormattingEnabled = true;
+            this.deliveryTaxTableCB.Location = new System.Drawing.Point(126, 23);
+            this.deliveryTaxTableCB.Name = "deliveryTaxTableCB";
+            this.deliveryTaxTableCB.Size = new System.Drawing.Size(121, 21);
+            this.deliveryTaxTableCB.TabIndex = 0;
             // 
             // tabPage3
             // 
@@ -1286,16 +1291,16 @@
             // 
             // groupBox10
             // 
-            this.groupBox10.Controls.Add(this.textBox44);
+            this.groupBox10.Controls.Add(this.accountBalanceTB);
             this.groupBox10.Controls.Add(this.label91);
-            this.groupBox10.Controls.Add(this.dueFurther);
+            this.groupBox10.Controls.Add(this.dueFurtherTB);
             this.groupBox10.Controls.Add(this.label84);
-            this.groupBox10.Controls.Add(this.serviceCharge);
-            this.groupBox10.Controls.Add(this.due90);
-            this.groupBox10.Controls.Add(this.due60);
-            this.groupBox10.Controls.Add(this.due30);
+            this.groupBox10.Controls.Add(this.serviceChargeTB);
+            this.groupBox10.Controls.Add(this.due90TB);
+            this.groupBox10.Controls.Add(this.due60TB);
+            this.groupBox10.Controls.Add(this.due30TB);
             this.groupBox10.Controls.Add(this.lastStatementAmount);
-            this.groupBox10.Controls.Add(this.defaultTerms);
+            this.groupBox10.Controls.Add(this.totalDueTB);
             this.groupBox10.Controls.Add(this.label85);
             this.groupBox10.Controls.Add(this.label86);
             this.groupBox10.Controls.Add(this.label87);
@@ -1309,14 +1314,14 @@
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Current Totals";
             // 
-            // textBox44
+            // accountBalanceTB
             // 
-            this.textBox44.BackColor = System.Drawing.SystemColors.Window;
-            this.textBox44.Enabled = false;
-            this.textBox44.Location = new System.Drawing.Point(153, 227);
-            this.textBox44.Name = "textBox44";
-            this.textBox44.Size = new System.Drawing.Size(180, 20);
-            this.textBox44.TabIndex = 44;
+            this.accountBalanceTB.BackColor = System.Drawing.SystemColors.Window;
+            this.accountBalanceTB.Enabled = false;
+            this.accountBalanceTB.Location = new System.Drawing.Point(153, 227);
+            this.accountBalanceTB.Name = "accountBalanceTB";
+            this.accountBalanceTB.Size = new System.Drawing.Size(180, 20);
+            this.accountBalanceTB.TabIndex = 44;
             // 
             // label91
             // 
@@ -1328,14 +1333,14 @@
             this.label91.TabIndex = 43;
             this.label91.Text = "Account Balance:";
             // 
-            // dueFurther
+            // dueFurtherTB
             // 
-            this.dueFurther.BackColor = System.Drawing.SystemColors.Window;
-            this.dueFurther.Enabled = false;
-            this.dueFurther.Location = new System.Drawing.Point(153, 149);
-            this.dueFurther.Name = "dueFurther";
-            this.dueFurther.Size = new System.Drawing.Size(180, 20);
-            this.dueFurther.TabIndex = 42;
+            this.dueFurtherTB.BackColor = System.Drawing.SystemColors.Window;
+            this.dueFurtherTB.Enabled = false;
+            this.dueFurtherTB.Location = new System.Drawing.Point(153, 149);
+            this.dueFurtherTB.Name = "dueFurtherTB";
+            this.dueFurtherTB.Size = new System.Drawing.Size(180, 20);
+            this.dueFurtherTB.TabIndex = 42;
             // 
             // label84
             // 
@@ -1347,41 +1352,41 @@
             this.label84.TabIndex = 41;
             this.label84.Text = "Further Due:";
             // 
-            // serviceCharge
+            // serviceChargeTB
             // 
-            this.serviceCharge.BackColor = System.Drawing.SystemColors.Window;
-            this.serviceCharge.Enabled = false;
-            this.serviceCharge.Location = new System.Drawing.Point(153, 175);
-            this.serviceCharge.Name = "serviceCharge";
-            this.serviceCharge.Size = new System.Drawing.Size(180, 20);
-            this.serviceCharge.TabIndex = 40;
+            this.serviceChargeTB.BackColor = System.Drawing.SystemColors.Window;
+            this.serviceChargeTB.Enabled = false;
+            this.serviceChargeTB.Location = new System.Drawing.Point(153, 175);
+            this.serviceChargeTB.Name = "serviceChargeTB";
+            this.serviceChargeTB.Size = new System.Drawing.Size(180, 20);
+            this.serviceChargeTB.TabIndex = 40;
             // 
-            // due90
+            // due90TB
             // 
-            this.due90.BackColor = System.Drawing.SystemColors.Window;
-            this.due90.Enabled = false;
-            this.due90.Location = new System.Drawing.Point(153, 123);
-            this.due90.Name = "due90";
-            this.due90.Size = new System.Drawing.Size(180, 20);
-            this.due90.TabIndex = 39;
+            this.due90TB.BackColor = System.Drawing.SystemColors.Window;
+            this.due90TB.Enabled = false;
+            this.due90TB.Location = new System.Drawing.Point(153, 123);
+            this.due90TB.Name = "due90TB";
+            this.due90TB.Size = new System.Drawing.Size(180, 20);
+            this.due90TB.TabIndex = 39;
             // 
-            // due60
+            // due60TB
             // 
-            this.due60.BackColor = System.Drawing.SystemColors.Window;
-            this.due60.Enabled = false;
-            this.due60.Location = new System.Drawing.Point(153, 97);
-            this.due60.Name = "due60";
-            this.due60.Size = new System.Drawing.Size(180, 20);
-            this.due60.TabIndex = 38;
+            this.due60TB.BackColor = System.Drawing.SystemColors.Window;
+            this.due60TB.Enabled = false;
+            this.due60TB.Location = new System.Drawing.Point(153, 97);
+            this.due60TB.Name = "due60TB";
+            this.due60TB.Size = new System.Drawing.Size(180, 20);
+            this.due60TB.TabIndex = 38;
             // 
-            // due30
+            // due30TB
             // 
-            this.due30.BackColor = System.Drawing.SystemColors.Window;
-            this.due30.Enabled = false;
-            this.due30.Location = new System.Drawing.Point(153, 71);
-            this.due30.Name = "due30";
-            this.due30.Size = new System.Drawing.Size(180, 20);
-            this.due30.TabIndex = 37;
+            this.due30TB.BackColor = System.Drawing.SystemColors.Window;
+            this.due30TB.Enabled = false;
+            this.due30TB.Location = new System.Drawing.Point(153, 71);
+            this.due30TB.Name = "due30TB";
+            this.due30TB.Size = new System.Drawing.Size(180, 20);
+            this.due30TB.TabIndex = 37;
             // 
             // lastStatementAmount
             // 
@@ -1392,14 +1397,14 @@
             this.lastStatementAmount.Size = new System.Drawing.Size(180, 20);
             this.lastStatementAmount.TabIndex = 36;
             // 
-            // defaultTerms
+            // totalDueTB
             // 
-            this.defaultTerms.BackColor = System.Drawing.SystemColors.Window;
-            this.defaultTerms.Enabled = false;
-            this.defaultTerms.Location = new System.Drawing.Point(153, 45);
-            this.defaultTerms.Name = "defaultTerms";
-            this.defaultTerms.Size = new System.Drawing.Size(180, 20);
-            this.defaultTerms.TabIndex = 35;
+            this.totalDueTB.BackColor = System.Drawing.SystemColors.Window;
+            this.totalDueTB.Enabled = false;
+            this.totalDueTB.Location = new System.Drawing.Point(153, 45);
+            this.totalDueTB.Name = "totalDueTB";
+            this.totalDueTB.Size = new System.Drawing.Size(180, 20);
+            this.totalDueTB.TabIndex = 35;
             // 
             // label85
             // 
@@ -1463,19 +1468,17 @@
             // 
             // groupBox9
             // 
-            this.groupBox9.Controls.Add(this.checkBox10);
-            this.groupBox9.Controls.Add(this.textBox38);
+            this.groupBox9.Controls.Add(this.useDifferentAddressCB);
+            this.groupBox9.Controls.Add(this.mailingZipTB);
             this.groupBox9.Controls.Add(this.label78);
-            this.groupBox9.Controls.Add(this.textBox39);
+            this.groupBox9.Controls.Add(this.mailingCountryTB);
             this.groupBox9.Controls.Add(this.label79);
-            this.groupBox9.Controls.Add(this.textBox40);
+            this.groupBox9.Controls.Add(this.mailingStateTB);
             this.groupBox9.Controls.Add(this.label80);
-            this.groupBox9.Controls.Add(this.textBox41);
+            this.groupBox9.Controls.Add(this.mailingCityTB);
             this.groupBox9.Controls.Add(this.label81);
-            this.groupBox9.Controls.Add(this.textBox42);
+            this.groupBox9.Controls.Add(this.mailingAddressTB);
             this.groupBox9.Controls.Add(this.label82);
-            this.groupBox9.Controls.Add(this.textBox43);
-            this.groupBox9.Controls.Add(this.label83);
             this.groupBox9.Location = new System.Drawing.Point(3, 207);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(507, 335);
@@ -1483,24 +1486,24 @@
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Statement Address";
             // 
-            // checkBox10
+            // useDifferentAddressCB
             // 
-            this.checkBox10.AutoSize = true;
-            this.checkBox10.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox10.Location = new System.Drawing.Point(6, 19);
-            this.checkBox10.Name = "checkBox10";
-            this.checkBox10.Size = new System.Drawing.Size(236, 17);
-            this.checkBox10.TabIndex = 28;
-            this.checkBox10.Text = "Use Different Address for Statements";
-            this.checkBox10.UseVisualStyleBackColor = true;
+            this.useDifferentAddressCB.AutoSize = true;
+            this.useDifferentAddressCB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.useDifferentAddressCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.useDifferentAddressCB.Location = new System.Drawing.Point(6, 19);
+            this.useDifferentAddressCB.Name = "useDifferentAddressCB";
+            this.useDifferentAddressCB.Size = new System.Drawing.Size(236, 17);
+            this.useDifferentAddressCB.TabIndex = 28;
+            this.useDifferentAddressCB.Text = "Use Different Address for Statements";
+            this.useDifferentAddressCB.UseVisualStyleBackColor = true;
             // 
-            // textBox38
+            // mailingZipTB
             // 
-            this.textBox38.Location = new System.Drawing.Point(110, 172);
-            this.textBox38.Name = "textBox38";
-            this.textBox38.Size = new System.Drawing.Size(347, 20);
-            this.textBox38.TabIndex = 27;
+            this.mailingZipTB.Location = new System.Drawing.Point(110, 172);
+            this.mailingZipTB.Name = "mailingZipTB";
+            this.mailingZipTB.Size = new System.Drawing.Size(347, 20);
+            this.mailingZipTB.TabIndex = 27;
             // 
             // label78
             // 
@@ -1512,12 +1515,12 @@
             this.label78.TabIndex = 26;
             this.label78.Text = "Zip Code";
             // 
-            // textBox39
+            // mailingCountryTB
             // 
-            this.textBox39.Location = new System.Drawing.Point(110, 146);
-            this.textBox39.Name = "textBox39";
-            this.textBox39.Size = new System.Drawing.Size(347, 20);
-            this.textBox39.TabIndex = 25;
+            this.mailingCountryTB.Location = new System.Drawing.Point(110, 146);
+            this.mailingCountryTB.Name = "mailingCountryTB";
+            this.mailingCountryTB.Size = new System.Drawing.Size(347, 20);
+            this.mailingCountryTB.TabIndex = 25;
             // 
             // label79
             // 
@@ -1529,12 +1532,12 @@
             this.label79.TabIndex = 24;
             this.label79.Text = "Country";
             // 
-            // textBox40
+            // mailingStateTB
             // 
-            this.textBox40.Location = new System.Drawing.Point(110, 120);
-            this.textBox40.Name = "textBox40";
-            this.textBox40.Size = new System.Drawing.Size(347, 20);
-            this.textBox40.TabIndex = 23;
+            this.mailingStateTB.Location = new System.Drawing.Point(110, 120);
+            this.mailingStateTB.Name = "mailingStateTB";
+            this.mailingStateTB.Size = new System.Drawing.Size(347, 20);
+            this.mailingStateTB.TabIndex = 23;
             // 
             // label80
             // 
@@ -1546,12 +1549,12 @@
             this.label80.TabIndex = 22;
             this.label80.Text = "State";
             // 
-            // textBox41
+            // mailingCityTB
             // 
-            this.textBox41.Location = new System.Drawing.Point(110, 94);
-            this.textBox41.Name = "textBox41";
-            this.textBox41.Size = new System.Drawing.Size(347, 20);
-            this.textBox41.TabIndex = 21;
+            this.mailingCityTB.Location = new System.Drawing.Point(110, 94);
+            this.mailingCityTB.Name = "mailingCityTB";
+            this.mailingCityTB.Size = new System.Drawing.Size(347, 20);
+            this.mailingCityTB.TabIndex = 21;
             // 
             // label81
             // 
@@ -1563,12 +1566,12 @@
             this.label81.TabIndex = 20;
             this.label81.Text = "City";
             // 
-            // textBox42
+            // mailingAddressTB
             // 
-            this.textBox42.Location = new System.Drawing.Point(110, 68);
-            this.textBox42.Name = "textBox42";
-            this.textBox42.Size = new System.Drawing.Size(347, 20);
-            this.textBox42.TabIndex = 19;
+            this.mailingAddressTB.Location = new System.Drawing.Point(110, 68);
+            this.mailingAddressTB.Name = "mailingAddressTB";
+            this.mailingAddressTB.Size = new System.Drawing.Size(347, 20);
+            this.mailingAddressTB.TabIndex = 19;
             // 
             // label82
             // 
@@ -1580,36 +1583,19 @@
             this.label82.TabIndex = 18;
             this.label82.Text = "Address";
             // 
-            // textBox43
-            // 
-            this.textBox43.Location = new System.Drawing.Point(110, 42);
-            this.textBox43.Name = "textBox43";
-            this.textBox43.Size = new System.Drawing.Size(347, 20);
-            this.textBox43.TabIndex = 17;
-            // 
-            // label83
-            // 
-            this.label83.AutoSize = true;
-            this.label83.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label83.Location = new System.Drawing.Point(9, 45);
-            this.label83.Name = "label83";
-            this.label83.Size = new System.Drawing.Size(95, 13);
-            this.label83.TabIndex = 16;
-            this.label83.Text = "Customer Name";
-            // 
             // groupBox8
             // 
-            this.groupBox8.Controls.Add(this.textBox36);
+            this.groupBox8.Controls.Add(this.highestAmountPaidDateTB);
             this.groupBox8.Controls.Add(this.label76);
-            this.groupBox8.Controls.Add(this.textBox37);
+            this.groupBox8.Controls.Add(this.highestAmountPaidTB);
             this.groupBox8.Controls.Add(this.label77);
-            this.groupBox8.Controls.Add(this.textBox34);
+            this.groupBox8.Controls.Add(this.highestAmountOwedDateTB);
             this.groupBox8.Controls.Add(this.label74);
-            this.groupBox8.Controls.Add(this.textBox35);
+            this.groupBox8.Controls.Add(this.highestAmountOwedTB);
             this.groupBox8.Controls.Add(this.label75);
-            this.groupBox8.Controls.Add(this.textBox33);
+            this.groupBox8.Controls.Add(this.lastPaymentDateTB);
             this.groupBox8.Controls.Add(this.label73);
-            this.groupBox8.Controls.Add(this.textBox32);
+            this.groupBox8.Controls.Add(this.lastPaymentAmountTB);
             this.groupBox8.Controls.Add(this.label72);
             this.groupBox8.Controls.Add(this.label64);
             this.groupBox8.Controls.Add(this.label65);
@@ -1637,12 +1623,12 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Payment Information";
             // 
-            // textBox36
+            // highestAmountPaidDateTB
             // 
-            this.textBox36.Location = new System.Drawing.Point(270, 151);
-            this.textBox36.Name = "textBox36";
-            this.textBox36.Size = new System.Drawing.Size(123, 20);
-            this.textBox36.TabIndex = 30;
+            this.highestAmountPaidDateTB.Location = new System.Drawing.Point(270, 151);
+            this.highestAmountPaidDateTB.Name = "highestAmountPaidDateTB";
+            this.highestAmountPaidDateTB.Size = new System.Drawing.Size(123, 20);
+            this.highestAmountPaidDateTB.TabIndex = 30;
             // 
             // label76
             // 
@@ -1654,12 +1640,12 @@
             this.label76.TabIndex = 29;
             this.label76.Text = "Date";
             // 
-            // textBox37
+            // highestAmountPaidTB
             // 
-            this.textBox37.Location = new System.Drawing.Point(141, 151);
-            this.textBox37.Name = "textBox37";
-            this.textBox37.Size = new System.Drawing.Size(83, 20);
-            this.textBox37.TabIndex = 28;
+            this.highestAmountPaidTB.Location = new System.Drawing.Point(141, 151);
+            this.highestAmountPaidTB.Name = "highestAmountPaidTB";
+            this.highestAmountPaidTB.Size = new System.Drawing.Size(83, 20);
+            this.highestAmountPaidTB.TabIndex = 28;
             // 
             // label77
             // 
@@ -1671,12 +1657,12 @@
             this.label77.TabIndex = 27;
             this.label77.Text = "Highest Amount Paid";
             // 
-            // textBox34
+            // highestAmountOwedDateTB
             // 
-            this.textBox34.Location = new System.Drawing.Point(270, 125);
-            this.textBox34.Name = "textBox34";
-            this.textBox34.Size = new System.Drawing.Size(123, 20);
-            this.textBox34.TabIndex = 26;
+            this.highestAmountOwedDateTB.Location = new System.Drawing.Point(270, 125);
+            this.highestAmountOwedDateTB.Name = "highestAmountOwedDateTB";
+            this.highestAmountOwedDateTB.Size = new System.Drawing.Size(123, 20);
+            this.highestAmountOwedDateTB.TabIndex = 26;
             // 
             // label74
             // 
@@ -1688,12 +1674,12 @@
             this.label74.TabIndex = 25;
             this.label74.Text = "Date";
             // 
-            // textBox35
+            // highestAmountOwedTB
             // 
-            this.textBox35.Location = new System.Drawing.Point(141, 125);
-            this.textBox35.Name = "textBox35";
-            this.textBox35.Size = new System.Drawing.Size(83, 20);
-            this.textBox35.TabIndex = 24;
+            this.highestAmountOwedTB.Location = new System.Drawing.Point(141, 125);
+            this.highestAmountOwedTB.Name = "highestAmountOwedTB";
+            this.highestAmountOwedTB.Size = new System.Drawing.Size(83, 20);
+            this.highestAmountOwedTB.TabIndex = 24;
             // 
             // label75
             // 
@@ -1705,12 +1691,12 @@
             this.label75.TabIndex = 23;
             this.label75.Text = "Highest Amount Owed";
             // 
-            // textBox33
+            // lastPaymentDateTB
             // 
-            this.textBox33.Location = new System.Drawing.Point(270, 99);
-            this.textBox33.Name = "textBox33";
-            this.textBox33.Size = new System.Drawing.Size(123, 20);
-            this.textBox33.TabIndex = 22;
+            this.lastPaymentDateTB.Location = new System.Drawing.Point(270, 99);
+            this.lastPaymentDateTB.Name = "lastPaymentDateTB";
+            this.lastPaymentDateTB.Size = new System.Drawing.Size(123, 20);
+            this.lastPaymentDateTB.TabIndex = 22;
             // 
             // label73
             // 
@@ -1722,12 +1708,12 @@
             this.label73.TabIndex = 21;
             this.label73.Text = "Date";
             // 
-            // textBox32
+            // lastPaymentAmountTB
             // 
-            this.textBox32.Location = new System.Drawing.Point(141, 99);
-            this.textBox32.Name = "textBox32";
-            this.textBox32.Size = new System.Drawing.Size(83, 20);
-            this.textBox32.TabIndex = 20;
+            this.lastPaymentAmountTB.Location = new System.Drawing.Point(141, 99);
+            this.lastPaymentAmountTB.Name = "lastPaymentAmountTB";
+            this.lastPaymentAmountTB.Size = new System.Drawing.Size(83, 20);
+            this.lastPaymentAmountTB.TabIndex = 20;
             // 
             // label72
             // 
@@ -1943,20 +1929,20 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.checkBox9);
+            this.groupBox6.Controls.Add(this.emailStatementsCB);
             this.groupBox6.Controls.Add(this.label51);
-            this.groupBox6.Controls.Add(this.textBox31);
+            this.groupBox6.Controls.Add(this.sendAccountSummaryEvery_DaysTB);
             this.groupBox6.Controls.Add(this.label52);
             this.groupBox6.Controls.Add(this.label50);
-            this.groupBox6.Controls.Add(this.textBox30);
+            this.groupBox6.Controls.Add(this.sendInvoicesEvery_DaysTB);
             this.groupBox6.Controls.Add(this.label49);
-            this.groupBox6.Controls.Add(this.textBox29);
+            this.groupBox6.Controls.Add(this.extraStatementCopiesTB);
             this.groupBox6.Controls.Add(this.label48);
-            this.groupBox6.Controls.Add(this.checkBox8);
+            this.groupBox6.Controls.Add(this.doNotChargeCB);
             this.groupBox6.Controls.Add(this.groupBox7);
-            this.groupBox6.Controls.Add(this.comboBox7);
+            this.groupBox6.Controls.Add(this.statementTypeCB);
             this.groupBox6.Controls.Add(this.label40);
-            this.groupBox6.Controls.Add(this.textBox25);
+            this.groupBox6.Controls.Add(this.creditLimitTB);
             this.groupBox6.Controls.Add(this.label39);
             this.groupBox6.Location = new System.Drawing.Point(3, 3);
             this.groupBox6.Name = "groupBox6";
@@ -1965,17 +1951,17 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Miscellaneous";
             // 
-            // checkBox9
+            // emailStatementsCB
             // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox9.Location = new System.Drawing.Point(6, 175);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(123, 17);
-            this.checkBox9.TabIndex = 15;
-            this.checkBox9.Text = "Email Statements";
-            this.checkBox9.UseVisualStyleBackColor = true;
+            this.emailStatementsCB.AutoSize = true;
+            this.emailStatementsCB.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.emailStatementsCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.emailStatementsCB.Location = new System.Drawing.Point(6, 175);
+            this.emailStatementsCB.Name = "emailStatementsCB";
+            this.emailStatementsCB.Size = new System.Drawing.Size(123, 17);
+            this.emailStatementsCB.TabIndex = 15;
+            this.emailStatementsCB.Text = "Email Statements";
+            this.emailStatementsCB.UseVisualStyleBackColor = true;
             // 
             // label51
             // 
@@ -1988,13 +1974,13 @@
             this.label51.Text = "Days";
             this.label51.Visible = false;
             // 
-            // textBox31
+            // sendAccountSummaryEvery_DaysTB
             // 
-            this.textBox31.Location = new System.Drawing.Point(190, 151);
-            this.textBox31.Name = "textBox31";
-            this.textBox31.Size = new System.Drawing.Size(41, 20);
-            this.textBox31.TabIndex = 13;
-            this.textBox31.Visible = false;
+            this.sendAccountSummaryEvery_DaysTB.Location = new System.Drawing.Point(190, 151);
+            this.sendAccountSummaryEvery_DaysTB.Name = "sendAccountSummaryEvery_DaysTB";
+            this.sendAccountSummaryEvery_DaysTB.Size = new System.Drawing.Size(41, 20);
+            this.sendAccountSummaryEvery_DaysTB.TabIndex = 13;
+            this.sendAccountSummaryEvery_DaysTB.Visible = false;
             // 
             // label52
             // 
@@ -2017,12 +2003,12 @@
             this.label50.TabIndex = 11;
             this.label50.Text = "Days";
             // 
-            // textBox30
+            // sendInvoicesEvery_DaysTB
             // 
-            this.textBox30.Location = new System.Drawing.Point(190, 125);
-            this.textBox30.Name = "textBox30";
-            this.textBox30.Size = new System.Drawing.Size(41, 20);
-            this.textBox30.TabIndex = 10;
+            this.sendInvoicesEvery_DaysTB.Location = new System.Drawing.Point(190, 125);
+            this.sendInvoicesEvery_DaysTB.Name = "sendInvoicesEvery_DaysTB";
+            this.sendInvoicesEvery_DaysTB.Size = new System.Drawing.Size(41, 20);
+            this.sendInvoicesEvery_DaysTB.TabIndex = 10;
             // 
             // label49
             // 
@@ -2034,12 +2020,12 @@
             this.label49.TabIndex = 9;
             this.label49.Text = "Send Invoices Every";
             // 
-            // textBox29
+            // extraStatementCopiesTB
             // 
-            this.textBox29.Location = new System.Drawing.Point(190, 99);
-            this.textBox29.Name = "textBox29";
-            this.textBox29.Size = new System.Drawing.Size(41, 20);
-            this.textBox29.TabIndex = 8;
+            this.extraStatementCopiesTB.Location = new System.Drawing.Point(190, 99);
+            this.extraStatementCopiesTB.Name = "extraStatementCopiesTB";
+            this.extraStatementCopiesTB.Size = new System.Drawing.Size(41, 20);
+            this.extraStatementCopiesTB.TabIndex = 8;
             // 
             // label48
             // 
@@ -2051,26 +2037,26 @@
             this.label48.TabIndex = 7;
             this.label48.Text = "Extra Statement Copies";
             // 
-            // checkBox8
+            // doNotChargeCB
             // 
-            this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(199, 21);
-            this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(97, 17);
-            this.checkBox8.TabIndex = 6;
-            this.checkBox8.Text = "Do Not Charge";
-            this.checkBox8.UseVisualStyleBackColor = true;
+            this.doNotChargeCB.AutoSize = true;
+            this.doNotChargeCB.Location = new System.Drawing.Point(199, 21);
+            this.doNotChargeCB.Name = "doNotChargeCB";
+            this.doNotChargeCB.Size = new System.Drawing.Size(97, 17);
+            this.doNotChargeCB.TabIndex = 6;
+            this.doNotChargeCB.Text = "Do Not Charge";
+            this.doNotChargeCB.UseVisualStyleBackColor = true;
             // 
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.label46);
-            this.groupBox7.Controls.Add(this.textBox28);
+            this.groupBox7.Controls.Add(this.dueByTB);
             this.groupBox7.Controls.Add(this.label47);
             this.groupBox7.Controls.Add(this.label44);
-            this.groupBox7.Controls.Add(this.textBox27);
+            this.groupBox7.Controls.Add(this.discountDaysTB);
             this.groupBox7.Controls.Add(this.label45);
             this.groupBox7.Controls.Add(this.label43);
-            this.groupBox7.Controls.Add(this.textBox26);
+            this.groupBox7.Controls.Add(this.discountPercentTB);
             this.groupBox7.Controls.Add(this.label42);
             this.groupBox7.Location = new System.Drawing.Point(302, 19);
             this.groupBox7.Name = "groupBox7";
@@ -2089,12 +2075,12 @@
             this.label46.TabIndex = 10;
             this.label46.Text = "Day of the Month";
             // 
-            // textBox28
+            // dueByTB
             // 
-            this.textBox28.Location = new System.Drawing.Point(83, 71);
-            this.textBox28.Name = "textBox28";
-            this.textBox28.Size = new System.Drawing.Size(31, 20);
-            this.textBox28.TabIndex = 9;
+            this.dueByTB.Location = new System.Drawing.Point(83, 71);
+            this.dueByTB.Name = "dueByTB";
+            this.dueByTB.Size = new System.Drawing.Size(31, 20);
+            this.dueByTB.TabIndex = 9;
             // 
             // label47
             // 
@@ -2116,12 +2102,12 @@
             this.label44.TabIndex = 7;
             this.label44.Text = "Days";
             // 
-            // textBox27
+            // discountDaysTB
             // 
-            this.textBox27.Location = new System.Drawing.Point(83, 45);
-            this.textBox27.Name = "textBox27";
-            this.textBox27.Size = new System.Drawing.Size(31, 20);
-            this.textBox27.TabIndex = 6;
+            this.discountDaysTB.Location = new System.Drawing.Point(83, 45);
+            this.discountDaysTB.Name = "discountDaysTB";
+            this.discountDaysTB.Size = new System.Drawing.Size(31, 20);
+            this.discountDaysTB.TabIndex = 6;
             // 
             // label45
             // 
@@ -2143,12 +2129,12 @@
             this.label43.TabIndex = 4;
             this.label43.Text = "%";
             // 
-            // textBox26
+            // discountPercentTB
             // 
-            this.textBox26.Location = new System.Drawing.Point(83, 19);
-            this.textBox26.Name = "textBox26";
-            this.textBox26.Size = new System.Drawing.Size(31, 20);
-            this.textBox26.TabIndex = 3;
+            this.discountPercentTB.Location = new System.Drawing.Point(83, 19);
+            this.discountPercentTB.Name = "discountPercentTB";
+            this.discountPercentTB.Size = new System.Drawing.Size(31, 20);
+            this.discountPercentTB.TabIndex = 3;
             // 
             // label42
             // 
@@ -2160,16 +2146,17 @@
             this.label42.TabIndex = 2;
             this.label42.Text = "Discount of";
             // 
-            // comboBox7
+            // statementTypeCB
             // 
-            this.comboBox7.FormattingEnabled = true;
-            this.comboBox7.Items.AddRange(new object[] {
+            this.statementTypeCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.statementTypeCB.FormattingEnabled = true;
+            this.statementTypeCB.Items.AddRange(new object[] {
             "Balance Forward",
             "Open Item"});
-            this.comboBox7.Location = new System.Drawing.Point(110, 45);
-            this.comboBox7.Name = "comboBox7";
-            this.comboBox7.Size = new System.Drawing.Size(142, 21);
-            this.comboBox7.TabIndex = 3;
+            this.statementTypeCB.Location = new System.Drawing.Point(110, 45);
+            this.statementTypeCB.Name = "statementTypeCB";
+            this.statementTypeCB.Size = new System.Drawing.Size(142, 21);
+            this.statementTypeCB.TabIndex = 3;
             // 
             // label40
             // 
@@ -2181,12 +2168,12 @@
             this.label40.TabIndex = 2;
             this.label40.Text = "Statement Type";
             // 
-            // textBox25
+            // creditLimitTB
             // 
-            this.textBox25.Location = new System.Drawing.Point(110, 19);
-            this.textBox25.Name = "textBox25";
-            this.textBox25.Size = new System.Drawing.Size(83, 20);
-            this.textBox25.TabIndex = 1;
+            this.creditLimitTB.Location = new System.Drawing.Point(110, 19);
+            this.creditLimitTB.Name = "creditLimitTB";
+            this.creditLimitTB.Size = new System.Drawing.Size(83, 20);
+            this.creditLimitTB.TabIndex = 1;
             // 
             // label39
             // 
@@ -2608,8 +2595,8 @@
             this.dataGridView5.AllowUserToDeleteRows = false;
             this.dataGridView5.AllowUserToResizeColumns = false;
             this.dataGridView5.AllowUserToResizeRows = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Silver;
-            this.dataGridView5.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.dataGridView5.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView5.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView5.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView5.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -3064,66 +3051,66 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.DateTimePicker dateTimePicker3;
+        private System.Windows.Forms.DateTimePicker dateLastPayment;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.DateTimePicker dateLasteSale;
         private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox14;
+        private System.Windows.Forms.DateTimePicker dateAdded;
+        private System.Windows.Forms.Button changeCustomerNumberButton;
+        private System.Windows.Forms.TextBox invoiceNoteTB;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox textBox13;
+        private System.Windows.Forms.TextBox businessCategoryTB;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.TextBox salesRepTB;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.TextBox emailTB;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.TextBox websiteTB;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.TextBox faxNumberTB;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox phoneNumberTB;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox physicalZipTB;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TextBox physicalCountryTB;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox physicalStateTB;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox physicalCityTB;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox physicalAddressTB;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox customerName2TB;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox customerNumber2TB;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox emailInvoicesCB;
         private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.TextBox textBox19;
+        private System.Windows.Forms.TextBox extraInvoiceCopiesTB;
         private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox printBalanceCB;
+        private System.Windows.Forms.CheckBox printCatalogNotesCB;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.DateTimePicker dateTimePicker5;
-        private System.Windows.Forms.TextBox textBox18;
-        private System.Windows.Forms.ComboBox comboBox5;
+        private System.Windows.Forms.DateTimePicker secondaryTaxExemptExpiration;
+        private System.Windows.Forms.TextBox secondaryTaxExemptNumberTB;
+        private System.Windows.Forms.ComboBox secondaryTaxStatusCB;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.DateTimePicker dateTimePicker4;
-        private System.Windows.Forms.TextBox textBox17;
-        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.DateTimePicker primaryTaxExemptExpiration;
+        private System.Windows.Forms.TextBox primaryTaxExemptNumberTB;
+        private System.Windows.Forms.ComboBox primaryTaxStatusCB;
         private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox defaultTaxTableCB;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox deliveryTaxTableCB;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TextBox textBox15;
+        private System.Windows.Forms.ComboBox billingTypeCB;
+        private System.Windows.Forms.TextBox poReqdOverAmountTB;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TabPage tabPage4;
@@ -3132,56 +3119,54 @@
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.TabPage tabPage9;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button removeBuyerButton;
+        private System.Windows.Forms.Button addBuyerButton;
+        private System.Windows.Forms.ListBox authorizedBuyersLB;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.TextBox textBox20;
+        private System.Windows.Forms.TextBox languagePreferenceTB;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.TextBox textBox24;
+        private System.Windows.Forms.TextBox deliveryChargeTB;
         private System.Windows.Forms.Label label38;
-        private System.Windows.Forms.TextBox textBox23;
+        private System.Windows.Forms.TextBox minSaleFreeDeliveryTB;
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.Label label36;
         private System.Windows.Forms.Label label35;
-        private System.Windows.Forms.TextBox textBox22;
+        private System.Windows.Forms.TextBox travelDistanceTB;
         private System.Windows.Forms.Label label34;
-        private System.Windows.Forms.TextBox textBox21;
+        private System.Windows.Forms.TextBox travelTimeTB;
         private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.ComboBox comboBox6;
+        private System.Windows.Forms.ComboBox deliveryRouteCB;
         private System.Windows.Forms.Label label32;
-        private System.Windows.Forms.CheckBox checkBox7;
-        private System.Windows.Forms.CheckBox checkBox6;
-        private System.Windows.Forms.CheckBox checkBox5;
-        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox defaultDeliverCB;
+        private System.Windows.Forms.CheckBox exemptFromSurchargesCB;
+        private System.Windows.Forms.CheckBox allowSpecialOrdersCB;
+        private System.Windows.Forms.CheckBox allowBackordersCB;
         private System.Windows.Forms.GroupBox groupBox10;
         private System.Windows.Forms.GroupBox groupBox9;
-        private System.Windows.Forms.CheckBox checkBox10;
-        private System.Windows.Forms.TextBox textBox38;
+        private System.Windows.Forms.CheckBox useDifferentAddressCB;
+        private System.Windows.Forms.TextBox mailingZipTB;
         private System.Windows.Forms.Label label78;
-        private System.Windows.Forms.TextBox textBox39;
+        private System.Windows.Forms.TextBox mailingCountryTB;
         private System.Windows.Forms.Label label79;
-        private System.Windows.Forms.TextBox textBox40;
+        private System.Windows.Forms.TextBox mailingStateTB;
         private System.Windows.Forms.Label label80;
-        private System.Windows.Forms.TextBox textBox41;
+        private System.Windows.Forms.TextBox mailingCityTB;
         private System.Windows.Forms.Label label81;
-        private System.Windows.Forms.TextBox textBox42;
+        private System.Windows.Forms.TextBox mailingAddressTB;
         private System.Windows.Forms.Label label82;
-        private System.Windows.Forms.TextBox textBox43;
-        private System.Windows.Forms.Label label83;
         private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.TextBox textBox36;
+        private System.Windows.Forms.TextBox highestAmountPaidDateTB;
         private System.Windows.Forms.Label label76;
-        private System.Windows.Forms.TextBox textBox37;
+        private System.Windows.Forms.TextBox highestAmountPaidTB;
         private System.Windows.Forms.Label label77;
-        private System.Windows.Forms.TextBox textBox34;
+        private System.Windows.Forms.TextBox highestAmountOwedDateTB;
         private System.Windows.Forms.Label label74;
-        private System.Windows.Forms.TextBox textBox35;
+        private System.Windows.Forms.TextBox highestAmountOwedTB;
         private System.Windows.Forms.Label label75;
-        private System.Windows.Forms.TextBox textBox33;
+        private System.Windows.Forms.TextBox lastPaymentDateTB;
         private System.Windows.Forms.Label label73;
-        private System.Windows.Forms.TextBox textBox32;
+        private System.Windows.Forms.TextBox lastPaymentAmountTB;
         private System.Windows.Forms.Label label72;
         private System.Windows.Forms.Label label64;
         private System.Windows.Forms.Label label65;
@@ -3203,40 +3188,40 @@
         private System.Windows.Forms.Label label54;
         private System.Windows.Forms.Label label53;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.CheckBox checkBox9;
+        private System.Windows.Forms.CheckBox emailStatementsCB;
         private System.Windows.Forms.Label label51;
-        private System.Windows.Forms.TextBox textBox31;
+        private System.Windows.Forms.TextBox sendAccountSummaryEvery_DaysTB;
         private System.Windows.Forms.Label label52;
         private System.Windows.Forms.Label label50;
-        private System.Windows.Forms.TextBox textBox30;
+        private System.Windows.Forms.TextBox sendInvoicesEvery_DaysTB;
         private System.Windows.Forms.Label label49;
-        private System.Windows.Forms.TextBox textBox29;
+        private System.Windows.Forms.TextBox extraStatementCopiesTB;
         private System.Windows.Forms.Label label48;
-        private System.Windows.Forms.CheckBox checkBox8;
+        private System.Windows.Forms.CheckBox doNotChargeCB;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Label label46;
-        private System.Windows.Forms.TextBox textBox28;
+        private System.Windows.Forms.TextBox dueByTB;
         private System.Windows.Forms.Label label47;
         private System.Windows.Forms.Label label44;
-        private System.Windows.Forms.TextBox textBox27;
+        private System.Windows.Forms.TextBox discountDaysTB;
         private System.Windows.Forms.Label label45;
         private System.Windows.Forms.Label label43;
-        private System.Windows.Forms.TextBox textBox26;
+        private System.Windows.Forms.TextBox discountPercentTB;
         private System.Windows.Forms.Label label42;
-        private System.Windows.Forms.ComboBox comboBox7;
+        private System.Windows.Forms.ComboBox statementTypeCB;
         private System.Windows.Forms.Label label40;
-        private System.Windows.Forms.TextBox textBox25;
+        private System.Windows.Forms.TextBox creditLimitTB;
         private System.Windows.Forms.Label label39;
-        private System.Windows.Forms.TextBox textBox44;
+        private System.Windows.Forms.TextBox accountBalanceTB;
         private System.Windows.Forms.Label label91;
-        private System.Windows.Forms.TextBox dueFurther;
+        private System.Windows.Forms.TextBox dueFurtherTB;
         private System.Windows.Forms.Label label84;
-        private System.Windows.Forms.TextBox serviceCharge;
-        private System.Windows.Forms.TextBox due90;
-        private System.Windows.Forms.TextBox due60;
-        private System.Windows.Forms.TextBox due30;
+        private System.Windows.Forms.TextBox serviceChargeTB;
+        private System.Windows.Forms.TextBox due90TB;
+        private System.Windows.Forms.TextBox due60TB;
+        private System.Windows.Forms.TextBox due30TB;
         private System.Windows.Forms.TextBox lastStatementAmount;
-        private System.Windows.Forms.TextBox defaultTerms;
+        private System.Windows.Forms.TextBox totalDueTB;
         private System.Windows.Forms.Label label85;
         private System.Windows.Forms.Label label86;
         private System.Windows.Forms.Label label87;

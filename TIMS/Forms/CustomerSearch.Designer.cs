@@ -31,20 +31,20 @@ namespace TIMS.Forms
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.button2 = new System.Windows.Forms.Button();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.CustomerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CustomerNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CustomerPhone = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CustomerAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button2 = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -55,6 +55,7 @@ namespace TIMS.Forms
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(360, 20);
             this.textBox1.TabIndex = 1;
+            this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             // 
             // button1
             // 
@@ -64,6 +65,7 @@ namespace TIMS.Forms
             this.button1.TabIndex = 2;
             this.button1.Text = "Search";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // groupBox1
             // 
@@ -75,7 +77,29 @@ namespace TIMS.Forms
             this.groupBox1.Size = new System.Drawing.Size(776, 52);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Search By";
+            this.groupBox1.Text = "Search Method";
+            // 
+            // radioButton3
+            // 
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Enabled = false;
+            this.radioButton3.Location = new System.Drawing.Point(693, 19);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(77, 17);
+            this.radioButton3.TabIndex = 2;
+            this.radioButton3.Text = "Starts With";
+            this.radioButton3.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Enabled = false;
+            this.radioButton2.Location = new System.Drawing.Point(335, 19);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(71, 17);
+            this.radioButton2.TabIndex = 1;
+            this.radioButton2.Text = "Similar To";
+            this.radioButton2.UseVisualStyleBackColor = true;
             // 
             // radioButton1
             // 
@@ -91,6 +115,7 @@ namespace TIMS.Forms
             // 
             // comboBox1
             // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "Customer Number",
@@ -126,6 +151,7 @@ namespace TIMS.Forms
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToResizeColumns = false;
             this.dataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.CustomerName,
@@ -143,38 +169,6 @@ namespace TIMS.Forms
             this.dataGridView1.Size = new System.Drawing.Size(776, 311);
             this.dataGridView1.TabIndex = 7;
             // 
-            // CustomerName
-            // 
-            this.CustomerName.Frozen = true;
-            this.CustomerName.HeaderText = "Customer Name";
-            this.CustomerName.Name = "CustomerName";
-            this.CustomerName.ReadOnly = true;
-            this.CustomerName.Width = 275;
-            // 
-            // CustomerNumber
-            // 
-            this.CustomerNumber.Frozen = true;
-            this.CustomerNumber.HeaderText = "Customer Number";
-            this.CustomerNumber.Name = "CustomerNumber";
-            this.CustomerNumber.ReadOnly = true;
-            this.CustomerNumber.Width = 115;
-            // 
-            // CustomerPhone
-            // 
-            this.CustomerPhone.Frozen = true;
-            this.CustomerPhone.HeaderText = "Customer Phone Number";
-            this.CustomerPhone.Name = "CustomerPhone";
-            this.CustomerPhone.ReadOnly = true;
-            this.CustomerPhone.Width = 165;
-            // 
-            // CustomerAddress
-            // 
-            this.CustomerAddress.Frozen = true;
-            this.CustomerAddress.HeaderText = "Customer Address";
-            this.CustomerAddress.Name = "CustomerAddress";
-            this.CustomerAddress.ReadOnly = true;
-            this.CustomerAddress.Width = 200;
-            // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(695, 415);
@@ -183,6 +177,7 @@ namespace TIMS.Forms
             this.button2.TabIndex = 8;
             this.button2.Text = "Select Customer";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // textBox2
             // 
@@ -190,6 +185,7 @@ namespace TIMS.Forms
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(37, 20);
             this.textBox2.TabIndex = 9;
+            this.textBox2.Visible = false;
             // 
             // label3
             // 
@@ -199,28 +195,35 @@ namespace TIMS.Forms
             this.label3.Size = new System.Drawing.Size(51, 13);
             this.label3.TabIndex = 10;
             this.label3.Text = "Selection";
+            this.label3.Visible = false;
             // 
-            // radioButton2
+            // CustomerName
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Enabled = false;
-            this.radioButton2.Location = new System.Drawing.Point(335, 19);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(71, 17);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.Text = "Similar To";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.CustomerName.FillWeight = 40F;
+            this.CustomerName.HeaderText = "Customer Name";
+            this.CustomerName.Name = "CustomerName";
+            this.CustomerName.ReadOnly = true;
             // 
-            // radioButton3
+            // CustomerNumber
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Enabled = false;
-            this.radioButton3.Location = new System.Drawing.Point(693, 19);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(77, 17);
-            this.radioButton3.TabIndex = 2;
-            this.radioButton3.Text = "Starts With";
-            this.radioButton3.UseVisualStyleBackColor = true;
+            this.CustomerNumber.FillWeight = 15F;
+            this.CustomerNumber.HeaderText = "Customer Number";
+            this.CustomerNumber.Name = "CustomerNumber";
+            this.CustomerNumber.ReadOnly = true;
+            // 
+            // CustomerPhone
+            // 
+            this.CustomerPhone.FillWeight = 20F;
+            this.CustomerPhone.HeaderText = "Customer Phone Number";
+            this.CustomerPhone.Name = "CustomerPhone";
+            this.CustomerPhone.ReadOnly = true;
+            // 
+            // CustomerAddress
+            // 
+            this.CustomerAddress.FillWeight = 25F;
+            this.CustomerAddress.HeaderText = "Customer Address";
+            this.CustomerAddress.Name = "CustomerAddress";
+            this.CustomerAddress.ReadOnly = true;
             // 
             // CustomerSearch
             // 
@@ -239,6 +242,7 @@ namespace TIMS.Forms
             this.Controls.Add(this.textBox1);
             this.Name = "CustomerSearch";
             this.Text = "Customer Search";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CustomerSearch_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -259,12 +263,12 @@ namespace TIMS.Forms
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridViewTextBoxColumn CustomerName;
         private System.Windows.Forms.DataGridViewTextBoxColumn CustomerNumber;
         private System.Windows.Forms.DataGridViewTextBoxColumn CustomerPhone;
         private System.Windows.Forms.DataGridViewTextBoxColumn CustomerAddress;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label3;
     }
 }
