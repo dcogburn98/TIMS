@@ -356,6 +356,7 @@
             // 
             // accountNameTB
             // 
+            this.accountNameTB.Enabled = false;
             this.accountNameTB.Location = new System.Drawing.Point(121, 25);
             this.accountNameTB.Name = "accountNameTB";
             this.accountNameTB.Size = new System.Drawing.Size(327, 20);
@@ -1094,14 +1095,14 @@
             this.billingTypeCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.billingTypeCB.FormattingEnabled = true;
             this.billingTypeCB.Items.AddRange(new object[] {
-            "0 Cash Only",
-            "1 Cash Only (Include Mobile Payments)",
-            "2 Charge Only",
-            "3 Cash Or Charge",
-            "4 Cash Or Charge (Include Mobile Payments)"});
+            "Cash Only",
+            "Cash Only (Include Mobile Payments)",
+            "Charge Only",
+            "Cash Or Charge",
+            "Cash Or Charge (Include Mobile Payments)"});
             this.billingTypeCB.Location = new System.Drawing.Point(204, 140);
             this.billingTypeCB.Name = "billingTypeCB";
-            this.billingTypeCB.Size = new System.Drawing.Size(189, 21);
+            this.billingTypeCB.Size = new System.Drawing.Size(300, 21);
             this.billingTypeCB.TabIndex = 6;
             // 
             // label18
@@ -1500,6 +1501,7 @@
             // 
             // mailingZipTB
             // 
+            this.mailingZipTB.Enabled = false;
             this.mailingZipTB.Location = new System.Drawing.Point(110, 172);
             this.mailingZipTB.Name = "mailingZipTB";
             this.mailingZipTB.Size = new System.Drawing.Size(347, 20);
@@ -1517,6 +1519,7 @@
             // 
             // mailingCountryTB
             // 
+            this.mailingCountryTB.Enabled = false;
             this.mailingCountryTB.Location = new System.Drawing.Point(110, 146);
             this.mailingCountryTB.Name = "mailingCountryTB";
             this.mailingCountryTB.Size = new System.Drawing.Size(347, 20);
@@ -1534,6 +1537,7 @@
             // 
             // mailingStateTB
             // 
+            this.mailingStateTB.Enabled = false;
             this.mailingStateTB.Location = new System.Drawing.Point(110, 120);
             this.mailingStateTB.Name = "mailingStateTB";
             this.mailingStateTB.Size = new System.Drawing.Size(347, 20);
@@ -1551,6 +1555,7 @@
             // 
             // mailingCityTB
             // 
+            this.mailingCityTB.Enabled = false;
             this.mailingCityTB.Location = new System.Drawing.Point(110, 94);
             this.mailingCityTB.Name = "mailingCityTB";
             this.mailingCityTB.Size = new System.Drawing.Size(347, 20);
@@ -1568,6 +1573,7 @@
             // 
             // mailingAddressTB
             // 
+            this.mailingAddressTB.Enabled = false;
             this.mailingAddressTB.Location = new System.Drawing.Point(110, 68);
             this.mailingAddressTB.Name = "mailingAddressTB";
             this.mailingAddressTB.Size = new System.Drawing.Size(347, 20);
@@ -2900,7 +2906,7 @@
             // 
             // button12
             // 
-            this.button12.Location = new System.Drawing.Point(778, 22);
+            this.button12.Location = new System.Drawing.Point(925, 22);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(87, 23);
             this.button12.TabIndex = 11;

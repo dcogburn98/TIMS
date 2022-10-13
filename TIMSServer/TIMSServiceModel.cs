@@ -1221,8 +1221,8 @@ namespace TIMSServer
                 container.Data.secondaryTaxStatus = reader.GetString(23);
                 container.Data.primaryTaxExemptionNumber = reader.GetString(24);
                 container.Data.secondaryTaxExemptionNumber = reader.GetString(25);
-                container.Data.primaryTaxExemptionExpiration = reader.GetString(26) == string.Empty ? DateTime.MinValue : DateTime.Parse(reader.GetString(26));
-                container.Data.secondaryTaxExemptionExpiration = reader.GetString(27) == string.Empty ? DateTime.MinValue : DateTime.Parse(reader.GetString(27));
+                container.Data.primaryTaxExemptionExpiration = reader.GetString(26) == string.Empty ? DateTime.MinValue.AddYears(1970) : DateTime.Parse(reader.GetString(26));
+                container.Data.secondaryTaxExemptionExpiration = reader.GetString(27) == string.Empty ? DateTime.MinValue.AddYears(1970) : DateTime.Parse(reader.GetString(27));
                 container.Data.printCatalogNotes = reader.GetInt32(28) != 0;
                 container.Data.printBalance = reader.GetInt32(29) != 0;
                 container.Data.emailInvoices = reader.GetInt32(30) != 0;
@@ -1231,6 +1231,7 @@ namespace TIMSServer
                 container.Data.exemptFromInvoiceSurcharges = reader.GetInt32(33) != 0;
                 container.Data.extraInvoiceCopies = reader.GetInt32(34);
                 container.Data.PORequiredThresholdAmount = reader.GetDecimal(35);
+                container.Data.billingType = reader.GetString(36);
 
                 switch (reader.GetString(36))
                 {
