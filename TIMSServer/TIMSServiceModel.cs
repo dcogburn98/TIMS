@@ -35,8 +35,41 @@ namespace TIMSServer
             Keys.Add(BypassKey);
         }
 
+        private static AuthContainer<DataType> CheckAuthorization<DataType>(AuthKey key)
+        {
+            AuthContainer<DataType> container = new AuthContainer<DataType>();
+
+            AuthKey localKey = Keys.Find(el => el.ID == key.ID);
+            if (localKey == null || !localKey.Match(key))
+            {
+                container.Key = new AuthKey();
+                container.Key.Success = false;
+                return container;
+            }
+            else
+            {
+                Console.WriteLine("Key Match");
+                container.Key = key;
+                container.Key.Success = true;
+                localKey.Regenerate();
+            }
+
+            return container;
+        }
+
+        private static string GetClientAddress()
+        {
+            // creating object of service when request comes   
+            OperationContext context = OperationContext.Current;
+            //Getting Incoming Message details   
+            MessageProperties prop = context.IncomingMessageProperties;
+            //Getting client endpoint details from message header   
+            RemoteEndpointMessageProperty endpoint = prop[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
+            return endpoint.Address;
+        }
+
         #region Employees
-        
+
         public string CheckEmployee(string input)
         {
             Console.WriteLine("Validating employee: " + input);
@@ -1152,25 +1185,10 @@ namespace TIMSServer
 
         public AuthContainer<Customer> CheckCustomerNumber(string custNo, AuthKey key)
         {
-            AuthContainer<Customer> container = new AuthContainer<Customer>();
-            container.Data = new Customer();
-
-            #region Authorization Check
-            AuthKey localKey = Keys.Find(el => el.ID == key.ID);
-            if (localKey == null || !localKey.Match(key))
-            {
-                container.Key = new AuthKey();
-                container.Key.Success = false;
+            AuthContainer<Customer> container = CheckAuthorization<Customer>(key);
+            if (!container.Key.Success)
                 return container;
-            }
-            else
-            {
-                Console.WriteLine("Key Match");
-                container.Key = key;
-                container.Key.Success = true;
-                localKey.Regenerate();
-            }
-            #endregion
+            container.Data = new Customer();
 
             OpenConnection();
 
@@ -1214,7 +1232,7 @@ namespace TIMSServer
                 container.Data.dateOfLastSale = DateTime.Parse(reader.GetString(16));
                 container.Data.dateOfLastROA = DateTime.Parse(reader.GetString(17));
                 container.Data.preferredLanguage = reader.GetString(18);
-                container.Data.authorizedBuyers = reader.GetString(19).Split(',').ToList();
+                container.Data.authorizedBuyers = reader.GetString(19);
                 container.Data.defaultTaxTable = reader.GetString(20);
                 container.Data.deliveryTaxTable = reader.GetString(21);
                 container.Data.primaryTaxStatus = reader.GetString(22);
@@ -1307,25 +1325,10 @@ namespace TIMSServer
         }
         public AuthContainer<List<Customer>> GetCustomers(AuthKey key)
         {
-            AuthContainer<List<Customer>> container = new AuthContainer<List<Customer>>();
-            container.Data = new List<Customer>();
-
-            #region Authorization Check
-            AuthKey localKey = Keys.Find(el => el.ID == key.ID);
-            if (localKey == null || !localKey.Match(key))
-            {
-                container.Key = new AuthKey();
-                container.Key.Success = false;
+            AuthContainer<List<Customer>> container = CheckAuthorization<List<Customer>>(key);
+            if (!container.Key.Success)
                 return container;
-            }
-            else
-            {
-                Console.WriteLine("Key Match");
-                container.Key = key;
-                container.Key.Success = true;
-                localKey.Regenerate();
-            }
-            #endregion
+            container.Data = new List<Customer>();
 
             OpenConnection();
 
@@ -1353,7 +1356,160 @@ namespace TIMSServer
             }
             return container;
         }
-        
+        public AuthContainer<object> UpdateCustomer(Customer c, AuthKey key)
+        {
+            AuthContainer<object> container = CheckAuthorization<object>(key);
+            if (!container.Key.Success)
+                return container;
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"UPDATE CUSTOMERS SET
+                    CustomerName =                      $NAME,
+                    PricingProfile =                    $PROFILE,
+                    CanCharge =                         $CANCHARGE,
+                    CreditLimit =                       $CREDITLIMIT,
+                    AccountBalance =                    $BALANCE,
+                    PhoneNumber =                       $PHONE,
+                    FaxNumber =                         $FAX,
+                    BillingAddress =                    $BILLINGADDRESS,
+                    ShippingAddress =                   $SHIPPINGADDRESS,
+                    InvoiceMessage =                    $INVOICEMESSAGE,
+                    Website =                           $WEBSITE,
+                    Email =                             $EMAIL,
+                    AssignedRep =                       $ASSIGNEDREP,
+                    BusinessCategory =                  $CATEGORY,
+                    DateAdded =                         $DATEADDED,
+                    DateOfLastSale =                    $DATELASTSALE,
+                    DateOfLastROA =                     $DATELASTROA,
+                    PreferredLanguage =                 $LANGUAGE,
+                    AuthorizedBuyers =                  $BUYERS,
+                    DefaultTaxTable =                   $DEFAULTTAXTABLE,
+                    DeliveryTaxTable =                  $DELIVERYTAXTABLE,
+                    PrimaryTaxStatus =                  $PRIMARYTAXSTATUS,
+                    SecondaryTaxStatus =                $SECONDARYTAXSTATUS,
+                    PrimaryTaxExemptionNumber =         $PRIMARYTAXEXEMPTIONNUMBER,
+                    SecondaryTaxExemptionNumber =       $SECONDARYTAXEXEMPTIONNUMBER,
+                    PrimaryTaxExemptionExpiration =     $PRIMARYTAXEXEMPTEXPIRE,
+                    SecondaryTaxExemptionExpiration =   $SECONDARYTAXEXEMPTEXPIRE,
+                    PrintCatalogNotesOnInvoice =        $PRINTCATALOGNOTES,
+                    PrintBalanceOnInvoice =             $PRINTBALANCE,
+                    EmailInvoices =                     $EMAILINVOICES,
+                    AllowBackorders =                   $ALLOWBACKORDERS,
+                    AllowSpecialOrders =                $ALLOWSPECIALORDERS,
+                    ExemptFromInvoiceSurcharges =       $EXEMPTSURCHARGES,
+                    ExtraInvoiceCopies =                $EXTRAINVOICECOPIES,
+                    PORequiredThresholdAmount =         $POREQDTHRESHOLD,
+                    BillingType =                       $BILLINGTYPE,
+                    DefaultToDeliver =                  $DEFAULTDELIVER,
+                    DeliveryRoute =                     $DELIVERYROUTE,
+                    TravelTime =                        $TRAVELTIME,
+                    TravelDistance =                    $TRAVELDISTANCE,
+                    MinimumSaleFreeDelivery =           $FREEDELIVERYMINIMUM,
+                    DeliveryCharge =                    $DELIVERYCHARGE,
+                    StatementType =                     $STATEMENTTYPE,
+                    PercentDiscount =                   $PERCENTDISCOUNT,
+                    PaidByForDiscount =                 $PAIDFORBYDISCOUNT,
+                    DueDate =                           $DUEDATE,
+                    ExtraStatementCopies =              $EXTRASTATEMENTCOPIES,
+                    SendInvoicesEvery_Days =            $DAYSSENDINVOICES,
+                    SendAccountSummaryEvery_Days =      $DAYSSENDACCOUNTSUMMARY,
+                    EmailStatements =                   $EMAILSTATEMENTS,
+                    StatementMailingAddress =           $STATEMENTMAILING,
+                    LastPaymentAmount =                 $LASTPAYMENTAMOUNT,
+                    LastPaymentDate =                   $LASTPAYMENTDATE,
+                    HighestAmountOwed =                 $HIGHESTAMOUNTOWED,
+                    HighestAmountOwedDate =             $HIGHESTAMOUNTOWEDDATE,
+                    HighestAmountPaid =                 $HIGHESTAMOUNTPAID,
+                    HighestAmountPaidDate =             $HIGHESTAMOUNTPAIDDATE,
+                    LastStatementAmount =               $LASTSTATEMENTAMOUNT,
+                    TotalDue =                          $TOTALDUE,
+                    Due30Days =                         $DUE30,
+                    Due60Days =                         $DUE60,
+                    Due90Days =                         $DUE90,
+                    FurtherDue =                        $FURTHERDUE,
+                    ServiceCharge =                     $SERVICECHARGE,
+                    EnableTIMSRelations =               $TIMSRELATIONS,
+                    RelationshipKey =                   $RELATIONKEY,
+                    AutomaticallySendPriceUpdates =     $AUTOPRICEUPDATES,
+                    AutomaticallySendMedia =            $AUTOMEDIA 
+                WHERE CUSTOMERNUMBER = $NUMBER";
+            command.Parameters.Add(new SqliteParameter("$NAME", c.customerName));
+            command.Parameters.Add(new SqliteParameter("$NUMBER", c.customerNumber));
+            command.Parameters.Add(new SqliteParameter("$PROFILE", c.pricingProfile));
+            command.Parameters.Add(new SqliteParameter("$CANCHARGE", c.canCharge));
+            command.Parameters.Add(new SqliteParameter("$CREDITLIMIT", c.creditLimit));
+            command.Parameters.Add(new SqliteParameter("$BALANCE", c.accountBalance));
+            command.Parameters.Add(new SqliteParameter("$PHONE", c.phoneNumber));
+            command.Parameters.Add(new SqliteParameter("$FAX", c.faxNumber));
+            command.Parameters.Add(new SqliteParameter("$BILLINGADDRESS", c.billingAddress));
+            command.Parameters.Add(new SqliteParameter("$SHIPPINGADDRESS", c.shippingAddress));
+            command.Parameters.Add(new SqliteParameter("$INVOICEMESSAGE", c.invoiceMessage));
+            command.Parameters.Add(new SqliteParameter("$WEBSITE", c.website));
+            command.Parameters.Add(new SqliteParameter("$EMAIL", c.email));
+            command.Parameters.Add(new SqliteParameter("$ASSIGNEDREP", c.assignedRep));
+            command.Parameters.Add(new SqliteParameter("$CATEGORY", c.businessCategory));
+            command.Parameters.Add(new SqliteParameter("$DATEADDED", c.dateAdded));
+            command.Parameters.Add(new SqliteParameter("$DATELASTSALE", c.dateOfLastSale));
+            command.Parameters.Add(new SqliteParameter("$DATELASTROA", c.dateOfLastROA));
+            command.Parameters.Add(new SqliteParameter("$LANGUAGE", c.preferredLanguage));
+            command.Parameters.Add(new SqliteParameter("$BUYERS", c.authorizedBuyers));
+            command.Parameters.Add(new SqliteParameter("$DEFAULTTAXTABLE", c.defaultTaxTable));
+            command.Parameters.Add(new SqliteParameter("$DELIVERYTAXTABLE", c.deliveryTaxTable));
+            command.Parameters.Add(new SqliteParameter("$PRIMARYTAXSTATUS", c.primaryTaxStatus));
+            command.Parameters.Add(new SqliteParameter("$SECONDARYTAXSTATUS", c.secondaryTaxStatus));
+            command.Parameters.Add(new SqliteParameter("$PRIMARYTAXEXEMPTIONNUMBER", c.primaryTaxExemptionNumber));
+            command.Parameters.Add(new SqliteParameter("$SECONDARYTAXEXEMPTIONNUMBER", c.secondaryTaxExemptionNumber));
+            command.Parameters.Add(new SqliteParameter("$PRIMARYTAXEXEMPTEXPIRE", c.primaryTaxExemptionExpiration));
+            command.Parameters.Add(new SqliteParameter("$SECONDARYTAXEXEMPTEXPIRE", c.secondaryTaxExemptionExpiration));
+            command.Parameters.Add(new SqliteParameter("$PRINTCATALOGNOTES", c.printCatalogNotes));
+            command.Parameters.Add(new SqliteParameter("$PRINTBALANCE", c.printBalance));
+            command.Parameters.Add(new SqliteParameter("$EMAILINVOICES", c.emailInvoices));
+            command.Parameters.Add(new SqliteParameter("$ALLOWBACKORDERS", c.allowBackorders));
+            command.Parameters.Add(new SqliteParameter("$ALLOWSPECIALORDERS", c.allowSpecialOrders));
+            command.Parameters.Add(new SqliteParameter("$EXEMPTSURCHARGES", c.exemptFromInvoiceSurcharges));
+            command.Parameters.Add(new SqliteParameter("$EXTRAINVOICECOPIES", c.extraInvoiceCopies));
+            command.Parameters.Add(new SqliteParameter("$POREQDTHRESHOLD", c.PORequiredThresholdAmount));
+            command.Parameters.Add(new SqliteParameter("$BILLINGTYPE", c.billingType));
+            command.Parameters.Add(new SqliteParameter("$DEFAULTDELIVER", c.defaultToDeliver));
+            command.Parameters.Add(new SqliteParameter("$DELIVERYROUTE", c.deliveryRoute));
+            command.Parameters.Add(new SqliteParameter("$TRAVELTIME", c.travelTime));
+            command.Parameters.Add(new SqliteParameter("$TRAVELDISTANCE", c.travelDistance));
+            command.Parameters.Add(new SqliteParameter("$FREEDELIVERYMINIMUM", c.minimumSaleFreeDelivery));
+            command.Parameters.Add(new SqliteParameter("$DELIVERYCHARGE", c.deliveryCharge));
+            command.Parameters.Add(new SqliteParameter("$STATEMENTTYPE", c.statementType));
+            command.Parameters.Add(new SqliteParameter("$PERCENTDISCOUNT", c.percentDiscount));
+            command.Parameters.Add(new SqliteParameter("$PAIDFORBYDISCOUNT", c.paidForByDiscount));
+            command.Parameters.Add(new SqliteParameter("$DUEDATE", c.dueDate));
+            command.Parameters.Add(new SqliteParameter("$EXTRASTATEMENTCOPIES", c.extraStatementCopies));
+            command.Parameters.Add(new SqliteParameter("$DAYSSENDINVOICES", c.sendInvoicesEvery_Days));
+            command.Parameters.Add(new SqliteParameter("$DAYSSENDACCOUNTSUMMARY", c.sendAccountSummaryEvery_Days));
+            command.Parameters.Add(new SqliteParameter("$EMAILSTATEMENTS", c.emailStatements));
+            command.Parameters.Add(new SqliteParameter("$STATEMENTMAILING", c.statementMailingAddress));
+            command.Parameters.Add(new SqliteParameter("$LASTPAYMENTAMOUNT", c.lastPaymentAmount));
+            command.Parameters.Add(new SqliteParameter("$LASTPAYMENTDATE", c.lastPaymentDate));
+            command.Parameters.Add(new SqliteParameter("$HIGHESTAMOUNTOWED", c.highestAmountOwed));
+            command.Parameters.Add(new SqliteParameter("$HIGHESTAMOUNTOWEDDATE", c.highestAmountOwedDate));
+            command.Parameters.Add(new SqliteParameter("$HIGHESTAMOUNTPAID", c.highestAmountPaid));
+            command.Parameters.Add(new SqliteParameter("$HIGHESTAMOUNTPAIDDATE", c.highestAmountPaidDate));
+            command.Parameters.Add(new SqliteParameter("$LASTSTATEMENTAMOUNT", c.lastStatementAmount));
+            command.Parameters.Add(new SqliteParameter("$TOTALDUE", c.totalDue));
+            command.Parameters.Add(new SqliteParameter("$DUE30", c.due30));
+            command.Parameters.Add(new SqliteParameter("$DUE60", c.due60));
+            command.Parameters.Add(new SqliteParameter("$DUE90", c.due90));
+            command.Parameters.Add(new SqliteParameter("$FURTHERDUE", c.furtherDue));
+            command.Parameters.Add(new SqliteParameter("$SERVICECHARGE", c.serviceCharge));
+            command.Parameters.Add(new SqliteParameter("$TIMSRELATIONS", c.enabledTIMSServerRelations));
+            command.Parameters.Add(new SqliteParameter("$RELATIONKEY", c.relationshipKey));
+            command.Parameters.Add(new SqliteParameter("$AUTOPRICEUPDATES", c.automaticallySendPriceUpdates));
+            command.Parameters.Add(new SqliteParameter("$AUTOMEDIA", c.automaticallySendMedia));
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+            return container;
+        }
         #endregion
 
         #region Invoices
@@ -2655,17 +2811,5 @@ namespace TIMSServer
         }
         #endregion
 
-        #region Misc
-        private string GetClientAddress()
-        {
-            // creating object of service when request comes   
-            OperationContext context = OperationContext.Current;
-            //Getting Incoming Message details   
-            MessageProperties prop = context.IncomingMessageProperties;
-            //Getting client endpoint details from message header   
-            RemoteEndpointMessageProperty endpoint = prop[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
-            return endpoint.Address;
-        }
-        #endregion
     }
 }

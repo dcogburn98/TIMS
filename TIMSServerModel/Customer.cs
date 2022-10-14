@@ -30,7 +30,7 @@ namespace TIMSServerModel
         public DateTime dateOfLastSale;
         public DateTime dateOfLastROA;
         public string preferredLanguage;
-        public List<string> authorizedBuyers;
+        public string authorizedBuyers;
         public string defaultTaxTable;
         public string deliveryTaxTable;
         public string primaryTaxStatus;

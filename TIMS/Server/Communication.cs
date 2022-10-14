@@ -231,6 +231,14 @@ namespace TIMS.Server
                 return null;
             }
         }
+        public static void UpdateCustomer(Customer customer)
+        {
+            AuthContainer<object> container = proxy.UpdateCustomer(customer, currentKey);
+            if (container.Key.Success)
+                currentKey.Regenerate();
+            else
+                MessageBox.Show("Access Denied.");
+        }
 
         #endregion
 

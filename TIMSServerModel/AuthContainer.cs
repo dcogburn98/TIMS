@@ -13,7 +13,6 @@ namespace TIMSServerModel
 
         public AuthContainer()
         {
-            
         }
     }
 }

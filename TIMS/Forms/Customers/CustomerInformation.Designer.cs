@@ -284,11 +284,11 @@
             this.button20 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
             this.tabPage10 = new System.Windows.Forms.TabPage();
-            this.checkBox11 = new System.Windows.Forms.CheckBox();
-            this.textBox53 = new System.Windows.Forms.TextBox();
+            this.enableTIMSRelationsCB = new System.Windows.Forms.CheckBox();
+            this.relationshipKeyTB = new System.Windows.Forms.TextBox();
             this.label41 = new System.Windows.Forms.Label();
-            this.checkBox12 = new System.Windows.Forms.CheckBox();
-            this.checkBox13 = new System.Windows.Forms.CheckBox();
+            this.autoMediaUpdatesCB = new System.Windows.Forms.CheckBox();
+            this.autoPriceUpdatesCB = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -2912,14 +2912,15 @@
             this.button12.TabIndex = 11;
             this.button12.Text = "Save Customer";
             this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // tabPage10
             // 
-            this.tabPage10.Controls.Add(this.checkBox12);
-            this.tabPage10.Controls.Add(this.checkBox13);
-            this.tabPage10.Controls.Add(this.textBox53);
+            this.tabPage10.Controls.Add(this.autoMediaUpdatesCB);
+            this.tabPage10.Controls.Add(this.autoPriceUpdatesCB);
+            this.tabPage10.Controls.Add(this.relationshipKeyTB);
             this.tabPage10.Controls.Add(this.label41);
-            this.tabPage10.Controls.Add(this.checkBox11);
+            this.tabPage10.Controls.Add(this.enableTIMSRelationsCB);
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Name = "tabPage10";
             this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
@@ -2928,23 +2929,23 @@
             this.tabPage10.Text = "Relationship";
             this.tabPage10.UseVisualStyleBackColor = true;
             // 
-            // checkBox11
+            // enableTIMSRelationsCB
             // 
-            this.checkBox11.AutoSize = true;
-            this.checkBox11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox11.Location = new System.Drawing.Point(9, 15);
-            this.checkBox11.Name = "checkBox11";
-            this.checkBox11.Size = new System.Drawing.Size(287, 17);
-            this.checkBox11.TabIndex = 0;
-            this.checkBox11.Text = "Enable TIMS Communication for this Customer";
-            this.checkBox11.UseVisualStyleBackColor = true;
+            this.enableTIMSRelationsCB.AutoSize = true;
+            this.enableTIMSRelationsCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.enableTIMSRelationsCB.Location = new System.Drawing.Point(9, 15);
+            this.enableTIMSRelationsCB.Name = "enableTIMSRelationsCB";
+            this.enableTIMSRelationsCB.Size = new System.Drawing.Size(287, 17);
+            this.enableTIMSRelationsCB.TabIndex = 0;
+            this.enableTIMSRelationsCB.Text = "Enable TIMS Communication for this Customer";
+            this.enableTIMSRelationsCB.UseVisualStyleBackColor = true;
             // 
-            // textBox53
+            // relationshipKeyTB
             // 
-            this.textBox53.Location = new System.Drawing.Point(211, 32);
-            this.textBox53.Name = "textBox53";
-            this.textBox53.Size = new System.Drawing.Size(299, 20);
-            this.textBox53.TabIndex = 3;
+            this.relationshipKeyTB.Location = new System.Drawing.Point(211, 32);
+            this.relationshipKeyTB.Name = "relationshipKeyTB";
+            this.relationshipKeyTB.Size = new System.Drawing.Size(299, 20);
+            this.relationshipKeyTB.TabIndex = 3;
             // 
             // label41
             // 
@@ -2956,27 +2957,27 @@
             this.label41.TabIndex = 2;
             this.label41.Text = "Customer Server Relationship Key";
             // 
-            // checkBox12
+            // autoMediaUpdatesCB
             // 
-            this.checkBox12.AutoSize = true;
-            this.checkBox12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox12.Location = new System.Drawing.Point(9, 99);
-            this.checkBox12.Name = "checkBox12";
-            this.checkBox12.Size = new System.Drawing.Size(265, 17);
-            this.checkBox12.TabIndex = 5;
-            this.checkBox12.Text = "Automatically Update Pictures and Models";
-            this.checkBox12.UseVisualStyleBackColor = true;
+            this.autoMediaUpdatesCB.AutoSize = true;
+            this.autoMediaUpdatesCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.autoMediaUpdatesCB.Location = new System.Drawing.Point(9, 99);
+            this.autoMediaUpdatesCB.Name = "autoMediaUpdatesCB";
+            this.autoMediaUpdatesCB.Size = new System.Drawing.Size(265, 17);
+            this.autoMediaUpdatesCB.TabIndex = 5;
+            this.autoMediaUpdatesCB.Text = "Automatically Update Pictures and Models";
+            this.autoMediaUpdatesCB.UseVisualStyleBackColor = true;
             // 
-            // checkBox13
+            // autoPriceUpdatesCB
             // 
-            this.checkBox13.AutoSize = true;
-            this.checkBox13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox13.Location = new System.Drawing.Point(9, 76);
-            this.checkBox13.Name = "checkBox13";
-            this.checkBox13.Size = new System.Drawing.Size(218, 17);
-            this.checkBox13.TabIndex = 4;
-            this.checkBox13.Text = "Automatically Send Price Updates";
-            this.checkBox13.UseVisualStyleBackColor = true;
+            this.autoPriceUpdatesCB.AutoSize = true;
+            this.autoPriceUpdatesCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.autoPriceUpdatesCB.Location = new System.Drawing.Point(9, 76);
+            this.autoPriceUpdatesCB.Name = "autoPriceUpdatesCB";
+            this.autoPriceUpdatesCB.Size = new System.Drawing.Size(218, 17);
+            this.autoPriceUpdatesCB.TabIndex = 4;
+            this.autoPriceUpdatesCB.Text = "Automatically Send Price Updates";
+            this.autoPriceUpdatesCB.UseVisualStyleBackColor = true;
             // 
             // CustomerInformation
             // 
@@ -3303,10 +3304,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn certificateDescription;
         private System.Windows.Forms.Button button20;
         private System.Windows.Forms.TabPage tabPage10;
-        private System.Windows.Forms.TextBox textBox53;
+        private System.Windows.Forms.TextBox relationshipKeyTB;
         private System.Windows.Forms.Label label41;
-        private System.Windows.Forms.CheckBox checkBox11;
-        private System.Windows.Forms.CheckBox checkBox12;
-        private System.Windows.Forms.CheckBox checkBox13;
+        private System.Windows.Forms.CheckBox enableTIMSRelationsCB;
+        private System.Windows.Forms.CheckBox autoMediaUpdatesCB;
+        private System.Windows.Forms.CheckBox autoPriceUpdatesCB;
     }
 }

@@ -80,6 +80,8 @@ namespace TIMSServerModel
         AuthContainer<Customer> CheckCustomerNumber(string custNo, AuthKey key);
         [OperationContract]
         AuthContainer<List<Customer>> GetCustomers(AuthKey key);
+        [OperationContract]
+        AuthContainer<object> UpdateCustomer(Customer c, AuthKey key);
         #endregion
 
         #region Global Properties

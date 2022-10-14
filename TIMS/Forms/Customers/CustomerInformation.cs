@@ -65,7 +65,7 @@ namespace TIMS.Forms.Customers
             dateLastPayment.Value = currentCustomer.dateOfLastROA;
             dateLasteSale.Value = currentCustomer.dateOfLastSale;
             languagePreferenceTB.Text = currentCustomer.preferredLanguage;
-            foreach (string buyer in currentCustomer.authorizedBuyers)
+            foreach (string buyer in currentCustomer.authorizedBuyers.Split(','))
                 authorizedBuyersLB.Items.Add(buyer);
             #endregion
 
@@ -205,6 +205,74 @@ namespace TIMS.Forms.Customers
                 return;
 
             PopulateFields();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            currentCustomer.customerName = customerName2TB.Text;
+            currentCustomer.canCharge = !doNotChargeCB.Checked;
+            currentCustomer.creditLimit = decimal.Parse(creditLimitTB.Text);
+            currentCustomer.phoneNumber = phoneNumberTB.Text;
+            currentCustomer.faxNumber = faxNumberTB.Text;
+            currentCustomer.billingAddress = physicalAddressTB.Text + ", " + physicalCityTB.Text + ", " + physicalStateTB.Text + ", " + physicalZipTB.Text + ", " + physicalCountryTB.Text;
+            currentCustomer.invoiceMessage = invoiceNoteTB.Text;
+            currentCustomer.website = websiteTB.Text;
+            currentCustomer.email = emailTB.Text;
+            currentCustomer.assignedRep = salesRepTB.Text;
+            currentCustomer.businessCategory = businessCategoryTB.Text;
+            currentCustomer.preferredLanguage = languagePreferenceTB.Text;
+
+            string buyers = "";
+            foreach (string item in authorizedBuyersLB.Items)
+                buyers += item + ",";
+            buyers.TrimEnd(',');
+            currentCustomer.authorizedBuyers = buyers;
+
+            currentCustomer.defaultTaxTable = defaultTaxTableCB.Text;
+            currentCustomer.deliveryTaxTable = deliveryTaxTableCB.Text;
+            currentCustomer.primaryTaxStatus = primaryTaxStatusCB.Text;
+            currentCustomer.secondaryTaxStatus = secondaryTaxStatusCB.Text;
+            currentCustomer.primaryTaxExemptionNumber = primaryTaxExemptNumberTB.Text;
+            currentCustomer.secondaryTaxExemptionNumber = secondaryTaxExemptNumberTB.Text;
+            currentCustomer.primaryTaxExemptionExpiration = primaryTaxExemptExpiration.Value;
+            currentCustomer.secondaryTaxExemptionExpiration = secondaryTaxExemptExpiration.Value;
+            currentCustomer.printCatalogNotes = printCatalogNotesCB.Checked;
+            currentCustomer.printBalance = printBalanceCB.Checked;
+            currentCustomer.emailInvoices = emailInvoicesCB.Checked;
+            currentCustomer.allowBackorders = allowBackordersCB.Checked;
+            currentCustomer.allowSpecialOrders = allowSpecialOrdersCB.Checked;
+            currentCustomer.exemptFromInvoiceSurcharges = exemptFromSurchargesCB.Checked;
+            currentCustomer.extraInvoiceCopies = int.Parse(extraInvoiceCopiesTB.Text);
+            currentCustomer.PORequiredThresholdAmount = decimal.Parse(poReqdOverAmountTB.Text);
+            currentCustomer.billingType = billingTypeCB.Text;
+            currentCustomer.defaultToDeliver = defaultDeliverCB.Checked;
+            currentCustomer.deliveryRoute = deliveryRouteCB.Text;
+            currentCustomer.travelDistance = int.Parse(travelDistanceTB.Text);
+            currentCustomer.travelTime = int.Parse(travelTimeTB.Text);
+            currentCustomer.minimumSaleFreeDelivery = decimal.Parse(minSaleFreeDeliveryTB.Text);
+            currentCustomer.deliveryCharge = decimal.Parse(deliveryChargeTB.Text);
+            currentCustomer.statementType = statementTypeCB.Text;
+            currentCustomer.percentDiscount = decimal.Parse(discountPercentTB.Text);
+            currentCustomer.paidForByDiscount = int.Parse(discountDaysTB.Text);
+            currentCustomer.dueDate = int.Parse(dueByTB.Text);
+            currentCustomer.extraStatementCopies = int.Parse(extraStatementCopiesTB.Text);
+            currentCustomer.sendInvoicesEvery_Days = int.Parse(sendInvoicesEvery_DaysTB.Text);
+            currentCustomer.sendAccountSummaryEvery_Days = int.Parse(sendAccountSummaryEvery_DaysTB.Text);
+            currentCustomer.emailStatements = emailStatementsCB.Checked;
+
+            if (useDifferentAddressCB.Checked)
+            {
+                string addr = mailingAddressTB + ", " + mailingCityTB + ", " + mailingStateTB + ", " + mailingZipTB + ", " + mailingCountryTB;
+                currentCustomer.statementMailingAddress = addr;
+            }
+
+            currentCustomer.enabledTIMSServerRelations = enableTIMSRelationsCB.Checked;
+            currentCustomer.relationshipKey = relationshipKeyTB.Text;
+            currentCustomer.automaticallySendMedia = autoMediaUpdatesCB.Checked;
+            currentCustomer.automaticallySendPriceUpdates = autoPriceUpdatesCB.Checked;
+
+            Communication.UpdateCustomer(currentCustomer);
+            MessageBox.Show("Customer Information Updated");
         }
     }
 }
