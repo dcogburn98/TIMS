@@ -88,5 +88,10 @@ namespace TIMSServerModel
         {
             availablePaymentTypes = new List<Payment.PaymentTypes>();
         }
+
+        public override string ToString()
+        {
+            return customerNumber + " " + customerName;
+        }
     }
 }

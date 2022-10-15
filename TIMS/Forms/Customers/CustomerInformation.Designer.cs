@@ -289,6 +289,7 @@
             this.label41 = new System.Windows.Forms.Label();
             this.autoMediaUpdatesCB = new System.Windows.Forms.CheckBox();
             this.autoPriceUpdatesCB = new System.Windows.Forms.CheckBox();
+            this.addCustomerButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -2979,11 +2980,22 @@
             this.autoPriceUpdatesCB.Text = "Automatically Send Price Updates";
             this.autoPriceUpdatesCB.UseVisualStyleBackColor = true;
             // 
+            // addCustomerButton
+            // 
+            this.addCustomerButton.Location = new System.Drawing.Point(535, 22);
+            this.addCustomerButton.Name = "addCustomerButton";
+            this.addCustomerButton.Size = new System.Drawing.Size(98, 23);
+            this.addCustomerButton.TabIndex = 12;
+            this.addCustomerButton.Text = "Add Customer";
+            this.addCustomerButton.UseVisualStyleBackColor = true;
+            this.addCustomerButton.Click += new System.EventHandler(this.addCustomerButton_Click);
+            // 
             // CustomerInformation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1023, 634);
+            this.Controls.Add(this.addCustomerButton);
             this.Controls.Add(this.button12);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.label2);
@@ -3309,5 +3321,6 @@
         private System.Windows.Forms.CheckBox enableTIMSRelationsCB;
         private System.Windows.Forms.CheckBox autoMediaUpdatesCB;
         private System.Windows.Forms.CheckBox autoPriceUpdatesCB;
+        private System.Windows.Forms.Button addCustomerButton;
     }
 }

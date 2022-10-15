@@ -239,6 +239,14 @@ namespace TIMS.Server
             else
                 MessageBox.Show("Access Denied.");
         }
+        public static void AddCustomer(Customer customer)
+        {
+            AuthContainer<object> container = proxy.AddCustomer(customer, currentKey);
+            if (container.Key.Success)
+                currentKey.Regenerate();
+            else
+                MessageBox.Show("Access Denied.");
+        }
 
         #endregion
 

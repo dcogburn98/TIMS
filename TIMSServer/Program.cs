@@ -773,148 +773,181 @@ namespace TIMSServer
 
                 command.CommandText =
                 @"INSERT INTO Customers (
-                    ""CustomerName"",
-                    ""CustomerNumber"",
-                    ""PricingProfile"",
-                    ""CanCharge"",
-                    ""CreditLimit"",
-                    ""AccountBalance"",
-                    ""PhoneNumber"",
-                    ""FaxNumber"",
-                    ""BillingAddress"",
-                    ""ShippingAddress"",
-                    ""InvoiceMessage"",
-                    ""Website"",
-                    ""Email"",
-                    ""AssignedRep"",
-                    ""BusinessCategory"",
-                    ""DateAdded"",
-                    ""DateOfLastSale"",
-                    ""DateOfLastROA"",
-                    ""PreferredLanguage"",
-                    ""AuthorizedBuyers"",
-                    ""DefaultTaxTable"",
-                    ""DeliveryTaxTable"",
-                    ""PrimaryTaxStatus"",
-                    ""SecondaryTaxStatus"",
-                    ""PrimaryTaxExemptionNumber"",
-                    ""SecondaryTaxExemptionNumber"",
-                    ""PrimaryTaxExemptionExpiration"",
-                    ""SecondaryTaxExemptionExpiration"",
-                    ""PrintCatalogNotesOnInvoice"",
-                    ""PrintBalanceOnInvoice"",
-                    ""EmailInvoices"",
-                    ""AllowBackorders"",
-                    ""AllowSpecialOrders"",
-                    ""ExemptFromInvoiceSurcharges"",
-                    ""ExtraInvoiceCopies"",
-                    ""PORequiredThresholdAmount"",
-                    ""BillingType"",
-                    ""DefaultToDeliver"",
-                    ""DeliveryRoute"",
-                    ""TravelTime"",
-                    ""TravelDistance"",
-                    ""MinimumSaleFreeDelivery"",
-                    ""DeliveryCharge"",
-                    ""StatementType"",
-                    ""PercentDiscount"",
-                    ""PaidByForDiscount"",
-                    ""DueDate"",
-                    ""ExtraStatementCopies"",
-                    ""SendInvoicesEvery_Days"",
-                    ""SendAccountSummaryEvery_Days"",
-                    ""EmailStatements"",
-                    ""StatementMailingAddress"",
-                    ""LastPaymentAmount"",
-                    ""LastPaymentDate"",
-                    ""HighestAmountOwed"",
-                    ""HighestAmountOwedDate"",
-                    ""HighestAmountPaid"",
-                    ""HighestAmountPaidDate"",
-                    ""LastStatementAmount"",
-                    ""TotalDue"",
-                    ""Due30Days"",
-                    ""Due60Days"",
-                    ""Due90Days"",
-                    ""FurtherDue"",
-                    ""ServiceCharge"",
-                    ""EnableTIMSRelations"",
-                    ""RelationshipKey"",
-                    ""AutomaticallySendPriceUpdates"",
-                    ""AutomaticallySendMedia"")  
+                    ""CustomerName"", ""CustomerNumber"", ""PricingProfile"", ""CanCharge"", ""CreditLimit"", ""AccountBalance"",
+                    ""PhoneNumber"", ""FaxNumber"", ""BillingAddress"", ""ShippingAddress"", ""InvoiceMessage"", ""Website"",
+                    ""Email"", ""AssignedRep"", ""BusinessCategory"", ""DateAdded"", ""DateOfLastSale"", ""DateOfLastROA"",
+                    ""PreferredLanguage"", ""AuthorizedBuyers"", ""DefaultTaxTable"", ""DeliveryTaxTable"", ""PrimaryTaxStatus"",
+                    ""SecondaryTaxStatus"", ""PrimaryTaxExemptionNumber"", ""SecondaryTaxExemptionNumber"", ""PrimaryTaxExemptionExpiration"",
+                    ""SecondaryTaxExemptionExpiration"", ""PrintCatalogNotesOnInvoice"", ""PrintBalanceOnInvoice"", ""EmailInvoices"",
+                    ""AllowBackorders"", ""AllowSpecialOrders"", ""ExemptFromInvoiceSurcharges"", ""ExtraInvoiceCopies"",
+                    ""PORequiredThresholdAmount"", ""BillingType"", ""DefaultToDeliver"", ""DeliveryRoute"", ""TravelTime"",
+                    ""TravelDistance"", ""MinimumSaleFreeDelivery"", ""DeliveryCharge"", ""StatementType"", ""PercentDiscount"",
+                    ""PaidByForDiscount"", ""DueDate"", ""ExtraStatementCopies"", ""SendInvoicesEvery_Days"", ""SendAccountSummaryEvery_Days"",
+                    ""EmailStatements"", ""StatementMailingAddress"", ""LastPaymentAmount"", ""LastPaymentDate"", ""HighestAmountOwed"",
+                    ""HighestAmountOwedDate"", ""HighestAmountPaid"", ""HighestAmountPaidDate"", ""LastStatementAmount"", ""TotalDue"",
+                    ""Due30Days"", ""Due60Days"", ""Due90Days"", ""FurtherDue"", ""ServiceCharge"", ""EnableTIMSRelations"",
+                    ""RelationshipKey"", ""AutomaticallySendPriceUpdates"", ""AutomaticallySendMedia"") 
                 VALUES (
-                    'Cash Sale',
-                    '0',
-                    'Green',
-                    '0',
-                    '0',
-                    '0',
-                    '870-279-7192',
-                    '870-286-2463',
-                    '1002 N Walters Ave, Dierks, AR, 71833, USA',
-                    '206 Main Ave, Dierks, AR, 71833, USA',
-                    'Thank you for choosing TIMS!',
-                    'http://www.fishnmunition.com',
-                    'blake.cogburn@fishnmunition.com',
-                    '',
-                    '',
-                    '10/10/2022',
-                    '10/10/2022',
-                    '10/10/2022',
-                    'English',
-                    '',
-                    '0',
-                    '0',
-                    'Non-Exempt',
-                    'Non-Exempt',
-                    '',
-                    '',
-                    '',
-                    '',
-                    '1',
-                    '0',
-                    '0',
-                    '1',
-                    '1',
-                    '0',
-                    '1',
-                    '0',
-                    'Cash Only',
-                    '0',
-                    '',
-                    '0',
-                    '0',
-                    '0',
-                    '0',
-                    'Balance Forward',
-                    '0',
-                    '0',
-                    '0',
-                    '0',
-                    '0',
-                    '0',
-                    '0',
-                    '',
-                    '0',
-                    '',
-                    '0',
-                    '',
-                    '0',
-                    '',
-                    '0',
-                    '0',
-                    '0',
-                    '0',
-                    '0',
-                    '0',
-                    '0',
-                    '0',
-                    '',
-                    '0',
-                    '0'
+                    'Cash Sale', --Customer Name
+                    '0', --Customer Number
+                    'Green', --Pricing Profile
+                    '0', --Can Charge
+                    '0', --Credit Limit
+                    '0', --Account Balance
+                    '870-279-7192', --Phone Number
+                    '870-286-2463', --Fax Number
+                    '1002 N Walters Ave, Dierks, AR, 71833, USA', --Billing Address
+                    '206 Main Ave, Dierks, AR, 71833, USA', --Shipping Address
+                    'Thank you for choosing TIMS!', --Invoice Message
+                    'http://www.fishnmunition.com', --Website
+                    'blake.cogburn@fishnmunition.com', --Email
+                    '', --Assigned Representative
+                    '', --Business Category
+                    '10/10/2022', --Date Added
+                    '10/10/2022', --Date of Last Sale
+                    '10/10/2022', --Date of Last ROA
+                    'English', --Preferred Language
+                    '', --Authorized Buyers
+                    'Default', --Default Tax Table
+                    'Default', --Delivery Tax Table
+                    'Non-Exempt', --Primary Tax Status
+                    'Non-Exempt', --Secondary Tax Status
+                    '', --Primary Tax Exempt Number
+                    '', --Secondary Tax Exempt Number
+                    '', --Primary Tax Exemption Expiration
+                    '', --Secondary Tax Exemption Expiration
+                    '1', --Print Catalog Notes on Invoices
+                    '0', --Print Balance on Invoices
+                    '0', --Email Invoices
+                    '1', --Allow Backorders
+                    '1', --Allow Special Orders
+                    '0', --Exempt from Invoice Surcharges
+                    '1', --Extra Copies of Invoices
+                    '0', --PO Required Threshold Amount
+                    'Cash Only', --Billing Type
+                    '0', --Default to Deliver
+                    '', --Delivery Route
+                    '0', --Travel Time
+                    '0', --Travel Distance
+                    '0', --Free Delivery Minimum Amount
+                    '0', --Delivery Charge
+                    'Balance Forward', --Statement Type
+                    '0', --Percent Discount if Paid in Full
+                    '0', --Days to Pay for Discount
+                    '0', --Due Date
+                    '0', --Extra Statement Copies
+                    '0', --Send Invoices Every * Days
+                    '0', --Send Account Summary Every * Days
+                    '0', --Email Statements
+                    '', --Statement Mailing Address
+                    '0', --Last Payment Amount
+                    '', --Last Payment Date
+                    '0', --Highest Amount Owed
+                    '', --Highest Amount Owed Date
+                    '0', --Highest Amount Paid
+                    '', --Highest Amount Paid Date
+                    '0', --Last Statement Amount
+                    '0', --Total Due
+                    '0', --Due 30 Days
+                    '0', --Due 60 Days
+                    '0', --Due 90 Days
+                    '0', --Further Due
+                    '0', --Service Charge
+                    '0', --Enable TIMS Relations
+                    '', --TIMS Relations Key
+                    '0', --Automatic Price Updates
+                    '0' --Automatic Media Updates
                 );";
                 command.ExecuteNonQuery();
 
+                command.CommandText =
+                @"INSERT INTO Customers (
+                    ""CustomerName"", ""CustomerNumber"", ""PricingProfile"", ""CanCharge"", ""CreditLimit"", ""AccountBalance"",
+                    ""PhoneNumber"", ""FaxNumber"", ""BillingAddress"", ""ShippingAddress"", ""InvoiceMessage"", ""Website"",
+                    ""Email"", ""AssignedRep"", ""BusinessCategory"", ""DateAdded"", ""DateOfLastSale"", ""DateOfLastROA"",
+                    ""PreferredLanguage"", ""AuthorizedBuyers"", ""DefaultTaxTable"", ""DeliveryTaxTable"", ""PrimaryTaxStatus"",
+                    ""SecondaryTaxStatus"", ""PrimaryTaxExemptionNumber"", ""SecondaryTaxExemptionNumber"", ""PrimaryTaxExemptionExpiration"",
+                    ""SecondaryTaxExemptionExpiration"", ""PrintCatalogNotesOnInvoice"", ""PrintBalanceOnInvoice"", ""EmailInvoices"",
+                    ""AllowBackorders"", ""AllowSpecialOrders"", ""ExemptFromInvoiceSurcharges"", ""ExtraInvoiceCopies"",
+                    ""PORequiredThresholdAmount"", ""BillingType"", ""DefaultToDeliver"", ""DeliveryRoute"", ""TravelTime"",
+                    ""TravelDistance"", ""MinimumSaleFreeDelivery"", ""DeliveryCharge"", ""StatementType"", ""PercentDiscount"",
+                    ""PaidByForDiscount"", ""DueDate"", ""ExtraStatementCopies"", ""SendInvoicesEvery_Days"", ""SendAccountSummaryEvery_Days"",
+                    ""EmailStatements"", ""StatementMailingAddress"", ""LastPaymentAmount"", ""LastPaymentDate"", ""HighestAmountOwed"",
+                    ""HighestAmountOwedDate"", ""HighestAmountPaid"", ""HighestAmountPaidDate"", ""LastStatementAmount"", ""TotalDue"",
+                    ""Due30Days"", ""Due60Days"", ""Due90Days"", ""FurtherDue"", ""ServiceCharge"", ""EnableTIMSRelations"",
+                    ""RelationshipKey"", ""AutomaticallySendPriceUpdates"", ""AutomaticallySendMedia"") 
+                VALUES (
+                    'Default Customer', --Customer Name
+                    '9999', --Customer Number
+                    'Green', --Pricing Profile
+                    '0', --Can Charge
+                    '0', --Credit Limit
+                    '0', --Account Balance
+                    '0', --Phone Number
+                    '0', --Fax Number
+                    'Address, City, State, ZIP, Country', --Billing Address
+                    'Address, City, State, ZIP, Country', --Shipping Address
+                    '', --Invoice Message
+                    '', --Website
+                    '', --Email
+                    '', --Assigned Representative
+                    '', --Business Category
+                    '10/10/2022', --Date Added
+                    '10/10/2022', --Date of Last Sale
+                    '10/10/2022', --Date of Last ROA
+                    '', --Preferred Language
+                    '', --Authorized Buyers
+                    'Default', --Default Tax Table
+                    'Default', --Delivery Tax Table
+                    'Non-Exempt', --Primary Tax Status
+                    'Non-Exempt', --Secondary Tax Status
+                    '', --Primary Tax Exempt Number
+                    '', --Secondary Tax Exempt Number
+                    '', --Primary Tax Exemption Expiration
+                    '', --Secondary Tax Exemption Expiration
+                    '1', --Print Catalog Notes on Invoices
+                    '0', --Print Balance on Invoices
+                    '0', --Email Invoices
+                    '1', --Allow Backorders
+                    '1', --Allow Special Orders
+                    '0', --Exempt from Invoice Surcharges
+                    '0', --Extra Copies of Invoices
+                    '0', --PO Required Threshold Amount
+                    'Cash Only', --Billing Type
+                    '0', --Default to Deliver
+                    '', --Delivery Route
+                    '0', --Travel Time
+                    '0', --Travel Distance
+                    '0', --Free Delivery Minimum Amount
+                    '0', --Delivery Charge
+                    'Balance Forward', --Statement Type
+                    '0', --Percent Discount if Paid in Full
+                    '0', --Days to Pay for Discount
+                    '0', --Due Date
+                    '0', --Extra Statement Copies
+                    '0', --Send Invoices Every * Days
+                    '0', --Send Account Summary Every * Days
+                    '0', --Email Statements
+                    '', --Statement Mailing Address
+                    '0', --Last Payment Amount
+                    '', --Last Payment Date
+                    '0', --Highest Amount Owed
+                    '', --Highest Amount Owed Date
+                    '0', --Highest Amount Paid
+                    '', --Highest Amount Paid Date
+                    '0', --Last Statement Amount
+                    '0', --Total Due
+                    '0', --Due 30 Days
+                    '0', --Due 60 Days
+                    '0', --Due 90 Days
+                    '0', --Further Due
+                    '0', --Service Charge
+                    '0', --Enable TIMS Relations
+                    '', --TIMS Relations Key
+                    '0', --Automatic Price Updates
+                    '0' --Automatic Media Updates
+                );";
+                command.ExecuteNonQuery();
             }
 
             if (!TableExists(sqlite_conn, "Employees"))

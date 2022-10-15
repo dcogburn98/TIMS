@@ -82,6 +82,8 @@ namespace TIMSServerModel
         AuthContainer<List<Customer>> GetCustomers(AuthKey key);
         [OperationContract]
         AuthContainer<object> UpdateCustomer(Customer c, AuthKey key);
+        [OperationContract]
+        AuthContainer<object> AddCustomer(Customer c, AuthKey key);
         #endregion
 
         #region Global Properties

@@ -214,7 +214,7 @@ namespace TIMS.Forms.Customers
             currentCustomer.creditLimit = decimal.Parse(creditLimitTB.Text);
             currentCustomer.phoneNumber = phoneNumberTB.Text;
             currentCustomer.faxNumber = faxNumberTB.Text;
-            currentCustomer.billingAddress = physicalAddressTB.Text + ", " + physicalCityTB.Text + ", " + physicalStateTB.Text + ", " + physicalZipTB.Text + ", " + physicalCountryTB.Text;
+            currentCustomer.shippingAddress = physicalAddressTB.Text + ", " + physicalCityTB.Text + ", " + physicalStateTB.Text + ", " + physicalZipTB.Text + ", " + physicalCountryTB.Text;
             currentCustomer.invoiceMessage = invoiceNoteTB.Text;
             currentCustomer.website = websiteTB.Text;
             currentCustomer.email = emailTB.Text;
@@ -273,6 +273,22 @@ namespace TIMS.Forms.Customers
 
             Communication.UpdateCustomer(currentCustomer);
             MessageBox.Show("Customer Information Updated");
+        }
+
+        private void addCustomerButton_Click(object sender, EventArgs e)
+        {
+            if (customerEdited)
+                if (MessageBox.Show("Current customer has unsaved changes. Would you like to proceed WITHOUT saving?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
+                    return;
+
+            AddCustomer adder = new AddCustomer();
+            if (adder.ShowDialog() == DialogResult.Cancel)
+                return;
+
+            currentCustomer = adder.customer;
+            Communication.AddCustomer(currentCustomer);
+            MessageBox.Show("Customer successfully created!");
+            PopulateFields();
         }
     }
 }

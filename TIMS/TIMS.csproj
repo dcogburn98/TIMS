@@ -173,6 +173,12 @@
     <Compile Include="Forms\CustomerSearch.Designer.cs">
       <DependentUpon>CustomerSearch.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Customers\AddCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Customers\AddCustomer.Designer.cs">
+      <DependentUpon>AddCustomer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Customers\CustomerInformation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -355,12 +361,6 @@
     <Compile Include="Server\Client.cs" />
     <Compile Include="Server\Communication.cs" />
     <Compile Include="EmployeePermissions.cs" />
-    <Compile Include="Forms\AddCustomer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\AddCustomer.Designer.cs">
-      <DependentUpon>AddCustomer.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\POS\Checkout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -389,9 +389,6 @@
     <EmbeddedResource Include="Forms\Accounting\ChartOfAccounts.resx">
       <DependentUpon>ChartOfAccounts.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddCustomer.resx">
-      <DependentUpon>AddCustomer.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\BinLabelPrinting.resx">
       <DependentUpon>BinLabelPrinting.cs</DependentUpon>
     </EmbeddedResource>
@@ -400,6 +397,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CustomerSearch.resx">
       <DependentUpon>CustomerSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Customers\AddCustomer.resx">
+      <DependentUpon>AddCustomer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Customers\CustomerInformation.resx">
       <DependentUpon>CustomerInformation.cs</DependentUpon>

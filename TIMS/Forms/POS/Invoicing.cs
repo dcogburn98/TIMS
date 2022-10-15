@@ -560,8 +560,6 @@ namespace TIMS.Forms
 
         private void addCustomerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddCustomer addCustomerForm = new AddCustomer();
-            addCustomerForm.Show();
         }
 
         private void checkoutButton_Click(object sender, EventArgs e)

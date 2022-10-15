@@ -1060,6 +1060,9 @@ namespace TIMSServer
         }
         public bool AddItem(Item item)
         {
+            if (RetrieveItem(item.itemNumber, item.productLine) == null)
+                return false;
+
             OpenConnection();
 
             SqliteCommand command = sqlite_conn.CreateCommand();
@@ -1178,7 +1181,6 @@ namespace TIMSServer
             return items;
         }
         
-
         #endregion
 
         #region Customers
@@ -1510,6 +1512,119 @@ namespace TIMSServer
             CloseConnection();
             return container;
         }
+        public AuthContainer<object> AddCustomer(Customer c, AuthKey key)
+        {
+            AuthContainer<object> container = CheckAuthorization<object>(key);
+            if (!container.Key.Success)
+                return container;
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"INSERT INTO CUSTOMERS (
+                    CustomerName, CustomerNumber, PricingProfile, CanCharge, CreditLimit, AccountBalance,
+                    PhoneNumber, FaxNumber, BillingAddress, ShippingAddress, InvoiceMessage, Website,
+                    Email, AssignedRep, BusinessCategory, DateAdded, DateOfLastSale, DateOfLastROA,
+                    PreferredLanguage, AuthorizedBuyers, DefaultTaxTable, DeliveryTaxTable, PrimaryTaxStatus,
+                    SecondaryTaxStatus, PrimaryTaxExemptionNumber, SecondaryTaxExemptionNumber, PrimaryTaxExemptionExpiration,
+                    SecondaryTaxExemptionExpiration, PrintCatalogNotesOnInvoice, PrintBalanceOnInvoice, EmailInvoices,
+                    AllowBackorders, AllowSpecialOrders, ExemptFromInvoiceSurcharges, ExtraInvoiceCopies,
+                    PORequiredThresholdAmount, BillingType, DefaultToDeliver, DeliveryRoute, TravelTime,
+                    TravelDistance, MinimumSaleFreeDelivery, DeliveryCharge, StatementType, PercentDiscount,
+                    PaidByForDiscount, DueDate, ExtraStatementCopies, SendInvoicesEvery_Days, SendAccountSummaryEvery_Days,
+                    EmailStatements, StatementMailingAddress, LastPaymentAmount, LastPaymentDate, HighestAmountOwed,
+                    HighestAmountOwedDate, HighestAmountPaid, HighestAmountPaidDate, LastStatementAmount, TotalDue,
+                    Due30Days, Due60Days, Due90Days, FurtherDue, ServiceCharge, EnableTIMSRelations,
+                    RelationshipKey, AutomaticallySendPriceUpdates, AutomaticallySendMedia) 
+                VALUES (
+                    $NAME, $NUMBER, $PROFILE, $CANCHARGE, $CREDITLIMIT, $BALANCE, $PHONE, $FAX, $BILLINGADDRESS, $SHIPPINGADDRESS, 
+                    $INVOICEMESSAGE, $WEBSITE, $EMAIL, $ASSIGNEDREP, $CATEGORY, $DATEADDED, $DATELASTSALE, $DATELASTROA, $LANGUAGE, 
+                    $BUYERS, $DEFAULTTAXTABLE, $DELIVERYTAXTABLE, $PRIMARYTAXSTATUS, $SECONDARYTAXSTATUS, $PRIMARYTAXEXEMPTIONNUMBER, 
+                    $SECONDARYTAXEXEMPTIONNUMBER, $PRIMARYTAXEXEMPTEXPIRE, $SECONDARYTAXEXEMPTEXPIRE, $PRINTCATALOGNOTES, 
+                    $PRINTBALANCE, $EMAILINVOICES, $ALLOWBACKORDERS, $ALLOWSPECIALORDERS, $EXEMPTSURCHARGES, $EXTRAINVOICECOPIES, 
+                    $POREQDTHRESHOLD, $BILLINGTYPE, $DEFAULTDELIVER, $DELIVERYROUTE, $TRAVELTIME, $TRAVELDISTANCE, $FREEDELIVERYMINIMUM, 
+                    $DELIVERYCHARGE, $STATEMENTTYPE, $PERCENTDISCOUNT, $PAIDFORBYDISCOUNT, $DUEDATE, $EXTRASTATEMENTCOPIES, 
+                    $DAYSSENDINVOICES, $DAYSSENDACCOUNTSUMMARY, $EMAILSTATEMENTS, $STATEMENTMAILING, $LASTPAYMENTAMOUNT, 
+                    $LASTPAYMENTDATE, $HIGHESTAMOUNTOWED, $HIGHESTAMOUNTOWEDDATE, $HIGHESTAMOUNTPAID, $HIGHESTAMOUNTPAIDDATE, 
+                    $LASTSTATEMENTAMOUNT, $TOTALDUE, $DUE30, $DUE60, $DUE90, $FURTHERDUE, $SERVICECHARGE, 
+                    $TIMSRELATIONS, $RELATIONKEY, $AUTOPRICEUPDATES, $AUTOMEDIA)";
+
+            command.Parameters.Add(new SqliteParameter("$NAME", c.customerName));
+            command.Parameters.Add(new SqliteParameter("$NUMBER", c.customerNumber));
+            command.Parameters.Add(new SqliteParameter("$PROFILE", c.pricingProfile));
+            command.Parameters.Add(new SqliteParameter("$CANCHARGE", c.canCharge));
+            command.Parameters.Add(new SqliteParameter("$CREDITLIMIT", c.creditLimit));
+            command.Parameters.Add(new SqliteParameter("$BALANCE", c.accountBalance));
+            command.Parameters.Add(new SqliteParameter("$PHONE", c.phoneNumber));
+            command.Parameters.Add(new SqliteParameter("$FAX", c.faxNumber));
+            command.Parameters.Add(new SqliteParameter("$BILLINGADDRESS", c.billingAddress));
+            command.Parameters.Add(new SqliteParameter("$SHIPPINGADDRESS", c.shippingAddress));
+            command.Parameters.Add(new SqliteParameter("$INVOICEMESSAGE", c.invoiceMessage));
+            command.Parameters.Add(new SqliteParameter("$WEBSITE", c.website));
+            command.Parameters.Add(new SqliteParameter("$EMAIL", c.email));
+            command.Parameters.Add(new SqliteParameter("$ASSIGNEDREP", c.assignedRep));
+            command.Parameters.Add(new SqliteParameter("$CATEGORY", c.businessCategory));
+            command.Parameters.Add(new SqliteParameter("$DATEADDED", c.dateAdded));
+            command.Parameters.Add(new SqliteParameter("$DATELASTSALE", c.dateOfLastSale));
+            command.Parameters.Add(new SqliteParameter("$DATELASTROA", c.dateOfLastROA));
+            command.Parameters.Add(new SqliteParameter("$LANGUAGE", c.preferredLanguage));
+            command.Parameters.Add(new SqliteParameter("$BUYERS", c.authorizedBuyers));
+            command.Parameters.Add(new SqliteParameter("$DEFAULTTAXTABLE", c.defaultTaxTable));
+            command.Parameters.Add(new SqliteParameter("$DELIVERYTAXTABLE", c.deliveryTaxTable));
+            command.Parameters.Add(new SqliteParameter("$PRIMARYTAXSTATUS", c.primaryTaxStatus));
+            command.Parameters.Add(new SqliteParameter("$SECONDARYTAXSTATUS", c.secondaryTaxStatus));
+            command.Parameters.Add(new SqliteParameter("$PRIMARYTAXEXEMPTIONNUMBER", c.primaryTaxExemptionNumber));
+            command.Parameters.Add(new SqliteParameter("$SECONDARYTAXEXEMPTIONNUMBER", c.secondaryTaxExemptionNumber));
+            command.Parameters.Add(new SqliteParameter("$PRIMARYTAXEXEMPTEXPIRE", c.primaryTaxExemptionExpiration));
+            command.Parameters.Add(new SqliteParameter("$SECONDARYTAXEXEMPTEXPIRE", c.secondaryTaxExemptionExpiration));
+            command.Parameters.Add(new SqliteParameter("$PRINTCATALOGNOTES", c.printCatalogNotes));
+            command.Parameters.Add(new SqliteParameter("$PRINTBALANCE", c.printBalance));
+            command.Parameters.Add(new SqliteParameter("$EMAILINVOICES", c.emailInvoices));
+            command.Parameters.Add(new SqliteParameter("$ALLOWBACKORDERS", c.allowBackorders));
+            command.Parameters.Add(new SqliteParameter("$ALLOWSPECIALORDERS", c.allowSpecialOrders));
+            command.Parameters.Add(new SqliteParameter("$EXEMPTSURCHARGES", c.exemptFromInvoiceSurcharges));
+            command.Parameters.Add(new SqliteParameter("$EXTRAINVOICECOPIES", c.extraInvoiceCopies));
+            command.Parameters.Add(new SqliteParameter("$POREQDTHRESHOLD", c.PORequiredThresholdAmount));
+            command.Parameters.Add(new SqliteParameter("$BILLINGTYPE", c.billingType));
+            command.Parameters.Add(new SqliteParameter("$DEFAULTDELIVER", c.defaultToDeliver));
+            command.Parameters.Add(new SqliteParameter("$DELIVERYROUTE", c.deliveryRoute));
+            command.Parameters.Add(new SqliteParameter("$TRAVELTIME", c.travelTime));
+            command.Parameters.Add(new SqliteParameter("$TRAVELDISTANCE", c.travelDistance));
+            command.Parameters.Add(new SqliteParameter("$FREEDELIVERYMINIMUM", c.minimumSaleFreeDelivery));
+            command.Parameters.Add(new SqliteParameter("$DELIVERYCHARGE", c.deliveryCharge));
+            command.Parameters.Add(new SqliteParameter("$STATEMENTTYPE", c.statementType));
+            command.Parameters.Add(new SqliteParameter("$PERCENTDISCOUNT", c.percentDiscount));
+            command.Parameters.Add(new SqliteParameter("$PAIDFORBYDISCOUNT", c.paidForByDiscount));
+            command.Parameters.Add(new SqliteParameter("$DUEDATE", c.dueDate));
+            command.Parameters.Add(new SqliteParameter("$EXTRASTATEMENTCOPIES", c.extraStatementCopies));
+            command.Parameters.Add(new SqliteParameter("$DAYSSENDINVOICES", c.sendInvoicesEvery_Days));
+            command.Parameters.Add(new SqliteParameter("$DAYSSENDACCOUNTSUMMARY", c.sendAccountSummaryEvery_Days));
+            command.Parameters.Add(new SqliteParameter("$EMAILSTATEMENTS", c.emailStatements));
+            command.Parameters.Add(new SqliteParameter("$STATEMENTMAILING", c.statementMailingAddress));
+            command.Parameters.Add(new SqliteParameter("$LASTPAYMENTAMOUNT", c.lastPaymentAmount));
+            command.Parameters.Add(new SqliteParameter("$LASTPAYMENTDATE", c.lastPaymentDate));
+            command.Parameters.Add(new SqliteParameter("$HIGHESTAMOUNTOWED", c.highestAmountOwed));
+            command.Parameters.Add(new SqliteParameter("$HIGHESTAMOUNTOWEDDATE", c.highestAmountOwedDate));
+            command.Parameters.Add(new SqliteParameter("$HIGHESTAMOUNTPAID", c.highestAmountPaid));
+            command.Parameters.Add(new SqliteParameter("$HIGHESTAMOUNTPAIDDATE", c.highestAmountPaidDate));
+            command.Parameters.Add(new SqliteParameter("$LASTSTATEMENTAMOUNT", c.lastStatementAmount));
+            command.Parameters.Add(new SqliteParameter("$TOTALDUE", c.totalDue));
+            command.Parameters.Add(new SqliteParameter("$DUE30", c.due30));
+            command.Parameters.Add(new SqliteParameter("$DUE60", c.due60));
+            command.Parameters.Add(new SqliteParameter("$DUE90", c.due90));
+            command.Parameters.Add(new SqliteParameter("$FURTHERDUE", c.furtherDue));
+            command.Parameters.Add(new SqliteParameter("$SERVICECHARGE", c.serviceCharge));
+            command.Parameters.Add(new SqliteParameter("$TIMSRELATIONS", c.enabledTIMSServerRelations));
+            command.Parameters.Add(new SqliteParameter("$RELATIONKEY", c.relationshipKey));
+            command.Parameters.Add(new SqliteParameter("$AUTOPRICEUPDATES", c.automaticallySendPriceUpdates));
+            command.Parameters.Add(new SqliteParameter("$AUTOMEDIA", c.automaticallySendMedia));
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+            return container;
+        }
+        
         #endregion
 
         #region Invoices
