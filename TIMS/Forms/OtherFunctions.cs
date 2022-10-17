@@ -372,7 +372,12 @@ namespace TIMS.Forms
         private void tabletInvoicingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Program.OpenForm(new TileDisplay());
-            
+        }
+
+        private void pricingProfileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PricingProfiles profiles = new PricingProfiles();
+            profiles.Show();
         }
     }
 }

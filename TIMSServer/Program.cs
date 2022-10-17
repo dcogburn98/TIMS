@@ -950,6 +950,35 @@ namespace TIMSServer
                 command.ExecuteNonQuery();
             }
 
+            if (!TableExists(sqlite_conn, "Devices"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Devices"" (
+                ""ID""    INTEGER NOT NULL,
+	            ""DeviceType""    INTEGER NOT NULL,
+	            ""IPAddress"" TEXT NOT NULL,
+                ""Nickname""	TEXT NOT NULL,
+                PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                    "INSERT INTO DEVICES (DEVICETYPE, IPADDRESS, NICKNAME) VALUES ('TERMINAL', '::1', 'SERVER')";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "DeviceAssignments"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""DeviceAssignments"" (
+                ""AssignmentID""  INTEGER NOT NULL,
+	            ""DeviceID""    INTEGER NOT NULL,
+                ""TerminalID""  INTEGER NOT NULL,
+	            PRIMARY KEY(""AssignmentID"" AUTOINCREMENT)
+                ); ";
+                command.ExecuteNonQuery();
+            }
+
             if (!TableExists(sqlite_conn, "Employees"))
             {
                 command.CommandText =
@@ -1145,6 +1174,60 @@ namespace TIMSServer
                 command.ExecuteNonQuery();
             }
 
+            if (!TableExists(sqlite_conn, "PricingProfiles"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""PricingProfiles"" (
+                ""ProfileID""  INTEGER NOT NULL,
+	            ""ProfileName"" TEXT NOT NULL,
+	            PRIMARY KEY(""ProfileID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                    @"INSERT INTO PRICINGPROFILES (PROFILEID, PROFILENAME) VALUES ('0', 'Default Profile')";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "PricingProfileElements"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""PricingProfileElements"" (
+                ""ElementID""  INTEGER NOT NULL,
+	            ""ProfileID"" INTEGER NOT NULL,
+                ""Priority"" INTEGER NOT NULL,
+                ""GroupCode"" TEXT,
+                ""Department"" TEXT,
+                ""SubDepartment"" TEXT,
+                ""ProductLine"" TEXT,
+                ""ItemNumber"" TEXT,
+                ""PriceSheet"" TEXT NOT NULL,
+                ""Margin"" REAL NOT NULL,
+                ""BeginDate"" TEXT,
+                ""EndDate"" TEXT,
+	            PRIMARY KEY(""ElementID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO PRICINGPROFILEELEMENTS 
+                    (ELEMENTID, PROFILEID, PRIORITY, GROUPCODE, DEPARTMENT, SUBDEPARTMENT, PRODUCTLINE, ITEMNUMBER, PRICESHEET, MARGIN, BEGINDATE, ENDDATE)
+                VALUES (
+                    '0',
+                    '0',
+                    '1',
+                    '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    'Cost',
+                    '25',
+                    '',
+                    '')";
+                command.ExecuteNonQuery();
+            }
+
             if (!TableExists(sqlite_conn, "PurchaseOrderItems"))
             {
                 command.CommandText =
@@ -1257,6 +1340,19 @@ namespace TIMSServer
                 command.ExecuteNonQuery();
             }
 
+            if (!TableExists(sqlite_conn, "ServerRelationships"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""ServerRelationships"" (
+                ""ID""    INTEGER NOT NULL,
+	            ""DeviceType""    INTEGER NOT NULL,
+	            ""IPAddress"" TEXT NOT NULL,
+                ""Relationship""	TEXT NOT NULL,
+                PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+            }
+
             if (!TableExists(sqlite_conn, "ShortcutMenus"))
             {
                 command.CommandText =
@@ -1281,47 +1377,7 @@ namespace TIMSServer
                 command.ExecuteNonQuery();
             }
 
-            if (!TableExists(sqlite_conn, "DeviceAssignments"))
-            {
-                command.CommandText =
-                @"CREATE TABLE ""DeviceAssignments"" (
-                ""AssignmentID""  INTEGER NOT NULL,
-	            ""DeviceID""    INTEGER NOT NULL,
-                ""TerminalID""  INTEGER NOT NULL,
-	            PRIMARY KEY(""AssignmentID"" AUTOINCREMENT)
-                ); ";
-                command.ExecuteNonQuery();
-            }
 
-            if (!TableExists(sqlite_conn, "Devices"))
-            {
-                command.CommandText =
-                @"CREATE TABLE ""Devices"" (
-                ""ID""    INTEGER NOT NULL,
-	            ""DeviceType""    INTEGER NOT NULL,
-	            ""IPAddress"" TEXT NOT NULL,
-                ""Nickname""	TEXT NOT NULL,
-                PRIMARY KEY(""ID"" AUTOINCREMENT)
-                )";
-                command.ExecuteNonQuery();
-
-                command.CommandText =
-                    "INSERT INTO DEVICES (DEVICETYPE, IPADDRESS, NICKNAME) VALUES ('TERMINAL', '::1', 'SERVER')";
-                command.ExecuteNonQuery();
-            }
-
-            if (!TableExists(sqlite_conn, "ServerRelationships"))
-            {
-                command.CommandText =
-                @"CREATE TABLE ""ServerRelationships"" (
-                ""ID""    INTEGER NOT NULL,
-	            ""DeviceType""    INTEGER NOT NULL,
-	            ""IPAddress"" TEXT NOT NULL,
-                ""Relationship""	TEXT NOT NULL,
-                PRIMARY KEY(""ID"" AUTOINCREMENT)
-                )";
-                command.ExecuteNonQuery();
-            }
             CloseConnection();
         }
 

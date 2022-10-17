@@ -32,37 +32,8 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.otherFunctionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alternateFunctionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.employeesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addEmployeeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editEmployeeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editEmployeePermissionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewEmployeeDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.itemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewItemDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.customersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addCustomerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editCustomerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewCustomerDetailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.calculatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.catalogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.accountingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.salesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewTodaysSalesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.findInvoiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.merchandiseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pickTicketsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.createNewPickTicketToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.findPickTicketToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pickTicketSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.itemsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.itemInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.barcodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.returnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.defectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editShortcutMenusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -168,10 +139,7 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.otherFunctionsToolStripMenuItem,
-            this.logoutToolStripMenuItem,
             this.catalogToolStripMenuItem,
-            this.accountingToolStripMenuItem,
-            this.merchandiseToolStripMenuItem,
             this.helpToolStripMenuItem,
             this.shortcutsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -191,234 +159,22 @@
             // 
             // alternateFunctionsToolStripMenuItem
             // 
-            this.alternateFunctionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.employeesToolStripMenuItem,
-            this.itemsToolStripMenuItem,
-            this.customersToolStripMenuItem,
-            this.settingsToolStripMenuItem});
             this.alternateFunctionsToolStripMenuItem.Name = "alternateFunctionsToolStripMenuItem";
-            this.alternateFunctionsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.alternateFunctionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.alternateFunctionsToolStripMenuItem.Text = "Alternate Functions";
             this.alternateFunctionsToolStripMenuItem.Click += new System.EventHandler(this.alternateFunctionsToolStripMenuItem_Click);
-            // 
-            // employeesToolStripMenuItem
-            // 
-            this.employeesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addEmployeeToolStripMenuItem,
-            this.editEmployeeToolStripMenuItem,
-            this.viewEmployeeDetailsToolStripMenuItem});
-            this.employeesToolStripMenuItem.Name = "employeesToolStripMenuItem";
-            this.employeesToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
-            this.employeesToolStripMenuItem.Text = "Employees";
-            // 
-            // addEmployeeToolStripMenuItem
-            // 
-            this.addEmployeeToolStripMenuItem.Name = "addEmployeeToolStripMenuItem";
-            this.addEmployeeToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.addEmployeeToolStripMenuItem.Text = "Add Employee";
-            // 
-            // editEmployeeToolStripMenuItem
-            // 
-            this.editEmployeeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editEmployeePermissionsToolStripMenuItem});
-            this.editEmployeeToolStripMenuItem.Name = "editEmployeeToolStripMenuItem";
-            this.editEmployeeToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.editEmployeeToolStripMenuItem.Text = "Edit Employee";
-            // 
-            // editEmployeePermissionsToolStripMenuItem
-            // 
-            this.editEmployeePermissionsToolStripMenuItem.Name = "editEmployeePermissionsToolStripMenuItem";
-            this.editEmployeePermissionsToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.editEmployeePermissionsToolStripMenuItem.Text = "Edit Employee Permissions";
-            this.editEmployeePermissionsToolStripMenuItem.Click += new System.EventHandler(this.editEmployeePermissionsToolStripMenuItem_Click);
-            // 
-            // viewEmployeeDetailsToolStripMenuItem
-            // 
-            this.viewEmployeeDetailsToolStripMenuItem.Name = "viewEmployeeDetailsToolStripMenuItem";
-            this.viewEmployeeDetailsToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.viewEmployeeDetailsToolStripMenuItem.Text = "View Employee Details";
-            // 
-            // itemsToolStripMenuItem
-            // 
-            this.itemsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addItemToolStripMenuItem,
-            this.editItemToolStripMenuItem,
-            this.viewItemDetailsToolStripMenuItem});
-            this.itemsToolStripMenuItem.Name = "itemsToolStripMenuItem";
-            this.itemsToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
-            this.itemsToolStripMenuItem.Text = "Items";
-            // 
-            // addItemToolStripMenuItem
-            // 
-            this.addItemToolStripMenuItem.Name = "addItemToolStripMenuItem";
-            this.addItemToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.addItemToolStripMenuItem.Text = "Add Item";
-            // 
-            // editItemToolStripMenuItem
-            // 
-            this.editItemToolStripMenuItem.Name = "editItemToolStripMenuItem";
-            this.editItemToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.editItemToolStripMenuItem.Text = "Edit Item";
-            // 
-            // viewItemDetailsToolStripMenuItem
-            // 
-            this.viewItemDetailsToolStripMenuItem.Name = "viewItemDetailsToolStripMenuItem";
-            this.viewItemDetailsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.viewItemDetailsToolStripMenuItem.Text = "View Item Details";
-            // 
-            // customersToolStripMenuItem
-            // 
-            this.customersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addCustomerToolStripMenuItem,
-            this.editCustomerToolStripMenuItem,
-            this.viewCustomerDetailsToolStripMenuItem});
-            this.customersToolStripMenuItem.Name = "customersToolStripMenuItem";
-            this.customersToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
-            this.customersToolStripMenuItem.Text = "Customers";
-            // 
-            // addCustomerToolStripMenuItem
-            // 
-            this.addCustomerToolStripMenuItem.Name = "addCustomerToolStripMenuItem";
-            this.addCustomerToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.addCustomerToolStripMenuItem.Text = "Add Customer";
-            this.addCustomerToolStripMenuItem.Click += new System.EventHandler(this.addCustomerToolStripMenuItem_Click);
-            // 
-            // editCustomerToolStripMenuItem
-            // 
-            this.editCustomerToolStripMenuItem.Name = "editCustomerToolStripMenuItem";
-            this.editCustomerToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.editCustomerToolStripMenuItem.Text = "Edit Customer";
-            // 
-            // viewCustomerDetailsToolStripMenuItem
-            // 
-            this.viewCustomerDetailsToolStripMenuItem.Name = "viewCustomerDetailsToolStripMenuItem";
-            this.viewCustomerDetailsToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.viewCustomerDetailsToolStripMenuItem.Text = "View Customer Details";
-            // 
-            // settingsToolStripMenuItem
-            // 
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
-            this.settingsToolStripMenuItem.Text = "Settings";
             // 
             // calculatorToolStripMenuItem
             // 
             this.calculatorToolStripMenuItem.Name = "calculatorToolStripMenuItem";
-            this.calculatorToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.calculatorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.calculatorToolStripMenuItem.Text = "Calculator";
-            // 
-            // logoutToolStripMenuItem
-            // 
-            this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
-            this.logoutToolStripMenuItem.Text = "Logout";
             // 
             // catalogToolStripMenuItem
             // 
             this.catalogToolStripMenuItem.Name = "catalogToolStripMenuItem";
             this.catalogToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.catalogToolStripMenuItem.Text = "Catalog";
-            // 
-            // accountingToolStripMenuItem
-            // 
-            this.accountingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.salesToolStripMenuItem});
-            this.accountingToolStripMenuItem.Name = "accountingToolStripMenuItem";
-            this.accountingToolStripMenuItem.Size = new System.Drawing.Size(81, 20);
-            this.accountingToolStripMenuItem.Text = "Accounting";
-            // 
-            // salesToolStripMenuItem
-            // 
-            this.salesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.viewTodaysSalesToolStripMenuItem,
-            this.findInvoiceToolStripMenuItem});
-            this.salesToolStripMenuItem.Name = "salesToolStripMenuItem";
-            this.salesToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
-            this.salesToolStripMenuItem.Text = "Sales";
-            // 
-            // viewTodaysSalesToolStripMenuItem
-            // 
-            this.viewTodaysSalesToolStripMenuItem.Name = "viewTodaysSalesToolStripMenuItem";
-            this.viewTodaysSalesToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.viewTodaysSalesToolStripMenuItem.Text = "View Today\'s Sales";
-            // 
-            // findInvoiceToolStripMenuItem
-            // 
-            this.findInvoiceToolStripMenuItem.Name = "findInvoiceToolStripMenuItem";
-            this.findInvoiceToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-            this.findInvoiceToolStripMenuItem.Text = "Find Invoice";
-            // 
-            // merchandiseToolStripMenuItem
-            // 
-            this.merchandiseToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.pickTicketsToolStripMenuItem,
-            this.itemsToolStripMenuItem1});
-            this.merchandiseToolStripMenuItem.Name = "merchandiseToolStripMenuItem";
-            this.merchandiseToolStripMenuItem.Size = new System.Drawing.Size(87, 20);
-            this.merchandiseToolStripMenuItem.Text = "Merchandise";
-            // 
-            // pickTicketsToolStripMenuItem
-            // 
-            this.pickTicketsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createNewPickTicketToolStripMenuItem,
-            this.findPickTicketToolStripMenuItem,
-            this.pickTicketSettingsToolStripMenuItem});
-            this.pickTicketsToolStripMenuItem.Name = "pickTicketsToolStripMenuItem";
-            this.pickTicketsToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.pickTicketsToolStripMenuItem.Text = "Pick Tickets";
-            // 
-            // createNewPickTicketToolStripMenuItem
-            // 
-            this.createNewPickTicketToolStripMenuItem.Name = "createNewPickTicketToolStripMenuItem";
-            this.createNewPickTicketToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.createNewPickTicketToolStripMenuItem.Text = "Create New Pick Ticket";
-            // 
-            // findPickTicketToolStripMenuItem
-            // 
-            this.findPickTicketToolStripMenuItem.Name = "findPickTicketToolStripMenuItem";
-            this.findPickTicketToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.findPickTicketToolStripMenuItem.Text = "Find Pick Ticket";
-            // 
-            // pickTicketSettingsToolStripMenuItem
-            // 
-            this.pickTicketSettingsToolStripMenuItem.Name = "pickTicketSettingsToolStripMenuItem";
-            this.pickTicketSettingsToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.pickTicketSettingsToolStripMenuItem.Text = "Pick Ticket Settings";
-            // 
-            // itemsToolStripMenuItem1
-            // 
-            this.itemsToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itemInformationToolStripMenuItem,
-            this.barcodesToolStripMenuItem,
-            this.returnsToolStripMenuItem,
-            this.defectsToolStripMenuItem});
-            this.itemsToolStripMenuItem1.Name = "itemsToolStripMenuItem1";
-            this.itemsToolStripMenuItem1.Size = new System.Drawing.Size(135, 22);
-            this.itemsToolStripMenuItem1.Text = "Items";
-            // 
-            // itemInformationToolStripMenuItem
-            // 
-            this.itemInformationToolStripMenuItem.Name = "itemInformationToolStripMenuItem";
-            this.itemInformationToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.itemInformationToolStripMenuItem.Text = "Item Information";
-            // 
-            // barcodesToolStripMenuItem
-            // 
-            this.barcodesToolStripMenuItem.Name = "barcodesToolStripMenuItem";
-            this.barcodesToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.barcodesToolStripMenuItem.Text = "Barcodes";
-            // 
-            // returnsToolStripMenuItem
-            // 
-            this.returnsToolStripMenuItem.Name = "returnsToolStripMenuItem";
-            this.returnsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.returnsToolStripMenuItem.Text = "Returns";
-            // 
-            // defectsToolStripMenuItem
-            // 
-            this.defectsToolStripMenuItem.Name = "defectsToolStripMenuItem";
-            this.defectsToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.defectsToolStripMenuItem.Text = "Defects";
             // 
             // helpToolStripMenuItem
             // 
@@ -1352,7 +1108,6 @@
 
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem otherFunctionsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem catalogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -1425,38 +1180,10 @@
         private System.Windows.Forms.Button changeSNButton;
         private System.Windows.Forms.Button cancelItemButton;
         private System.Windows.Forms.ToolStripMenuItem alternateFunctionsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem employeesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addEmployeeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem editEmployeeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem itemsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addItemToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem editItemToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem viewItemDetailsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem customersToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem viewEmployeeDetailsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addCustomerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem editCustomerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem viewCustomerDetailsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem calculatorToolStripMenuItem;
         private System.Windows.Forms.Label pndLabel;
-        private System.Windows.Forms.ToolStripMenuItem accountingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem salesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem viewTodaysSalesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem findInvoiceToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem merchandiseToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pickTicketsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem createNewPickTicketToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem findPickTicketToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pickTicketSettingsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem itemsToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem itemInformationToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem barcodesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem returnsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem defectsToolStripMenuItem;
         private System.Windows.Forms.ComboBox productLineDropBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ToolStripMenuItem editEmployeePermissionsToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn itemNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn productLine;
         private System.Windows.Forms.DataGridViewTextBoxColumn Description;

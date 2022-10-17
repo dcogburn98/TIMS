@@ -247,7 +247,20 @@ namespace TIMS.Server
             else
                 MessageBox.Show("Access Denied.");
         }
-
+        public static List<PricingProfile> RetrievePricingProfiles()
+        {
+            AuthContainer<List<PricingProfile>> container = proxy.RetrievePricingProfiles(currentKey);
+            if (container.Key.Success)
+            {
+                currentKey.Regenerate();
+                return container.Data;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
+        }
         #endregion
 
         #region Invoices

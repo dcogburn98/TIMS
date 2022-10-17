@@ -185,6 +185,18 @@
     <Compile Include="Forms\Customers\CustomerInformation.Designer.cs">
       <DependentUpon>CustomerInformation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Customers\PricingProfileEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Customers\PricingProfileEditor.Designer.cs">
+      <DependentUpon>PricingProfileEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Customers\PricingProfiles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Customers\PricingProfiles.Designer.cs">
+      <DependentUpon>PricingProfiles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ItemImporting\DefaultFieldValuesEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,12 +214,6 @@
     </Compile>
     <Compile Include="Forms\ItemImporting\ItemImportFieldEditor.Designer.cs">
       <DependentUpon>ItemImportFieldEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ItemMaintenance.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ItemMaintenance.Designer.cs">
-      <DependentUpon>ItemMaintenance.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Login\ServerAddressEntry.cs">
       <SubType>Form</SubType>
@@ -404,6 +410,12 @@
     <EmbeddedResource Include="Forms\Customers\CustomerInformation.resx">
       <DependentUpon>CustomerInformation.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Customers\PricingProfileEditor.resx">
+      <DependentUpon>PricingProfileEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Customers\PricingProfiles.resx">
+      <DependentUpon>PricingProfiles.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ItemImporting\DefaultFieldValuesEditor.resx">
       <DependentUpon>DefaultFieldValuesEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -448,9 +460,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\POS\Invoicing.resx">
       <DependentUpon>Invoicing.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ItemMaintenance.resx">
-      <DependentUpon>ItemMaintenance.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Login\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>

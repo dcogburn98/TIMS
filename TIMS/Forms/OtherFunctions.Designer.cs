@@ -44,6 +44,7 @@ namespace TIMS.Forms
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.salesActivitiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.invoicingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabletInvoicingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.receivePaymentOnAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reviewTodaysSalesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -288,7 +289,6 @@ namespace TIMS.Forms
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.tabletInvoicingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage17.SuspendLayout();
@@ -322,7 +322,7 @@ namespace TIMS.Forms
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(836, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1123, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -351,6 +351,13 @@ namespace TIMS.Forms
             this.invoicingToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
             this.invoicingToolStripMenuItem.Text = "Invoicing";
             this.invoicingToolStripMenuItem.Click += new System.EventHandler(this.invoicingToolStripMenuItem_Click);
+            // 
+            // tabletInvoicingToolStripMenuItem
+            // 
+            this.tabletInvoicingToolStripMenuItem.Name = "tabletInvoicingToolStripMenuItem";
+            this.tabletInvoicingToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.tabletInvoicingToolStripMenuItem.Text = "Tablet Invoicing";
+            this.tabletInvoicingToolStripMenuItem.Click += new System.EventHandler(this.tabletInvoicingToolStripMenuItem_Click);
             // 
             // dashboardToolStripMenuItem
             // 
@@ -834,6 +841,7 @@ namespace TIMS.Forms
             this.pricingProfileToolStripMenuItem.Name = "pricingProfileToolStripMenuItem";
             this.pricingProfileToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.pricingProfileToolStripMenuItem.Text = "Pricing Profile";
+            this.pricingProfileToolStripMenuItem.Click += new System.EventHandler(this.pricingProfileToolStripMenuItem_Click);
             // 
             // customerCustomerPricingToolStripMenuItem
             // 
@@ -2403,18 +2411,11 @@ namespace TIMS.Forms
             this.tabPage4.Text = "Employee Management";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // tabletInvoicingToolStripMenuItem
-            // 
-            this.tabletInvoicingToolStripMenuItem.Name = "tabletInvoicingToolStripMenuItem";
-            this.tabletInvoicingToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
-            this.tabletInvoicingToolStripMenuItem.Text = "Tablet Invoicing";
-            this.tabletInvoicingToolStripMenuItem.Click += new System.EventHandler(this.tabletInvoicingToolStripMenuItem_Click);
-            // 
             // OtherFunctions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(836, 678);
+            this.ClientSize = new System.Drawing.Size(1123, 678);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;

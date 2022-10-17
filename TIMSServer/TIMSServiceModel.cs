@@ -93,10 +93,7 @@ namespace TIMSServer
 
             Program.CloseConnection();
 
-            if (value == null)
-                return null;
-            else
-                return value;
+            return value;
         }
         public Employee Login(string user, byte[] pass)
         {
@@ -1624,7 +1621,68 @@ namespace TIMSServer
             CloseConnection();
             return container;
         }
-        
+        public AuthContainer<List<PricingProfile>> RetrievePricingProfiles(AuthKey key)
+        {
+            AuthContainer<List<PricingProfile>> container = CheckAuthorization<List<PricingProfile>>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new List<PricingProfile>();
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT * FROM PRICINGPROFILES";
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                container.Data = null;
+                return container;
+            }
+            while (reader.Read())
+            {
+                container.Data.Add(new PricingProfile()
+                {
+                    ProfileID = reader.GetInt32(0),
+                    ProfileName = reader.GetString(1)
+                });
+            }
+            reader.Close();
+            command.CommandText = "SELECT * FROM PRICINGPROFILEELEMENTS WHERE PROFILEID = $PID";
+            foreach (PricingProfile profile in container.Data)
+            {
+                command.Parameters.Clear();
+                command.Parameters.Add(new SqliteParameter("$PID", profile.ProfileID));
+                reader = command.ExecuteReader();
+                if (!reader.HasRows)
+                {
+                    reader.Close();
+                    continue;
+                }
+                while (reader.Read())
+                {
+                    PricingProfileElement el = new PricingProfileElement();
+                    el.profileID = reader.GetInt32(1);
+                    el.priority = reader.GetInt32(2);
+                    el.groupCode = reader.GetString(3);
+                    el.department = reader.GetString(4);
+                    el.subDepartment = reader.GetString(5);
+                    el.productLine = reader.GetString(6);
+                    el.itemNumber = reader.GetString(7);
+                    el.priceSheet = (PricingProfileElement.PriceSheets)Enum.Parse(typeof(PricingProfileElement.PriceSheets), reader.GetString(8));
+                    el.margin = reader.GetDecimal(9);
+                    el.beginDate = DateTime.TryParse(reader.GetString(10), out DateTime i) ? (DateTime?)i : null;
+                    el.endDate = DateTime.TryParse(reader.GetString(11), out DateTime j) ? (DateTime?)j : null;
+                    container.Data.FirstOrDefault(ell => ell.ProfileID == profile.ProfileID).Elements.Add(el);
+                }
+            }
+
+            CloseConnection();
+            return container;
+        }
+
+
         #endregion
 
         #region Invoices

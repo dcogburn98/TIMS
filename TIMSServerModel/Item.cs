@@ -20,6 +20,8 @@ namespace TIMSServerModel
         public int previousYearVelocityCode;
         public int itemsPerContainer;
         public int standardPackage;
+        public string department;
+        public string subDepartment;
         public string category;
         public string SKU;
 
@@ -34,6 +36,7 @@ namespace TIMSServerModel
         public int daysOnOrder;
         public int daysOnBackorder;
 
+        public decimal calculatedPrice;
         public decimal listPrice;
         public decimal redPrice;
         public decimal yellowPrice;
