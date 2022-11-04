@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Linq;
 
 using TIMS.Forms.POS;
 using TIMS.Server;
@@ -157,7 +158,7 @@ namespace TIMS.Forms
 
             if (currentInvoice != null)
                 if (currentInvoice.items.Count > 0)
-                    newInvoice = currentInvoice;
+                    newInvoice = currentInvoice; //This looks pointless. It's not. Think about it.
                 else
                     currentInvoice = newInvoice;
             else
@@ -166,6 +167,14 @@ namespace TIMS.Forms
             currentInvoice.customer = c;
             currentInvoice.employee = Program.currentEmployee;
             currentInvoice.invoiceCreationTime = DateTime.Now;
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                (row.Tag as InvoiceItem).price = currentInvoice.customer.inStorePricingProfile.CalculatePrice(Communication.RetrieveItem(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString()));
+                (row.Tag as InvoiceItem).total = Math.Round((row.Tag as InvoiceItem).price * (row.Tag as InvoiceItem).quantity, 2);
+                row.Cells[6].Value = (row.Tag as InvoiceItem).price.ToString("C");
+                row.Cells[7].Value = (row.Tag as InvoiceItem).total.ToString("C");
+            }
 
             customerNoTB.Text = currentInvoice.customer.customerNumber + " " + currentInvoice.customer.customerName;
             EnableControls();
@@ -203,7 +212,7 @@ namespace TIMS.Forms
                     priceCodeTB.Text = "!";
 
                     priceTB.Enabled = true;
-                    priceTB.Text = workingItem.price.ToString();
+                    priceTB.Text = Math.Round(currentInvoice.customer.inStorePricingProfile.CalculatePrice(Communication.RetrieveItem(workingItem.itemNumber, workingItem.productLine)), 2).ToString();
 
                     taxedCB.Enabled = true;
                     taxedCB.Checked = workingItem.taxed;
@@ -336,6 +345,7 @@ namespace TIMS.Forms
                 dataGridView1.Rows[row].Cells[8].Value = "N";
             dataGridView1.Rows[row].Cells[9].Value = workingItem.codes;
             dataGridView1.Rows[row].Cells[10].Value = workingItem.ID;
+            dataGridView1.Rows[row].Tag = workingItem;
 
             itemNoTB.Clear();
             productLineDropBox.Items.Clear();
@@ -392,7 +402,7 @@ namespace TIMS.Forms
             priceCodeTB.Text = "!";
 
             priceTB.Enabled = true;
-            priceTB.Text = workingItem.price.ToString();
+            priceTB.Text = Math.Round(currentInvoice.customer.inStorePricingProfile.CalculatePrice(Communication.RetrieveItem(workingItem.itemNumber, workingItem.productLine)), 2).ToString();
 
             taxedCB.Enabled = true;
             taxedCB.Checked = workingItem.taxed;

@@ -160,6 +160,39 @@ namespace TIMS.Forms.Customers
             serviceChargeTB.Text = currentCustomer.serviceCharge.ToString();
             accountBalanceTB.Text = currentCustomer.accountBalance.ToString();
             #endregion
+
+            #region Pricing Profiles
+            dataGridView2.Rows.Clear();
+            dataGridView3.Rows.Clear();
+            dataGridView4.Rows.Clear();
+
+            foreach (PricingProfile profile in Communication.RetrievePricingProfiles())
+            {
+                int row = dataGridView2.Rows.Add();
+                dataGridView2.Rows[row].Cells[0].Value = profile.ProfileID;
+                dataGridView2.Rows[row].Cells[1].Value = profile.ProfileName;
+                dataGridView2.Rows[row].Tag = profile;
+            }
+
+            defaultInstorePriceSheet.Text = Enum.GetName(typeof(PricingProfileElement.PriceSheets), currentCustomer.inStorePricingProfile.defaultPriceSheet);
+            foreach (PricingProfile profile in currentCustomer.inStorePricingProfile.Profiles)
+            {
+                int row = dataGridView3.Rows.Add();
+                dataGridView3.Rows[row].Cells[0].Value = profile.ProfileID;
+                dataGridView3.Rows[row].Cells[1].Value = profile.ProfileName;
+                dataGridView3.Rows[row].Tag = profile;
+            }
+
+            defaultOnlinePriceSheet.Text = Enum.GetName(typeof(PricingProfileElement.PriceSheets), currentCustomer.onlinePricingProfile.defaultPriceSheet);
+            foreach (PricingProfile profile in currentCustomer.onlinePricingProfile.Profiles)
+            {
+                int row = dataGridView4.Rows.Add();
+                dataGridView4.Rows[row].Cells[0].Value = profile.ProfileID;
+                dataGridView4.Rows[row].Cells[1].Value = profile.ProfileName;
+                dataGridView4.Rows[row].Tag = profile;
+            }
+
+            #endregion
         }
 
         private void accountNumberTB_KeyDown(object sender, KeyEventArgs e)

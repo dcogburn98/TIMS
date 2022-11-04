@@ -100,7 +100,7 @@ namespace TIMSServer
             Console.WriteLine("Login Called for user: " + user);
             #region GetIP
             string addr = GetClientAddress();
-            if (!DeviceExists(addr))
+            if (!DeviceExists(addr) || addr == "127.0.0.1")
             {
                 Console.WriteLine("Terminal: " + addr + " is not registered with the server. Please refer to the user manual on how to register devices.");
                 return new Employee() { key = new AuthKey() { Success = false } };
@@ -1189,6 +1189,9 @@ namespace TIMSServer
                 return container;
             container.Data = new Customer();
 
+            string[] inStoreProfiles = new string[0];
+            string[] onlineStoreProfiles = new string[0];
+
             OpenConnection();
 
             SqliteCommand sqlite_cmd;
@@ -1214,43 +1217,48 @@ namespace TIMSServer
             {
                 container.Data.customerName = reader.GetString(0);
                 container.Data.customerNumber = reader.GetString(1);
-                container.Data.pricingProfile = reader.GetString(2);
-                container.Data.canCharge = reader.GetInt32(3) != 0;
-                container.Data.creditLimit = reader.GetDecimal(4);
-                container.Data.accountBalance = reader.GetDecimal(5);
-                container.Data.phoneNumber = reader.GetString(6);
-                container.Data.faxNumber = reader.GetString(7);
-                container.Data.billingAddress = reader.GetString(8);
-                container.Data.shippingAddress = reader.GetString(9);
-                container.Data.invoiceMessage = reader.GetString(10);
-                container.Data.website = reader.GetString(11);
-                container.Data.email = reader.GetString(12);
-                container.Data.assignedRep = reader.GetString(13);
-                container.Data.businessCategory = reader.GetString(14);
-                container.Data.dateAdded = DateTime.Parse(reader.GetString(15));
-                container.Data.dateOfLastSale = DateTime.Parse(reader.GetString(16));
-                container.Data.dateOfLastROA = DateTime.Parse(reader.GetString(17));
-                container.Data.preferredLanguage = reader.GetString(18);
-                container.Data.authorizedBuyers = reader.GetString(19);
-                container.Data.defaultTaxTable = reader.GetString(20);
-                container.Data.deliveryTaxTable = reader.GetString(21);
-                container.Data.primaryTaxStatus = reader.GetString(22);
-                container.Data.secondaryTaxStatus = reader.GetString(23);
-                container.Data.primaryTaxExemptionNumber = reader.GetString(24);
-                container.Data.secondaryTaxExemptionNumber = reader.GetString(25);
-                container.Data.primaryTaxExemptionExpiration = reader.GetString(26) == string.Empty ? DateTime.MinValue.AddYears(1970) : DateTime.Parse(reader.GetString(26));
-                container.Data.secondaryTaxExemptionExpiration = reader.GetString(27) == string.Empty ? DateTime.MinValue.AddYears(1970) : DateTime.Parse(reader.GetString(27));
-                container.Data.printCatalogNotes = reader.GetInt32(28) != 0;
-                container.Data.printBalance = reader.GetInt32(29) != 0;
-                container.Data.emailInvoices = reader.GetInt32(30) != 0;
-                container.Data.allowBackorders = reader.GetInt32(31) != 0;
-                container.Data.allowSpecialOrders = reader.GetInt32(32) != 0;
-                container.Data.exemptFromInvoiceSurcharges = reader.GetInt32(33) != 0;
-                container.Data.extraInvoiceCopies = reader.GetInt32(34);
-                container.Data.PORequiredThresholdAmount = reader.GetDecimal(35);
-                container.Data.billingType = reader.GetString(36);
+                inStoreProfiles = reader.GetString(2).Split(',');
+                onlineStoreProfiles = reader.GetString(3).Split(',');
+                container.Data.inStorePricingProfile = new PricingProfileCollection();
+                container.Data.onlinePricingProfile = new PricingProfileCollection();
+                container.Data.inStorePricingProfile.defaultPriceSheet = (PricingProfileElement.PriceSheets)Enum.Parse(typeof(PricingProfileElement.PriceSheets), reader.GetString(4));
+                container.Data.onlinePricingProfile.defaultPriceSheet = (PricingProfileElement.PriceSheets)Enum.Parse(typeof(PricingProfileElement.PriceSheets), reader.GetString(5));
+                container.Data.canCharge = reader.GetInt32(6) != 0;
+                container.Data.creditLimit = reader.GetDecimal(7);
+                container.Data.accountBalance = reader.GetDecimal(8);
+                container.Data.phoneNumber = reader.GetString(9);
+                container.Data.faxNumber = reader.GetString(10);
+                container.Data.billingAddress = reader.GetString(11);
+                container.Data.shippingAddress = reader.GetString(12);
+                container.Data.invoiceMessage = reader.GetString(13);
+                container.Data.website = reader.GetString(14);
+                container.Data.email = reader.GetString(15);
+                container.Data.assignedRep = reader.GetString(16);
+                container.Data.businessCategory = reader.GetString(17);
+                container.Data.dateAdded = DateTime.Parse(reader.GetString(18));
+                container.Data.dateOfLastSale = DateTime.Parse(reader.GetString(19));
+                container.Data.dateOfLastROA = DateTime.Parse(reader.GetString(20));
+                container.Data.preferredLanguage = reader.GetString(21);
+                container.Data.authorizedBuyers = reader.GetString(22);
+                container.Data.defaultTaxTable = reader.GetString(23);
+                container.Data.deliveryTaxTable = reader.GetString(24);
+                container.Data.primaryTaxStatus = reader.GetString(25);
+                container.Data.secondaryTaxStatus = reader.GetString(26);
+                container.Data.primaryTaxExemptionNumber = reader.GetString(27);
+                container.Data.secondaryTaxExemptionNumber = reader.GetString(28);
+                container.Data.primaryTaxExemptionExpiration = reader.GetString(29) == string.Empty ? DateTime.MinValue.AddYears(1970) : DateTime.Parse(reader.GetString(29));
+                container.Data.secondaryTaxExemptionExpiration = reader.GetString(30) == string.Empty ? DateTime.MinValue.AddYears(1970) : DateTime.Parse(reader.GetString(30));
+                container.Data.printCatalogNotes = reader.GetInt32(31) != 0;
+                container.Data.printBalance = reader.GetInt32(32) != 0;
+                container.Data.emailInvoices = reader.GetInt32(33) != 0;
+                container.Data.allowBackorders = reader.GetInt32(34) != 0;
+                container.Data.allowSpecialOrders = reader.GetInt32(35) != 0;
+                container.Data.exemptFromInvoiceSurcharges = reader.GetInt32(36) != 0;
+                container.Data.extraInvoiceCopies = reader.GetInt32(37);
+                container.Data.PORequiredThresholdAmount = reader.GetDecimal(38);
+                container.Data.billingType = reader.GetString(39);
 
-                switch (reader.GetString(36))
+                switch (reader.GetString(39))
                 {
                     case ("Cash Only"):
                         container.Data.availablePaymentTypes.Add(Payment.PaymentTypes.Cash);
@@ -1285,41 +1293,51 @@ namespace TIMSServer
                         break;
                 }
 
-                container.Data.defaultToDeliver = reader.GetInt32(37) != 0;
-                container.Data.deliveryRoute = reader.GetString(38);
-                container.Data.travelTime = reader.GetInt32(39);
-                container.Data.travelDistance = reader.GetInt32(40);
-                container.Data.minimumSaleFreeDelivery = reader.GetDecimal(41);
-                container.Data.deliveryCharge = reader.GetDecimal(42);
-                container.Data.statementType = reader.GetString(43);
-                container.Data.percentDiscount = reader.GetDecimal(44);
-                container.Data.paidForByDiscount = reader.GetInt32(45);
-                container.Data.dueDate = reader.GetInt32(46);
-                container.Data.extraStatementCopies = reader.GetInt32(47);
-                container.Data.sendInvoicesEvery_Days = reader.GetInt32(48);
-                container.Data.sendAccountSummaryEvery_Days = reader.GetInt32(49);
-                container.Data.emailStatements = reader.GetInt32(50) != 0;
-                container.Data.statementMailingAddress = reader.GetString(51);
-                container.Data.lastPaymentAmount = reader.GetDecimal(52);
-                container.Data.lastPaymentDate = reader.GetString(53) == string.Empty ? DateTime.MinValue : DateTime.Parse(reader.GetString(53));
-                container.Data.highestAmountOwed = reader.GetDecimal(54);
-                container.Data.highestAmountOwedDate = reader.GetString(55) == string.Empty ? DateTime.MinValue : DateTime.Parse(reader.GetString(55));
-                container.Data.highestAmountPaid = reader.GetDecimal(56);
-                container.Data.highestAmountPaidDate = reader.GetString(57) == string.Empty ? DateTime.MinValue : DateTime.Parse(reader.GetString(57));
-                container.Data.lastStatementAmount = reader.GetDecimal(58);
-                container.Data.totalDue = reader.GetDecimal(59);
-                container.Data.due30 = reader.GetDecimal(60);
-                container.Data.due60 = reader.GetDecimal(61);
-                container.Data.due90 = reader.GetDecimal(62);
-                container.Data.furtherDue = reader.GetDecimal(63);
-                container.Data.serviceCharge = reader.GetDecimal(64);
-                container.Data.enabledTIMSServerRelations = reader.GetInt32(65) != 0;
-                container.Data.relationshipKey = reader.GetString(66);
-                container.Data.automaticallySendPriceUpdates = reader.GetInt32(67) != 0;
-                container.Data.automaticallySendMedia = reader.GetInt32(68) != 0;
+                container.Data.defaultToDeliver = reader.GetInt32(40) != 0;
+                container.Data.deliveryRoute = reader.GetString(41);
+                container.Data.travelTime = reader.GetInt32(42);
+                container.Data.travelDistance = reader.GetInt32(43);
+                container.Data.minimumSaleFreeDelivery = reader.GetDecimal(44);
+                container.Data.deliveryCharge = reader.GetDecimal(45);
+                container.Data.statementType = reader.GetString(46);
+                container.Data.percentDiscount = reader.GetDecimal(47);
+                container.Data.paidForByDiscount = reader.GetInt32(48);
+                container.Data.dueDate = reader.GetInt32(49);
+                container.Data.extraStatementCopies = reader.GetInt32(50);
+                container.Data.sendInvoicesEvery_Days = reader.GetInt32(51);
+                container.Data.sendAccountSummaryEvery_Days = reader.GetInt32(52);
+                container.Data.emailStatements = reader.GetInt32(53) != 0;
+                container.Data.statementMailingAddress = reader.GetString(54);
+                container.Data.lastPaymentAmount = reader.GetDecimal(55);
+                container.Data.lastPaymentDate = reader.GetString(56) == string.Empty ? DateTime.MinValue : DateTime.Parse(reader.GetString(56));
+                container.Data.highestAmountOwed = reader.GetDecimal(57);
+                container.Data.highestAmountOwedDate = reader.GetString(58) == string.Empty ? DateTime.MinValue : DateTime.Parse(reader.GetString(58));
+                container.Data.highestAmountPaid = reader.GetDecimal(59);
+                container.Data.highestAmountPaidDate = reader.GetString(60) == string.Empty ? DateTime.MinValue : DateTime.Parse(reader.GetString(60));
+                container.Data.lastStatementAmount = reader.GetDecimal(61);
+                container.Data.totalDue = reader.GetDecimal(62);
+                container.Data.due30 = reader.GetDecimal(63);
+                container.Data.due60 = reader.GetDecimal(64);
+                container.Data.due90 = reader.GetDecimal(65);
+                container.Data.furtherDue = reader.GetDecimal(66);
+                container.Data.serviceCharge = reader.GetDecimal(67);
+                container.Data.enabledTIMSServerRelations = reader.GetInt32(68) != 0;
+                container.Data.relationshipKey = reader.GetString(69);
+                container.Data.automaticallySendPriceUpdates = reader.GetInt32(70) != 0;
+                container.Data.automaticallySendMedia = reader.GetInt32(71) != 0;
             }
 
             CloseConnection();
+
+            List<PricingProfile> Profiles = RetrievePricingProfiles(BypassKey).Data;
+            foreach (string profile in inStoreProfiles)
+            {
+                container.Data.inStorePricingProfile.Profiles.Add(Profiles.First(el => el.ProfileID.ToString().ToUpper() == profile));
+            }
+            foreach (string profile in onlineStoreProfiles)
+            {
+                container.Data.onlinePricingProfile.Profiles.Add(Profiles.First(el => el.ProfileID.ToString().ToUpper() == profile));
+            }
             return container;
         }
         public AuthContainer<List<Customer>> GetCustomers(AuthKey key)
@@ -1367,7 +1385,10 @@ namespace TIMSServer
             command.CommandText =
                 @"UPDATE CUSTOMERS SET
                     CustomerName =                      $NAME,
-                    PricingProfile =                    $PROFILE,
+                    InStorePricingProfile =             $INSTOREPROFILES,
+                    OnlinePricingProfile =              $ONLINEPROFILES,
+                    DefaultInStorePriceSheet =          $INSTOREPRICESHEET,
+                    DefaultOnlinePriceSheet =           $ONLINEPRICESHEET,
                     CanCharge =                         $CANCHARGE,
                     CreditLimit =                       $CREDITLIMIT,
                     AccountBalance =                    $BALANCE,
@@ -1437,7 +1458,10 @@ namespace TIMSServer
                 WHERE CUSTOMERNUMBER = $NUMBER";
             command.Parameters.Add(new SqliteParameter("$NAME", c.customerName));
             command.Parameters.Add(new SqliteParameter("$NUMBER", c.customerNumber));
-            command.Parameters.Add(new SqliteParameter("$PROFILE", c.pricingProfile));
+            command.Parameters.Add(new SqliteParameter("$INSTOREPROFILES", c.inStorePricingProfile.ToString()));
+            command.Parameters.Add(new SqliteParameter("$ONLINEPROFILES", c.onlinePricingProfile.ToString()));
+            command.Parameters.Add(new SqliteParameter("$INSTOREPRICESHEET", c.inStorePricingProfile.defaultPriceSheet));
+            command.Parameters.Add(new SqliteParameter("$ONLINEPRICESHEET", c.onlinePricingProfile.defaultPriceSheet));
             command.Parameters.Add(new SqliteParameter("$CANCHARGE", c.canCharge));
             command.Parameters.Add(new SqliteParameter("$CREDITLIMIT", c.creditLimit));
             command.Parameters.Add(new SqliteParameter("$BALANCE", c.accountBalance));
@@ -1520,7 +1544,8 @@ namespace TIMSServer
             SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 @"INSERT INTO CUSTOMERS (
-                    CustomerName, CustomerNumber, PricingProfile, CanCharge, CreditLimit, AccountBalance,
+                    CustomerName, CustomerNumber, InStorePricingProfile, OnlinePricingProfile, DefaultInStorePriceSheet, 
+                    DefaultOnlinePriceSheet, CanCharge, CreditLimit, AccountBalance,
                     PhoneNumber, FaxNumber, BillingAddress, ShippingAddress, InvoiceMessage, Website,
                     Email, AssignedRep, BusinessCategory, DateAdded, DateOfLastSale, DateOfLastROA,
                     PreferredLanguage, AuthorizedBuyers, DefaultTaxTable, DeliveryTaxTable, PrimaryTaxStatus,
@@ -1535,7 +1560,8 @@ namespace TIMSServer
                     Due30Days, Due60Days, Due90Days, FurtherDue, ServiceCharge, EnableTIMSRelations,
                     RelationshipKey, AutomaticallySendPriceUpdates, AutomaticallySendMedia) 
                 VALUES (
-                    $NAME, $NUMBER, $PROFILE, $CANCHARGE, $CREDITLIMIT, $BALANCE, $PHONE, $FAX, $BILLINGADDRESS, $SHIPPINGADDRESS, 
+                    $NAME, $NUMBER, $INSTOREPROFILES, $ONLINEPROFILES, $INSTOREPRICESHEET, $ONLINEPRICESHEET, 
+                    $CANCHARGE, $CREDITLIMIT, $BALANCE, $PHONE, $FAX, $BILLINGADDRESS, $SHIPPINGADDRESS, 
                     $INVOICEMESSAGE, $WEBSITE, $EMAIL, $ASSIGNEDREP, $CATEGORY, $DATEADDED, $DATELASTSALE, $DATELASTROA, $LANGUAGE, 
                     $BUYERS, $DEFAULTTAXTABLE, $DELIVERYTAXTABLE, $PRIMARYTAXSTATUS, $SECONDARYTAXSTATUS, $PRIMARYTAXEXEMPTIONNUMBER, 
                     $SECONDARYTAXEXEMPTIONNUMBER, $PRIMARYTAXEXEMPTEXPIRE, $SECONDARYTAXEXEMPTEXPIRE, $PRINTCATALOGNOTES, 
@@ -1549,7 +1575,10 @@ namespace TIMSServer
 
             command.Parameters.Add(new SqliteParameter("$NAME", c.customerName));
             command.Parameters.Add(new SqliteParameter("$NUMBER", c.customerNumber));
-            command.Parameters.Add(new SqliteParameter("$PROFILE", c.pricingProfile));
+            command.Parameters.Add(new SqliteParameter("$INSTOREPROFILES", c.inStorePricingProfile.ToString()));
+            command.Parameters.Add(new SqliteParameter("$ONLINEPROFILES", c.onlinePricingProfile.ToString()));
+            command.Parameters.Add(new SqliteParameter("$INSTOREPRICESHEET", c.inStorePricingProfile.defaultPriceSheet));
+            command.Parameters.Add(new SqliteParameter("$ONLINEPRICESHEET", c.onlinePricingProfile.defaultPriceSheet));
             command.Parameters.Add(new SqliteParameter("$CANCHARGE", c.canCharge));
             command.Parameters.Add(new SqliteParameter("$CREDITLIMIT", c.creditLimit));
             command.Parameters.Add(new SqliteParameter("$BALANCE", c.accountBalance));
@@ -1676,12 +1705,12 @@ namespace TIMSServer
                     el.endDate = DateTime.TryParse(reader.GetString(11), out DateTime j) ? (DateTime?)j : null;
                     container.Data.FirstOrDefault(ell => ell.ProfileID == profile.ProfileID).Elements.Add(el);
                 }
+                reader.Close();
             }
 
             CloseConnection();
             return container;
         }
-
 
         #endregion
 
@@ -1993,11 +2022,6 @@ namespace TIMSServer
         public Request InitiatePayment(Invoice inv, decimal paymentAmount)
         {
             return PaymentCard.ProcessOutOfScopeAsync(inv, paymentAmount);
-            //Payment payment = new Payment();
-            //payment.cardResponse = PaymentCard.ProcessOutOfScopeAsync(inv, paymentAmount);
-            //payment.paymentType = Payment.PaymentTypes.PaymentCard;
-            //payment.paymentAmount = decimal.Parse(payment.cardResponse.xAuthAmount == String.Empty ? "0" : payment.cardResponse.xAuthAmount);
-            //return payment;
         }
         
         #endregion

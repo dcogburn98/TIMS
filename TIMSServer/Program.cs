@@ -700,7 +700,10 @@ namespace TIMSServer
                     @"CREATE TABLE ""Customers""(
                     ""CustomerName""  TEXT NOT NULL,
                     ""CustomerNumber""    TEXT NOT NULL,
-                    ""PricingProfile""    TEXT NOT NULL,
+                    ""InStorePricingProfile""    TEXT NOT NULL,
+                    ""OnlinePricingProfile""    TEXT NOT NULL,
+                    ""DefaultInStorePriceSheet""    TEXT NOT NULL,
+                    ""DefaultOnlinePriceSheet""    TEXT NOT NULL,
                     ""CanCharge"" INTEGER NOT NULL,
                     ""CreditLimit""   REAL NOT NULL,
                     ""AccountBalance""    REAL NOT NULL,
@@ -773,7 +776,8 @@ namespace TIMSServer
 
                 command.CommandText =
                 @"INSERT INTO Customers (
-                    ""CustomerName"", ""CustomerNumber"", ""PricingProfile"", ""CanCharge"", ""CreditLimit"", ""AccountBalance"",
+                    ""CustomerName"", ""CustomerNumber"", ""InStorePricingProfile"", ""OnlinePricingProfile"", ""DefaultInStorePriceSheet"", 
+                    ""DefaultOnlinePriceSheet"", ""CanCharge"", ""CreditLimit"", ""AccountBalance"",
                     ""PhoneNumber"", ""FaxNumber"", ""BillingAddress"", ""ShippingAddress"", ""InvoiceMessage"", ""Website"",
                     ""Email"", ""AssignedRep"", ""BusinessCategory"", ""DateAdded"", ""DateOfLastSale"", ""DateOfLastROA"",
                     ""PreferredLanguage"", ""AuthorizedBuyers"", ""DefaultTaxTable"", ""DeliveryTaxTable"", ""PrimaryTaxStatus"",
@@ -790,7 +794,10 @@ namespace TIMSServer
                 VALUES (
                     'Cash Sale', --Customer Name
                     '0', --Customer Number
-                    'Green', --Pricing Profile
+                    '0', --In Store Pricing Profile
+                    '0', --Online Pricing Profile
+                    'Green', --Default In Store Price Sheet
+                    'Green', --Default Online Price Sheet
                     '0', --Can Charge
                     '0', --Credit Limit
                     '0', --Account Balance
@@ -862,7 +869,8 @@ namespace TIMSServer
 
                 command.CommandText =
                 @"INSERT INTO Customers (
-                    ""CustomerName"", ""CustomerNumber"", ""PricingProfile"", ""CanCharge"", ""CreditLimit"", ""AccountBalance"",
+                    ""CustomerName"", ""CustomerNumber"", ""InStorePricingProfile"", ""OnlinePricingProfile"", ""DefaultInStorePriceSheet"", 
+                    ""DefaultOnlinePriceSheet"", ""CanCharge"", ""CreditLimit"", ""AccountBalance"",
                     ""PhoneNumber"", ""FaxNumber"", ""BillingAddress"", ""ShippingAddress"", ""InvoiceMessage"", ""Website"",
                     ""Email"", ""AssignedRep"", ""BusinessCategory"", ""DateAdded"", ""DateOfLastSale"", ""DateOfLastROA"",
                     ""PreferredLanguage"", ""AuthorizedBuyers"", ""DefaultTaxTable"", ""DeliveryTaxTable"", ""PrimaryTaxStatus"",
@@ -879,7 +887,10 @@ namespace TIMSServer
                 VALUES (
                     'Default Customer', --Customer Name
                     '9999', --Customer Number
-                    'Green', --Pricing Profile
+                    '0', --In Store Pricing Profile
+                    '0', --Online Pricing Profile
+                    'Green', --Default In Store Price Sheet
+                    'Green', --Default Online Price Sheet
                     '0', --Can Charge
                     '0', --Credit Limit
                     '0', --Account Balance

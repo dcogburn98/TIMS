@@ -91,6 +91,7 @@
     <Compile Include="Planogram\Shelving\Gondola.cs" />
     <Compile Include="Planogram\Shelving\PegboardHook.cs" />
     <Compile Include="PricingProfile.cs" />
+    <Compile Include="PricingProfileCollection.cs" />
     <Compile Include="PricingProfileElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurchaseOrder.cs" />

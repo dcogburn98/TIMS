@@ -282,14 +282,18 @@
             this.certificateID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.certificateDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button20 = new System.Windows.Forms.Button();
-            this.button12 = new System.Windows.Forms.Button();
             this.tabPage10 = new System.Windows.Forms.TabPage();
-            this.enableTIMSRelationsCB = new System.Windows.Forms.CheckBox();
-            this.relationshipKeyTB = new System.Windows.Forms.TextBox();
-            this.label41 = new System.Windows.Forms.Label();
             this.autoMediaUpdatesCB = new System.Windows.Forms.CheckBox();
             this.autoPriceUpdatesCB = new System.Windows.Forms.CheckBox();
+            this.relationshipKeyTB = new System.Windows.Forms.TextBox();
+            this.label41 = new System.Windows.Forms.Label();
+            this.enableTIMSRelationsCB = new System.Windows.Forms.CheckBox();
+            this.button12 = new System.Windows.Forms.Button();
             this.addCustomerButton = new System.Windows.Forms.Button();
+            this.label19 = new System.Windows.Forms.Label();
+            this.defaultOnlinePriceSheet = new System.Windows.Forms.ComboBox();
+            this.defaultInstorePriceSheet = new System.Windows.Forms.ComboBox();
+            this.label83 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -2263,6 +2267,8 @@
             // 
             // groupBox13
             // 
+            this.groupBox13.Controls.Add(this.defaultOnlinePriceSheet);
+            this.groupBox13.Controls.Add(this.label19);
             this.groupBox13.Controls.Add(this.dataGridView4);
             this.groupBox13.Controls.Add(this.button8);
             this.groupBox13.Controls.Add(this.button9);
@@ -2288,12 +2294,12 @@
             this.dataGridViewTextBoxColumn3,
             this.dataGridViewTextBoxColumn4});
             this.dataGridView4.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dataGridView4.Location = new System.Drawing.Point(43, 19);
+            this.dataGridView4.Location = new System.Drawing.Point(43, 69);
             this.dataGridView4.MultiSelect = false;
             this.dataGridView4.Name = "dataGridView4";
             this.dataGridView4.RowHeadersVisible = false;
             this.dataGridView4.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView4.Size = new System.Drawing.Size(275, 478);
+            this.dataGridView4.Size = new System.Drawing.Size(275, 428);
             this.dataGridView4.TabIndex = 12;
             // 
             // dataGridViewTextBoxColumn3
@@ -2311,7 +2317,7 @@
             // button8
             // 
             this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button8.Location = new System.Drawing.Point(234, 503);
+            this.button8.Location = new System.Drawing.Point(233, 503);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(35, 30);
             this.button8.TabIndex = 6;
@@ -2321,7 +2327,7 @@
             // button9
             // 
             this.button9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button9.Location = new System.Drawing.Point(97, 503);
+            this.button9.Location = new System.Drawing.Point(96, 503);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(35, 30);
             this.button9.TabIndex = 5;
@@ -2350,6 +2356,8 @@
             // 
             // groupBox12
             // 
+            this.groupBox12.Controls.Add(this.defaultInstorePriceSheet);
+            this.groupBox12.Controls.Add(this.label83);
             this.groupBox12.Controls.Add(this.dataGridView3);
             this.groupBox12.Controls.Add(this.button4);
             this.groupBox12.Controls.Add(this.button5);
@@ -2375,12 +2383,12 @@
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2});
             this.dataGridView3.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dataGridView3.Location = new System.Drawing.Point(6, 19);
+            this.dataGridView3.Location = new System.Drawing.Point(6, 69);
             this.dataGridView3.MultiSelect = false;
             this.dataGridView3.Name = "dataGridView3";
             this.dataGridView3.RowHeadersVisible = false;
             this.dataGridView3.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView3.Size = new System.Drawing.Size(275, 478);
+            this.dataGridView3.Size = new System.Drawing.Size(275, 428);
             this.dataGridView3.TabIndex = 11;
             // 
             // dataGridViewTextBoxColumn1
@@ -2418,7 +2426,7 @@
             // button10
             // 
             this.button10.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button10.Location = new System.Drawing.Point(189, 503);
+            this.button10.Location = new System.Drawing.Point(195, 503);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(35, 30);
             this.button10.TabIndex = 8;
@@ -2428,7 +2436,7 @@
             // button11
             // 
             this.button11.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button11.Location = new System.Drawing.Point(52, 503);
+            this.button11.Location = new System.Drawing.Point(58, 503);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(35, 30);
             this.button11.TabIndex = 7;
@@ -2458,12 +2466,12 @@
             this.profileID,
             this.profileDescription});
             this.dataGridView2.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dataGridView2.Location = new System.Drawing.Point(6, 19);
+            this.dataGridView2.Location = new System.Drawing.Point(6, 69);
             this.dataGridView2.MultiSelect = false;
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView2.Size = new System.Drawing.Size(312, 514);
+            this.dataGridView2.Size = new System.Drawing.Size(312, 428);
             this.dataGridView2.TabIndex = 0;
             // 
             // profileID
@@ -2905,16 +2913,6 @@
             this.button20.Text = "→";
             this.button20.UseVisualStyleBackColor = true;
             // 
-            // button12
-            // 
-            this.button12.Location = new System.Drawing.Point(925, 22);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(87, 23);
-            this.button12.TabIndex = 11;
-            this.button12.Text = "Save Customer";
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
-            // 
             // tabPage10
             // 
             this.tabPage10.Controls.Add(this.autoMediaUpdatesCB);
@@ -2929,34 +2927,6 @@
             this.tabPage10.TabIndex = 9;
             this.tabPage10.Text = "Relationship";
             this.tabPage10.UseVisualStyleBackColor = true;
-            // 
-            // enableTIMSRelationsCB
-            // 
-            this.enableTIMSRelationsCB.AutoSize = true;
-            this.enableTIMSRelationsCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.enableTIMSRelationsCB.Location = new System.Drawing.Point(9, 15);
-            this.enableTIMSRelationsCB.Name = "enableTIMSRelationsCB";
-            this.enableTIMSRelationsCB.Size = new System.Drawing.Size(287, 17);
-            this.enableTIMSRelationsCB.TabIndex = 0;
-            this.enableTIMSRelationsCB.Text = "Enable TIMS Communication for this Customer";
-            this.enableTIMSRelationsCB.UseVisualStyleBackColor = true;
-            // 
-            // relationshipKeyTB
-            // 
-            this.relationshipKeyTB.Location = new System.Drawing.Point(211, 32);
-            this.relationshipKeyTB.Name = "relationshipKeyTB";
-            this.relationshipKeyTB.Size = new System.Drawing.Size(299, 20);
-            this.relationshipKeyTB.TabIndex = 3;
-            // 
-            // label41
-            // 
-            this.label41.AutoSize = true;
-            this.label41.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label41.Location = new System.Drawing.Point(6, 35);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(199, 13);
-            this.label41.TabIndex = 2;
-            this.label41.Text = "Customer Server Relationship Key";
             // 
             // autoMediaUpdatesCB
             // 
@@ -2980,6 +2950,44 @@
             this.autoPriceUpdatesCB.Text = "Automatically Send Price Updates";
             this.autoPriceUpdatesCB.UseVisualStyleBackColor = true;
             // 
+            // relationshipKeyTB
+            // 
+            this.relationshipKeyTB.Location = new System.Drawing.Point(211, 32);
+            this.relationshipKeyTB.Name = "relationshipKeyTB";
+            this.relationshipKeyTB.Size = new System.Drawing.Size(299, 20);
+            this.relationshipKeyTB.TabIndex = 3;
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label41.Location = new System.Drawing.Point(6, 35);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(199, 13);
+            this.label41.TabIndex = 2;
+            this.label41.Text = "Customer Server Relationship Key";
+            // 
+            // enableTIMSRelationsCB
+            // 
+            this.enableTIMSRelationsCB.AutoSize = true;
+            this.enableTIMSRelationsCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.enableTIMSRelationsCB.Location = new System.Drawing.Point(9, 15);
+            this.enableTIMSRelationsCB.Name = "enableTIMSRelationsCB";
+            this.enableTIMSRelationsCB.Size = new System.Drawing.Size(287, 17);
+            this.enableTIMSRelationsCB.TabIndex = 0;
+            this.enableTIMSRelationsCB.Text = "Enable TIMS Communication for this Customer";
+            this.enableTIMSRelationsCB.UseVisualStyleBackColor = true;
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(925, 22);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(87, 23);
+            this.button12.TabIndex = 11;
+            this.button12.Text = "Save Customer";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
             // addCustomerButton
             // 
             this.addCustomerButton.Location = new System.Drawing.Point(535, 22);
@@ -2989,6 +2997,56 @@
             this.addCustomerButton.Text = "Add Customer";
             this.addCustomerButton.UseVisualStyleBackColor = true;
             this.addCustomerButton.Click += new System.EventHandler(this.addCustomerButton_Click);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(138, 22);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(100, 13);
+            this.label19.TabIndex = 1;
+            this.label19.Text = "Default Prce Sheet:";
+            // 
+            // defaultOnlinePriceSheet
+            // 
+            this.defaultOnlinePriceSheet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.defaultOnlinePriceSheet.FormattingEnabled = true;
+            this.defaultOnlinePriceSheet.Items.AddRange(new object[] {
+            "Cost",
+            "Red",
+            "Yellow",
+            "Green",
+            "Pink",
+            "Blue"});
+            this.defaultOnlinePriceSheet.Location = new System.Drawing.Point(128, 41);
+            this.defaultOnlinePriceSheet.Name = "defaultOnlinePriceSheet";
+            this.defaultOnlinePriceSheet.Size = new System.Drawing.Size(121, 21);
+            this.defaultOnlinePriceSheet.TabIndex = 2;
+            // 
+            // defaultInstorePriceSheet
+            // 
+            this.defaultInstorePriceSheet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.defaultInstorePriceSheet.FormattingEnabled = true;
+            this.defaultInstorePriceSheet.Items.AddRange(new object[] {
+            "Cost",
+            "Red",
+            "Yellow",
+            "Green",
+            "Pink",
+            "Blue"});
+            this.defaultInstorePriceSheet.Location = new System.Drawing.Point(84, 41);
+            this.defaultInstorePriceSheet.Name = "defaultInstorePriceSheet";
+            this.defaultInstorePriceSheet.Size = new System.Drawing.Size(121, 21);
+            this.defaultInstorePriceSheet.TabIndex = 13;
+            // 
+            // label83
+            // 
+            this.label83.AutoSize = true;
+            this.label83.Location = new System.Drawing.Point(94, 20);
+            this.label83.Name = "label83";
+            this.label83.Size = new System.Drawing.Size(100, 13);
+            this.label83.TabIndex = 12;
+            this.label83.Text = "Default Prce Sheet:";
             // 
             // CustomerInformation
             // 
@@ -3035,8 +3093,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage5.ResumeLayout(false);
             this.groupBox13.ResumeLayout(false);
+            this.groupBox13.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
             this.groupBox12.ResumeLayout(false);
+            this.groupBox12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.groupBox11.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
@@ -3322,5 +3382,9 @@
         private System.Windows.Forms.CheckBox autoMediaUpdatesCB;
         private System.Windows.Forms.CheckBox autoPriceUpdatesCB;
         private System.Windows.Forms.Button addCustomerButton;
+        private System.Windows.Forms.ComboBox defaultOnlinePriceSheet;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.ComboBox defaultInstorePriceSheet;
+        private System.Windows.Forms.Label label83;
     }
 }

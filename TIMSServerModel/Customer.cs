@@ -12,7 +12,8 @@ namespace TIMSServerModel
 
         public string customerName;
         public string customerNumber;
-        public string pricingProfile;
+        public PricingProfileCollection inStorePricingProfile;
+        public PricingProfileCollection onlinePricingProfile;
         public List<Payment.PaymentTypes> availablePaymentTypes;
         public bool canCharge;
         public decimal creditLimit;

@@ -30,23 +30,35 @@ namespace TIMSServerModel
         public DateTime? beginDate;
         public DateTime? endDate;
 
-        public void CheckItemAffected(Item item)
+        public bool CalculateItemPrice(Item item)
         {
             if (groupCode != string.Empty)
                 if (item.groupCode != int.Parse(groupCode))
-                    return;
+                {
+                    item.calculatedPrice = item.greenPrice;
+                    return false;
+                }
 
             if (department != string.Empty)
                 if (item.department.ToUpper() != department.ToUpper())
-                    return;
+                {
+                    item.calculatedPrice = item.greenPrice;
+                    return false;
+                }
 
             if (subDepartment != string.Empty)
                 if (item.subDepartment.ToUpper() != subDepartment.ToUpper())
-                    return;
+                {
+                    item.calculatedPrice = item.greenPrice;
+                    return false;
+                }
 
             if (productLine != string.Empty)
                 if (item.productLine.ToUpper() != productLine.ToUpper())
-                    return;
+                {
+                    item.calculatedPrice = item.greenPrice;
+                    return false;
+                }
 
             string fixedIN = "";
             foreach (char c in itemNumber)
@@ -60,37 +72,48 @@ namespace TIMSServerModel
 
             if (itemNumber != string.Empty)
                 if (!fixedIIN.StartsWith(fixedIN))
-                    return;
+                {
+                    item.calculatedPrice = item.greenPrice;
+                    return false;
+                }
 
             if (beginDate != null)
                 if (DateTime.Now < beginDate)
-                    return;
+                {
+                    item.calculatedPrice = item.greenPrice;
+                    return false;
+                }
 
             if (endDate != null)
                 if (DateTime.Now >= endDate)
-                    return;
+                {
+                    item.calculatedPrice = item.greenPrice;
+                    return false;
+                }
 
             switch (priceSheet)
             {
                 case PriceSheets.Red:
-                    item.calculatedPrice = item.redPrice / (1 - margin);
+                    item.calculatedPrice = item.redPrice / (1 - (margin / 100));
                     break;
                 case PriceSheets.Yellow:
-                    item.calculatedPrice = item.yellowPrice / (1 - margin);
+                    item.calculatedPrice = item.yellowPrice / (1 - (margin / 100));
                     break;
                 case PriceSheets.Green:
-                    item.calculatedPrice = item.greenPrice / (1 - margin);
+                    item.calculatedPrice = item.greenPrice / (1 - (margin / 100));
                     break;
                 case PriceSheets.Pink:
-                    item.calculatedPrice = item.pinkPrice / (1 - margin);
+                    item.calculatedPrice = item.pinkPrice / (1 - (margin / 100));
                     break;
                 case PriceSheets.Blue:
-                    item.calculatedPrice = item.bluePrice / (1 - margin);
+                    item.calculatedPrice = item.bluePrice / (1 - (margin / 100));
                     break;
                 case PriceSheets.Cost:
-                    item.calculatedPrice = item.replacementCost / (1 - margin);
+                    item.calculatedPrice = item.replacementCost / (1 - (margin / 100));
                     break;
             }
+
+            return true;
         }
     }
 }

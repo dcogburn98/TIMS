@@ -89,7 +89,7 @@ namespace TIMS.Forms.POS
                 taxExemptionLabel.Text = "True (" + inv.customer.primaryTaxExemptionNumber + ")";
             else
                 taxExemptionLabel.Text = "False";
-            pricingProfileLabel.Text = inv.customer.pricingProfile;
+            //pricingProfileLabel.Text = inv.customer.pricingProfile;
             if (inv.customer.canCharge)
             {
                 allowChargingLabel.Text = "True";
