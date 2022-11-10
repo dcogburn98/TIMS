@@ -71,8 +71,8 @@ namespace TIMSServerModel
         Invoice RetrieveInvoice(int invNumber);
         [OperationContract]
         List<Invoice> RetrieveInvoicesByCriteria(string[] criteria);
-        [OperationContract]
-        Request InitiatePayment(Invoice inv, decimal paymentAmount);
+        //[OperationContract]
+        //Request InitiatePayment(Invoice inv, decimal paymentAmount);
         #endregion
 
         #region Customers

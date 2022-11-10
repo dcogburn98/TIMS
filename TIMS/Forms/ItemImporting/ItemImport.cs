@@ -162,7 +162,7 @@ namespace TIMS.Forms
                     onOrderQty = 0,
                     itemName = "XXX",
                     serialized = false,
-                    SKU = "",
+                    UPC = "",
                     supplier = "Default",
                     taxed = true
                 };
@@ -171,41 +171,54 @@ namespace TIMS.Forms
                 //System.Threading.Thread.Sleep(50);
                 foreach (DataGridViewCell cell in itemRow.Cells)
                 {
-                    if (cell.OwningColumn.Name.ToLower() == "productline")
-                        newItem.productLine = cell.Value.ToString() == "" ? "XXX" : cell.Value.ToString();
-                    if (cell.OwningColumn.Name.ToLower() == "itemnumber")
-                        newItem.itemNumber = cell.Value.ToString() == "" ? "XXX" : cell.Value.ToString();
-                    if (cell.OwningColumn.Name.ToLower() == "sku")
-                        newItem.SKU = cell.Value.ToString();
-                    if (cell.OwningColumn.Name.ToLower() == "itemname")
-                        newItem.itemName = cell.Value.ToString();
-                    if (cell.OwningColumn.Name.ToLower() == "longdescription")
-                        newItem.longDescription = cell.Value.ToString();
-                    if (cell.OwningColumn.Name.ToLower() == "category")
-                        newItem.category = cell.Value.ToString() == "" ? "Default" : cell.Value.ToString();
-                    if (cell.OwningColumn.Name.ToLower() == "onhandquantity")
-                        newItem.onHandQty = decimal.Parse(cell.Value.ToString());
-                    if (cell.OwningColumn.Name.ToLower() == "greenprice")
-                        newItem.greenPrice = decimal.Parse(
-                            cell.Value.ToString()[0] == '$' ? 
+                    switch (cell.OwningColumn.Name.ToLower())
+                    {
+                        case "productline":
+                            newItem.productLine = cell.Value.ToString() == "" ? "XXX" : cell.Value.ToString();
+                            break;
+                        case "itemnumber":
+                            newItem.itemNumber = cell.Value.ToString() == "" ? "XXX" : cell.Value.ToString();
+                            break;
+                        case "upc":
+                            newItem.UPC = cell.Value.ToString();
+                            break;
+                        case "itemname":
+                            newItem.itemName = cell.Value.ToString();
+                            break;
+                        case "longdescription":
+                            newItem.longDescription = cell.Value.ToString();
+                            break;
+                        case "category":
+                            newItem.category = cell.Value.ToString() == "" ? "Default" : cell.Value.ToString();
+                            break;
+                        case "onhandquantity":
+                            newItem.onHandQty = decimal.Parse(cell.Value.ToString());
+                            break;
+                        case "greenprice":
+                            newItem.greenPrice = decimal.Parse(
+                            cell.Value.ToString()[0] == '$' ?
                             cell.Value.ToString().Trim('$') :
                             cell.Value.ToString());
-                    if (cell.OwningColumn.Name.ToLower() == "replacementcost")
-                        newItem.replacementCost = decimal.Parse(
-                            cell.Value.ToString()[0] == '$' ? 
-                            cell.Value.ToString().Trim('$') : 
+                            break;
+                        case "replacementcost":
+                            newItem.replacementCost = decimal.Parse(
+                            cell.Value.ToString()[0] == '$' ?
+                            cell.Value.ToString().Trim('$') :
                             cell.Value.ToString());
-                    if (cell.OwningColumn.Name.ToLower() == "supplier")
-                        newItem.supplier = cell.Value.ToString() == "" ? "Default" : cell.Value.ToString();
+                            break;
+                        case "supplier":
+                            newItem.supplier = cell.Value.ToString() == "" ? "Default" : cell.Value.ToString();
+                            break;
+                    }
                 }
                 if (newItem.supplier == null || newItem.supplier == string.Empty)
                     newItem.supplier = "Default";
 
-                if (newItem.SKU != "")
+                if (newItem.UPC != "")
                 {
-                    if (Program.IsStringNumeric(newItem.SKU) && newItem.SKU.Length == 11 && calculateCheckDigit)
-                        newItem.SKU = UPCA.CalculateChecksumDigit(newItem.SKU);
-                    Communication.AddBarcode(newItem.itemNumber, newItem.productLine, newItem.SKU, 1);
+                    if (Program.IsStringNumeric(newItem.UPC) && newItem.UPC.Length == 11 && calculateCheckDigit)
+                        newItem.UPC = UPCA.CalculateChecksumDigit(newItem.UPC);
+                    Communication.AddBarcode(newItem.itemNumber, newItem.productLine, newItem.UPC, 1);
                 }
 
                 if (!Communication.CheckProductLine(newItem.productLine.ToUpper()))
@@ -213,7 +226,7 @@ namespace TIMS.Forms
                     Communication.AddProductLine(newItem.productLine.ToUpper());
                 }
 
-                if (!Communication.RetrieveSuppliers().Contains(newItem.supplier.ToUpper()))
+                if (!Communication.RetrieveSuppliers().Contains(newItem.supplier))
                 {
                     Communication.AddSupplier(newItem.supplier);
                 }
@@ -236,6 +249,8 @@ namespace TIMS.Forms
             {
                 dataGridView1.Rows.Add(row);
             }
+
+            progressBar1.Value = 0;
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using TIMS.Server;
 using TIMSServerModel;
 
-using PaymentEngine.xTransaction;
+//using PaymentEngine.xTransaction;
 
 namespace TIMS.Forms
 {
@@ -174,50 +174,50 @@ namespace TIMS.Forms
                     invoice.totalPayments += amt;
                     break;
                 case "Payment Card":
-                    if (Communication.RetrievePropertyString("Integrated Card Payments") == "1")
+                    if (Communication.RetrievePropertyString("Integrated Card Payments") == "10101")
                     {
-                        Request MyRequest = Communication.InitiatePayment(invoice, amt);
-                        Response MyResponse = MyRequest.ProcessOutOfScope();
-                        if (MyResponse.xResult == "A")
-                        {
-                            //Signature can be obtained via a parameter in the Manual function above (MyRequire_Signature = True) or in a separate command as shown below.
-                            if (MyResponse.xSignaturerRequired == true && string.IsNullOrEmpty(MyResponse.xSignature))
-                            {
-                                MyResponse.xSignature = MyRequest.GetSignature();
-                            }
+                        //Request MyRequest = Communication.InitiatePayment(invoice, amt);
+                        //Response MyResponse = MyRequest.ProcessOutOfScope();
+                        //if (MyResponse.xResult == "A")
+                        //{
+                        //    //Signature can be obtained via a parameter in the Manual function above (MyRequire_Signature = True) or in a separate command as shown below.
+                        //    if (MyResponse.xSignaturerRequired == true && string.IsNullOrEmpty(MyResponse.xSignature))
+                        //    {
+                        //        MyResponse.xSignature = MyRequest.GetSignature();
+                        //    }
 
-                            //Prompt for Email Address on a device
-                            string MyEmailAddress = MyRequest.Device_PromptForEmail();
+                        //    //Prompt for Email Address on a device
+                        //    string MyEmailAddress = MyRequest.Device_PromptForEmail();
 
-                            //Prompt for Phone Number on a device. Customer will be prompted to opt-in to receive promotions via text message. If they opt-in the phone number will be returned.
-                            string MyPhoneNumber_JSON = MyRequest.Device_PromptForPhone_JSON();
-                            string MyPhoneNumber_XML = MyRequest.Device_PromptForPhone_XML();
+                        //    //Prompt for Phone Number on a device. Customer will be prompted to opt-in to receive promotions via text message. If they opt-in the phone number will be returned.
+                        //    string MyPhoneNumber_JSON = MyRequest.Device_PromptForPhone_JSON();
+                        //    string MyPhoneNumber_XML = MyRequest.Device_PromptForPhone_XML();
 
-                            //Prompt for Zip Code on a device
-                            string MyZipCode = MyRequest.Device_PromptForZip();
-                        }
-                        if (MyResponse.Approved())
-                        {
-                            if (MyResponse.xAuthAmount == "")
-                            {
-                                MessageBox.Show("An error has occurred.");
-                                break;
-                            }
-                            else
-                            {
-                                Payment p = new Payment();
-                                p.cardResponse = MyResponse;
-                                p.paymentAmount = decimal.Parse(MyResponse.xAuthAmount);
-                                p.paymentType = Payment.PaymentTypes.PaymentCard;
-                                paymentsLB.Items.Add("Payment Card: " + decimal.Parse(MyResponse.xAuthAmount).ToString("C"));
-                                invoice.payments.Add(p);
-                                invoice.totalPayments += decimal.Parse(MyResponse.xAuthAmount);
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show(MyResponse.xError);
-                        }
+                        //    //Prompt for Zip Code on a device
+                        //    string MyZipCode = MyRequest.Device_PromptForZip();
+                        //}
+                        //if (MyResponse.Approved())
+                        //{
+                        //    if (MyResponse.xAuthAmount == "")
+                        //    {
+                        //        MessageBox.Show("An error has occurred.");
+                        //        break;
+                        //    }
+                        //    else
+                        //    {
+                        //        Payment p = new Payment();
+                        //        p.cardResponse = MyResponse;
+                        //        p.paymentAmount = decimal.Parse(MyResponse.xAuthAmount);
+                        //        p.paymentType = Payment.PaymentTypes.PaymentCard;
+                        //        paymentsLB.Items.Add("Payment Card: " + decimal.Parse(MyResponse.xAuthAmount).ToString("C"));
+                        //        invoice.payments.Add(p);
+                        //        invoice.totalPayments += decimal.Parse(MyResponse.xAuthAmount);
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    MessageBox.Show(MyResponse.xError);
+                        //}
                     }
                     else
                     {

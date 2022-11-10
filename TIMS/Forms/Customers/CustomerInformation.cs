@@ -183,6 +183,11 @@ namespace TIMS.Forms.Customers
                 dataGridView3.Rows[row].Tag = profile;
             }
 
+            if (currentCustomer.inStorePricingProfile.Profiles.Count > 1)
+                removeInStoreProfileButton.Enabled = true;
+            else
+                removeInStoreProfileButton.Enabled = false;
+
             defaultOnlinePriceSheet.Text = Enum.GetName(typeof(PricingProfileElement.PriceSheets), currentCustomer.onlinePricingProfile.defaultPriceSheet);
             foreach (PricingProfile profile in currentCustomer.onlinePricingProfile.Profiles)
             {
@@ -191,6 +196,11 @@ namespace TIMS.Forms.Customers
                 dataGridView4.Rows[row].Cells[1].Value = profile.ProfileName;
                 dataGridView4.Rows[row].Tag = profile;
             }
+
+            if (currentCustomer.onlinePricingProfile.Profiles.Count > 1)
+                removeOnlineProfileButton.Enabled = true;
+            else
+                removeOnlineProfileButton.Enabled = false;
 
             #endregion
         }
@@ -322,6 +332,142 @@ namespace TIMS.Forms.Customers
             Communication.AddCustomer(currentCustomer);
             MessageBox.Show("Customer successfully created!");
             PopulateFields();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (dataGridView3.SelectedRows.Count != 1)
+                return;
+
+            if (currentCustomer.inStorePricingProfile.Profiles.Count == 1)
+            {
+                MessageBox.Show("Customers must have at least one profile for in-store pricing and one for online pricing!");
+                return;
+            }
+
+            currentCustomer.inStorePricingProfile.Profiles.Remove(
+                currentCustomer.inStorePricingProfile.Profiles.Find(
+                    el => el.ProfileID == int.Parse(dataGridView3.SelectedRows[0].Cells[0].Value.ToString())));
+
+            dataGridView3.Rows.Clear();
+
+            foreach (PricingProfile profile in currentCustomer.inStorePricingProfile.Profiles)
+            {
+                int row = dataGridView3.Rows.Add();
+                dataGridView3.Rows[row].Cells[0].Value = profile.ProfileID;
+                dataGridView3.Rows[row].Cells[1].Value = profile.ProfileName;
+                dataGridView3.Rows[row].Tag = profile;
+            }
+
+            customerEdited = true;
+
+            if (currentCustomer.inStorePricingProfile.Profiles.Count == 1)
+            {
+                removeInStoreProfileButton.Enabled = false;
+            }
+        }
+
+        private void addInStoreProfileButton_Click(object sender, EventArgs e)
+        {
+            if (dataGridView2.SelectedRows.Count != 1)
+                return;
+
+            foreach (DataGridViewRow row in dataGridView3.Rows)
+            {
+                if (row.Cells[0].Value.ToString() == dataGridView2.SelectedRows[0].Cells[0].Value.ToString())
+                {
+                    MessageBox.Show("Profile already exists in the in-store pricing profiles for this customer!");
+                    return;
+                }
+            }
+
+            currentCustomer.inStorePricingProfile.Profiles.Add(
+                Communication.RetrievePricingProfiles().Find(
+                    el => el.ProfileID == int.Parse(dataGridView2.SelectedRows[0].Cells[0].Value.ToString())));
+            dataGridView3.Rows.Clear();
+
+            foreach (PricingProfile profile in currentCustomer.inStorePricingProfile.Profiles)
+            {
+                int row = dataGridView3.Rows.Add();
+                dataGridView3.Rows[row].Cells[0].Value = profile.ProfileID;
+                dataGridView3.Rows[row].Cells[1].Value = profile.ProfileName;
+                dataGridView3.Rows[row].Tag = profile;
+            }
+
+            customerEdited = true;
+
+            if (currentCustomer.inStorePricingProfile.Profiles.Count > 1)
+            {
+                removeInStoreProfileButton.Enabled = true;
+            }
+        }
+
+        private void addOnlineProfileButton_Click(object sender, EventArgs e)
+        {
+            if (dataGridView2.SelectedRows.Count != 1)
+                return;
+
+            foreach (DataGridViewRow row in dataGridView4.Rows)
+            {
+                if (row.Cells[0].Value.ToString() == dataGridView2.SelectedRows[0].Cells[0].Value.ToString())
+                {
+                    MessageBox.Show("Profile already exists in the online pricing profiles for this customer!");
+                    return;
+                }
+            }
+
+            currentCustomer.onlinePricingProfile.Profiles.Add(
+                Communication.RetrievePricingProfiles().Find(
+                    el => el.ProfileID == int.Parse(dataGridView2.SelectedRows[0].Cells[0].Value.ToString())));
+            dataGridView4.Rows.Clear();
+
+            foreach (PricingProfile profile in currentCustomer.onlinePricingProfile.Profiles)
+            {
+                int row = dataGridView4.Rows.Add();
+                dataGridView4.Rows[row].Cells[0].Value = profile.ProfileID;
+                dataGridView4.Rows[row].Cells[1].Value = profile.ProfileName;
+                dataGridView4.Rows[row].Tag = profile;
+            }
+
+            customerEdited = true;
+
+            if (currentCustomer.onlinePricingProfile.Profiles.Count > 1)
+            {
+                removeOnlineProfileButton.Enabled = true;
+            }
+        }
+
+        private void removeOnlineProfileButton_Click(object sender, EventArgs e)
+        {
+            if (dataGridView4.SelectedRows.Count != 1)
+                return;
+
+            if (currentCustomer.onlinePricingProfile.Profiles.Count == 1)
+            {
+                MessageBox.Show("Customers must have at least one profile for in-store pricing and one for online pricing!");
+                return;
+            }
+
+            currentCustomer.onlinePricingProfile.Profiles.Remove(
+                currentCustomer.onlinePricingProfile.Profiles.Find(
+                    el => el.ProfileID == int.Parse(dataGridView4.SelectedRows[0].Cells[0].Value.ToString())));
+
+            dataGridView4.Rows.Clear();
+
+            foreach (PricingProfile profile in currentCustomer.onlinePricingProfile.Profiles)
+            {
+                int row = dataGridView4.Rows.Add();
+                dataGridView4.Rows[row].Cells[0].Value = profile.ProfileID;
+                dataGridView4.Rows[row].Cells[1].Value = profile.ProfileName;
+                dataGridView4.Rows[row].Tag = profile;
+            }
+
+            customerEdited = true;
+
+            if (currentCustomer.onlinePricingProfile.Profiles.Count == 1)
+            {
+                removeOnlineProfileButton.Enabled = false;
+            }
         }
     }
 }

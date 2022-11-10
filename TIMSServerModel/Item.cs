@@ -23,7 +23,7 @@ namespace TIMSServerModel
         public string department;
         public string subDepartment;
         public string category;
-        public string SKU;
+        public string UPC;
 
         public DateTime dateStocked;
         public DateTime dateLastReceipt;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using Microsoft.Data.Sqlite;
-using PaymentEngine.xTransaction;
+//using PaymentEngine.xTransaction;
 using System.IO;
 using System.Text;
 using System.Linq;
@@ -100,7 +100,7 @@ namespace TIMSServer
             Console.WriteLine("Login Called for user: " + user);
             #region GetIP
             string addr = GetClientAddress();
-            if (!DeviceExists(addr) || addr == "127.0.0.1")
+            if (!DeviceExists(addr) && addr != "127.0.0.1")
             {
                 Console.WriteLine("Terminal: " + addr + " is not registered with the server. Please refer to the user manual on how to register devices.");
                 return new Employee() { key = new AuthKey() { Success = false } };
@@ -907,7 +907,7 @@ namespace TIMSServer
                 item.locationCode = reader.GetInt32(31);
                 item.serialized = reader.GetBoolean(32);
                 item.category = reader.GetValue(33).ToString();
-                item.SKU = reader.GetValue(34).ToString();
+                item.UPC = reader.GetValue(34).ToString();
                 if (fixedPL == fixedIN)
                     break;
             }
@@ -1057,7 +1057,7 @@ namespace TIMSServer
         }
         public bool AddItem(Item item)
         {
-            if (RetrieveItem(item.itemNumber, item.productLine) == null)
+            if (RetrieveItem(item.itemNumber, item.productLine) != null)
                 return false;
 
             OpenConnection();
@@ -1109,7 +1109,7 @@ namespace TIMSServer
             SqliteParameter p32 = new SqliteParameter("$LOCATION", item.locationCode);
             SqliteParameter p33 = new SqliteParameter("$SERIALIZED", item.serialized);
             SqliteParameter p34 = new SqliteParameter("$CATEGORY", item.category);
-            SqliteParameter p35 = new SqliteParameter("$SKU", item.SKU);
+            SqliteParameter p35 = new SqliteParameter("$SKU", item.UPC);
 
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
@@ -1650,6 +1650,7 @@ namespace TIMSServer
             CloseConnection();
             return container;
         }
+
         public AuthContainer<List<PricingProfile>> RetrievePricingProfiles(AuthKey key)
         {
             AuthContainer<List<PricingProfile>> container = CheckAuthorization<List<PricingProfile>>(key);
@@ -1692,6 +1693,7 @@ namespace TIMSServer
                 while (reader.Read())
                 {
                     PricingProfileElement el = new PricingProfileElement();
+                    el.elementID = reader.GetInt32(0);
                     el.profileID = reader.GetInt32(1);
                     el.priority = reader.GetInt32(2);
                     el.groupCode = reader.GetString(3);
@@ -1711,7 +1713,52 @@ namespace TIMSServer
             CloseConnection();
             return container;
         }
+        public AuthContainer<object> UpdatePricingProfile(PricingProfile profile, AuthKey key)
+        {
+            AuthContainer<object> container = CheckAuthorization<object>(key);
+            if (!container.Key.Success)
+                return container;
 
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"UPDATE PRICINGPROFILEELEMENTS SET
+                PRIORITY = $PRIORITY,
+                GROUPCODE = $GROUP,
+                DEPARTMENT = $DEPARTMENT,
+                SUBDEPARTMENT = $SUBDEPARTMENT,
+                PRODUCTLINE = $PRODUCTLINE,
+                ITEMNUMBER = $ITEMNUMBER,
+                PRICESHEET = $PRICESHEET,
+                MARGIN = $MARGIN,
+                BEGINDATE = $BEGIN,
+                ENDDATE = $END
+                  WHERE PROFILEID = $PID AND ELEMENTID = $EID";
+
+            foreach (PricingProfileElement element in profile.Elements)
+            {
+                command.Parameters.Clear();
+                command.Parameters.Add(new SqliteParameter("$PID", element.profileID));
+                command.Parameters.Add(new SqliteParameter("$EID", element.elementID));
+                command.Parameters.Add(new SqliteParameter("$PRIORITY", element.priority));
+                command.Parameters.Add(new SqliteParameter("$GROUP", element.groupCode));
+                command.Parameters.Add(new SqliteParameter("$DEPARTMENT", element.department));
+                command.Parameters.Add(new SqliteParameter("$SUBDEPARTMENT", element.subDepartment));
+                command.Parameters.Add(new SqliteParameter("$PRODUCTLINE", element.productLine));
+                command.Parameters.Add(new SqliteParameter("$ITEMNUMBER", element.itemNumber));
+                command.Parameters.Add(new SqliteParameter("$PRICESHEET", Enum.GetName(typeof(PricingProfileElement.PriceSheets), element.priceSheet)));
+                command.Parameters.Add(new SqliteParameter("$MARGIN", element.margin));
+                command.Parameters.Add(new SqliteParameter("$BEGIN", element.beginDate.ToString()));
+                command.Parameters.Add(new SqliteParameter("$END", element.endDate.ToString()));
+                command.ExecuteNonQuery();
+            }
+
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+            return container;
+        }
         #endregion
 
         #region Invoices
@@ -2019,10 +2066,10 @@ namespace TIMSServer
             CloseConnection();
             return invNo;
         }
-        public Request InitiatePayment(Invoice inv, decimal paymentAmount)
-        {
-            return PaymentCard.ProcessOutOfScopeAsync(inv, paymentAmount);
-        }
+        //public Request InitiatePayment(Invoice inv, decimal paymentAmount)
+        //{
+        //    return PaymentCard.ProcessOutOfScopeAsync(inv, paymentAmount);
+        //}
         
         #endregion
 
@@ -3008,5 +3055,26 @@ namespace TIMSServer
         }
         #endregion
 
+        public decimal HighestAverageDay(decimal[][] DailyTips)
+        {
+            decimal[] DailyAverages = new decimal[7];
+            
+            for (int day = 0; day != 7; day++)
+            {
+                for (int week = 0; week != 12; week++)
+                {
+                    DailyAverages[day] += DailyTips[week][day];
+                }
+                DailyAverages[day] = DailyAverages[day] / 12;
+            }
+
+            decimal highestAverage = 0;
+            foreach (decimal d in DailyAverages)
+            {
+                if (d > highestAverage)
+                    highestAverage = d;
+            }
+            return highestAverage;
+        }
     }
 }

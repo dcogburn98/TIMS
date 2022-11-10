@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.searchCustomerButton = new System.Windows.Forms.Button();
@@ -217,21 +217,25 @@
             this.cardNote = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.defaultOnlinePriceSheet = new System.Windows.Forms.ComboBox();
+            this.label19 = new System.Windows.Forms.Label();
             this.dataGridView4 = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
+            this.moveOnlineProfileDownButton = new System.Windows.Forms.Button();
+            this.moveOnlineProfileUpButton = new System.Windows.Forms.Button();
+            this.removeOnlineProfileButton = new System.Windows.Forms.Button();
+            this.addOnlineProfileButton = new System.Windows.Forms.Button();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.defaultInstorePriceSheet = new System.Windows.Forms.ComboBox();
+            this.label83 = new System.Windows.Forms.Label();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
+            this.addInStoreProfileButton = new System.Windows.Forms.Button();
+            this.removeInStoreProfileButton = new System.Windows.Forms.Button();
+            this.moveInStoreProfileDownButton = new System.Windows.Forms.Button();
+            this.moveInStoreProfileUpButton = new System.Windows.Forms.Button();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.profileID = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -290,10 +294,6 @@
             this.enableTIMSRelationsCB = new System.Windows.Forms.CheckBox();
             this.button12 = new System.Windows.Forms.Button();
             this.addCustomerButton = new System.Windows.Forms.Button();
-            this.label19 = new System.Windows.Forms.Label();
-            this.defaultOnlinePriceSheet = new System.Windows.Forms.ComboBox();
-            this.defaultInstorePriceSheet = new System.Windows.Forms.ComboBox();
-            this.label83 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -2270,16 +2270,41 @@
             this.groupBox13.Controls.Add(this.defaultOnlinePriceSheet);
             this.groupBox13.Controls.Add(this.label19);
             this.groupBox13.Controls.Add(this.dataGridView4);
-            this.groupBox13.Controls.Add(this.button8);
-            this.groupBox13.Controls.Add(this.button9);
-            this.groupBox13.Controls.Add(this.button6);
-            this.groupBox13.Controls.Add(this.button7);
+            this.groupBox13.Controls.Add(this.moveOnlineProfileDownButton);
+            this.groupBox13.Controls.Add(this.moveOnlineProfileUpButton);
+            this.groupBox13.Controls.Add(this.removeOnlineProfileButton);
+            this.groupBox13.Controls.Add(this.addOnlineProfileButton);
             this.groupBox13.Location = new System.Drawing.Point(662, 3);
             this.groupBox13.Name = "groupBox13";
             this.groupBox13.Size = new System.Drawing.Size(324, 539);
             this.groupBox13.TabIndex = 3;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Online Pricing Profiles";
+            // 
+            // defaultOnlinePriceSheet
+            // 
+            this.defaultOnlinePriceSheet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.defaultOnlinePriceSheet.FormattingEnabled = true;
+            this.defaultOnlinePriceSheet.Items.AddRange(new object[] {
+            "Cost",
+            "Red",
+            "Yellow",
+            "Green",
+            "Pink",
+            "Blue"});
+            this.defaultOnlinePriceSheet.Location = new System.Drawing.Point(128, 41);
+            this.defaultOnlinePriceSheet.Name = "defaultOnlinePriceSheet";
+            this.defaultOnlinePriceSheet.Size = new System.Drawing.Size(121, 21);
+            this.defaultOnlinePriceSheet.TabIndex = 2;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(138, 22);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(100, 13);
+            this.label19.TabIndex = 1;
+            this.label19.Text = "Default Prce Sheet:";
             // 
             // dataGridView4
             // 
@@ -2314,61 +2339,88 @@
             this.dataGridViewTextBoxColumn4.HeaderText = "Description";
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             // 
-            // button8
+            // moveOnlineProfileDownButton
             // 
-            this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button8.Location = new System.Drawing.Point(233, 503);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(35, 30);
-            this.button8.TabIndex = 6;
-            this.button8.Text = "↓";
-            this.button8.UseVisualStyleBackColor = true;
+            this.moveOnlineProfileDownButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moveOnlineProfileDownButton.Location = new System.Drawing.Point(233, 503);
+            this.moveOnlineProfileDownButton.Name = "moveOnlineProfileDownButton";
+            this.moveOnlineProfileDownButton.Size = new System.Drawing.Size(35, 30);
+            this.moveOnlineProfileDownButton.TabIndex = 6;
+            this.moveOnlineProfileDownButton.Text = "↓";
+            this.moveOnlineProfileDownButton.UseVisualStyleBackColor = true;
             // 
-            // button9
+            // moveOnlineProfileUpButton
             // 
-            this.button9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button9.Location = new System.Drawing.Point(96, 503);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(35, 30);
-            this.button9.TabIndex = 5;
-            this.button9.Text = "↑";
-            this.button9.UseVisualStyleBackColor = true;
+            this.moveOnlineProfileUpButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moveOnlineProfileUpButton.Location = new System.Drawing.Point(96, 503);
+            this.moveOnlineProfileUpButton.Name = "moveOnlineProfileUpButton";
+            this.moveOnlineProfileUpButton.Size = new System.Drawing.Size(35, 30);
+            this.moveOnlineProfileUpButton.TabIndex = 5;
+            this.moveOnlineProfileUpButton.Text = "↑";
+            this.moveOnlineProfileUpButton.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // removeOnlineProfileButton
             // 
-            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button6.Location = new System.Drawing.Point(6, 233);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(31, 36);
-            this.button6.TabIndex = 4;
-            this.button6.Text = "←";
-            this.button6.UseVisualStyleBackColor = true;
+            this.removeOnlineProfileButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.removeOnlineProfileButton.Location = new System.Drawing.Point(6, 233);
+            this.removeOnlineProfileButton.Name = "removeOnlineProfileButton";
+            this.removeOnlineProfileButton.Size = new System.Drawing.Size(31, 36);
+            this.removeOnlineProfileButton.TabIndex = 4;
+            this.removeOnlineProfileButton.Text = "←";
+            this.removeOnlineProfileButton.UseVisualStyleBackColor = true;
+            this.removeOnlineProfileButton.Click += new System.EventHandler(this.removeOnlineProfileButton_Click);
             // 
-            // button7
+            // addOnlineProfileButton
             // 
-            this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button7.Location = new System.Drawing.Point(6, 191);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(31, 36);
-            this.button7.TabIndex = 3;
-            this.button7.Text = "→";
-            this.button7.UseVisualStyleBackColor = true;
+            this.addOnlineProfileButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addOnlineProfileButton.Location = new System.Drawing.Point(6, 191);
+            this.addOnlineProfileButton.Name = "addOnlineProfileButton";
+            this.addOnlineProfileButton.Size = new System.Drawing.Size(31, 36);
+            this.addOnlineProfileButton.TabIndex = 3;
+            this.addOnlineProfileButton.Text = "→";
+            this.addOnlineProfileButton.UseVisualStyleBackColor = true;
+            this.addOnlineProfileButton.Click += new System.EventHandler(this.addOnlineProfileButton_Click);
             // 
             // groupBox12
             // 
             this.groupBox12.Controls.Add(this.defaultInstorePriceSheet);
             this.groupBox12.Controls.Add(this.label83);
             this.groupBox12.Controls.Add(this.dataGridView3);
-            this.groupBox12.Controls.Add(this.button4);
-            this.groupBox12.Controls.Add(this.button5);
-            this.groupBox12.Controls.Add(this.button10);
-            this.groupBox12.Controls.Add(this.button11);
+            this.groupBox12.Controls.Add(this.addInStoreProfileButton);
+            this.groupBox12.Controls.Add(this.removeInStoreProfileButton);
+            this.groupBox12.Controls.Add(this.moveInStoreProfileDownButton);
+            this.groupBox12.Controls.Add(this.moveInStoreProfileUpButton);
             this.groupBox12.Location = new System.Drawing.Point(3, 3);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(324, 539);
             this.groupBox12.TabIndex = 2;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "In-Store Pricing Profiles";
+            // 
+            // defaultInstorePriceSheet
+            // 
+            this.defaultInstorePriceSheet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.defaultInstorePriceSheet.FormattingEnabled = true;
+            this.defaultInstorePriceSheet.Items.AddRange(new object[] {
+            "Cost",
+            "Red",
+            "Yellow",
+            "Green",
+            "Pink",
+            "Blue"});
+            this.defaultInstorePriceSheet.Location = new System.Drawing.Point(84, 41);
+            this.defaultInstorePriceSheet.Name = "defaultInstorePriceSheet";
+            this.defaultInstorePriceSheet.Size = new System.Drawing.Size(121, 21);
+            this.defaultInstorePriceSheet.TabIndex = 13;
+            // 
+            // label83
+            // 
+            this.label83.AutoSize = true;
+            this.label83.Location = new System.Drawing.Point(94, 20);
+            this.label83.Name = "label83";
+            this.label83.Size = new System.Drawing.Size(100, 13);
+            this.label83.TabIndex = 12;
+            this.label83.Text = "Default Prce Sheet:";
             // 
             // dataGridView3
             // 
@@ -2403,45 +2455,47 @@
             this.dataGridViewTextBoxColumn2.HeaderText = "Description";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             // 
-            // button4
+            // addInStoreProfileButton
             // 
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(287, 191);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(31, 36);
-            this.button4.TabIndex = 10;
-            this.button4.Text = "←";
-            this.button4.UseVisualStyleBackColor = true;
+            this.addInStoreProfileButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addInStoreProfileButton.Location = new System.Drawing.Point(287, 191);
+            this.addInStoreProfileButton.Name = "addInStoreProfileButton";
+            this.addInStoreProfileButton.Size = new System.Drawing.Size(31, 36);
+            this.addInStoreProfileButton.TabIndex = 10;
+            this.addInStoreProfileButton.Text = "←";
+            this.addInStoreProfileButton.UseVisualStyleBackColor = true;
+            this.addInStoreProfileButton.Click += new System.EventHandler(this.addInStoreProfileButton_Click);
             // 
-            // button5
+            // removeInStoreProfileButton
             // 
-            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(287, 233);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(31, 36);
-            this.button5.TabIndex = 9;
-            this.button5.Text = "→";
-            this.button5.UseVisualStyleBackColor = true;
+            this.removeInStoreProfileButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.removeInStoreProfileButton.Location = new System.Drawing.Point(287, 233);
+            this.removeInStoreProfileButton.Name = "removeInStoreProfileButton";
+            this.removeInStoreProfileButton.Size = new System.Drawing.Size(31, 36);
+            this.removeInStoreProfileButton.TabIndex = 9;
+            this.removeInStoreProfileButton.Text = "→";
+            this.removeInStoreProfileButton.UseVisualStyleBackColor = true;
+            this.removeInStoreProfileButton.Click += new System.EventHandler(this.button5_Click);
             // 
-            // button10
+            // moveInStoreProfileDownButton
             // 
-            this.button10.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button10.Location = new System.Drawing.Point(195, 503);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(35, 30);
-            this.button10.TabIndex = 8;
-            this.button10.Text = "↓";
-            this.button10.UseVisualStyleBackColor = true;
+            this.moveInStoreProfileDownButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moveInStoreProfileDownButton.Location = new System.Drawing.Point(195, 503);
+            this.moveInStoreProfileDownButton.Name = "moveInStoreProfileDownButton";
+            this.moveInStoreProfileDownButton.Size = new System.Drawing.Size(35, 30);
+            this.moveInStoreProfileDownButton.TabIndex = 8;
+            this.moveInStoreProfileDownButton.Text = "↓";
+            this.moveInStoreProfileDownButton.UseVisualStyleBackColor = true;
             // 
-            // button11
+            // moveInStoreProfileUpButton
             // 
-            this.button11.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button11.Location = new System.Drawing.Point(58, 503);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(35, 30);
-            this.button11.TabIndex = 7;
-            this.button11.Text = "↑";
-            this.button11.UseVisualStyleBackColor = true;
+            this.moveInStoreProfileUpButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.moveInStoreProfileUpButton.Location = new System.Drawing.Point(58, 503);
+            this.moveInStoreProfileUpButton.Name = "moveInStoreProfileUpButton";
+            this.moveInStoreProfileUpButton.Size = new System.Drawing.Size(35, 30);
+            this.moveInStoreProfileUpButton.TabIndex = 7;
+            this.moveInStoreProfileUpButton.Text = "↑";
+            this.moveInStoreProfileUpButton.UseVisualStyleBackColor = true;
             // 
             // groupBox11
             // 
@@ -2610,8 +2664,8 @@
             this.dataGridView5.AllowUserToDeleteRows = false;
             this.dataGridView5.AllowUserToResizeColumns = false;
             this.dataGridView5.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
-            this.dataGridView5.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Silver;
+            this.dataGridView5.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView5.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView5.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView5.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -2998,56 +3052,6 @@
             this.addCustomerButton.UseVisualStyleBackColor = true;
             this.addCustomerButton.Click += new System.EventHandler(this.addCustomerButton_Click);
             // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(138, 22);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(100, 13);
-            this.label19.TabIndex = 1;
-            this.label19.Text = "Default Prce Sheet:";
-            // 
-            // defaultOnlinePriceSheet
-            // 
-            this.defaultOnlinePriceSheet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.defaultOnlinePriceSheet.FormattingEnabled = true;
-            this.defaultOnlinePriceSheet.Items.AddRange(new object[] {
-            "Cost",
-            "Red",
-            "Yellow",
-            "Green",
-            "Pink",
-            "Blue"});
-            this.defaultOnlinePriceSheet.Location = new System.Drawing.Point(128, 41);
-            this.defaultOnlinePriceSheet.Name = "defaultOnlinePriceSheet";
-            this.defaultOnlinePriceSheet.Size = new System.Drawing.Size(121, 21);
-            this.defaultOnlinePriceSheet.TabIndex = 2;
-            // 
-            // defaultInstorePriceSheet
-            // 
-            this.defaultInstorePriceSheet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.defaultInstorePriceSheet.FormattingEnabled = true;
-            this.defaultInstorePriceSheet.Items.AddRange(new object[] {
-            "Cost",
-            "Red",
-            "Yellow",
-            "Green",
-            "Pink",
-            "Blue"});
-            this.defaultInstorePriceSheet.Location = new System.Drawing.Point(84, 41);
-            this.defaultInstorePriceSheet.Name = "defaultInstorePriceSheet";
-            this.defaultInstorePriceSheet.Size = new System.Drawing.Size(121, 21);
-            this.defaultInstorePriceSheet.TabIndex = 13;
-            // 
-            // label83
-            // 
-            this.label83.AutoSize = true;
-            this.label83.Location = new System.Drawing.Point(94, 20);
-            this.label83.Name = "label83";
-            this.label83.Size = new System.Drawing.Size(100, 13);
-            this.label83.TabIndex = 12;
-            this.label83.Text = "Default Prce Sheet:";
-            // 
             // CustomerInformation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3313,15 +3317,15 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn expirationDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn cardNote;
         private System.Windows.Forms.GroupBox groupBox13;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button moveOnlineProfileDownButton;
+        private System.Windows.Forms.Button moveOnlineProfileUpButton;
+        private System.Windows.Forms.Button removeOnlineProfileButton;
+        private System.Windows.Forms.Button addOnlineProfileButton;
         private System.Windows.Forms.GroupBox groupBox12;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button addInStoreProfileButton;
+        private System.Windows.Forms.Button removeInStoreProfileButton;
+        private System.Windows.Forms.Button moveInStoreProfileDownButton;
+        private System.Windows.Forms.Button moveInStoreProfileUpButton;
         private System.Windows.Forms.GroupBox groupBox11;
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.DataGridView dataGridView4;

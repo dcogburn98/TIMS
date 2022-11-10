@@ -19,6 +19,7 @@ namespace TIMSServerModel
         }
 
         public int profileID;
+        public int elementID;
         public int priority;
         public string groupCode;
         public string department;

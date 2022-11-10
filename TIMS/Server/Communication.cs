@@ -289,10 +289,10 @@ namespace TIMS.Server
             return proxy.RetrieveNextInvoiceNumber();
         }
 
-        public static Request InitiatePayment(Invoice inv, decimal paymentAmount)
-        {
-            return proxy.InitiatePayment(inv, paymentAmount);
-        }
+        //public static Request InitiatePayment(Invoice inv, decimal paymentAmount)
+        //{
+        //    return proxy.InitiatePayment(inv, paymentAmount);
+        //}
         #endregion
 
         #region Global Properties
