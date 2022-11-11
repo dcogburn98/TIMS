@@ -1759,6 +1759,74 @@ namespace TIMSServer
             CloseConnection();
             return container;
         }
+        public AuthContainer<int> RetrieveNextPricingProfileID(AuthKey key)
+        {
+            AuthContainer<int> container = CheckAuthorization<int>(key);
+            if (!container.Key.Success)
+                return container;
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"SELECT MAX(PROFILEID) FROM PRICINGPROFILES";
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                container.Data = 0;
+                return container;
+            }
+
+            while (reader.Read())
+            {
+                if (!reader.IsDBNull(0))
+                {
+                    container.Data = reader.GetInt32(0) + 1;
+                }
+            }
+
+            CloseConnection();
+            return container;
+        }
+        public AuthContainer<object> AddPricingProfile(PricingProfile profile, AuthKey key)
+        {
+            AuthContainer<object> container = CheckAuthorization<object>(key);
+            if (!container.Key.Success)
+                return container;
+
+            profile.ProfileID = RetrieveNextPricingProfileID(BypassKey).Data;
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"INSERT INTO PRICINGPROFILES (PROFILEID, PROFILENAME) VALUES ($PID, $PNAME)";
+            command.Parameters.Add(new SqliteParameter("$PID", profile.ProfileID));
+            command.Parameters.Add(new SqliteParameter("$PNAME", profile.ProfileName));
+            command.ExecuteNonQuery();
+
+            command.CommandText =
+                @"INSERT INTO PRICINGPROFILEELEMENTS (";
+            foreach (PricingProfileElement element in profile.Elements)
+            {
+                command.Parameters.Clear();
+                command.Parameters.Add(new SqliteParameter("$PID", profile.ProfileID));
+                command.Parameters.Add(new SqliteParameter("$PRIORITY", element.priority));
+                command.Parameters.Add(new SqliteParameter("$GROUP", element.groupCode));
+                command.Parameters.Add(new SqliteParameter("$DEPARTMENT", element.department));
+                command.Parameters.Add(new SqliteParameter("$SUBDEPARTMENT", element.subDepartment));
+                command.Parameters.Add(new SqliteParameter("$LINE", element.productLine));
+                command.Parameters.Add(new SqliteParameter("$ITEMNO", element.itemNumber));
+                command.Parameters.Add(new SqliteParameter("$PRICESHEET", element.priceSheet));
+                command.Parameters.Add(new SqliteParameter("$MARGIN", element.margin));
+                command.Parameters.Add(new SqliteParameter("$BEGIN", element.beginDate.ToString()));
+                command.Parameters.Add(new SqliteParameter("$END", element.endDate.ToString()));
+            }
+
+            CloseConnection();
+
+            return container;
+        }
         #endregion
 
         #region Invoices

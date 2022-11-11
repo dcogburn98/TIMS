@@ -26,6 +26,8 @@ namespace TIMS.Forms.Customers
                 dataGridView1.Rows[row].Cells[1].Value = profile.ProfileName;
                 dataGridView1.Rows[row].Tag = profile;
             }
+
+            CancelButton = button3;
         }
 
         private void dataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -35,6 +37,25 @@ namespace TIMS.Forms.Customers
 
             PricingProfileEditor editor = new PricingProfileEditor((dataGridView1.SelectedRows[0].Tag as PricingProfile));
             editor.ShowDialog();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count != 1)
+                return;
+
+            PricingProfileEditor editor = new PricingProfileEditor((dataGridView1.SelectedRows[0].Tag as PricingProfile));
+            editor.ShowDialog();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

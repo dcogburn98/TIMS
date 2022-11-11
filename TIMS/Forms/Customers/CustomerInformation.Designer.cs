@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.searchCustomerButton = new System.Windows.Forms.Button();
@@ -2326,6 +2326,7 @@
             this.dataGridView4.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView4.Size = new System.Drawing.Size(275, 428);
             this.dataGridView4.TabIndex = 12;
+            this.dataGridView4.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView4_CellClick);
             // 
             // dataGridViewTextBoxColumn3
             // 
@@ -2341,6 +2342,7 @@
             // 
             // moveOnlineProfileDownButton
             // 
+            this.moveOnlineProfileDownButton.Enabled = false;
             this.moveOnlineProfileDownButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.moveOnlineProfileDownButton.Location = new System.Drawing.Point(233, 503);
             this.moveOnlineProfileDownButton.Name = "moveOnlineProfileDownButton";
@@ -2348,9 +2350,11 @@
             this.moveOnlineProfileDownButton.TabIndex = 6;
             this.moveOnlineProfileDownButton.Text = "↓";
             this.moveOnlineProfileDownButton.UseVisualStyleBackColor = true;
+            this.moveOnlineProfileDownButton.Click += new System.EventHandler(this.moveOnlineProfileDownButton_Click);
             // 
             // moveOnlineProfileUpButton
             // 
+            this.moveOnlineProfileUpButton.Enabled = false;
             this.moveOnlineProfileUpButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.moveOnlineProfileUpButton.Location = new System.Drawing.Point(96, 503);
             this.moveOnlineProfileUpButton.Name = "moveOnlineProfileUpButton";
@@ -2358,6 +2362,7 @@
             this.moveOnlineProfileUpButton.TabIndex = 5;
             this.moveOnlineProfileUpButton.Text = "↑";
             this.moveOnlineProfileUpButton.UseVisualStyleBackColor = true;
+            this.moveOnlineProfileUpButton.Click += new System.EventHandler(this.moveOnlineProfileUpButton_Click);
             // 
             // removeOnlineProfileButton
             // 
@@ -2442,6 +2447,8 @@
             this.dataGridView3.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView3.Size = new System.Drawing.Size(275, 428);
             this.dataGridView3.TabIndex = 11;
+            this.dataGridView3.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView3_CellClick);
+            this.dataGridView3.SelectionChanged += new System.EventHandler(this.dataGridView3_SelectionChanged);
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -2475,10 +2482,11 @@
             this.removeInStoreProfileButton.TabIndex = 9;
             this.removeInStoreProfileButton.Text = "→";
             this.removeInStoreProfileButton.UseVisualStyleBackColor = true;
-            this.removeInStoreProfileButton.Click += new System.EventHandler(this.button5_Click);
+            this.removeInStoreProfileButton.Click += new System.EventHandler(this.removeInStoreProfileButton_Click);
             // 
             // moveInStoreProfileDownButton
             // 
+            this.moveInStoreProfileDownButton.Enabled = false;
             this.moveInStoreProfileDownButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.moveInStoreProfileDownButton.Location = new System.Drawing.Point(195, 503);
             this.moveInStoreProfileDownButton.Name = "moveInStoreProfileDownButton";
@@ -2486,9 +2494,11 @@
             this.moveInStoreProfileDownButton.TabIndex = 8;
             this.moveInStoreProfileDownButton.Text = "↓";
             this.moveInStoreProfileDownButton.UseVisualStyleBackColor = true;
+            this.moveInStoreProfileDownButton.Click += new System.EventHandler(this.moveInStoreProfileDownButton_Click);
             // 
             // moveInStoreProfileUpButton
             // 
+            this.moveInStoreProfileUpButton.Enabled = false;
             this.moveInStoreProfileUpButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.moveInStoreProfileUpButton.Location = new System.Drawing.Point(58, 503);
             this.moveInStoreProfileUpButton.Name = "moveInStoreProfileUpButton";
@@ -2496,6 +2506,7 @@
             this.moveInStoreProfileUpButton.TabIndex = 7;
             this.moveInStoreProfileUpButton.Text = "↑";
             this.moveInStoreProfileUpButton.UseVisualStyleBackColor = true;
+            this.moveInStoreProfileUpButton.Click += new System.EventHandler(this.moveInStoreProfileUpButton_Click);
             // 
             // groupBox11
             // 
@@ -2664,8 +2675,8 @@
             this.dataGridView5.AllowUserToDeleteRows = false;
             this.dataGridView5.AllowUserToResizeColumns = false;
             this.dataGridView5.AllowUserToResizeRows = false;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Silver;
-            this.dataGridView5.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.dataGridView5.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView5.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView5.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView5.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
