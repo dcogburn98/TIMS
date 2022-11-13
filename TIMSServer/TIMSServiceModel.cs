@@ -703,6 +703,7 @@ namespace TIMSServer
         }
         public bool CheckProductLine(string productLine)
         {
+            productLine = productLine.ToUpper();
             OpenConnection();
 
             SqliteCommand command = sqlite_conn.CreateCommand();
@@ -1651,6 +1652,9 @@ namespace TIMSServer
             return container;
         }
 
+        #endregion
+
+        #region Pricing Profiles
         public AuthContainer<List<PricingProfile>> RetrievePricingProfiles(AuthKey key)
         {
             AuthContainer<List<PricingProfile>> container = CheckAuthorization<List<PricingProfile>>(key);
@@ -1754,8 +1758,6 @@ namespace TIMSServer
                 command.ExecuteNonQuery();
             }
 
-            command.ExecuteNonQuery();
-
             CloseConnection();
             return container;
         }
@@ -1806,7 +1808,12 @@ namespace TIMSServer
             command.ExecuteNonQuery();
 
             command.CommandText =
-                @"INSERT INTO PRICINGPROFILEELEMENTS (";
+                @"INSERT INTO PRICINGPROFILEELEMENTS (
+                PROFILEID, PRIORITY, GROUPCODE, DEPARTMENT, SUBDEPARTMENT, 
+                PRODUCTLINE, ITEMNUMBER, PRICESHEET, MARGIN, BEGINDATE, ENDDATE) 
+                VALUES (
+                $PID, $PRIORITY, $GROUP, $DEPARTMENT, $SUBDEPARTMENT, 
+                $LINE, $ITEMNO, $PRICESHEET, $MARGIN, $BEGIN, $END)";
             foreach (PricingProfileElement element in profile.Elements)
             {
                 command.Parameters.Clear();
@@ -1821,6 +1828,7 @@ namespace TIMSServer
                 command.Parameters.Add(new SqliteParameter("$MARGIN", element.margin));
                 command.Parameters.Add(new SqliteParameter("$BEGIN", element.beginDate.ToString()));
                 command.Parameters.Add(new SqliteParameter("$END", element.endDate.ToString()));
+                command.ExecuteNonQuery();
             }
 
             CloseConnection();

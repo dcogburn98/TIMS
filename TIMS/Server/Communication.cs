@@ -247,6 +247,11 @@ namespace TIMS.Server
             else
                 MessageBox.Show("Access Denied.");
         }
+
+        #endregion
+
+        #region Pricing Profiles
+
         public static List<PricingProfile> RetrievePricingProfiles()
         {
             AuthContainer<List<PricingProfile>> container = proxy.RetrievePricingProfiles(currentKey);
@@ -260,6 +265,36 @@ namespace TIMS.Server
                 MessageBox.Show("Access Denied.");
                 return null;
             }
+        }
+        public static void UpdatePricingProfile(PricingProfile profile)
+        {
+            AuthContainer<object> container = proxy.UpdatePricingProfile(profile, currentKey);
+            if (container.Key.Success)
+                currentKey.Regenerate();
+            else
+                MessageBox.Show("Access Denied.");
+        }
+        public static int RetrieveNextPricingProfileID()
+        {
+            AuthContainer<int> container = proxy.RetrieveNextPricingProfileID(currentKey);
+            if (container.Key.Success)
+            {
+                currentKey.Regenerate();
+                return container.Data;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return 0;
+            }
+        }
+        public static void AddPricingProfile(PricingProfile profile)
+        {
+            AuthContainer<object> container = proxy.AddPricingProfile(profile, currentKey);
+            if (container.Key.Success)
+                currentKey.Regenerate();
+            else
+                MessageBox.Show("Access Denied.");
         }
         #endregion
 

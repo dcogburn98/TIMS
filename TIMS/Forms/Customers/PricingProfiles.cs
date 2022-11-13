@@ -55,7 +55,8 @@ namespace TIMS.Forms.Customers
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            PricingProfileEditor editor = new PricingProfileEditor();
+            editor.ShowDialog();
         }
     }
 }
