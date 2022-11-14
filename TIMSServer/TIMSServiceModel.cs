@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Data;
 using System.Collections.Generic;
 using System.Net;
 using Microsoft.Data.Sqlite;
-//using PaymentEngine.xTransaction;
 using System.IO;
 using System.Text;
 using System.Linq;
@@ -1218,8 +1220,8 @@ namespace TIMSServer
             {
                 container.Data.customerName = reader.GetString(0);
                 container.Data.customerNumber = reader.GetString(1);
-                inStoreProfiles = reader.GetString(2).Split(',');
-                onlineStoreProfiles = reader.GetString(3).Split(',');
+                inStoreProfiles = reader.GetString(2) == "" ? null : reader.GetString(2).Split(',');
+                onlineStoreProfiles = reader.GetString(3) == "" ? null : reader.GetString(3).Split(',');
                 container.Data.inStorePricingProfile = new PricingProfileCollection();
                 container.Data.onlinePricingProfile = new PricingProfileCollection();
                 container.Data.inStorePricingProfile.defaultPriceSheet = (PricingProfileElement.PriceSheets)Enum.Parse(typeof(PricingProfileElement.PriceSheets), reader.GetString(4));
@@ -1331,14 +1333,16 @@ namespace TIMSServer
             CloseConnection();
 
             List<PricingProfile> Profiles = RetrievePricingProfiles(BypassKey).Data;
-            foreach (string profile in inStoreProfiles)
-            {
-                container.Data.inStorePricingProfile.Profiles.Add(Profiles.First(el => el.ProfileID.ToString().ToUpper() == profile));
-            }
-            foreach (string profile in onlineStoreProfiles)
-            {
-                container.Data.onlinePricingProfile.Profiles.Add(Profiles.First(el => el.ProfileID.ToString().ToUpper() == profile));
-            }
+            if (inStoreProfiles != null)
+                foreach (string profile in inStoreProfiles)
+                {
+                    container.Data.inStorePricingProfile.Profiles.Add(Profiles.First(el => el.ProfileID.ToString().ToUpper() == profile));
+                }
+            if (onlineStoreProfiles != null)
+                foreach (string profile in onlineStoreProfiles)
+                {
+                    container.Data.onlinePricingProfile.Profiles.Add(Profiles.First(el => el.ProfileID.ToString().ToUpper() == profile));
+                }
             return container;
         }
         public AuthContainer<List<Customer>> GetCustomers(AuthKey key)
@@ -1724,37 +1728,36 @@ namespace TIMSServer
                 return container;
 
             OpenConnection();
-
             SqliteCommand command = sqlite_conn.CreateCommand();
+
             command.CommandText =
-                @"UPDATE PRICINGPROFILEELEMENTS SET
-                PRIORITY = $PRIORITY,
-                GROUPCODE = $GROUP,
-                DEPARTMENT = $DEPARTMENT,
-                SUBDEPARTMENT = $SUBDEPARTMENT,
-                PRODUCTLINE = $PRODUCTLINE,
-                ITEMNUMBER = $ITEMNUMBER,
-                PRICESHEET = $PRICESHEET,
-                MARGIN = $MARGIN,
-                BEGINDATE = $BEGIN,
-                ENDDATE = $END
-                  WHERE PROFILEID = $PID AND ELEMENTID = $EID";
+                "DELETE FROM PRICINGPROFILEELEMENTS WHERE PROFILEID = $PID";
+            command.Parameters.Add(new SqliteParameter("$PID", profile.ProfileID));
+            command.ExecuteNonQuery();
+
+            command.CommandText =
+                @"INSERT INTO PRICINGPROFILEELEMENTS (
+                PROFILEID, PRIORITY, GROUPCODE, DEPARTMENT, SUBDEPARTMENT, PRODUCTLINE, 
+                ITEMNUMBER, PRICESHEET, MARGIN, BEGINDATE, ENDDATE )
+                VALUES 
+                ($PID, $PRIORITY, $GROUP, $DEPARTMENT, $SUBDEPARTMENT, $PRODUCTLINE, 
+                $ITEMNUMBER, $PRICESHEET, $MARGIN, $BEGIN, $END)";
 
             foreach (PricingProfileElement element in profile.Elements)
             {
+                //Read on the null coalescing operator (??) and the null conditional operator (?.)
                 command.Parameters.Clear();
                 command.Parameters.Add(new SqliteParameter("$PID", element.profileID));
-                command.Parameters.Add(new SqliteParameter("$EID", element.elementID));
                 command.Parameters.Add(new SqliteParameter("$PRIORITY", element.priority));
-                command.Parameters.Add(new SqliteParameter("$GROUP", element.groupCode));
-                command.Parameters.Add(new SqliteParameter("$DEPARTMENT", element.department));
-                command.Parameters.Add(new SqliteParameter("$SUBDEPARTMENT", element.subDepartment));
-                command.Parameters.Add(new SqliteParameter("$PRODUCTLINE", element.productLine));
-                command.Parameters.Add(new SqliteParameter("$ITEMNUMBER", element.itemNumber));
+                command.Parameters.Add(new SqliteParameter("$GROUP", element.groupCode ?? String.Empty));
+                command.Parameters.Add(new SqliteParameter("$DEPARTMENT", element.department ?? String.Empty));
+                command.Parameters.Add(new SqliteParameter("$SUBDEPARTMENT", element.subDepartment ?? String.Empty));
+                command.Parameters.Add(new SqliteParameter("$PRODUCTLINE", element.productLine ?? String.Empty));
+                command.Parameters.Add(new SqliteParameter("$ITEMNUMBER", element.itemNumber ?? String.Empty));
                 command.Parameters.Add(new SqliteParameter("$PRICESHEET", Enum.GetName(typeof(PricingProfileElement.PriceSheets), element.priceSheet)));
                 command.Parameters.Add(new SqliteParameter("$MARGIN", element.margin));
-                command.Parameters.Add(new SqliteParameter("$BEGIN", element.beginDate.ToString()));
-                command.Parameters.Add(new SqliteParameter("$END", element.endDate.ToString()));
+                command.Parameters.Add(new SqliteParameter("$BEGIN", element.beginDate?.ToString() ?? String.Empty));
+                command.Parameters.Add(new SqliteParameter("$END", element.endDate?.ToString() ?? String.Empty));
                 command.ExecuteNonQuery();
             }
 
@@ -1816,18 +1819,19 @@ namespace TIMSServer
                 $LINE, $ITEMNO, $PRICESHEET, $MARGIN, $BEGIN, $END)";
             foreach (PricingProfileElement element in profile.Elements)
             {
+                //Read on the null coalescing operator (??) and the null conditional operator (?.)
                 command.Parameters.Clear();
                 command.Parameters.Add(new SqliteParameter("$PID", profile.ProfileID));
                 command.Parameters.Add(new SqliteParameter("$PRIORITY", element.priority));
-                command.Parameters.Add(new SqliteParameter("$GROUP", element.groupCode));
-                command.Parameters.Add(new SqliteParameter("$DEPARTMENT", element.department));
-                command.Parameters.Add(new SqliteParameter("$SUBDEPARTMENT", element.subDepartment));
-                command.Parameters.Add(new SqliteParameter("$LINE", element.productLine));
-                command.Parameters.Add(new SqliteParameter("$ITEMNO", element.itemNumber));
+                command.Parameters.Add(new SqliteParameter("$GROUP", element.groupCode ?? String.Empty));
+                command.Parameters.Add(new SqliteParameter("$DEPARTMENT", element.department ?? String.Empty));
+                command.Parameters.Add(new SqliteParameter("$SUBDEPARTMENT", element.subDepartment ?? String.Empty));
+                command.Parameters.Add(new SqliteParameter("$LINE", element.productLine ?? String.Empty));
+                command.Parameters.Add(new SqliteParameter("$ITEMNO", element.itemNumber ?? String.Empty));
                 command.Parameters.Add(new SqliteParameter("$PRICESHEET", element.priceSheet));
                 command.Parameters.Add(new SqliteParameter("$MARGIN", element.margin));
-                command.Parameters.Add(new SqliteParameter("$BEGIN", element.beginDate.ToString()));
-                command.Parameters.Add(new SqliteParameter("$END", element.endDate.ToString()));
+                command.Parameters.Add(new SqliteParameter("$BEGIN", element.beginDate?.ToString() ?? String.Empty));
+                command.Parameters.Add(new SqliteParameter("$END", element.endDate?.ToString() ?? String.Empty));
                 command.ExecuteNonQuery();
             }
 
@@ -2171,7 +2175,95 @@ namespace TIMSServer
             CloseConnection();
             return property;
         }
+        public AuthContainer<object> SetImage(string key, byte[] imgBytes, AuthKey authkey)
+        {
+            AuthContainer<object> container = CheckAuthorization<object>(authkey);
+            if (!container.Key.Success)
+                return container;
 
+            bool exists = false;
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"SELECT * FROM MEDIA WHERE KEY = $KEY AND MEDIATYPE = ""Image""";
+            command.Parameters.Add(new SqliteParameter("$KEY", key));
+            SqliteDataReader reader = command.ExecuteReader();
+            if (reader.HasRows)
+            {
+                exists = true;
+            }
+            reader.Close();
+
+            if (exists)
+                command.CommandText = @"UPDATE MEDIA SET MEDIATYPE = ""Image"", VALUE = $VALUE WHERE KEY = $KEY";
+            else
+                command.CommandText = @"INSERT INTO MEDIA (KEY, MEDIATYPE, VALUE) VALUES ($KEY, ""Image"", $VALUE)";
+
+            command.Parameters.Clear();
+            command.Parameters.Add(new SqliteParameter("$KEY", key));
+            command.Parameters.Add(new SqliteParameter("$VALUE", imgBytes));
+
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+            return container;
+        }
+        public AuthContainer<byte[]> RetrieveImage(string key, AuthKey authkey)
+        {
+            AuthContainer<byte[]> container = CheckAuthorization<byte[]>(authkey);
+            if (!container.Key.Success)
+                return container;
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"SELECT VALUE FROM MEDIA WHERE KEY = $KEY AND MEDIATYPE = ""Image""";
+            command.Parameters.Add(new SqliteParameter("$KEY", key));
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                container.Message = "No value found for key " + key + ".";
+                container.Data = null;
+                return container;
+            }
+
+            byte[] imgBytes = new byte[1048576];
+            while (reader.Read())
+            {
+                reader.GetBytes(0, 0, imgBytes, 0, 1048576);
+            }
+            container.Data = imgBytes;
+
+            CloseConnection();
+            return container;
+        }
+        public byte[] RetrieveCompanyLogo()
+        {
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"SELECT VALUE FROM MEDIA WHERE KEY = ""Company Logo"" AND MEDIATYPE = ""Image""";
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            byte[] imgBytes = new byte[1048576];
+            while (reader.Read())
+            {
+                reader.GetBytes(0, 0, imgBytes, 0, 1048576);
+            }
+
+            CloseConnection();
+            return imgBytes;
+        }
         #endregion
 
         #region Shortcut Menus
@@ -3131,26 +3223,6 @@ namespace TIMSServer
         }
         #endregion
 
-        public decimal HighestAverageDay(decimal[][] DailyTips)
-        {
-            decimal[] DailyAverages = new decimal[7];
-            
-            for (int day = 0; day != 7; day++)
-            {
-                for (int week = 0; week != 12; week++)
-                {
-                    DailyAverages[day] += DailyTips[week][day];
-                }
-                DailyAverages[day] = DailyAverages[day] / 12;
-            }
-
-            decimal highestAverage = 0;
-            foreach (decimal d in DailyAverages)
-            {
-                if (d > highestAverage)
-                    highestAverage = d;
-            }
-            return highestAverage;
-        }
+        
     }
 }

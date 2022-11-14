@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -100,6 +101,12 @@ namespace TIMSServerModel
         #region Global Properties
         [OperationContract]
         string RetrievePropertyString(string key);
+        [OperationContract]
+        AuthContainer<object> SetImage(string key, byte[] imgBytes, AuthKey authkey);
+        [OperationContract]
+        AuthContainer<byte[]> RetrieveImage(string key, AuthKey authkey);
+        [OperationContract]
+        byte[] RetrieveCompanyLogo();
         #endregion
 
         #region Item Shortcut Menus

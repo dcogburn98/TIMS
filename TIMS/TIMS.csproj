@@ -221,6 +221,12 @@
     <Compile Include="Forms\Login\ServerAddressEntry.Designer.cs">
       <DependentUpon>ServerAddressEntry.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Maintenance\ItemMaintenance.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Maintenance\ItemMaintenance.Designer.cs">
+      <DependentUpon>ItemMaintenance.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Orders\CheckinCreator.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -350,6 +356,12 @@
     <Compile Include="Forms\Settings\AddDevice.Designer.cs">
       <DependentUpon>AddDevice.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Settings\CompanyControls.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Settings\CompanyControls.Designer.cs">
+      <DependentUpon>CompanyControls.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Settings\DeviceAssignments.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -428,6 +440,9 @@
     <EmbeddedResource Include="Forms\Login\ServerAddressEntry.resx">
       <DependentUpon>ServerAddressEntry.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Maintenance\ItemMaintenance.resx">
+      <DependentUpon>ItemMaintenance.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Orders\CheckinCreator.resx">
       <DependentUpon>CheckinCreator.cs</DependentUpon>
     </EmbeddedResource>
@@ -502,6 +517,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Settings\AddDevice.resx">
       <DependentUpon>AddDevice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Settings\CompanyControls.resx">
+      <DependentUpon>CompanyControls.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Settings\DeviceAssignments.resx">
       <DependentUpon>DeviceAssignments.cs</DependentUpon>

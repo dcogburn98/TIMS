@@ -202,25 +202,27 @@ namespace TIMS.Forms.Customers
             else
                 removeOnlineProfileButton.Enabled = false;
 
-            if (currentCustomer.inStorePricingProfile.Profiles.IndexOf(currentCustomer.inStorePricingProfile.Profiles.First(el => el.ProfileID == int.Parse(dataGridView3.Rows[0].Cells[0].Value.ToString()))) == 0)
+
+
+            if (currentCustomer.inStorePricingProfile.Profiles.Count == 0 || currentCustomer.inStorePricingProfile.Profiles.IndexOf(currentCustomer.inStorePricingProfile.Profiles.First(el => el.ProfileID == int.Parse(dataGridView3.Rows[0].Cells[0].Value.ToString()))) == 0)
                 moveInStoreProfileUpButton.Enabled = false;
             else
                 moveInStoreProfileUpButton.Enabled = true;
 
-            if (currentCustomer.inStorePricingProfile.Profiles.IndexOf(currentCustomer.inStorePricingProfile.Profiles.First(el => el.ProfileID == int.Parse(dataGridView3.Rows[0].Cells[0].Value.ToString()))) == currentCustomer.inStorePricingProfile.Profiles.Count - 1)
-                moveInStoreProfileDownButton.Enabled = false;
-            else
-                moveInStoreProfileDownButton.Enabled = true;
+            //if (currentCustomer.inStorePricingProfile.Profiles.IndexOf(currentCustomer.inStorePricingProfile.Profiles.First(el => el.ProfileID == int.Parse(dataGridView3.Rows[0].Cells[0].Value.ToString()))) == currentCustomer.inStorePricingProfile.Profiles.Count - 1)
+            //    moveInStoreProfileDownButton.Enabled = false;
+            //else
+            //    moveInStoreProfileDownButton.Enabled = true;
 
-            if (currentCustomer.onlinePricingProfile.Profiles.IndexOf(currentCustomer.onlinePricingProfile.Profiles.First(el => el.ProfileID == int.Parse(dataGridView4.Rows[0].Cells[0].Value.ToString()))) == 0)
+            if (currentCustomer.onlinePricingProfile.Profiles.Count == 0 || currentCustomer.onlinePricingProfile.Profiles.IndexOf(currentCustomer.onlinePricingProfile.Profiles.First(el => el.ProfileID == int.Parse(dataGridView4.Rows[0].Cells[0].Value.ToString()))) == 0)
                 moveOnlineProfileUpButton.Enabled = false;
             else
                 moveOnlineProfileUpButton.Enabled = true;
 
-            if (currentCustomer.onlinePricingProfile.Profiles.IndexOf(currentCustomer.onlinePricingProfile.Profiles.First(el => el.ProfileID == int.Parse(dataGridView4.Rows[0].Cells[0].Value.ToString()))) == currentCustomer.onlinePricingProfile.Profiles.Count - 1)
-                moveOnlineProfileDownButton.Enabled = false;
-            else
-                moveOnlineProfileDownButton.Enabled = true;
+            //if (currentCustomer.onlinePricingProfile.Profiles.IndexOf(currentCustomer.onlinePricingProfile.Profiles.First(el => el.ProfileID == int.Parse(dataGridView4.Rows[0].Cells[0].Value.ToString()))) == currentCustomer.onlinePricingProfile.Profiles.Count - 1)
+            //    moveOnlineProfileDownButton.Enabled = false;
+            //else
+            //    moveOnlineProfileDownButton.Enabled = true;
 
             #endregion
         }
@@ -360,11 +362,11 @@ namespace TIMS.Forms.Customers
             if (dataGridView3.SelectedRows.Count != 1 || currentCustomer == null)
                 return;
 
-            if (currentCustomer.inStorePricingProfile.Profiles.Count == 1)
-            {
-                MessageBox.Show("Customers must have at least one profile for in-store pricing and one for online pricing!");
-                return;
-            }
+            //if (currentCustomer.inStorePricingProfile.Profiles.Count == 1)
+            //{
+            //    MessageBox.Show("Customers must have at least one profile for in-store pricing and one for online pricing!");
+            //    return;
+            //}
 
             currentCustomer.inStorePricingProfile.Profiles.Remove(
                 currentCustomer.inStorePricingProfile.Profiles.Find(
@@ -382,7 +384,7 @@ namespace TIMS.Forms.Customers
 
             customerEdited = true;
 
-            if (currentCustomer.inStorePricingProfile.Profiles.Count == 1)
+            if (currentCustomer.inStorePricingProfile.Profiles.Count == 0)
             {
                 removeInStoreProfileButton.Enabled = false;
             }
@@ -507,6 +509,11 @@ namespace TIMS.Forms.Customers
             newProfiles.Add(currentCustomer.inStorePricingProfile.Profiles[dataGridView3.SelectedRows[0].Index]);
             newProfiles.Add(currentCustomer.inStorePricingProfile.Profiles[dataGridView3.SelectedRows[0].Index - 1]);
 
+            for (int i = dataGridView3.SelectedRows[0].Index; i != dataGridView3.Rows.Count - 1; i++)
+            {
+                newProfiles.Add(currentCustomer.inStorePricingProfile.Profiles[i + 1]);
+            }
+
             currentCustomer.inStorePricingProfile.Profiles = newProfiles;
 
             dataGridView3.Rows.Clear();
@@ -542,6 +549,11 @@ namespace TIMS.Forms.Customers
 
             newProfiles.Add(currentCustomer.inStorePricingProfile.Profiles[dataGridView3.SelectedRows[0].Index + 1]);
             newProfiles.Add(currentCustomer.inStorePricingProfile.Profiles[dataGridView3.SelectedRows[0].Index]);
+
+            for (int i = dataGridView3.SelectedRows[0].Index + 1; i != dataGridView3.Rows.Count - 1; i++)
+            {
+                newProfiles.Add(currentCustomer.inStorePricingProfile.Profiles[i + 1]);
+            }
 
             currentCustomer.inStorePricingProfile.Profiles = newProfiles;
 
@@ -600,6 +612,11 @@ namespace TIMS.Forms.Customers
             newProfiles.Add(currentCustomer.onlinePricingProfile.Profiles[dataGridView4.SelectedRows[0].Index]);
             newProfiles.Add(currentCustomer.onlinePricingProfile.Profiles[dataGridView4.SelectedRows[0].Index - 1]);
 
+            for (int i = dataGridView4.SelectedRows[0].Index; i != dataGridView4.Rows.Count - 1; i++)
+            {
+                newProfiles.Add(currentCustomer.onlinePricingProfile.Profiles[i + 1]);
+            }
+
             currentCustomer.onlinePricingProfile.Profiles = newProfiles;
 
             dataGridView4.Rows.Clear();
@@ -635,6 +652,11 @@ namespace TIMS.Forms.Customers
 
             newProfiles.Add(currentCustomer.onlinePricingProfile.Profiles[dataGridView4.SelectedRows[0].Index + 1]);
             newProfiles.Add(currentCustomer.onlinePricingProfile.Profiles[dataGridView4.SelectedRows[0].Index]);
+
+            for (int i = dataGridView4.SelectedRows[0].Index + 1; i != dataGridView4.Rows.Count - 1; i++)
+            {
+                newProfiles.Add(currentCustomer.onlinePricingProfile.Profiles[i + 1]);
+            }
 
             currentCustomer.onlinePricingProfile.Profiles = newProfiles;
 

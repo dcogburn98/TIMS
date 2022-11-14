@@ -62,11 +62,8 @@ namespace TIMS.Forms.Customers
         private void button4_Click(object sender, EventArgs e)
         {
             int row = dataGridView1.Rows.Add();
-            dataGridView1.Rows[row].Tag = new PricingProfileElement();
-            (dataGridView1.Rows[row].Tag as PricingProfileElement).priceSheet = PricingProfileElement.PriceSheets.Green;
-            profile.Elements.Add(dataGridView1.Rows[row].Tag as PricingProfileElement);
             (dataGridView1.Rows[row].Cells[5] as DataGridViewComboBoxCell).Items.AddRange("Cost", "Red", "Yellow", "Green", "Pink", "Blue");
-            dataGridView1.Rows[row].Cells[5].Value = Enum.GetName(typeof(PricingProfileElement.PriceSheets), (dataGridView1.Rows[row].Tag as PricingProfileElement).priceSheet);
+            dataGridView1.Rows[row].Cells[5].Value = Enum.GetName(typeof(PricingProfileElement.PriceSheets), PricingProfileElement.PriceSheets.Green);
             profileEdited = true;
         }
 
@@ -79,24 +76,32 @@ namespace TIMS.Forms.Customers
             }
             profile.ProfileName = textBox1.Text;
             profile.ProfileID = int.Parse(textBox2.Text);
+
+            profile.Elements.Clear();
             int i = 0;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
+                row.Tag = new PricingProfileElement();
                 (row.Tag as PricingProfileElement).profileID = profile.ProfileID;
 
                 #region Element error checking
-                if (row.Cells[0].Value == null && row.Cells[1].Value == null && row.Cells[2].Value == null &&
-                    row.Cells[3].Value == null && row.Cells[4].Value == null)
+                if ((row.Cells[0].Value?.ToString() == string.Empty || row.Cells[0].Value == null) && 
+                    (row.Cells[1].Value?.ToString() == string.Empty || row.Cells[1].Value == null) && 
+                    (row.Cells[2].Value?.ToString() == string.Empty || row.Cells[2].Value == null) &&
+                    (row.Cells[3].Value?.ToString() == string.Empty || row.Cells[3].Value == null) && 
+                    (row.Cells[4].Value?.ToString() == string.Empty || row.Cells[4].Value == null))
                 {
                     MessageBox.Show("Row " + row.Index + " is invalid.\nElements must have at least one identifier type!");
                     return;
                 }
-                if (row.Cells[6].Value == null || !decimal.TryParse(row.Cells[6].Value?.ToString(), out decimal _))
+
+                if (!(row.Cells[6].Value?.ToString() != string.Empty) || !decimal.TryParse(row.Cells[6].Value?.ToString(), out decimal _))
                 {
                     MessageBox.Show("Row " + row.Index + "is invalid.\nElements must have a specified margin!");
                     return;
                 }
-                if (row.Cells[7].Value != null)
+
+                if (row.Cells[7].Value?.ToString() != string.Empty && row.Cells[7].Value != null)
                 {
                     if (!DateTime.TryParse(row.Cells[7].Value.ToString(), out DateTime _))
                     {
@@ -104,7 +109,8 @@ namespace TIMS.Forms.Customers
                         return;
                     }
                 }
-                if (row.Cells[8].Value != null)
+
+                if (row.Cells[8].Value?.ToString() != string.Empty && row.Cells[8].Value != null)
                 {
                     if (!DateTime.TryParse(row.Cells[8].Value.ToString(), out DateTime _))
                     {
@@ -114,7 +120,7 @@ namespace TIMS.Forms.Customers
                 }
                 #endregion
 
-                if (row.Cells[0].Value != null)
+                if (row.Cells[0].Value?.ToString() != string.Empty && row.Cells[0].Value != null)
                 {
                     if (!Program.IsStringNumeric(row.Cells[0].Value.ToString()))
                     {
@@ -127,17 +133,17 @@ namespace TIMS.Forms.Customers
                     }
                 }
 
-                if (row.Cells[1].Value != null)
+                if (row.Cells[1].Value?.ToString() != string.Empty && row.Cells[1].Value != null)
                 {
                     (row.Tag as PricingProfileElement).department = row.Cells[1].Value.ToString();
                 }
 
-                if (row.Cells[2].Value != null)
+                if (row.Cells[2].Value?.ToString() != string.Empty && row.Cells[2].Value != null)
                 {
                     (row.Tag as PricingProfileElement).subDepartment = row.Cells[2].Value.ToString();
                 }
 
-                if (row.Cells[3].Value != null)
+                if (row.Cells[3].Value?.ToString() != string.Empty && row.Cells[3].Value != null)
                 {
                     if (row.Cells[3].Value.ToString().All(Char.IsLetter))
                     {
@@ -158,7 +164,7 @@ namespace TIMS.Forms.Customers
                     }
                 }
 
-                if (row.Cells[4].Value != null)
+                if (row.Cells[4].Value?.ToString() != string.Empty && row.Cells[4].Value != null)
                 {
                     if (!Program.IsStringAlphaNumeric(row.Cells[4].Value.ToString()))
                     {
@@ -175,7 +181,7 @@ namespace TIMS.Forms.Customers
 
                 (row.Tag as PricingProfileElement).margin = decimal.Parse(row.Cells[6].Value.ToString());
 
-                if (row.Cells[7].Value != null)
+                if (row.Cells[7].Value?.ToString() != string.Empty && row.Cells[7].Value != null)
                 {
                     if (DateTime.TryParse(row.Cells[7].Value.ToString(), out DateTime beginDate))
                     {
@@ -188,7 +194,7 @@ namespace TIMS.Forms.Customers
                     }
                 }
 
-                if (row.Cells[8].Value != null)
+                if (row.Cells[8].Value?.ToString() != string.Empty && row.Cells[8].Value != null)
                 {
                     if (DateTime.TryParse(row.Cells[8].Value.ToString(), out DateTime endDate))
                     {
@@ -231,6 +237,31 @@ namespace TIMS.Forms.Customers
 
         private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
+            
+        }
+
+        private void priorityUpButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PricingProfileEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (profileEdited)
+            {
+                if (MessageBox.Show("There are changes pending saving for this profile.\nAre you sure you want to exit without saving?", "Warning!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    return;
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        {
             if (dataGridView1.SelectedRows.Count < 1)
                 return;
 
@@ -256,26 +287,6 @@ namespace TIMS.Forms.Customers
             if (dataGridView1.SelectedRows[0].Index == dataGridView1.Rows.Count - 1)
             {
                 priorityDownButton.Enabled = false;
-            }
-        }
-
-        private void priorityUpButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void PricingProfileEditor_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (profileEdited)
-            {
-                if (MessageBox.Show("There are changes pending saving for this profile.\nAre you sure you want to exit without saving?", "Warning!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning) == DialogResult.Yes)
-                {
-                    return;
-                }
-                else
-                {
-                    e.Cancel = true;
-                }
             }
         }
     }

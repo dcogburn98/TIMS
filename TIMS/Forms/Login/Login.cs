@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
@@ -29,7 +30,9 @@ namespace TIMS.Forms.Login
                     Environment.Exit(0);
             }
 
+            
             InitializeComponent();
+            companyLogo.Image = Communication.RetrieveCompanyLogo() ?? new Bitmap(600, 600);
             badLoginLabel.Visible = false;
             exceptionBox.Visible = false;
             badPasswordLabel.Visible = false;

@@ -1045,7 +1045,7 @@ namespace TIMSServer
                 INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('11', 'Store Number', '000028500');
                 INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('12', 'Mailing Address', '1002 N Walters Ave, Dierks, AR, 71833, USA'); 
                 INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('13', 'Integrated Card Payments', '1');
-                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('14', 'Server Relationship Key', '" + APIKey + @"')";
+                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('14', 'Server Relationship Key', '" + APIKey + @"');";
                 command.ExecuteNonQuery();
             }
 
@@ -1153,6 +1153,24 @@ namespace TIMSServer
                 command.CommandText =
                     @"INSERT INTO Items (""ProductLine"", ""ItemNumber"", ""ItemName"", ""LongDescription"", ""Supplier"", ""GroupCode"", ""VelocityCode"", ""PreviousYearVelocityCode"", ""ItemsPerContainer"", ""StandardPackage"", ""DateStocked"", ""DateLastReceipt"", ""Minimum"", ""Maximum"", ""OnHandQuantity"", ""WIPQuantity"", ""OnOrderQuantity"", ""BackorderQuantity"", ""DaysOnOrder"", ""DaysOnBackOrder"", ""ListPrice"", ""RedPrice"", ""YellowPrice"", ""GreenPrice"", ""PinkPrice"", ""BluePrice"", ""ReplacementCost"", ""AverageCost"", ""Taxed"", ""AgeRestricted"", ""MinimumAge"", ""LocationCode"", ""Serialized"", ""Category"", ""SKU"", ""LastLabelDate"", ""LastLabelPrice"") 
                     VALUES ('XXX', 'xxx', 'xxx', 'xxx', 'Default', '0', '0', '0', '0', '0', '6/11/2022 7:43:28 PM', '6/11/2022 7:43:28 PM', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0', '0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '1', '0', '0', '0', '0', 'Etc', 'xxx', '', '');";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "Media"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Media"" (
+                ""ID""          INTEGER NOT NULL UNIQUE,
+                ""Key""         TEXT NOT NULL UNIQUE,
+                ""MediaType""   TEXT NOT NULL,
+                ""Value""       BLOB,
+	            PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO ""main"".""Media"" (""Key"", ""MediaType"", ""Value"") 
+                    VALUES ('Company Logo', 'Image', '');";
                 command.ExecuteNonQuery();
             }
 

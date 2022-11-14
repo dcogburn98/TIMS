@@ -58,5 +58,11 @@ namespace TIMS.Forms.Customers
             PricingProfileEditor editor = new PricingProfileEditor();
             editor.ShowDialog();
         }
+
+        private void PricingProfiles_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Program.OpenForms.Remove(this);
+            Program.CheckOpenForms();
+        }
     }
 }

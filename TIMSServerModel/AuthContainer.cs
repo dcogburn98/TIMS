@@ -10,6 +10,7 @@ namespace TIMSServerModel
     {
         public DataType Data;
         public AuthKey Key;
+        public string Message;
 
         public AuthContainer()
         {

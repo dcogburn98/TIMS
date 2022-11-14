@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using System.Drawing;
 
 using PdfSharp.Drawing;
 
@@ -8,6 +9,8 @@ using PaymentEngine.xTransaction;
 
 using TIMSServerModel;
 using System.Windows.Forms;
+using System.IO;
+using System.Drawing.Imaging;
 
 namespace TIMS.Server
 {
@@ -334,6 +337,47 @@ namespace TIMS.Server
         public static string RetrievePropertyString(string key)
         {
             return proxy.RetrievePropertyString(key);
+        }
+        public static void SetImage(string key, Image img)
+        {
+            MemoryStream ms = new MemoryStream();
+            img.Save(ms, ImageFormat.Png);
+
+            AuthContainer<object> container = proxy.SetImage(key, ms.ToArray(), currentKey);
+            if (container.Key.Success)
+                currentKey.Regenerate();
+            else
+                MessageBox.Show("Access Denied.");
+        }
+        public static Image RetrieveImage(string key)
+        {
+            AuthContainer<byte[]> container = proxy.RetrieveImage(key, currentKey);
+            if (container.Key.Success)
+            {
+                currentKey.Regenerate();
+
+                MemoryStream ms = new MemoryStream(container.Data);
+                Image img = Image.FromStream(ms);
+                return img;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
+        }
+        public static Image RetrieveCompanyLogo()
+        {
+            MemoryStream ms = new MemoryStream(proxy.RetrieveCompanyLogo());
+            try
+            {
+                Image img = Image.FromStream(ms);
+                return img;
+            }
+            catch
+            {
+                return null;
+            }
         }
         #endregion
 
