@@ -31,6 +31,7 @@ namespace TIMS.Forms.Login
         {
             this.loginButton = new System.Windows.Forms.Button();
             this.loginGroup = new System.Windows.Forms.GroupBox();
+            this.badPasswordLabel = new System.Windows.Forms.Label();
             this.passwordBox = new System.Windows.Forms.TextBox();
             this.exceptionBox = new System.Windows.Forms.TextBox();
             this.badLoginLabel = new System.Windows.Forms.Label();
@@ -42,7 +43,6 @@ namespace TIMS.Forms.Login
             this.exitButton = new System.Windows.Forms.Button();
             this.timsLogo = new System.Windows.Forms.PictureBox();
             this.companyLogo = new System.Windows.Forms.PictureBox();
-            this.badPasswordLabel = new System.Windows.Forms.Label();
             this.loginGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.timsLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.companyLogo)).BeginInit();
@@ -77,6 +77,17 @@ namespace TIMS.Forms.Login
             this.loginGroup.TabIndex = 1;
             this.loginGroup.TabStop = false;
             this.loginGroup.Text = "Login Credentials";
+            // 
+            // badPasswordLabel
+            // 
+            this.badPasswordLabel.AutoSize = true;
+            this.badPasswordLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.badPasswordLabel.ForeColor = System.Drawing.Color.Red;
+            this.badPasswordLabel.Location = new System.Drawing.Point(125, 16);
+            this.badPasswordLabel.Name = "badPasswordLabel";
+            this.badPasswordLabel.Size = new System.Drawing.Size(120, 13);
+            this.badPasswordLabel.TabIndex = 9;
+            this.badPasswordLabel.Text = "Incorrect Password!";
             // 
             // passwordBox
             // 
@@ -173,7 +184,6 @@ namespace TIMS.Forms.Login
             // companyLogo
             // 
             this.companyLogo.BackColor = System.Drawing.SystemColors.Control;
-            this.companyLogo.Image = global::TIMS.Properties.Resources._2;
             this.companyLogo.Location = new System.Drawing.Point(12, 88);
             this.companyLogo.Name = "companyLogo";
             this.companyLogo.Size = new System.Drawing.Size(302, 220);
@@ -181,17 +191,6 @@ namespace TIMS.Forms.Login
             this.companyLogo.TabIndex = 2;
             this.companyLogo.TabStop = false;
             this.companyLogo.UseWaitCursor = true;
-            // 
-            // badPasswordLabel
-            // 
-            this.badPasswordLabel.AutoSize = true;
-            this.badPasswordLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.badPasswordLabel.ForeColor = System.Drawing.Color.Red;
-            this.badPasswordLabel.Location = new System.Drawing.Point(125, 16);
-            this.badPasswordLabel.Name = "badPasswordLabel";
-            this.badPasswordLabel.Size = new System.Drawing.Size(120, 13);
-            this.badPasswordLabel.TabIndex = 9;
-            this.badPasswordLabel.Text = "Incorrect Password!";
             // 
             // Login
             // 

@@ -334,9 +334,19 @@ namespace TIMS.Server
         #endregion
 
         #region Global Properties
-        public static string RetrievePropertyString(string key)
+        public static string RetrieveProperty(string key)
         {
-            return proxy.RetrievePropertyString(key);
+            AuthContainer<string> container = proxy.RetrieveProperty(key, currentKey);
+            if (container.Key.Success)
+            {
+                currentKey.Regenerate();
+                return container.Data;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return "";
+            }
         }
         public static void SetImage(string key, Image img)
         {
@@ -357,8 +367,15 @@ namespace TIMS.Server
                 currentKey.Regenerate();
 
                 MemoryStream ms = new MemoryStream(container.Data);
-                Image img = Image.FromStream(ms);
-                return img;
+                try
+                {
+                    Image img = Image.FromStream(ms);
+                    return img;
+                }
+                catch
+                {
+                    return null;
+                }
             }
             else
             {

@@ -100,7 +100,7 @@ namespace TIMSServerModel
 
         #region Global Properties
         [OperationContract]
-        string RetrievePropertyString(string key);
+        AuthContainer<string> RetrieveProperty(string key, AuthKey authkey);
         [OperationContract]
         AuthContainer<object> SetImage(string key, byte[] imgBytes, AuthKey authkey);
         [OperationContract]

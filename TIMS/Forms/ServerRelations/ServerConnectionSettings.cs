@@ -19,7 +19,7 @@ namespace TIMS.Forms.ServerRelations
         {
             InitializeComponent();
 
-            textBox1.Text = Communication.RetrievePropertyString("Server Relationship Key");
+            textBox1.Text = Communication.RetrieveProperty("Server Relationship Key");
         }
     }
 }

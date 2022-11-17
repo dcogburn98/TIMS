@@ -13,6 +13,21 @@ using System.Collections.Generic;
 using Microsoft.Web.Administration;
 using System.IO;
 
+using EmbedIO;
+using EmbedIO.WebApi;
+using EmbedIO.Actions;
+using EmbedIO.Authentication;
+using EmbedIO.Cors;
+using EmbedIO.Files;
+using EmbedIO.Internal;
+using EmbedIO.Net;
+using EmbedIO.Routing;
+using EmbedIO.Security;
+using EmbedIO.Sessions;
+using EmbedIO.Utilities;
+using EmbedIO.WebSockets;
+using System.Threading.Tasks;
+
 namespace TIMSServer
 {
     class Program
@@ -290,21 +305,21 @@ namespace TIMSServer
                 //    Console.WriteLine("Invalid site name: {0}", name);
                 //}
 
-                //if (!System.IO.Directory.Exists(path))
+                //if (!Directory.Exists(path))
                 //{
-                //    System.IO.Directory.CreateDirectory(path);
+                //    Directory.CreateDirectory(path);
                 //}
 
                 //ServerManager manager = new ServerManager();
 
                 //if (manager.Sites.Count > 0)
                 //    manager.Sites.Clear();
-                //Site managerSite = manager.Sites.Add(name + "Manager", "http", "*:9842:", path);
+                //Site managerSite = manager.Sites.Add(name + "Manager", "http", "*:80:", path);
                 ////Site shoppingSite = manager.Sites.Add(name + "Website", "http", "*:8080:*", path);
 
                 //managerSite.Applications.Clear();
                 //Application managerApplication = managerSite.Applications.Add("/", "C:\\Users\\Blake\\source\\repos\\dcogburn98\\TIMS\\TIMSServerManager\\");
-                ////managerSite.SetAttributeValue("defaultDocument", "default.aspx");
+                //managerSite.SetAttributeValue("defaultDocument", "default.aspx");
 
                 //managerSite.ServerAutoStart = false;
                 //manager.CommitChanges();
@@ -312,7 +327,6 @@ namespace TIMSServer
                 //managerSite.Start();
                 #endregion
 
-                //GetTiers();
                 // Ethernet or WiFi (This uses an Immediate Printer, no live paper status events, but is easier to use)
                 ICommandEmitter e = new EPSON();
                 BasePrinter printer = new NetworkPrinter(new NetworkPrinterSettings()
@@ -1026,26 +1040,22 @@ namespace TIMSServer
                 ""ID""    INTEGER NOT NULL UNIQUE,
                 ""Key""   TEXT NOT NULL UNIQUE,
                 ""Value"" TEXT NOT NULL,
-	            PRIMARY KEY(""ID"")
+	            PRIMARY KEY(""ID"" AUTOINCREMENT)
                 )";
                 command.ExecuteNonQuery();
                 string APIKey = GetRandomAlphanumericString(32);
                 
                 command.CommandText =
-              @"INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES ('1', 'Store Name', 'Fish N Munition');
-                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('2', 'Store Address', '206 Main Ave, Dierks, AR, 71833, USA');
-                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('3', 'Store Phone Number', '870-279-1334');
-                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('4', 'Store Alternate Phone Number', '870-279-7192');
-                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('5', 'Tax 1 Rate', '0.1025');
-                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('6', 'Tax 2 Rate', '0.0000');
-                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('7', 'Apply Tax 1', '1');
-                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('8', 'Apply Tax 2', '0');
-                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('9', 'Tax 2 Taxes Tax 1', '0');
-                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('10', 'Payment Types Available', 'Cash,Charge,PaymentCard,Paypal,Venmo,CashApp,Check');
-                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('11', 'Store Number', '000028500');
-                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('12', 'Mailing Address', '1002 N Walters Ave, Dierks, AR, 71833, USA'); 
-                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('13', 'Integrated Card Payments', '1');
-                INSERT INTO ""main"".""GlobalProperties"" (""ID"", ""Key"", ""Value"") VALUES('14', 'Server Relationship Key', '" + APIKey + @"');";
+              @"INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Store Name', '');
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Store Number', '');
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Store Physical Address', '');
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Store Mailing Address', '');
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Store Phone Number', '');
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Store Fax Number', '');
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Store Website Number', '');
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Store Email Number', '');
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Integrated Card Payments', '1');
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Server Relationship Key', '" + APIKey + @"');";
                 command.ExecuteNonQuery();
             }
 

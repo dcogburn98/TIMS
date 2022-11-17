@@ -19,9 +19,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIMSMobile", "TIMSMobile\TI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CyclingHash", "CyclingHash\CyclingHash.csproj", "{F9C57381-0602-4FC5-AE8F-2F6A29E2E289}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TIMSServerTests", "TIMSServerTests\TIMSServerTests.csproj", "{F08A7731-8627-4A9F-BF98-76671BCB610B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TIMSServerTests", "TIMSServerTests\TIMSServerTests.csproj", "{F08A7731-8627-4A9F-BF98-76671BCB610B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWeb", "TestWeb\TestWeb.csproj", "{52155124-C181-42C3-B6A0-FBEC35FD9D72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestWeb", "TestWeb\TestWeb.csproj", "{52155124-C181-42C3-B6A0-FBEC35FD9D72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

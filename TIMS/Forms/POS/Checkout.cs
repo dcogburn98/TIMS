@@ -84,7 +84,7 @@ namespace TIMS.Forms
                 itemCount++;
             }
 
-            invoice.taxRate = decimal.Parse(Communication.RetrievePropertyString("Tax 1 Rate"));
+            invoice.taxRate = 10.25m;
             invoice.taxAmount = invoice.taxableTotal * invoice.taxRate;
             invoice.total = Math.Round(invoice.subtotal + invoice.taxAmount, 2);
 
@@ -174,7 +174,7 @@ namespace TIMS.Forms
                     invoice.totalPayments += amt;
                     break;
                 case "Payment Card":
-                    if (Communication.RetrievePropertyString("Integrated Card Payments") == "10101")
+                    if (Communication.RetrieveProperty("Integrated Card Payments") == "10101")
                     {
                         //Request MyRequest = Communication.InitiatePayment(invoice, amt);
                         //Response MyResponse = MyRequest.ProcessOutOfScope();

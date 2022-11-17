@@ -84,11 +84,10 @@ namespace TIMS.Forms
                 nextPageBtn.Enabled = true;
             prevPageBtn.Enabled = false;
 
-            POSheet.mailingaddr = Communication.RetrievePropertyString("Mailing Address");
-            POSheet.storename = Communication.RetrievePropertyString("Store Name");
-            POSheet.storeAltNumber = Communication.RetrievePropertyString("Store Alternate Phone Number");
-            POSheet.storeAddr = Communication.RetrievePropertyString("Store Address");
-            POSheet.storePhone = Communication.RetrievePropertyString("Store Phone Number");
+            POSheet.mailingaddr = Communication.RetrieveProperty("Store Mailing Address");
+            POSheet.storename = Communication.RetrieveProperty("Store Name");
+            POSheet.storeAddr = Communication.RetrieveProperty("Store Physical Address");
+            POSheet.storePhone = Communication.RetrieveProperty("Store Phone Number");
 
             pagePreview1.Zoom = PdfSharp.Forms.Zoom.BestFit;
             pagePreview1.PageSize = PageSizeConverter.ToSize(PageSize.Letter);

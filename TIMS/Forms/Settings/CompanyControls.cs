@@ -19,6 +19,10 @@ namespace TIMS.Forms.Settings
         public CompanyControls()
         {
             InitializeComponent();
+
+            Image img = Communication.RetrieveCompanyLogo();
+            if (img != null)
+                pictureBox1.Image = img;
         }
 
         private void CompanyControls_FormClosed(object sender, FormClosedEventArgs e)
@@ -30,26 +34,31 @@ namespace TIMS.Forms.Settings
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog file = new OpenFileDialog();
-            file.Filter = "Image Files|*.png,*.jpg";
-            if (file.ShowDialog() != DialogResult.Cancel)
+            file.Multiselect = false;
+            file.Filter = "Image Files(*.PNG;*.BMP;*.JPG;*.GIF)|*.PNG;*.BMP;*.JPG;*.GIF";
+            if (file.ShowDialog() != DialogResult.Cancel &&
+                MessageBox.Show("This operation will overwrite your existing logo. Continue?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
-                textBox1.Text = file.FileName;
+                physicalCityTB.Text = file.FileName;
             }
 
-            Image img = null;
-            try
-            {
-                img = Image.FromFile(Path.GetFileName(file.FileName));
-            }
-            catch
-            {
-                MessageBox.Show("Invalid image file!");
-            }
+            //try
+            //{
+                Image img = Image.FromFile(file.FileName);
+                if (img != null)
+                    Communication.SetImage("Company Logo", img);
 
-            if (img != null)
-                Communication.SetImage("Company Logo", img);
+                pictureBox1.Image = Communication.RetrieveImage("Company Logo");
+            //}
+            //catch
+            //{
+            //    MessageBox.Show("Invalid image file!");
+            //}
+        }
 
-            pictureBox1.Image = Communication.RetrieveImage("Company Logo");
+        private void button2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

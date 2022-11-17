@@ -2155,9 +2155,13 @@ namespace TIMSServer
 
         #region Global Properties
 
-        public string RetrievePropertyString(string key)
+        public AuthContainer<string> RetrieveProperty(string key, AuthKey authkey)
         {
-            string property = String.Empty;
+            AuthContainer<string> container = CheckAuthorization<string>(authkey);
+            if (!container.Key.Success)
+                return container;
+            container.Data = "";
+
             OpenConnection();
 
             SqliteCommand command = sqlite_conn.CreateCommand();
@@ -2169,12 +2173,13 @@ namespace TIMSServer
 
             while (reader.Read())
             {
-                property = reader.GetString(0);
+                container.Data = reader.GetString(0);
             }
 
             CloseConnection();
-            return property;
+            return container;
         }
+        
         public AuthContainer<object> SetImage(string key, byte[] imgBytes, AuthKey authkey)
         {
             AuthContainer<object> container = CheckAuthorization<object>(authkey);
