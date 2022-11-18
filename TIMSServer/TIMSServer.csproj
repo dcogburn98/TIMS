@@ -58,4 +58,20 @@
     <HarpyFiles Remove="PaymentCard.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <HarpyFiles Remove="Payments\HTTP.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <HarpyFiles Remove="Payments\Ingenico\Request.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <HarpyFiles Remove="Payments\Engine.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <HarpyFiles Remove="Payments\Ingenico\Response.cs" />
+  </ItemGroup>
+
 </Project>

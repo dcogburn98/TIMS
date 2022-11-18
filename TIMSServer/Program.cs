@@ -12,21 +12,9 @@ using ESCPOS_NET.Emitters;
 using System.Collections.Generic;
 using Microsoft.Web.Administration;
 using System.IO;
-
-using EmbedIO;
-using EmbedIO.WebApi;
-using EmbedIO.Actions;
-using EmbedIO.Authentication;
-using EmbedIO.Cors;
-using EmbedIO.Files;
-using EmbedIO.Internal;
-using EmbedIO.Net;
-using EmbedIO.Routing;
-using EmbedIO.Security;
-using EmbedIO.Sessions;
-using EmbedIO.Utilities;
-using EmbedIO.WebSockets;
 using System.Threading.Tasks;
+
+using TIMSServer.Payments;
 
 namespace TIMSServer
 {
@@ -291,6 +279,7 @@ namespace TIMSServer
             CloseConnection();
             CreateDatabase();
             TIMSServiceModel.Init();
+            Console.WriteLine(Engine.InitiatePayment(new TIMSServerModel.IngenicoRequest()).RawXMLResponse.ToString());
 
             using (ServiceHost host = new ServiceHost(typeof(TIMSServiceModel)))
             {
@@ -326,6 +315,7 @@ namespace TIMSServer
                 //Console.WriteLine("Site " + name + " added to ApplicationHost.config file.");
                 //managerSite.Start();
                 #endregion
+                
 
                 // Ethernet or WiFi (This uses an Immediate Printer, no live paper status events, but is easier to use)
                 ICommandEmitter e = new EPSON();

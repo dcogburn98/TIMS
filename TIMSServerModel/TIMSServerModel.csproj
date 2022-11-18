@@ -76,6 +76,8 @@
     <Compile Include="Customer.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="Employee.cs" />
+    <Compile Include="IngenicoRequest.cs" />
+    <Compile Include="IngenicoResponse.cs" />
     <Compile Include="Invoice.cs" />
     <Compile Include="InvoiceItem.cs" />
     <Compile Include="Item.cs" />

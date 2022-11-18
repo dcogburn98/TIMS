@@ -2146,10 +2146,7 @@ namespace TIMSServer
             CloseConnection();
             return invNo;
         }
-        //public Request InitiatePayment(Invoice inv, decimal paymentAmount)
-        //{
-        //    return PaymentCard.ProcessOutOfScopeAsync(inv, paymentAmount);
-        //}
+        
         
         #endregion
 
@@ -3226,8 +3223,14 @@ namespace TIMSServer
             CloseConnection();
             return true;
         }
+
+        public IngenicoResponse InitiatePayment(Invoice inv, decimal paymentAmount)
+        {
+            IngenicoRequest rq = new IngenicoRequest();
+            return Payments.Engine.InitiatePayment(rq);
+        }
         #endregion
 
-        
+
     }
 }
