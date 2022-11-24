@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Drawing;
 
@@ -60,20 +61,11 @@ namespace TIMS.Server
         #region Items
         public static List<Item> CheckItemNumber(string itemNumber, bool connectionOpened)
         {
-            List<Item> c = proxy.CheckItemNumber(itemNumber, connectionOpened, currentKey);
-            if (c == null)
+            AuthContainer<List<Item>> c = proxy.CheckItemNumber(itemNumber, connectionOpened, currentKey);
+            if (c.Key.Success)
             {
                 currentKey.Regenerate();
-                return null;
-            }
-
-            if (c[0].key.Success)
-            {
-                currentKey.Regenerate();
-                c.RemoveAt(0);
-                if (c.Count == 0)
-                    return null;
-                return c;
+                return c.Data;
             }
             else
             {
@@ -84,20 +76,11 @@ namespace TIMS.Server
 
         public static List<Item> CheckItemNumberFromSupplier(string itemNumber, string supplier)
         {
-            List<Item> c = proxy.CheckItemNumberFromSupplier(itemNumber, supplier, currentKey);
-            if (c == null)
+            AuthContainer<List<Item>> c = proxy.CheckItemNumberFromSupplier(itemNumber, supplier, currentKey);
+            if (c.Key.Success)
             {
                 currentKey.Regenerate();
-                return null;
-            }
-
-            if (c[0].key.Success)
-            {
-                currentKey.Regenerate();
-                c.RemoveAt(0);
-                if (c.Count == 0)
-                    return null;
-                return c;
+                return c.Data;
             }
             else
             {
@@ -108,20 +91,11 @@ namespace TIMS.Server
 
         public static List<Item> RetrieveItemsFromSupplier(string supplier)
         {
-            List<Item> c = proxy.RetrieveItemsFromSupplier(supplier, currentKey);
-            if (c == null)
+            AuthContainer<List<Item>> c = proxy.RetrieveItemsFromSupplier(supplier, currentKey);
+            if (c.Key.Success)
             {
                 currentKey.Regenerate();
-                return null;
-            }
-
-            if (c[0].key.Success)
-            {
-                currentKey.Regenerate();
-                c.RemoveAt(0);
-                if (c.Count == 0)
-                    return null;
-                return c;
+                return c.Data;
             }
             else
             {
@@ -317,20 +291,39 @@ namespace TIMS.Server
             return proxy.RetrieveInvoicesByCriteria(criteria);
         }
 
-        public static void SaveReleasedInvoice(Invoice inv)
+        public static List<Invoice> RetrieveSavedInvoices()
         {
-            proxy.SaveReleasedInvoice(inv);
+            AuthContainer<List<Invoice>> c = proxy.RetrieveSavedInvoices(currentKey);
+            if (c.Key.Success)
+            {
+                currentKey.Regenerate();
+                return c.Data;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
+        }
+
+        public static void DeleteSavedInvoice(Invoice inv)
+        {
+            AuthContainer<object> container = proxy.DeleteSavedInvoice(inv, currentKey);
+            if (container.Key.Success)
+                currentKey.Regenerate();
+            else
+                MessageBox.Show("Access Denied.");
+        }
+
+        public static void SaveInvoice(Invoice inv)
+        {
+            proxy.SaveInvoice(inv);
         }
 
         public static int RetrieveNextInvoiceNumber()
         {
             return proxy.RetrieveNextInvoiceNumber();
         }
-
-        //public static Request InitiatePayment(Invoice inv, decimal paymentAmount)
-        //{
-        //    return proxy.InitiatePayment(inv, paymentAmount);
-        //}
         #endregion
 
         #region Global Properties
@@ -546,6 +539,89 @@ namespace TIMS.Server
         public static bool RemoveDeviceAssignment(Device terminal, Device device)
         {
             return proxy.RemoveDeviceAssignment(terminal, device);
+        }
+        
+        public static string TestIngenicoRequest(IngenicoRequest request)
+        {
+            try
+            {
+                AuthContainer<string> c = proxy.TestIngenicoRequest(request, currentKey);
+                if (c.Key.Success)
+                {
+                    currentKey.Regenerate();
+                    return c.Data;
+                }
+                else
+                {
+                    MessageBox.Show("Access Denied.");
+                    return null;
+                }
+            }
+            catch (TimeoutException)
+            {
+                currentKey.Regenerate();
+                return "Timeout";
+            }
+        }
+        public static Payment InitiatePayment(decimal paymentAmount)
+        {
+            AuthContainer<Payment> c = proxy.InitiatePayment(paymentAmount, currentKey);
+            if (c.Key.Success)
+            {
+                currentKey.Regenerate();
+                return c.Data;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
+        }
+        public static Payment InitiateRefund(decimal refundAmount)
+        {
+            AuthContainer<Payment> c = proxy.InitiateRefund(refundAmount, currentKey);
+            if (c.Key.Success)
+            {
+                currentKey.Regenerate();
+                return c.Data;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
+        }
+        public static Image RequestSignature()
+        {
+            try
+            {
+                AuthContainer<string> c = proxy.RequestSignature(currentKey);
+                if (c.Key.Success)
+                {
+                    currentKey.Regenerate();
+                    try
+                    {
+                        using (MemoryStream s = new MemoryStream(Convert.FromBase64String(c.Data)))
+                        {
+                            Image img = Image.FromStream(s);
+                            return img;
+                        }
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Access Denied.");
+                    return null;
+                }
+            }
+            catch (TimeoutException)
+            {
+                return null;
+            }
         }
         #endregion
     }

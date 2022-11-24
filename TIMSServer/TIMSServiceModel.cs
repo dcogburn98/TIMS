@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Xml.Linq;
 
 using TIMSServerModel;
 
@@ -223,30 +224,12 @@ namespace TIMSServer
 
         #region Items
         
-        public List<Item> CheckItemNumber(string itemNumber, bool connectionOpened, AuthKey key)
+        public AuthContainer<List<Item>> CheckItemNumber(string itemNumber, bool connectionOpened, AuthKey key)
         {
-            List<Item> invItems = new List<Item>();
-
-            #region Authorization Check
-            AuthKey localKey = Keys.Find(el => el.ID == key.ID);
-            if (!localKey.Match(key))
-            {
-                Item i = new Item();
-                i.key = new AuthKey();
-                i.key.Success = false;
-                invItems.Add(i);
-                return invItems;
-            }
-            else
-            {
-                Console.WriteLine("Key Match");
-                Item i = new Item();
-                i.key = key;
-                i.key.Success = true;
-                invItems.Add(i);
-                localKey.Regenerate();
-            }
-            #endregion
+            AuthContainer<List<Item>> container = CheckAuthorization<List<Item>>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new List<Item>();
 
             string fixedIN = string.Empty;
             foreach (char c in itemNumber)
@@ -315,42 +298,24 @@ namespace TIMSServer
                 item.minimumAge = reader.GetInt32(30);
                 item.locationCode = reader.GetInt32(31);
                 item.serialized = reader.GetBoolean(32);
-                invItems.Add(item);
+                container.Data.Add(item);
                 //if (fixedPL == fixedIN)
                 //    break;
             }
 
             if (!connectionOpened)
                 Program.CloseConnection();
-            if (invItems.Count == 0)
-                return null;
-            else
-                return invItems;
+            //if (container.Data.Count == 0)
+            //    return null;
+            //else
+                return container;
         }    
-        public List<Item> CheckItemNumberFromSupplier(string itemNumber, string supplier, AuthKey key)
+        public AuthContainer<List<Item>> CheckItemNumberFromSupplier(string itemNumber, string supplier, AuthKey key)
         {
-            List<Item> invItems = new List<Item>();
-
-            #region Authorization Check
-            AuthKey localKey = Keys.Find(el => el.ID == key.ID);
-            if (!localKey.Match(key))
-            {
-                Item i = new Item();
-                i.key = new AuthKey();
-                i.key.Success = false;
-                invItems.Add(i);
-                return invItems;
-            }
-            else
-            {
-                Console.WriteLine("Key Match");
-                Item i = new Item();
-                i.key = key;
-                i.key.Success = true;
-                invItems.Add(i);
-                localKey.Regenerate();
-            }
-            #endregion
+            AuthContainer<List<Item>> container = CheckAuthorization<List<Item>>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new List<Item>();
 
             string fixedIN = string.Empty;
             foreach (char c in itemNumber)
@@ -419,41 +384,23 @@ namespace TIMSServer
                 item.minimumAge = reader.GetInt32(30);
                 item.locationCode = reader.GetInt32(31);
                 item.serialized = reader.GetBoolean(32);
-                invItems.Add(item);
+                container.Data.Add(item);
                 //if (fixedPL == fixedIN)
                 //    break;
             }
 
             Program.CloseConnection();
-            if (invItems.Count == 0)
-                return null;
-            else
-                return invItems;
+            //if (container.Data.Count == 0)
+            //    return null;
+            //else
+                return container;
         }
-        public List<Item> RetrieveItemsFromSupplier(string supplier, AuthKey key)
+        public AuthContainer<List<Item>> RetrieveItemsFromSupplier(string supplier, AuthKey key)
         {
-            List<Item> invItems = new List<Item>();
-
-            #region Authorization Check
-            AuthKey localKey = Keys.Find(el => el.ID == key.ID);
-            if (!localKey.Match(key))
-            {
-                Item i = new Item();
-                i.key = new AuthKey();
-                i.key.Success = false;
-                invItems.Add(i);
-                return invItems;
-            }
-            else
-            {
-                Console.WriteLine("Key Match");
-                Item i = new Item();
-                i.key = key;
-                i.key.Success = true;
-                invItems.Add(i);
-                localKey.Regenerate();
-            }
-            #endregion
+            AuthContainer<List<Item>> container = CheckAuthorization<List<Item>>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new List<Item>();
 
             Program.OpenConnection();
             SqliteCommand sqlite_cmd;
@@ -504,14 +451,14 @@ namespace TIMSServer
                 item.minimumAge = reader.GetInt32(30);
                 item.locationCode = reader.GetInt32(31);
                 item.serialized = reader.GetBoolean(32);
-                invItems.Add(item);
+                container.Data.Add(item);
             }
 
             Program.CloseConnection();
-            if (invItems.Count == 0)
-                return null;
-            else
-                return invItems;
+            //if (container.Data.Count == 0)
+            //    return null;
+            //else
+                return container;
         }
         public List<Item> RetrieveItemsFromSupplierBelowMin(string supplier)
         {
@@ -660,7 +607,7 @@ namespace TIMSServer
 
             CloseConnection();
 
-            supplierItems = RetrieveItemsFromSupplier(supplier, BypassKey);
+            supplierItems = RetrieveItemsFromSupplier(supplier, BypassKey).Data;
             List<Invoice> invoices = RetrieveInvoicesByDateRange(lastOrderDate, DateTime.Now);
 
             foreach (Invoice inv in invoices)
@@ -781,7 +728,7 @@ namespace TIMSServer
                 string d1 = reader.GetString(0);
                 string d2 = reader.GetString(1);
                 decimal d3 = reader.GetDecimal(2);
-                List<Item> itemMatches = CheckItemNumber(d1, true, BypassKey);
+                List<Item> itemMatches = CheckItemNumber(d1, true, BypassKey).Data;
                 item = itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower());
             }
 
@@ -830,7 +777,7 @@ namespace TIMSServer
                 string d1 = reader.GetString(0);
                 string d2 = reader.GetString(1);
                 decimal d3 = reader.GetDecimal(2);
-                List<Item> itemMatches = CheckItemNumber(d1, true, BypassKey);
+                List<Item> itemMatches = CheckItemNumber(d1, true, BypassKey).Data;
                 item = new InvoiceItem(itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower()));
             }
 
@@ -953,78 +900,50 @@ namespace TIMSServer
                 "REDPRICE = $RED, YELLOWPRICE = $YELLOW, GREENPRICE = $GREEN, PINKPRICE = $PINK, " +
                 "BLUEPRICE = $BLUE, REPLACEMENTCOST = $COST, AVERAGECOST = $AVERAGECOST, " +
                 "TAXED = $TAXED, AGERESTRICTED = $RESTRICTED, MINIMUMAGE = $MINAGE, LOCATIONCODE = $LOCATION, " +
-                "SERIALIZED = $SERIALIZED, CATEGORY = $CATEGORY " +
+                "SERIALIZED = $SERIALIZED, CATEGORY = $CATEGORY, DATELASTSALE = $LASTSALEDATE, MANUFACTURERNUMBER = $MANUFACTURERNO, " +
+                "SKU = $SKU, LASTLABELDATE = $LABELDATE, LASTLABELPRICE = $LABELPRICE, LASTSALEPRICE = $LASTSALEPRICE " +
                 "WHERE (ITEMNUMBER = $ITEMNUMBER AND PRODUCTLINE = $PRODUCTLINE)";
 
-            SqliteParameter p1 = new SqliteParameter("$ITEMNAME", newItem.itemName);
-            SqliteParameter p2 = new SqliteParameter("$LONGDESCRIPTION", newItem.longDescription);
-            SqliteParameter p3 = new SqliteParameter("$SUPPLIER", newItem.supplier);
-            SqliteParameter p4 = new SqliteParameter("$GROUPCODE", newItem.groupCode);
-            SqliteParameter p5 = new SqliteParameter("$VELOCITYCODE", newItem.velocityCode);
-            SqliteParameter p6 = new SqliteParameter("$PREVIOUSVELOCITYCODE", newItem.previousYearVelocityCode);
-            SqliteParameter p7 = new SqliteParameter("$ITEMSPERCONTAINER", newItem.itemsPerContainer);
-            SqliteParameter p8 = new SqliteParameter("$STANDARDPACKAGE", newItem.standardPackage);
-            SqliteParameter p9 = new SqliteParameter("$DATESTOCKED", newItem.dateStocked.ToString());
-            SqliteParameter p10 = new SqliteParameter("$DATELASTRECEIPT", newItem.dateLastReceipt.ToString());
-            SqliteParameter p11 = new SqliteParameter("$MIN", newItem.minimum);
-            SqliteParameter p12 = new SqliteParameter("$MAX", newItem.maximum);
-            SqliteParameter p13 = new SqliteParameter("$ONHANDQTY", newItem.onHandQty);
-            SqliteParameter p14 = new SqliteParameter("$WIPQTY", newItem.WIPQty);
-            SqliteParameter p15 = new SqliteParameter("$ONORDERQTY", newItem.onOrderQty);
-            SqliteParameter p16 = new SqliteParameter("$BACKORDERQTY", newItem.onBackorderQty);
-            SqliteParameter p17 = new SqliteParameter("$DAYSONORDER", newItem.daysOnOrder);
-            SqliteParameter p18 = new SqliteParameter("$DAYSONBACKORDER", newItem.daysOnBackorder);
-            SqliteParameter p19 = new SqliteParameter("$LIST", newItem.listPrice);
-            SqliteParameter p20 = new SqliteParameter("$RED", newItem.redPrice);
-            SqliteParameter p21 = new SqliteParameter("$YELLOW", newItem.yellowPrice);
-            SqliteParameter p22 = new SqliteParameter("$GREEN", newItem.greenPrice);
-            SqliteParameter p23 = new SqliteParameter("$PINK", newItem.pinkPrice);
-            SqliteParameter p24 = new SqliteParameter("$BLUE", newItem.bluePrice);
-            SqliteParameter p25 = new SqliteParameter("$COST", newItem.replacementCost);
-            SqliteParameter p26 = new SqliteParameter("$AVERAGECOST", newItem.averageCost);
-            SqliteParameter p27 = new SqliteParameter("$TAXED", newItem.taxed);
-            SqliteParameter p28 = new SqliteParameter("$RESTRICTED", newItem.ageRestricted);
-            SqliteParameter p29 = new SqliteParameter("$MINAGE", newItem.minimumAge);
-            SqliteParameter p30 = new SqliteParameter("$LOCATION", newItem.locationCode);
-            SqliteParameter p31 = new SqliteParameter("$ITEMNUMBER", newItem.itemNumber);
-            SqliteParameter p32 = new SqliteParameter("$PRODUCTLINE", newItem.productLine);
-            SqliteParameter p33 = new SqliteParameter("$SERIALIZED", newItem.serialized);
-            SqliteParameter p34 = new SqliteParameter("$CATEGORY", newItem.category);
-
-            command.Parameters.Add(p1);
-            command.Parameters.Add(p2);
-            command.Parameters.Add(p3);
-            command.Parameters.Add(p4);
-            command.Parameters.Add(p5);
-            command.Parameters.Add(p6);
-            command.Parameters.Add(p7);
-            command.Parameters.Add(p8);
-            command.Parameters.Add(p9);
-            command.Parameters.Add(p10);
-            command.Parameters.Add(p11);
-            command.Parameters.Add(p12);
-            command.Parameters.Add(p13);
-            command.Parameters.Add(p14);
-            command.Parameters.Add(p15);
-            command.Parameters.Add(p16);
-            command.Parameters.Add(p17);
-            command.Parameters.Add(p18);
-            command.Parameters.Add(p19);
-            command.Parameters.Add(p20);
-            command.Parameters.Add(p21);
-            command.Parameters.Add(p22);
-            command.Parameters.Add(p23);
-            command.Parameters.Add(p24);
-            command.Parameters.Add(p25);
-            command.Parameters.Add(p26);
-            command.Parameters.Add(p27);
-            command.Parameters.Add(p28);
-            command.Parameters.Add(p29);
-            command.Parameters.Add(p30);
-            command.Parameters.Add(p31);
-            command.Parameters.Add(p32);
-            command.Parameters.Add(p33);
-            command.Parameters.Add(p34);
+            command.Parameters.Add(new SqliteParameter("$ITEMNAME", newItem.itemName));
+            command.Parameters.Add(new SqliteParameter("$LONGDESCRIPTION", newItem.longDescription));
+            command.Parameters.Add(new SqliteParameter("$SUPPLIER", newItem.supplier));
+            command.Parameters.Add(new SqliteParameter("$GROUPCODE", newItem.groupCode));
+            command.Parameters.Add(new SqliteParameter("$VELOCITYCODE", newItem.velocityCode));
+            command.Parameters.Add(new SqliteParameter("$PREVIOUSVELOCITYCODE", newItem.previousYearVelocityCode));
+            command.Parameters.Add(new SqliteParameter("$ITEMSPERCONTAINER", newItem.itemsPerContainer));
+            command.Parameters.Add(new SqliteParameter("$STANDARDPACKAGE", newItem.standardPackage));
+            command.Parameters.Add(new SqliteParameter("$DATESTOCKED", newItem.dateStocked.ToString()));
+            command.Parameters.Add(new SqliteParameter("$DATELASTRECEIPT", newItem.dateLastReceipt.ToString()));
+            command.Parameters.Add(new SqliteParameter("$MIN", newItem.minimum));
+            command.Parameters.Add(new SqliteParameter("$MAX", newItem.maximum));
+            command.Parameters.Add(new SqliteParameter("$ONHANDQTY", newItem.onHandQty));
+            command.Parameters.Add(new SqliteParameter("$WIPQTY", newItem.WIPQty));
+            command.Parameters.Add(new SqliteParameter("$ONORDERQTY", newItem.onOrderQty));
+            command.Parameters.Add(new SqliteParameter("$BACKORDERQTY", newItem.onBackorderQty));
+            command.Parameters.Add(new SqliteParameter("$DAYSONORDER", newItem.daysOnOrder));
+            command.Parameters.Add(new SqliteParameter("$DAYSONBACKORDER", newItem.daysOnBackorder));
+            command.Parameters.Add(new SqliteParameter("$LIST", newItem.listPrice));
+            command.Parameters.Add(new SqliteParameter("$RED", newItem.redPrice));
+            command.Parameters.Add(new SqliteParameter("$YELLOW", newItem.yellowPrice));
+            command.Parameters.Add(new SqliteParameter("$GREEN", newItem.greenPrice));
+            command.Parameters.Add(new SqliteParameter("$PINK", newItem.pinkPrice));
+            command.Parameters.Add(new SqliteParameter("$BLUE", newItem.bluePrice));
+            command.Parameters.Add(new SqliteParameter("$COST", newItem.replacementCost));
+            command.Parameters.Add(new SqliteParameter("$AVERAGECOST", newItem.averageCost));
+            command.Parameters.Add(new SqliteParameter("$TAXED", newItem.taxed));
+            command.Parameters.Add(new SqliteParameter("$RESTRICTED", newItem.ageRestricted));
+            command.Parameters.Add(new SqliteParameter("$MINAGE", newItem.minimumAge));
+            command.Parameters.Add(new SqliteParameter("$LOCATION", newItem.locationCode));
+            command.Parameters.Add(new SqliteParameter("$ITEMNUMBER", newItem.itemNumber));
+            command.Parameters.Add(new SqliteParameter("$PRODUCTLINE", newItem.productLine));
+            command.Parameters.Add(new SqliteParameter("$SERIALIZED", newItem.serialized));
+            command.Parameters.Add(new SqliteParameter("$CATEGORY", newItem.category));
+            command.Parameters.Add(new SqliteParameter("$LASTSALEDATE", newItem.dateLastSale.ToString("MM/dd/yyyy")));
+            command.Parameters.Add(new SqliteParameter("$MANUFACTURERNO", newItem.manufacturerNumber == null ? DBNull.Value : newItem.manufacturerNumber));
+            command.Parameters.Add(new SqliteParameter("$SKU", newItem.SKU == null ? DBNull.Value : newItem.SKU));
+            command.Parameters.Add(new SqliteParameter("$LABELDATE", newItem.lastLabelDate.ToString("MM/dd/yyyy")));
+            command.Parameters.Add(new SqliteParameter("$LABELPRICE", newItem.lastLabelPrice));
+            command.Parameters.Add(new SqliteParameter("$LASTSALEPRICE", newItem.lastSalePrice));
 
             command.ExecuteNonQuery();
 
@@ -1072,11 +991,13 @@ namespace TIMSServer
                 "ITEMSPERCONTAINER, STANDARDPACKAGE, DATESTOCKED, DATELASTRECEIPT, MINIMUM, MAXIMUM, ONHANDQUANTITY, WIPQUANTITY, " +
                 "ONORDERQUANTITY, BACKORDERQUANTITY, DAYSONORDER, DAYSONBACKORDER, LISTPRICE, REDPRICE, YELLOWPRICE, GREENPRICE, " +
                 "PINKPRICE, BLUEPRICE, REPLACEMENTCOST, AVERAGECOST, TAXED, AGERESTRICTED, MINIMUMAGE, LOCATIONCODE, SERIALIZED, " +
-                "CATEGORY, SKU) " +
+                "CATEGORY, SKU, LASTLABELDATE, LASTLABELPRICE, DATELASTSALE, MANUFACTURERNUMBER, LASTSALEPRICE) " +
+
                 "VALUES ($PRODUCTLINE, $ITEMNUMBER, $ITEMNAME, $DESCRIPTION, $SUPPLIER, $GROUP, $VELOCITY, $PREVIOUSVELOCITY, " +
                 "$ITEMSPERCONTAINER, $STDPKG, $DATESTOCKED, $DATELASTRECEIPT, $MIN, $MAX, $ONHAND, $WIPQUANTITY, " +
                 "$ONORDERQTY, $BACKORDERQTY, $DAYSONORDER, $DAYSONBACKORDER, $LIST, $RED, $YELLOW, $GREEN, " +
-                "$PINK, $BLUE, $COST, $AVERAGECOST, $TAXED, $AGERESTRICTED, $MINAGE, $LOCATION, $SERIALIZED, $CATEGORY, $SKU)";
+                "$PINK, $BLUE, $COST, $AVERAGECOST, $TAXED, $AGERESTRICTED, $MINAGE, $LOCATION, $SERIALIZED, $CATEGORY, $SKU," +
+                "$LABELDATE, $LABELPRICE, $SALEDATE, $MANUFACTURERNUMBER, $SALEPRICE)";
 
             SqliteParameter p1 = new SqliteParameter("$PRODUCTLINE", item.productLine);
             SqliteParameter p2 = new SqliteParameter("$ITEMNUMBER", item.itemNumber);
@@ -1088,8 +1009,8 @@ namespace TIMSServer
             SqliteParameter p8 = new SqliteParameter("$PREVIOUSVELOCITY", item.previousYearVelocityCode);
             SqliteParameter p9 = new SqliteParameter("$ITEMSPERCONTAINER", item.itemsPerContainer);
             SqliteParameter p10 = new SqliteParameter("$STDPKG", item.standardPackage);
-            SqliteParameter p11 = new SqliteParameter("$DATESTOCKED", item.dateStocked.ToString());
-            SqliteParameter p12 = new SqliteParameter("$DATELASTRECEIPT", item.dateLastReceipt.ToString());
+            SqliteParameter p11 = new SqliteParameter("$DATESTOCKED", item.dateStocked.ToString("MM/dd/yyyy"));
+            SqliteParameter p12 = new SqliteParameter("$DATELASTRECEIPT", item.dateLastReceipt.ToString("MM/dd/yyyy"));
             SqliteParameter p13 = new SqliteParameter("$MIN", item.minimum);
             SqliteParameter p14 = new SqliteParameter("$MAX", item.maximum);
             SqliteParameter p15 = new SqliteParameter("$ONHAND", item.onHandQty);
@@ -1113,6 +1034,11 @@ namespace TIMSServer
             SqliteParameter p33 = new SqliteParameter("$SERIALIZED", item.serialized);
             SqliteParameter p34 = new SqliteParameter("$CATEGORY", item.category);
             SqliteParameter p35 = new SqliteParameter("$SKU", item.UPC);
+            SqliteParameter p36 = new SqliteParameter("$LABELDATE", item.lastLabelDate.ToString("MM/dd/yyyy"));
+            SqliteParameter p37 = new SqliteParameter("$LABELPRICE", item.lastLabelPrice);
+            SqliteParameter p38 = new SqliteParameter("$SALEDATE", item.dateLastSale.ToString("MM/dd/yyyy"));
+            SqliteParameter p39 = new SqliteParameter("$MANUFACTURERNUMBER", item.manufacturerNumber == null ? DBNull.Value : item.manufacturerNumber);
+            SqliteParameter p40 = new SqliteParameter("$SALEPRICE", item.lastSalePrice);
 
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
@@ -1149,6 +1075,11 @@ namespace TIMSServer
             command.Parameters.Add(p33);
             command.Parameters.Add(p34);
             command.Parameters.Add(p35);
+            command.Parameters.Add(p36);
+            command.Parameters.Add(p37);
+            command.Parameters.Add(p38);
+            command.Parameters.Add(p39);
+            command.Parameters.Add(p40);
 
             command.ExecuteNonQuery();
 
@@ -1935,8 +1866,11 @@ namespace TIMSServer
             {
                 inv.payments.Add(new Payment()
                 {
+                    ID = reader.GetGuid(1),
                     paymentAmount = reader.GetDecimal(3),
-                    paymentType = (Payment.PaymentTypes)Enum.Parse(typeof(Payment.PaymentTypes), reader.GetString(2))
+                    paymentType = (Payment.PaymentTypes)Enum.Parse(typeof(Payment.PaymentTypes), reader.GetString(2)),
+                    errorMessage = (Payment.CardReaderErrorMessages)Enum.Parse(typeof(Payment.CardReaderErrorMessages), reader.GetString(4)),
+                    cardResponse = new IngenicoResponse(XDocument.Parse(reader.GetString(5)))
                 });
             }
 
@@ -2010,24 +1944,105 @@ namespace TIMSServer
 
             return invoices;
         }
-        public void SaveReleasedInvoice(Invoice inv)
+        public AuthContainer<List<Invoice>> RetrieveSavedInvoices(AuthKey key)
+        {
+            AuthContainer<List<Invoice>> container = CheckAuthorization<List<Invoice>>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new List<Invoice>();
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT * FROM INVOICES WHERE SAVEDINVOICE = \"1\"";
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                container.Data = null;
+                return container;
+            }
+
+            while (reader.Read())
+            {
+                Invoice inv = new Invoice();
+                inv.invoiceNumber = reader.GetInt32(0);
+                inv.customer = new Customer() { customerNumber = reader.GetString(18)};
+                inv.attentionLine = reader.GetString(9);
+                inv.PONumber = reader.GetString(10);
+                inv.employee = new Employee() { employeeNumber = reader.GetInt32(19) };
+                inv.invoiceCreationTime = DateTime.Parse(reader.GetString(14));
+                container.Data.Add(inv);
+            }
+
+            CloseConnection();
+            foreach (Invoice inv in container.Data)
+            {
+                inv.employee = RetrieveEmployee(inv.employee.employeeNumber.ToString());
+                inv.customer = CheckCustomerNumber(inv.customer.customerNumber, BypassKey).Data;
+            }
+            return container;
+        }
+        public AuthContainer<object> DeleteSavedInvoice(Invoice inv, AuthKey key)
+        {
+            AuthContainer<object> container = CheckAuthorization<object>(key);
+            if (!container.Key.Success)
+                return container;
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"DELETE FROM INVOICES WHERE INVOICENUMBER = $INVNO";
+            command.Parameters.Add(new SqliteParameter("$INVNO", inv.invoiceNumber));
+            command.ExecuteNonQuery();
+
+            command.CommandText =
+                @"DELETE FROM INVOICEITEMS WHERE INVOICENUMBER = $INVNO";
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+            return container;
+        }
+        public void SaveInvoice(Invoice inv)
         {
             OpenConnection();
+            bool previouslySaved = false;
+
             SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText = "SELECT INVOICENUMBER FROM INVOICES WHERE INVOICENUMBER = $INVNO";
+            command.Parameters.Add(new SqliteParameter("$INVNO", inv.invoiceNumber));
+            SqliteDataReader reader = command.ExecuteReader();
+            if (reader.HasRows)
+                previouslySaved = true;
+            reader.Close();
 
             #region Add General Invoice Information to INVOICES tables
-            command.CommandText =
-                "INSERT INTO INVOICES (" +
+            if (!previouslySaved)
+                command.CommandText =
+                    "INSERT INTO INVOICES (" +
 
-                "INVOICENUMBER,SUBTOTAL,TAXABLETOTAL,TAXRATE,TAXAMOUNT,TOTAL," +
-                "TOTALPAYMENTS,AGERESTRICTED,CUSTOMERBIRTHDATE,ATTENTION,PO,MESSAGE," +
-                "SAVEDINVOICE,SAVEDINVOICETIME,INVOICECREATIONTIME,INVOICEFINALIZEDTIME,FINALIZED,VOIDED,CUSTOMERNUMBER,EMPLOYEENUMBER, " +
-                "COST, PROFIT) " +
+                    "INVOICENUMBER,SUBTOTAL,TAXABLETOTAL,TAXRATE,TAXAMOUNT,TOTAL," +
+                    "TOTALPAYMENTS,AGERESTRICTED,CUSTOMERBIRTHDATE,ATTENTION,PO,MESSAGE," +
+                    "SAVEDINVOICE,SAVEDINVOICETIME,INVOICECREATIONTIME,INVOICEFINALIZEDTIME,FINALIZED,VOIDED,CUSTOMERNUMBER,EMPLOYEENUMBER, " +
+                    "COST, PROFIT) " +
 
-                "VALUES ($INVOICENUMBER,$SUBTOTAL,$TAXABLETOTAL,$TAXRATE,$TAXAMOUNT,$TOTAL," +
-                "$TOTALPAYMENTS,$AGERESTRICTED,$CUSTOMERBIRTHDATE,$ATTENTION,$PO,$MESSAGE," +
-                "$SAVEDINVOICE,$SAVEDINVOICETIME,$INVOICECREATIONTIME,$INVOICEFINALIZEDTIME,$FINALIZED,$VOIDED,$CUSTOMERNUMBER,$EMPLOYEENUMBER, " +
-                "$COST, $PROFIT)";
+                    "VALUES ($INVOICENUMBER,$SUBTOTAL,$TAXABLETOTAL,$TAXRATE,$TAXAMOUNT,$TOTAL," +
+                    "$TOTALPAYMENTS,$AGERESTRICTED,$CUSTOMERBIRTHDATE,$ATTENTION,$PO,$MESSAGE," +
+                    "$SAVEDINVOICE,$SAVEDINVOICETIME,$INVOICECREATIONTIME,$INVOICEFINALIZEDTIME,$FINALIZED,$VOIDED,$CUSTOMERNUMBER,$EMPLOYEENUMBER, " +
+                    "$COST, $PROFIT)";
+            else
+                command.CommandText =
+                  @"UPDATE INVOICES SET 
+                    INVOICENUMBER = $INVOICENUMBER, SUBTOTAL = $SUBTOTAL, TAXABLETOTAL = $TAXABLETOTAL, 
+                    TAXRATE = $TAXRATE, TAXAMOUNT = $TAXAMOUNT, TOTAL = $TOTAL, TOTALPAYMENTS = $TOTALPAYMENTS, 
+                    AGERESTRICTED = $AGERESTRICTED, CUSTOMERBIRTHDATE = $CUSTOMERBIRTHDATE, ATTENTION = $ATTENTION, 
+                    PO = $PO, MESSAGE = $MESSAGE, SAVEDINVOICE = $SAVEDINVOICE, SAVEDINVOICETIME = $SAVEDINVOICETIME, 
+                    INVOICECREATIONTIME = $INVOICECREATIONTIME, INVOICEFINALIZEDTIME = $INVOICEFINALIZEDTIME, 
+                    FINALIZED = $FINALIZED, VOIDED = $VOIDED, CUSTOMERNUMBER = $CUSTOMERNUMBER, 
+                    EMPLOYEENUMBER = $EMPLOYEENUMBER, COST = $COST, PROFIT = $PROFIT 
+                    WHERE INVOICENUMBER = $INVOICENUMBER";
 
             command.Parameters.Add(new SqliteParameter("$INVOICENUMBER", inv.invoiceNumber));
             command.Parameters.Add(new SqliteParameter("$SUBTOTAL", inv.subtotal));
@@ -2059,6 +2074,12 @@ namespace TIMSServer
             foreach (InvoiceItem item in inv.items)
             {
                 command.CommandText =
+                    @"DELETE FROM INVOICEITEMS WHERE INVOICENUMBER = $INVOICENUMBER";
+                command.Parameters.Clear();
+                command.Parameters.Add(new SqliteParameter("$INVOICENUMBER", inv.invoiceNumber));
+                command.ExecuteNonQuery();
+
+                command.CommandText =
                     "INSERT INTO INVOICEITEMS (" +
 
                     "INVOICENUMBER,ITEMNUMBER,PRODUCTLINE,ITEMDESCRIPTION,PRICE,LISTPRICE," +
@@ -2068,6 +2089,15 @@ namespace TIMSServer
                     "VALUES ($INVOICENUMBER,$ITEMNUMBER,$PRODUCTLINE,$ITEMDESCRIPTION,$PRICE,$LISTPRICE," +
                     "$QUANTITY,$TOTAL,$PRICECODE,$SERIALIZED,$AGERESTRICTED," +
                     "$MINIMUMAGE,$TAXED,$INVOICECODES,$GUID,$COST)";
+                //else
+                //    command.CommandText =
+                //      @"UPDATE INVOICES SET 
+                //        INVOICENUMBER = $INVOICENUMBER, ITEMNUMBER = $ITEMNUMBER, PRODUCTLINE = $PRODUCTLINE, 
+                //        ITEMDESCRIPTION = $ITEMDESCRIPTION, PRICE = $PRICE, LISTPRICE = $LISTPRICE, 
+                //        QUANTITY = $QUANTITY, TOTAL = $TOTAL, PRICECODE = $PRICECODE, SERIALIZED = $SERIALIZED, 
+                //        AGERESTRICTED = $AGERESTRICTED, MINIMUMAGE = $MINIMUMAGE, TAXED = $TAXED, 
+                //        INVOICECODES = $INVOICECODES, GUID = $GUID, COST = $COST 
+                //        WHERE INVOICENUMBER = $INVOICENUMBER AND GUID = $GUID";
 
                 command.Parameters.Clear();
 
@@ -2095,6 +2125,17 @@ namespace TIMSServer
                 command.Parameters.Add(new SqliteParameter("$COST", item.cost));
 
                 command.ExecuteNonQuery();
+
+                command.CommandText =
+                    @"UPDATE ITEMS SET DATELASTSALE = $DATE, LASTSALEPRICE = $PRICE WHERE (ITEMNUMBER = $ITEMNO AND PRODUCTLINE = $LINECODE)";
+
+                command.Parameters.Clear();
+                command.Parameters.Add(new SqliteParameter("$DATE", DateTime.Now.ToString("MM/dd/yyyy")));
+                command.Parameters.Add(new SqliteParameter("$ITEMNO", item.itemNumber));
+                command.Parameters.Add(new SqliteParameter("$LINECODE", item.productLine));
+                command.Parameters.Add(new SqliteParameter("$PRICE", item.price));
+
+                command.ExecuteNonQuery();
             }
             #endregion
 
@@ -2104,9 +2145,9 @@ namespace TIMSServer
                 command.CommandText =
                     "INSERT INTO PAYMENTS (" +
 
-                    "INVOICENUMBER,ID,PAYMENTTYPE,PAYMENTAMOUNT) " +
+                    "INVOICENUMBER,ID,PAYMENTTYPE,PAYMENTAMOUNT,CARDREADERERRORMESSAGE,INGENICORESPONSE) " +
 
-                    "VALUES ($INVOICENUMBER,$ID,$PAYMENTTYPE,$PAYMENTAMOUNT)";
+                    "VALUES ($INVOICENUMBER,$ID,$PAYMENTTYPE,$PAYMENTAMOUNT,$ERROR,$INGENICO)";
 
                 command.Parameters.Clear();
 
@@ -2114,6 +2155,8 @@ namespace TIMSServer
                 command.Parameters.Add(new SqliteParameter("$ID", pay.ID));
                 command.Parameters.Add(new SqliteParameter("$PAYMENTTYPE", pay.paymentType.ToString()));
                 command.Parameters.Add(new SqliteParameter("$PAYMENTAMOUNT", pay.paymentAmount));
+                command.Parameters.Add(new SqliteParameter("$ERROR", Enum.GetName(typeof(Payment.CardReaderErrorMessages), pay.errorMessage)));
+                command.Parameters.Add(new SqliteParameter("$INGENICO", pay.cardResponse == null ? DBNull.Value : pay.cardResponse.RawXMLResponse));
 
                 command.ExecuteNonQuery();
             }
@@ -2411,7 +2454,10 @@ namespace TIMSServer
             {
                 for (int i = 0; i != columns; i++)
                 {
-                    data.Add(reader.GetValue(i));
+                    if (!reader.IsDBNull(i))
+                        data.Add(reader.GetValue(i));
+                    else
+                        data.Add(String.Empty);
                 }
             }
 
@@ -3224,10 +3270,90 @@ namespace TIMSServer
             return true;
         }
 
-        public IngenicoResponse InitiatePayment(Invoice inv, decimal paymentAmount)
+        public AuthContainer<string> TestIngenicoRequest(IngenicoRequest request, AuthKey key)
         {
-            IngenicoRequest rq = new IngenicoRequest();
-            return Payments.Engine.InitiatePayment(rq);
+            AuthContainer<string> container = CheckAuthorization<string>(key);
+            if (!container.Key.Success)
+                return container;
+
+            IPAddress ip = IPAddress.Parse(GetClientAddress());
+            List<Device> terminals = RetrieveTerminals();
+            Device terminal = terminals.First(el => el.address.Address.Equals(ip));
+            try
+            {
+                Device device = terminal.AssignedDevices.First(el => el.Type == Device.DeviceType.CardReader);
+                container.Data = Payments.Engine.SendRawRequest(device, request);
+                return container;
+            }
+            catch
+            {
+                container.Data = "INVALID";
+                return container;
+            }
+        }
+        public AuthContainer<Payment> InitiatePayment(decimal paymentAmount, AuthKey key)
+        {
+            AuthContainer<Payment> container = CheckAuthorization<Payment>(key);
+            if (!container.Key.Success)
+                return container;
+
+            IPAddress ip = IPAddress.Parse(GetClientAddress());
+            List<Device> terminals = RetrieveTerminals();
+            Device terminal = terminals.First(el => el.address.Address.Equals(ip));
+            try
+            {
+                Device device = terminal.AssignedDevices.First(el => el.Type == Device.DeviceType.CardReader);
+                container.Data = Payments.Engine.InitiatePayment(device, paymentAmount, 0, 0, 0, 0, false);
+                return container;
+            }
+            catch
+            {
+                container.Data = new Payment();
+                container.Data.errorMessage = Payment.CardReaderErrorMessages.NoAttachedDevice;
+                return container;
+            }
+        }
+        public AuthContainer<Payment> InitiateRefund(decimal refundAmount, AuthKey key)
+        {
+            AuthContainer<Payment> container = CheckAuthorization<Payment>(key);
+            if (!container.Key.Success)
+                return container;
+
+            IPAddress ip = IPAddress.Parse(GetClientAddress());
+            List<Device> terminals = RetrieveTerminals();
+            Device terminal = terminals.First(el => el.address.Address.Equals(ip));
+            try
+            {
+                Device device = terminal.AssignedDevices.First(el => el.Type == Device.DeviceType.CardReader);
+                container.Data = Payments.Engine.InitiateRefund(device, refundAmount);
+                return container;
+            }
+            catch
+            {
+                container.Data.errorMessage = Payment.CardReaderErrorMessages.NoAttachedDevice;
+                return container;
+            }
+        }
+        public AuthContainer<string> RequestSignature(AuthKey key)
+        {
+            AuthContainer<string> container = CheckAuthorization<string>(key);
+            if (!container.Key.Success)
+                return container;
+
+            IPAddress ip = IPAddress.Parse(GetClientAddress());
+            List<Device> terminals = RetrieveTerminals();
+            Device terminal = terminals.First(el => el.address.Address.Equals(ip));
+            try
+            {
+                Device device = terminal.AssignedDevices.First(el => el.Type == Device.DeviceType.CardReader);
+                container.Data = Payments.Engine.InitiateSignatureCapture(device);
+                return container;
+            }
+            catch
+            {
+                container.Data = "INVALID";
+                return container;
+            }
         }
         #endregion
 

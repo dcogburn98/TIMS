@@ -28,12 +28,15 @@ namespace TIMS.Forms.Settings
 
         private void AddDevice_Load(object sender, EventArgs e)
         {
-
+            if (deviceTypeField.Text == "Card Reader")
+                label5.Text = "Default port is 6200";
+            if (deviceTypeField.Text == "Receipt Printer")
+                label5.Text = "Default port is 9100";
         }
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            string port = string.Empty;
+            int port;
             if (!IPAddress.TryParse(ipAddressField.Text, out IPAddress ip))
             {
                 MessageBox.Show("IP address is malformed.\nPlease enter a correctly formed IP address.");
@@ -45,6 +48,7 @@ namespace TIMS.Forms.Settings
                 return;
             }
             if (portField.Text != string.Empty)
+            {
                 foreach (char c in portField.Text)
                 {
                     if (!Char.IsDigit(c))
@@ -53,27 +57,37 @@ namespace TIMS.Forms.Settings
                         return;
                     }
                 }
-            switch (deviceTypeField.Text)
+                port = int.Parse(portField.Text);
+                if (port < 1 || port > 65536)
+                {
+                    MessageBox.Show("Please enter a valid port number.\nLeave blank for common default port for device.");
+                    return;
+                }
+            }
+            else
             {
-                case ("Receipt Printer"):
-                    port = "9100";
-                    break;
-                case ("Printer"):
-                    port = "9100";
-                    break;
-                case ("Card Reader"):
-                    port = "9100";
-                    break;
-                case ("Line Display"):
-                    port = "9100";
-                    break;
-                default:
-                    port = "9100";
-                    break;
+                switch (deviceTypeField.Text)
+                {
+                    case ("Receipt Printer"):
+                        port = 9100;
+                        break;
+                    case ("Printer"):
+                        port = 9100;
+                        break;
+                    case ("Card Reader"):
+                        port = 6200;
+                        break;
+                    case ("Line Display"):
+                        port = 9100;
+                        break;
+                    default:
+                        port = 9100;
+                        break;
+                }
             }
 
             Device device = new Device();
-            device.address = new IPEndPoint(ip, int.Parse(port));
+            device.address = new IPEndPoint(ip, port);
             device.Nickname = nicknameField.Text;
             if (deviceTypeField.Text == "Receipt Printer")
                 device.Type = Device.DeviceType.ThermalPrinter;
@@ -99,7 +113,26 @@ namespace TIMS.Forms.Settings
 
         private void testButton_Click(object sender, EventArgs e)
         {
-            string port = "9100";
+            string port;
+            switch (deviceTypeField.Text)
+            {
+                case ("Receipt Printer"):
+                    port = "9100";
+                    break;
+                case ("Printer"):
+                    port = "9100";
+                    break;
+                case ("Card Reader"):
+                    port = "6200";
+                    break;
+                case ("Line Display"):
+                    port = "9100";
+                    break;
+                default:
+                    port = "9100";
+                    break;
+            }
+
             if (!IPAddress.TryParse(ipAddressField.Text, out IPAddress ip))
             {
                 MessageBox.Show("Invalid IP Address.");
@@ -116,12 +149,15 @@ namespace TIMS.Forms.Settings
 
                 port = portField.Text;
             }
-            ICommandEmitter ee = new EPSON();
-            BasePrinter printer = new NetworkPrinter(new NetworkPrinterSettings()
-            { ConnectionString = ip + ":" + port, PrinterName = "TestPrinter" });
-            printer?.Write(ee.Initialize());
-            printer?.Write(ee.Enable());
-            byte[][] Receipt() => new byte[][] {
+
+            if (deviceTypeField.Text == "Receipt Printer")
+            {
+                ICommandEmitter ee = new EPSON();
+                BasePrinter printer = new NetworkPrinter(new NetworkPrinterSettings()
+                { ConnectionString = ip + ":" + port, PrinterName = "TestPrinter" });
+                printer?.Write(ee.Initialize());
+                printer?.Write(ee.Enable());
+                byte[][] Receipt() => new byte[][] {
                     ee.CenterAlign(),
                     ee.PrintLine(),
                     ee.SetBarcodeHeightInDots(360),
@@ -162,10 +198,18 @@ namespace TIMS.Forms.Settings
                     ee.PrintLine(),
                     ee.PrintLine()
                 };
-            printer?.Write(Receipt());
-            printer?.Write(ee.FeedLines(2));
-            printer?.Write(ee.FullCut());
-            
+                printer?.Write(Receipt());
+                printer?.Write(ee.FeedLines(2));
+                printer?.Write(ee.FullCut());
+            }
+            else if (deviceTypeField.Text == "Card Reader")
+            {
+                //Communication.RequestSignature(new Device() { address = new IPEndPoint(ip, int.Parse(port)) });
+            }
+            else
+            {
+                MessageBox.Show("No test yet implemented for devices of this type!");
+            }
         }
     }
 }

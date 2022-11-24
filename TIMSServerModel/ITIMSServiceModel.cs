@@ -26,11 +26,11 @@ namespace TIMSServerModel
 
         #region Items
         [OperationContract]
-        List<Item> CheckItemNumber(string itemNumber, bool connectionOpened, AuthKey key);
+        AuthContainer<List<Item>> CheckItemNumber(string itemNumber, bool connectionOpened, AuthKey key);
         [OperationContract]
-        List<Item> CheckItemNumberFromSupplier(string itemNumber, string supplier, AuthKey key);
+        AuthContainer<List<Item>> CheckItemNumberFromSupplier(string itemNumber, string supplier, AuthKey key);
         [OperationContract]
-        List<Item> RetrieveItemsFromSupplier(string supplier, AuthKey key);
+        AuthContainer<List<Item>> RetrieveItemsFromSupplier(string supplier, AuthKey key);
         [OperationContract]
         List<Item> RetrieveItemsFromSupplierBelowMin(string supplier);
         [OperationContract]
@@ -59,10 +59,6 @@ namespace TIMSServerModel
         bool AddItem(Item item);
         [OperationContract]
         List<Item> RetrieveLabelOutOfDateItems();
-        [OperationContract]
-        void SaveReleasedInvoice(Invoice inv);
-        [OperationContract]
-        int RetrieveNextInvoiceNumber();
         #endregion
 
         #region Invoices
@@ -72,8 +68,14 @@ namespace TIMSServerModel
         Invoice RetrieveInvoice(int invNumber);
         [OperationContract]
         List<Invoice> RetrieveInvoicesByCriteria(string[] criteria);
-        //[OperationContract]
-        //Request InitiatePayment(Invoice inv, decimal paymentAmount);
+        [OperationContract]
+        AuthContainer<List<Invoice>> RetrieveSavedInvoices(AuthKey key);
+        [OperationContract]
+        AuthContainer<object> DeleteSavedInvoice(Invoice inv, AuthKey key);
+        [OperationContract]
+        void SaveInvoice(Invoice inv);
+        [OperationContract]
+        int RetrieveNextInvoiceNumber();
         #endregion
 
         #region Customers
@@ -191,6 +193,14 @@ namespace TIMSServerModel
         bool AssignDevice(Device terminal, Device device);
         [OperationContract]
         bool RemoveDeviceAssignment(Device terminal, Device device);
+        [OperationContract]
+        AuthContainer<string> TestIngenicoRequest(IngenicoRequest request, AuthKey key);
+        [OperationContract]
+        AuthContainer<Payment> InitiatePayment(decimal paymentAmount, AuthKey key);
+        [OperationContract]
+        AuthContainer<Payment> InitiateRefund(decimal refundAmount, AuthKey key);
+        [OperationContract]
+        AuthContainer<string> RequestSignature(AuthKey key);
         #endregion
     }
 }

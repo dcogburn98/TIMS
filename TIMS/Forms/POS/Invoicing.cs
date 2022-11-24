@@ -61,7 +61,6 @@ namespace TIMS.Forms
                 }
             shortcutsToolStripMenuItem.Enabled = false;
 
-
             currentState = State.NoCustomer;
         }
 
@@ -100,6 +99,10 @@ namespace TIMS.Forms
 
         public void CancelInvoice()
         {
+            if (currentInvoice.savedInvoice)
+            {
+                Communication.DeleteSavedInvoice(currentInvoice);
+            }
             currentInvoice = null;
             addingItems = null;
             workingItem = null;
@@ -131,8 +134,9 @@ namespace TIMS.Forms
             itemNoTB.Enabled = false;
             extraFunctionsDropBox.Enabled = false;
             enterBarcodeButton.Enabled = false;
-            messagesButton.Enabled = false;
-            roaButton.Enabled = false;
+            messagesButton.Enabled = true;
+            roaButton.Enabled = true;
+            savedInvoiceButton.Enabled = true;
             customerInfoLB.Items.Clear();
             subtotalLabel.Text = "$0.00";
 
@@ -179,6 +183,10 @@ namespace TIMS.Forms
             customerNoTB.Text = currentInvoice.customer.customerNumber + " " + currentInvoice.customer.customerName;
             EnableControls();
             itemNoTB.Focus();
+
+            messagesButton.Enabled = false;
+            roaButton.Enabled = false;
+            savedInvoiceButton.Enabled = false;
 
             shortcutsToolStripMenuItem.Enabled = true;
 
@@ -430,8 +438,7 @@ namespace TIMS.Forms
                 }
             }
             Checkout checkoutForm = new Checkout(currentInvoice, this);
-            checkoutForm.ShowDialog();
-            if (currentInvoice.finalized)
+            if (checkoutForm.ShowDialog() == DialogResult.OK)
             {
                 CancelInvoice();
                 customerNoTB.Focus();
@@ -771,6 +778,84 @@ namespace TIMS.Forms
                 qtyTB.SelectAll();
                 return;
             }
+        }
+
+        private void savedInvoiceButton_Click(object sender, EventArgs e)
+        {
+            SavedInvoicesPicker picker = new SavedInvoicesPicker();
+            if (picker.ShowDialog() == DialogResult.OK)
+            {
+                customerNoTB.Text = picker.selectedInvoice.customer.customerNumber;
+                AddCustomer();
+                currentInvoice = picker.selectedInvoice;
+                foreach (InvoiceItem item in currentInvoice.items)
+                {
+                    addingLine = true;
+                    int row = dataGridView1.Rows.Add();
+                    dataGridView1.Rows[row].Cells[0].Value = item.itemNumber;
+                    dataGridView1.Rows[row].Cells[1].Value = item.productLine;
+                    dataGridView1.Rows[row].Cells[2].Value = item.itemName;
+                    dataGridView1.Rows[row].Cells[3].Value = item.quantity;
+                    dataGridView1.Rows[row].Cells[4].Value = item.serialNumber;
+                    dataGridView1.Rows[row].Cells[5].Value = item.listPrice.ToString("C");
+                    dataGridView1.Rows[row].Cells[6].Value = item.price.ToString("C");
+                    dataGridView1.Rows[row].Cells[7].Value = item.total.ToString("C");
+                    if (item.taxed)
+                        dataGridView1.Rows[row].Cells[8].Value = "Y";
+                    else
+                        dataGridView1.Rows[row].Cells[8].Value = "N";
+                    dataGridView1.Rows[row].Cells[9].Value = item.codes;
+                    dataGridView1.Rows[row].Cells[10].Value = item.ID;
+                    dataGridView1.Rows[row].Tag = item;
+                }
+
+                itemNoTB.Clear();
+                productLineDropBox.Items.Clear();
+                productLineDropBox.Text = "";
+                productLineDropBox.Enabled = false;
+                descriptionTB.Clear();
+                descriptionTB.Enabled = false;
+                qtyTB.Clear();
+                qtyTB.Enabled = false;
+                priceCodeTB.Clear();
+                priceCodeTB.Enabled = false;
+                priceTB.Clear();
+                priceTB.Enabled = false;
+                taxedCB.Checked = false;
+                taxedCB.Enabled = false;
+                pndTB.Clear();
+                pndTB.Enabled = false;
+                acceptItemButton.Enabled = false;
+                cancelItemButton.Visible = false;
+                velocityCodeLabel.Visible = false;
+                availabilityLabel.Visible = false;
+
+                itemNoTB.Focus();
+
+                dataGridView1.ClearSelection();
+
+                decimal total = 0.00m;
+                foreach (InvoiceItem i in currentInvoice.items)
+                {
+                    total += i.total;
+                }
+                currentInvoice.subtotal = total;
+                subtotalLabel.Text = total.ToString("C");
+
+                addingLine = false;
+            }
+        }
+
+        private void roaButton_Click(object sender, EventArgs e)
+        {
+            ReceiveOnAccount roa = new ReceiveOnAccount();
+            roa.Show();
+        }
+
+        private void messagesButton_Click(object sender, EventArgs e)
+        {
+            Mail mail = new Mail();
+            mail.Show();
         }
     }
 }

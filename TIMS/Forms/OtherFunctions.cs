@@ -8,6 +8,7 @@ using TIMS.Forms.Orders;
 using TIMS.Forms.Settings;
 using TIMS.Forms.Customers;
 using TIMS.Forms.Maintenance;
+using TIMS.Forms.DeveloperTools;
 using TIMS.Server;
 using TIMSServerModel;
 
@@ -158,6 +159,12 @@ namespace TIMS.Forms
             if (form == null)
                 Program.OpenForm(new CompanyControls());
             else form.BringToFront();
+        }
+
+        private void testIngenicoDeviceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IngenicoTest test = new IngenicoTest();
+            test.Show();
         }
     }
 }

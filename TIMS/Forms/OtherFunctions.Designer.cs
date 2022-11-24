@@ -158,6 +158,12 @@ namespace TIMS.Forms
             this.reportCreatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.developerFunctionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testIngenicoDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.virtualStoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.layoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.globalSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemExclusionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -172,7 +178,9 @@ namespace TIMS.Forms
             this.employeeManagementToolStripMenuItem,
             this.reportsToolStripMenuItem,
             this.logoutToolStripMenuItem,
-            this.helpToolStripMenuItem});
+            this.helpToolStripMenuItem,
+            this.virtualStoreToolStripMenuItem,
+            this.developerFunctionsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1123, 24);
@@ -933,13 +941,13 @@ namespace TIMS.Forms
             // sotreControlsToolStripMenuItem
             // 
             this.sotreControlsToolStripMenuItem.Name = "sotreControlsToolStripMenuItem";
-            this.sotreControlsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sotreControlsToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.sotreControlsToolStripMenuItem.Text = "Sotre Controls";
             // 
             // companyControlsToolStripMenuItem
             // 
             this.companyControlsToolStripMenuItem.Name = "companyControlsToolStripMenuItem";
-            this.companyControlsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.companyControlsToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.companyControlsToolStripMenuItem.Text = "Company Controls";
             this.companyControlsToolStripMenuItem.Click += new System.EventHandler(this.companyControlsToolStripMenuItem_Click);
             // 
@@ -1117,6 +1125,49 @@ namespace TIMS.Forms
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
+            // developerFunctionsToolStripMenuItem
+            // 
+            this.developerFunctionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testIngenicoDeviceToolStripMenuItem});
+            this.developerFunctionsToolStripMenuItem.Name = "developerFunctionsToolStripMenuItem";
+            this.developerFunctionsToolStripMenuItem.Size = new System.Drawing.Size(127, 20);
+            this.developerFunctionsToolStripMenuItem.Text = "Developer Functions";
+            // 
+            // testIngenicoDeviceToolStripMenuItem
+            // 
+            this.testIngenicoDeviceToolStripMenuItem.Name = "testIngenicoDeviceToolStripMenuItem";
+            this.testIngenicoDeviceToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.testIngenicoDeviceToolStripMenuItem.Text = "Test Ingenico Device";
+            this.testIngenicoDeviceToolStripMenuItem.Click += new System.EventHandler(this.testIngenicoDeviceToolStripMenuItem_Click);
+            // 
+            // virtualStoreToolStripMenuItem
+            // 
+            this.virtualStoreToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.layoutToolStripMenuItem,
+            this.globalSettingsToolStripMenuItem,
+            this.itemExclusionsToolStripMenuItem});
+            this.virtualStoreToolStripMenuItem.Name = "virtualStoreToolStripMenuItem";
+            this.virtualStoreToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
+            this.virtualStoreToolStripMenuItem.Text = "Virtual Store";
+            // 
+            // layoutToolStripMenuItem
+            // 
+            this.layoutToolStripMenuItem.Name = "layoutToolStripMenuItem";
+            this.layoutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.layoutToolStripMenuItem.Text = "Layout";
+            // 
+            // globalSettingsToolStripMenuItem
+            // 
+            this.globalSettingsToolStripMenuItem.Name = "globalSettingsToolStripMenuItem";
+            this.globalSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.globalSettingsToolStripMenuItem.Text = "Global Settings";
+            // 
+            // itemExclusionsToolStripMenuItem
+            // 
+            this.itemExclusionsToolStripMenuItem.Name = "itemExclusionsToolStripMenuItem";
+            this.itemExclusionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.itemExclusionsToolStripMenuItem.Text = "Item Exclusions";
+            // 
             // OtherFunctions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1265,5 +1316,11 @@ namespace TIMS.Forms
         private System.Windows.Forms.ToolStripMenuItem massImportItemsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tabletInvoicingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem itemMaintenanceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem developerFunctionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testIngenicoDeviceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem virtualStoreToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem layoutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem globalSettingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem itemExclusionsToolStripMenuItem;
     }
 }

@@ -279,7 +279,8 @@ namespace TIMSServer
             CloseConnection();
             CreateDatabase();
             TIMSServiceModel.Init();
-            Console.WriteLine(Engine.InitiatePayment(new TIMSServerModel.IngenicoRequest()).RawXMLResponse.ToString());
+            //Console.WriteLine(Engine.InitiatePayment(15, 20, 3, 244210101, 6400).paymentAmount);
+            //Console.WriteLine(Engine.InitiateSignatureCapture());
 
             using (ServiceHost host = new ServiceHost(typeof(TIMSServiceModel)))
             {
@@ -1045,7 +1046,8 @@ namespace TIMSServer
                 INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Store Website Number', '');
                 INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Store Email Number', '');
                 INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Integrated Card Payments', '1');
-                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Server Relationship Key', '" + APIKey + @"');";
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Server Relationship Key', '" + APIKey + @"');
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Charge Override Password', 'paul');";
                 command.ExecuteNonQuery();
             }
 
@@ -1146,13 +1148,16 @@ namespace TIMSServer
 	            ""Category""  TEXT,
 	            ""SKU""   TEXT,
 	            ""LastLabelDate"" TEXT,
-	            ""LastLabelPrice""    REAL
+	            ""LastLabelPrice""    REAL,
+                ""DateLastSale""    TEXT,
+                ""ManufacturerNumber""  TEXT,
+                ""LastSalePrice""   TEXT
                 )";
                 command.ExecuteNonQuery();
 
                 command.CommandText =
-                    @"INSERT INTO Items (""ProductLine"", ""ItemNumber"", ""ItemName"", ""LongDescription"", ""Supplier"", ""GroupCode"", ""VelocityCode"", ""PreviousYearVelocityCode"", ""ItemsPerContainer"", ""StandardPackage"", ""DateStocked"", ""DateLastReceipt"", ""Minimum"", ""Maximum"", ""OnHandQuantity"", ""WIPQuantity"", ""OnOrderQuantity"", ""BackorderQuantity"", ""DaysOnOrder"", ""DaysOnBackOrder"", ""ListPrice"", ""RedPrice"", ""YellowPrice"", ""GreenPrice"", ""PinkPrice"", ""BluePrice"", ""ReplacementCost"", ""AverageCost"", ""Taxed"", ""AgeRestricted"", ""MinimumAge"", ""LocationCode"", ""Serialized"", ""Category"", ""SKU"", ""LastLabelDate"", ""LastLabelPrice"") 
-                    VALUES ('XXX', 'xxx', 'xxx', 'xxx', 'Default', '0', '0', '0', '0', '0', '6/11/2022 7:43:28 PM', '6/11/2022 7:43:28 PM', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0', '0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '1', '0', '0', '0', '0', 'Etc', 'xxx', '', '');";
+                    @"INSERT INTO Items (""ProductLine"", ""ItemNumber"", ""ItemName"", ""LongDescription"", ""Supplier"", ""GroupCode"", ""VelocityCode"", ""PreviousYearVelocityCode"", ""ItemsPerContainer"", ""StandardPackage"", ""DateStocked"", ""DateLastReceipt"", ""Minimum"", ""Maximum"", ""OnHandQuantity"", ""WIPQuantity"", ""OnOrderQuantity"", ""BackorderQuantity"", ""DaysOnOrder"", ""DaysOnBackOrder"", ""ListPrice"", ""RedPrice"", ""YellowPrice"", ""GreenPrice"", ""PinkPrice"", ""BluePrice"", ""ReplacementCost"", ""AverageCost"", ""Taxed"", ""AgeRestricted"", ""MinimumAge"", ""LocationCode"", ""Serialized"", ""Category"", ""SKU"", ""LastLabelDate"", ""LastLabelPrice"", ""DateLastSale"", ""ManufacturerNumber"", ""LastSalePrice"") 
+                    VALUES ('XXX', 'XXX', 'xxx', 'xxx', 'Default', '0', '0', '0', '0', '0', '6/11/2022 7:43:28 PM', '6/11/2022 7:43:28 PM', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0', '0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '1', '0', '0', '0', '0', 'Etc', 'xxx', '', '', '', '', '');";
                 command.ExecuteNonQuery();
             }
 
@@ -1182,6 +1187,8 @@ namespace TIMSServer
 	            ""ID""    BLOB NOT NULL UNIQUE,
                 ""PaymentType""   TEXT NOT NULL,
 	            ""PaymentAmount"" REAL NOT NULL,
+                ""CardReaderErrorMessage"" TEXT NOT NULL,
+                ""IngenicoResponse"" TEXT, 
 	            PRIMARY KEY(""ID"")
                 )";
                 command.ExecuteNonQuery();
@@ -1305,36 +1312,36 @@ namespace TIMSServer
 
                 #region Default Reports
                 command.CommandText =
-                @"INSERT INTO Reports (""ReportName"", ""ReportShortCode"", ""DataSource"", ""Conditions"", ""Fields"", ""Totals"") 
-                VALUES ('Invoice Sales', 
-                'COM150', 
-                'Invoices', 
-                'InvoiceNumber > 1', 
-                'InvoiceNumber|Subtotal|TaxAmount|Total|TotalPayments|CustomerNumber|EmployeeNumber', 
-                'Subtotal|TaxAmount|Total|TotalPayments');";
+                    @"INSERT INTO Reports (""ReportName"", ""ReportShortCode"", ""DataSource"", ""Conditions"", ""Fields"", ""Totals"") 
+                    VALUES ('Invoice Sales', 
+                    'COM150', 
+                    'Invoices', 
+                    'InvoiceNumber > 1', 
+                    'InvoiceNumber|Subtotal|TaxAmount|Total|TotalPayments|CustomerNumber|EmployeeNumber', 
+                    'Subtotal|TaxAmount|Total|TotalPayments');";
                 command.ExecuteNonQuery();
 
                 command.CommandText =
-                @"INSERT INTO Reports (""ReportName"", ""ReportShortCode"", ""DataSource"", ""Conditions"", ""Fields"", ""Totals"") 
-                VALUES ('On-Hand Inventory Low Report', 
-                'STLO', 
-                'Items', 
-                'OnHandQuantity <= Minimum|Maximum > 0', 
-                'ProductLine|ItemNumber|ItemName|Minimum|Maximum|OnHandQuantity', 
-                '');";
+                    @"INSERT INTO Reports (""ReportName"", ""ReportShortCode"", ""DataSource"", ""Conditions"", ""Fields"", ""Totals"") 
+                    VALUES ('On-Hand Inventory Low Report', 
+                    'STLO', 
+                    'Items', 
+                    'OnHandQuantity <= Minimum|Maximum > 0', 
+                    'ProductLine|ItemNumber|ItemName|Minimum|Maximum|OnHandQuantity', 
+                    '');";
                 command.ExecuteNonQuery();
 
                 command.CommandText =
-                @"INSERT INTO Reports (""ReportName"", ""ReportShortCode"", ""DataSource"", ""Conditions"", ""Fields"", ""Totals"") 
-                VALUES ('Invoice Profit and Revenue Date Span Report', 
-                'COM160', 
-                'Invoices', 
-                'InvoiceFinalizedTime <= 6/1/2022|InvoiceFinalizedTime >= 5/1/2022', 
-                'InvoiceNumber|Subtotal|TaxAmount|Total|CustomerNumber|EmployeeNumber', 
-                'Subtotal|TaxAmount|Total');";
+                    @"INSERT INTO Reports (""ReportName"", ""ReportShortCode"", ""DataSource"", ""Conditions"", ""Fields"", ""Totals"") 
+                    VALUES ('Invoice Profit and Revenue Date Span Report', 
+                    'COM160', 
+                    'Invoices', 
+                    'InvoiceFinalizedTime <= 6/1/2022|InvoiceFinalizedTime >= 5/1/2022', 
+                    'InvoiceNumber|Subtotal|TaxAmount|Total|CustomerNumber|EmployeeNumber', 
+                    'Subtotal|TaxAmount|Total');";
                 command.ExecuteNonQuery();
 
-                command.CommandText =
+                command.CommandText = //Daily Invoices Report
                 @"INSERT INTO Reports (""ReportName"", ""ReportShortCode"", ""DataSource"", ""Conditions"", ""Fields"", ""Totals"") 
                 VALUES ('Daily Sales and Transactions Report', 
                 'COM170', 
@@ -1345,13 +1352,24 @@ namespace TIMSServer
                 command.ExecuteNonQuery();
 
                 command.CommandText =
-                @"INSERT INTO Reports (""ReportName"", ""ReportShortCode"", ""DataSource"", ""Conditions"", ""Fields"", ""Totals"") 
-                VALUES ('Daily Sales and Transactions Report', 
-                'COM180', 
-                'Invoices', 
-                'InvoiceFinalizedTime >= DateTime.Today|InvoiceFinalizedTime <= DateTime.Today', 
-                'InvoiceNumber|Subtotal|TaxableTotal|TaxAmount|Total|TotalPayments|Cost|Profit', 
-                'Subtotal|TaxAmount|Total|TotalPayments|Cost|Profit');";
+                    @"INSERT INTO Reports (""ReportName"", ""ReportShortCode"", ""DataSource"", ""Conditions"", ""Fields"", ""Totals"") 
+                    VALUES ('Daily Sales and Transactions Report', 
+                    'COM180', 
+                    'Invoices', 
+                    'InvoiceFinalizedTime >= DateTime.Today|InvoiceFinalizedTime <= DateTime.Today', 
+                    'InvoiceNumber|Subtotal|TaxableTotal|TaxAmount|Total|TotalPayments|Cost|Profit', 
+                    'Subtotal|TaxAmount|Total|TotalPayments|Cost|Profit');";
+                command.ExecuteNonQuery();
+
+                command.CommandText = //Stock Level Discrepancies Report
+                    @"INSERT INTO REPORTS (
+                    ReportName, ReportShortCode, DataSource, 
+                    Conditions, Fields, Totals) 
+                    VALUES(
+                    'Stock Level Discrepancies Report', 'STK110', 'Items',
+                    'OnHandQuantity < 0',
+                    'ProductLine|ItemNumber|OnHandQuantity|WIPQuantity|OnOrderQuantity|DateLastSale|Minimum|GreenPrice',
+                    ''); ";
                 command.ExecuteNonQuery();
                 #endregion
             }

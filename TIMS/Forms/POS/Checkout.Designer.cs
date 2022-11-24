@@ -262,6 +262,7 @@
             this.saveInvoiceBtn.TabIndex = 17;
             this.saveInvoiceBtn.Text = "Save Invoice";
             this.saveInvoiceBtn.UseVisualStyleBackColor = true;
+            this.saveInvoiceBtn.Click += new System.EventHandler(this.saveInvoiceBtn_Click);
             // 
             // acceptBtn
             // 

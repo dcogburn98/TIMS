@@ -5,7 +5,9 @@ using System.Windows.Forms;
 using TIMS.Server;
 using TIMSServerModel;
 
-//using PaymentEngine.xTransaction;
+using TIMS.Forms.POS;
+
+using PaymentEngine.xTransaction;
 
 namespace TIMS.Forms
 {
@@ -84,7 +86,7 @@ namespace TIMS.Forms
                 itemCount++;
             }
 
-            invoice.taxRate = 10.25m;
+            invoice.taxRate = 0.1025m;
             invoice.taxAmount = invoice.taxableTotal * invoice.taxRate;
             invoice.total = Math.Round(invoice.subtotal + invoice.taxAmount, 2);
 
@@ -140,6 +142,25 @@ namespace TIMS.Forms
                 if (invoice.payments.Count > 0)
                 {
                     MessageBox.Show("You can only charge the total amount of the invoice to a customer!");
+                    paymentTypeLB.Enabled = true;
+                    paymentTypeLB.ClearSelected();
+                    paymentIndexTB.Enabled = true;
+                    paymentIndexTB.Clear();
+                    paymentIndexTB.Focus();
+                    return;
+                }
+                if (invoice.customer.accountBalance + invoice.total > invoice.customer.creditLimit)
+                {
+                    ChargeOverride chargeOverride = new ChargeOverride(invoice);
+                    if (chargeOverride.ShowDialog() != DialogResult.OK)
+                    {
+                        paymentTypeLB.Enabled = true;
+                        paymentTypeLB.ClearSelected();
+                        paymentIndexTB.Enabled = true;
+                        paymentIndexTB.Clear();
+                        paymentIndexTB.Focus();
+                        return;
+                    }
                 }
                 invoice.payments.Add(new Payment() { paymentAmount = invoice.total, paymentType = Payment.PaymentTypes.Charge });
                 paymentsLB.Items.Add("Charge: " + invoice.total.ToString("C"));
@@ -172,79 +193,74 @@ namespace TIMS.Forms
                     paymentsLB.Items.Add("Cash: " + amt.ToString("C"));
                     invoice.payments.Add(new Payment() { paymentAmount = amt, paymentType = Payment.PaymentTypes.Cash });
                     invoice.totalPayments += amt;
+                    remainingBalanceTB.Text = (invoice.total - invoice.totalPayments).ToString("C");
                     break;
                 case "Payment Card":
-                    if (Communication.RetrieveProperty("Integrated Card Payments") == "10101")
+                    if (Communication.RetrieveProperty("Integrated Card Payments") == "1")
                     {
-                        //Request MyRequest = Communication.InitiatePayment(invoice, amt);
-                        //Response MyResponse = MyRequest.ProcessOutOfScope();
-                        //if (MyResponse.xResult == "A")
-                        //{
-                        //    //Signature can be obtained via a parameter in the Manual function above (MyRequire_Signature = True) or in a separate command as shown below.
-                        //    if (MyResponse.xSignaturerRequired == true && string.IsNullOrEmpty(MyResponse.xSignature))
-                        //    {
-                        //        MyResponse.xSignature = MyRequest.GetSignature();
-                        //    }
+                        Payment payment;
+                        if (amt > 0)
+                            payment = Communication.InitiatePayment(amt);
+                        else
+                            payment = Communication.InitiateRefund(Math.Abs(amt));
 
-                        //    //Prompt for Email Address on a device
-                        //    string MyEmailAddress = MyRequest.Device_PromptForEmail();
-
-                        //    //Prompt for Phone Number on a device. Customer will be prompted to opt-in to receive promotions via text message. If they opt-in the phone number will be returned.
-                        //    string MyPhoneNumber_JSON = MyRequest.Device_PromptForPhone_JSON();
-                        //    string MyPhoneNumber_XML = MyRequest.Device_PromptForPhone_XML();
-
-                        //    //Prompt for Zip Code on a device
-                        //    string MyZipCode = MyRequest.Device_PromptForZip();
-                        //}
-                        //if (MyResponse.Approved())
-                        //{
-                        //    if (MyResponse.xAuthAmount == "")
-                        //    {
-                        //        MessageBox.Show("An error has occurred.");
-                        //        break;
-                        //    }
-                        //    else
-                        //    {
-                        //        Payment p = new Payment();
-                        //        p.cardResponse = MyResponse;
-                        //        p.paymentAmount = decimal.Parse(MyResponse.xAuthAmount);
-                        //        p.paymentType = Payment.PaymentTypes.PaymentCard;
-                        //        paymentsLB.Items.Add("Payment Card: " + decimal.Parse(MyResponse.xAuthAmount).ToString("C"));
-                        //        invoice.payments.Add(p);
-                        //        invoice.totalPayments += decimal.Parse(MyResponse.xAuthAmount);
-                        //    }
-                        //}
-                        //else
-                        //{
-                        //    MessageBox.Show(MyResponse.xError);
-                        //}
+                        if (payment.errorMessage != Payment.CardReaderErrorMessages.None)
+                        {
+                            if (payment.errorMessage == Payment.CardReaderErrorMessages.NoAttachedDevice)
+                            {
+                                paymentsLB.Items.Add("Payment Card: " + amt.ToString("C"));
+                                invoice.payments.Add(new Payment() { paymentAmount = amt, paymentType = Payment.PaymentTypes.PaymentCard });
+                                invoice.totalPayments += amt;
+                                break;
+                            }
+                        }
+                        if (payment.cardResponse.CapturedAmount == 0)
+                        {
+                            MessageBox.Show("An error has occurred.");
+                            break;
+                        }
+                        else
+                        {
+                            if (payment.cardResponse.CapturedAmount != payment.cardResponse.RequestedAmount)
+                                MessageBox.Show("A partial payment of " + payment.paymentAmount.ToString("C") + " was made with this card.\nPlease request remaining amount in a different form of payment");
+                            
+                            payment.paymentType = Payment.PaymentTypes.PaymentCard;
+                            paymentsLB.Items.Add("Payment Card: " + payment.paymentAmount.ToString("C"));
+                            invoice.payments.Add(payment);
+                            invoice.totalPayments += payment.paymentAmount;
+                        }
                     }
                     else
                     {
                         paymentsLB.Items.Add("Payment Card: " + amt.ToString("C"));
                         invoice.payments.Add(new Payment() { paymentAmount = amt, paymentType = Payment.PaymentTypes.PaymentCard });
                         invoice.totalPayments += amt;
+                        remainingBalanceTB.Text = (invoice.total - invoice.totalPayments).ToString("C");
                     }
                     break;
                 case "Paypal":
                     paymentsLB.Items.Add("Paypal: " + amt.ToString("C"));
                     invoice.payments.Add(new Payment() { paymentAmount = amt, paymentType = Payment.PaymentTypes.Paypal });
                     invoice.totalPayments += amt;
+                    remainingBalanceTB.Text = (invoice.total - invoice.totalPayments).ToString("C");
                     break;
                 case "CashApp":
                     paymentsLB.Items.Add("CashApp: " + amt.ToString("C"));
                     invoice.payments.Add(new Payment() { paymentAmount = amt, paymentType = Payment.PaymentTypes.CashApp });
                     invoice.totalPayments += amt;
+                    remainingBalanceTB.Text = (invoice.total - invoice.totalPayments).ToString("C");
                     break;
                 case "Venmo":
                     paymentsLB.Items.Add("Venmo: " + amt.ToString("C"));
                     invoice.payments.Add(new Payment() { paymentAmount = amt, paymentType = Payment.PaymentTypes.Venmo });
                     invoice.totalPayments += amt;
+                    remainingBalanceTB.Text = (invoice.total - invoice.totalPayments).ToString("C");
                     break;
                 case "Check":
                     paymentsLB.Items.Add("Check " + checkNumberTB.Text + ": " + amt.ToString("C"));
                     invoice.payments.Add(new Payment() { paymentAmount = amt, paymentType = Payment.PaymentTypes.Check });
                     invoice.totalPayments += amt;
+                    remainingBalanceTB.Text = (invoice.total - invoice.totalPayments).ToString("C");
                     break;
             }
 
@@ -273,7 +289,6 @@ namespace TIMS.Forms
         }
 
 
-
         private void button1_Click(object sender, EventArgs e)
         {
             if (invoice.totalPayments > 0)
@@ -281,6 +296,7 @@ namespace TIMS.Forms
                 MessageBox.Show("An invoice with payments cannot be edited!");
                 return;
             }
+            DialogResult = DialogResult.Cancel;
             Close();
         }
 
@@ -339,7 +355,7 @@ namespace TIMS.Forms
 
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
             {
-                if (paymentIndexTB.Text == String.Empty || int.Parse(paymentIndexTB.Text) > paymentTypeLB.Items.Count || int.Parse(paymentIndexTB.Text) == 0)
+                if (paymentIndexTB.Text == String.Empty || int.Parse(paymentIndexTB.Text) > paymentTypeLB.Items.Count || int.Parse(paymentIndexTB.Text) < 1)
                 {
                     paymentIndexTB.SelectAll();
                     return;
@@ -508,6 +524,7 @@ namespace TIMS.Forms
             saveInvoiceBtn.Enabled = false;
 
             invoice.finalized = true;
+            invoice.savedInvoice = false;
             invoice.invoiceFinalizedTime = DateTime.Now;
             invoice.invoiceNumber = Communication.RetrieveNextInvoiceNumber();
             invoice.totalPayments = invoice.total;
@@ -521,8 +538,17 @@ namespace TIMS.Forms
                 Communication.UpdateItem(newItem);
             }
 
+            foreach (Payment p in invoice.payments)
+            {
+                if (p.paymentType == Payment.PaymentTypes.Charge)
+                {
+                    invoice.customer.accountBalance += p.paymentAmount;
+                    Communication.UpdateCustomer(invoice.customer);
+                }
+            }
+
             invoice.profit = invoice.subtotal - invoice.cost;
-            Communication.SaveReleasedInvoice(invoice);
+            Communication.SaveInvoice(invoice);
 
             #region Accounting Transactions
 
@@ -535,63 +561,127 @@ namespace TIMS.Forms
                 {
                     if (p.paymentType == Payment.PaymentTypes.PaymentCard)
                     {
-
-                        salesTransactions.Add(new Transaction(2, 5, p.paymentAmount) //2 - Checking Account  5 - Cash Sales Account
+                        if (p.paymentAmount > 0)
                         {
-                            transactionID = Communication.RetrieveNextTransactionNumber(),
-                            referenceNumber = invoice.invoiceNumber,
-                            memo = "Subtotal transaction for card sale"
-                        });
-                        salesTaxTransactions.Add(new Transaction(2, 7, Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2)) //2 - Checking Account  7 - Sales Tax Payable Account
+                            salesTransactions.Add(new Transaction(2, 10, p.paymentAmount) //2 - Checking Account  5 - Cash Sales Account
+                            {
+                                transactionID = Communication.RetrieveNextTransactionNumber(),
+                                referenceNumber = invoice.invoiceNumber,
+                                memo = "Subtotal transaction for card sale"
+                            });
+                            salesTaxTransactions.Add(new Transaction(2, 7, Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2)) //2 - Checking Account  7 - Sales Tax Payable Account
+                            {
+                                transactionID = Communication.RetrieveNextTransactionNumber(),
+                                referenceNumber = invoice.invoiceNumber,
+                                memo = "Tax transaction for card sale"
+                            });
+                        }
+                        else
                         {
-                            transactionID = Communication.RetrieveNextTransactionNumber(),
-                            referenceNumber = invoice.invoiceNumber,
-                            memo = "Tax transaction for card sale"
-                        });
+                            salesTransactions.Add(new Transaction(10, 2, Math.Abs(p.paymentAmount)) //2 - Checking Account  5 - Cash Sales Account
+                            {
+                                transactionID = Communication.RetrieveNextTransactionNumber(),
+                                referenceNumber = invoice.invoiceNumber,
+                                memo = "Refund subtotal for card sale"
+                            });
+                            salesTaxTransactions.Add(new Transaction(7, 2, Math.Abs(Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2))) //2 - Checking Account  7 - Sales Tax Payable Account
+                            {
+                                transactionID = Communication.RetrieveNextTransactionNumber(),
+                                referenceNumber = invoice.invoiceNumber,
+                                memo = "Refund tax for card sale"
+                            });
+                        }
                     }
                     else if (p.paymentType == Payment.PaymentTypes.Charge)
                     {
-                        salesTransactions.Add(new Transaction(11, 6, p.paymentAmount) //11 - A/R Account  6 - Credit Sales Account
+                        if (p.paymentAmount > 0)
                         {
-                            transactionID = Communication.RetrieveNextTransactionNumber(),
-                            referenceNumber = invoice.invoiceNumber,
-                            memo = "Subtotal transaction for charge sale"
-                        });
-                        salesTaxTransactions.Add(new Transaction(11, 7, Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2)) //11 - A/R Account  7 - Sales Tax Payable Account
+                            salesTransactions.Add(new Transaction(11, 6, p.paymentAmount) //11 - A/R Account  6 - Credit Sales Account
+                            {
+                                transactionID = Communication.RetrieveNextTransactionNumber(),
+                                referenceNumber = invoice.invoiceNumber,
+                                memo = "Subtotal transaction for charge sale"
+                            });
+                            salesTaxTransactions.Add(new Transaction(11, 7, Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2)) //11 - A/R Account  7 - Sales Tax Payable Account
+                            {
+                                transactionID = Communication.RetrieveNextTransactionNumber(),
+                                referenceNumber = invoice.invoiceNumber,
+                                memo = "Tax transaction for charge sale"
+                            });
+                        }
+                        else
                         {
-                            transactionID = Communication.RetrieveNextTransactionNumber(),
-                            referenceNumber = invoice.invoiceNumber,
-                            memo = "Tax transaction for charge sale"
-                        });
+                            salesTransactions.Add(new Transaction(6, 11, Math.Abs(p.paymentAmount)) //11 - A/R Account  6 - Credit Sales Account
+                            {
+                                transactionID = Communication.RetrieveNextTransactionNumber(),
+                                referenceNumber = invoice.invoiceNumber,
+                                memo = "Credit subtotal for charge sale"
+                            });
+                            salesTaxTransactions.Add(new Transaction(7, 11, Math.Abs(Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2))) //11 - A/R Account  7 - Sales Tax Payable Account
+                            {
+                                transactionID = Communication.RetrieveNextTransactionNumber(),
+                                referenceNumber = invoice.invoiceNumber,
+                                memo = "Tax credit for charge sale"
+                            });
+                        }
                     }
                     else
                     {
-                        salesTransactions.Add(new Transaction(14, 5, p.paymentAmount) //14 - Cash Drawer Account  5 - Cash Sales Account
+                        if (p.paymentAmount > 0)
                         {
-                            transactionID = Communication.RetrieveNextTransactionNumber(),
-                            referenceNumber = invoice.invoiceNumber,
-                            memo = "Subtotal transaction for cash sale"
-                        });
-                        salesTaxTransactions.Add(new Transaction(14, 7, Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2) ) //14 - Cash Drawer Account  7 - Sales Tax Payable Account
+                            salesTransactions.Add(new Transaction(14, 5, p.paymentAmount) //14 - Cash Drawer Account  5 - Cash Sales Account
+                            {
+                                transactionID = Communication.RetrieveNextTransactionNumber(),
+                                referenceNumber = invoice.invoiceNumber,
+                                memo = "Subtotal transaction for cash sale"
+                            });
+                            salesTaxTransactions.Add(new Transaction(14, 7, Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2)) //14 - Cash Drawer Account  7 - Sales Tax Payable Account
+                            {
+                                transactionID = Communication.RetrieveNextTransactionNumber(),
+                                referenceNumber = invoice.invoiceNumber,
+                                memo = "Tax transaction for cash sale"
+                            });
+                        }
+                        else
                         {
-                            transactionID = Communication.RetrieveNextTransactionNumber(),
-                            referenceNumber = invoice.invoiceNumber,
-                            memo = "Tax transaction for cash sale"
-                        });
+                            salesTransactions.Add(new Transaction(5, 14, Math.Abs(p.paymentAmount)) //14 - Cash Drawer Account  5 - Cash Sales Account
+                            {
+                                transactionID = Communication.RetrieveNextTransactionNumber(),
+                                referenceNumber = invoice.invoiceNumber,
+                                memo = "Refund subtotal for cash sale"
+                            });
+                            salesTaxTransactions.Add(new Transaction(7, 14, Math.Abs(Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2))) //14 - Cash Drawer Account  7 - Sales Tax Payable Account
+                            {
+                                transactionID = Communication.RetrieveNextTransactionNumber(),
+                                referenceNumber = invoice.invoiceNumber,
+                                memo = "Refund tax for cash sale"
+                            });
+                        }
                     }
                 }
-            
-            if (invoice.cost != 0)
+
+            if (invoice.cost < 0)
+            {
                 inventoryTransaction = new Transaction(8, 1, invoice.cost)
                 {
                     transactionID = Communication.RetrieveNextTransactionNumber(),
                     referenceNumber = invoice.invoiceNumber,
                     memo = "Inventory transaction"
                 };
+            }
+            else
+            {
+                inventoryTransaction = new Transaction(1, 8, invoice.cost)
+                {
+                    transactionID = Communication.RetrieveNextTransactionNumber(),
+                    referenceNumber = invoice.invoiceNumber,
+                    memo = "Inventory transaction"
+                };
+            }
 
             if (((salesTaxTransactions.Count < 1 || salesTransactions.Count < 1) && invoice.total != 0) || 
                  (inventoryTransaction == null && invoice.cost != 0))
-                MessageBox.Show("There was an error completing transactions for this sale in accounting. Please make sure to enter those transactions in the ledger in order to keep records accurate.");
+                MessageBox.Show("There was an error completing transactions for this sale in accounting. Please make sure to record those transactions in the ledger in order to keep records accurate.");
             else
             {
                 if (invoice.total != 0)
@@ -610,14 +700,37 @@ namespace TIMS.Forms
 
             ReportViewer viewer = new ReportViewer(invoice);
             viewer.ShowDialog();
+            DialogResult = DialogResult.OK;
             Close();
         }
 
         private void closeBtn_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.OK;
             Close();
             //parentWindow.Focus();
             //parentWindow.CancelInvoice();
+        }
+
+        private void saveInvoiceBtn_Click(object sender, EventArgs e)
+        {
+            if (invoice.payments.Count > 0)
+            {
+                MessageBox.Show("An invoice with payments cannot be edited.\nPlease remove the payments to return to the invoicing screen.");
+                return;
+            }
+
+            if (MessageBox.Show("Do you want to save this invoice for later?", "Save Invoice", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                invoice.savedInvoice = true;
+                invoice.savedInvoiceTime = DateTime.Now;
+                invoice.attentionLine = attentionTB.Text;
+                invoice.PONumber = poTB.Text;
+                invoice.invoiceNumber = Communication.RetrieveNextInvoiceNumber();
+                Communication.SaveInvoice(invoice);
+                DialogResult = DialogResult.OK;
+                Close();
+            }
         }
     }
 }

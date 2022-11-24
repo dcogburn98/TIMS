@@ -5,6 +5,7 @@
     <TargetFramework>net48</TargetFramework>
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
     <Platforms>AnyCPU;x86;x64</Platforms>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

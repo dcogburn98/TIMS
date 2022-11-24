@@ -105,6 +105,7 @@
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.116.0\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -200,6 +201,12 @@
     <Compile Include="Forms\Customers\PricingProfiles.Designer.cs">
       <DependentUpon>PricingProfiles.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DeveloperTools\IngenicoTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DeveloperTools\IngenicoTest.Designer.cs">
+      <DependentUpon>IngenicoTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ItemImporting\DefaultFieldValuesEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -287,6 +294,12 @@
     <Compile Include="Forms\CustomerSearch.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\POS\ChargeOverride.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\POS\ChargeOverride.Designer.cs">
+      <DependentUpon>ChargeOverride.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\POS\InvoiceViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -307,6 +320,12 @@
     </Compile>
     <Compile Include="Forms\POS\ReviewInvoices.Designer.cs">
       <DependentUpon>ReviewInvoices.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\POS\SavedInvoicesPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\POS\SavedInvoicesPicker.Designer.cs">
+      <DependentUpon>SavedInvoicesPicker.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\POS\SerialNumberPicker.cs">
       <SubType>Form</SubType>
@@ -377,6 +396,12 @@
     <Compile Include="Forms\Settings\FindDevice.Designer.cs">
       <DependentUpon>FindDevice.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Settings\ReceiptCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Settings\ReceiptCreator.Designer.cs">
+      <DependentUpon>ReceiptCreator.cs</DependentUpon>
+    </Compile>
     <Compile Include="POs\CheckIn.cs" />
     <Compile Include="POs\PurchaseOrder.cs" />
     <Compile Include="Server\Client.cs" />
@@ -431,6 +456,9 @@
     <EmbeddedResource Include="Forms\Customers\PricingProfiles.resx">
       <DependentUpon>PricingProfiles.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DeveloperTools\IngenicoTest.resx">
+      <DependentUpon>IngenicoTest.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ItemImporting\DefaultFieldValuesEditor.resx">
       <DependentUpon>DefaultFieldValuesEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -467,6 +495,9 @@
     <EmbeddedResource Include="Forms\POS\CardPayment.resx">
       <DependentUpon>CardPayment.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\POS\ChargeOverride.resx">
+      <DependentUpon>ChargeOverride.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\POS\Checkout.resx">
       <DependentUpon>Checkout.cs</DependentUpon>
     </EmbeddedResource>
@@ -496,6 +527,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\POS\ReviewInvoices.resx">
       <DependentUpon>ReviewInvoices.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\POS\SavedInvoicesPicker.resx">
+      <DependentUpon>SavedInvoicesPicker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\POS\SerialNumberPicker.resx">
       <DependentUpon>SerialNumberPicker.cs</DependentUpon>
@@ -529,6 +563,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Settings\FindDevice.resx">
       <DependentUpon>FindDevice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Settings\ReceiptCreator.resx">
+      <DependentUpon>ReceiptCreator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

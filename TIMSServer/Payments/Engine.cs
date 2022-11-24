@@ -13,28 +13,78 @@ namespace TIMSServer.Payments
 {
     public class Engine
     {
-        public static IngenicoResponse InitiatePayment(IngenicoRequest request)
+        private static IngenicoResponse SendRequest(IngenicoRequest request, Device device)
         {
-            XDocument Sendingxml = new XDocument(
-                new XElement("DETAIL", 
-                    new XElement("TRAN_TYPE", "CCR1"),
-                    new XElement("AMOUNT", "10.00"),
-                    new XElement("TRAN_FEE", "2.50")
-                    ));
-
-            IngenicoResponse resp = new IngenicoResponse(XDocument.Parse(HTTP.postXMLData("http://192.168.254.84:6200", Sendingxml)));
+            IngenicoResponse resp = new IngenicoResponse(
+                XDocument.Parse(HTTP.postXMLData("http://" + device.address.Address.ToString() + ":" + device.address.Port, XDocument.Parse(request.RawXMLRequest))));
             return resp;
         }
 
-        public static string InitiateSignatureCapture()
+        public static Payment InitiatePayment(Device device, decimal amount, decimal cashBackAmount, decimal convenienceFee, int batchID, int customerNumber, bool signatureRequired)
         {
-            XDocument Sendingxml = new XDocument(
-                new XElement("DETAIL",
-                    new XElement("TRAN_TYPE", "SS01")
-                    ));
+            bool amountProvided = false;
+            bool cashBackAmountProvided = false;
+            bool convenienceFeeProvided = false;
+            bool batchIDProvided = false;
+            bool customerNumberProvided = false;
 
-            XDocument doc = XDocument.Parse(HTTP.postXMLData("http://192.168.254.84:6200", Sendingxml));
-            return doc.ToString();
+            if (amount != 0)
+                amountProvided = true;
+            if (cashBackAmount != 0)
+                cashBackAmountProvided = true;
+            if (convenienceFee != 0)
+                convenienceFeeProvided = true;
+            if (batchID != 0)
+                batchIDProvided = true;
+            if (customerNumber != 0)
+                customerNumberProvided = true;
+
+            IngenicoResponse resp = SendRequest(
+                new IngenicoRequest(
+                    IngenicoRequest.TRAN_TYPE_TYPES.CCR1,
+                    amountProvided ? (amount as decimal?) : null,
+                    customerNumberProvided ? (customerNumber as int?) : null,
+                    batchIDProvided ? (batchID as int?) : null,
+                    cashBackAmountProvided ? (cashBackAmount as decimal?) : null,
+                    convenienceFeeProvided ? (convenienceFee as decimal?) : null,
+                    signatureRequired
+                    ),
+                device);
+
+            Payment payment = new Payment()
+            {
+                cardResponse = resp,
+                paymentAmount = resp.CapturedAmount,
+                paymentType = Payment.PaymentTypes.PaymentCard
+            };
+            return payment;
+        }
+
+        public static Payment InitiateRefund(Device device, decimal amount)
+        {
+            IngenicoResponse resp = SendRequest(
+                new IngenicoRequest(
+                    IngenicoRequest.TRAN_TYPE_TYPES.CCRA,
+                    amount),
+                device);
+
+            Payment payment = new Payment()
+            {
+                cardResponse = resp,
+                paymentAmount = 0 - resp.CapturedAmount,
+                paymentType = Payment.PaymentTypes.PaymentCard
+            };
+            return payment;
+        }
+
+        public static string InitiateSignatureCapture(Device device)
+        {
+            IngenicoResponse resp = SendRequest(
+                new IngenicoRequest(
+                    IngenicoRequest.TRAN_TYPE_TYPES.SS01),
+                device);
+
+            return resp.Signature;
         }
 
         public static string VoidPayment(decimal payment)
@@ -58,6 +108,11 @@ namespace TIMSServer.Payments
 
             XDocument doc = XDocument.Parse(HTTP.postXMLData("http://192.168.254.84:6200", Sendingxml));
             return doc.ToString();
+        }
+
+        internal static string SendRawRequest(Device device, IngenicoRequest request)
+        {
+            return SendRequest(request, device).RawXMLResponse;
         }
     }
 }

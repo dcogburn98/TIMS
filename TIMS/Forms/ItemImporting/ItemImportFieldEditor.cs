@@ -30,5 +30,10 @@ namespace TIMS.Forms
             selectedHeader = itemHeaderCB.Text;
             Close();
         }
+
+        private void skipButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

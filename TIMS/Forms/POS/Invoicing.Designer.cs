@@ -160,14 +160,14 @@
             // alternateFunctionsToolStripMenuItem
             // 
             this.alternateFunctionsToolStripMenuItem.Name = "alternateFunctionsToolStripMenuItem";
-            this.alternateFunctionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.alternateFunctionsToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.alternateFunctionsToolStripMenuItem.Text = "Alternate Functions";
             this.alternateFunctionsToolStripMenuItem.Click += new System.EventHandler(this.alternateFunctionsToolStripMenuItem_Click);
             // 
             // calculatorToolStripMenuItem
             // 
             this.calculatorToolStripMenuItem.Name = "calculatorToolStripMenuItem";
-            this.calculatorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.calculatorToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.calculatorToolStripMenuItem.Text = "Calculator";
             // 
             // catalogToolStripMenuItem
@@ -306,33 +306,33 @@
             // 
             // savedInvoiceButton
             // 
-            this.savedInvoiceButton.Enabled = false;
             this.savedInvoiceButton.Location = new System.Drawing.Point(7, 67);
             this.savedInvoiceButton.Name = "savedInvoiceButton";
             this.savedInvoiceButton.Size = new System.Drawing.Size(154, 23);
             this.savedInvoiceButton.TabIndex = 2;
             this.savedInvoiceButton.Text = "Recall Saved Invoices [F7]\r\n";
             this.savedInvoiceButton.UseVisualStyleBackColor = true;
+            this.savedInvoiceButton.Click += new System.EventHandler(this.savedInvoiceButton_Click);
             // 
             // roaButton
             // 
-            this.roaButton.Enabled = false;
             this.roaButton.Location = new System.Drawing.Point(7, 41);
             this.roaButton.Name = "roaButton";
             this.roaButton.Size = new System.Drawing.Size(154, 23);
             this.roaButton.TabIndex = 1;
             this.roaButton.Text = "ROA [F6]";
             this.roaButton.UseVisualStyleBackColor = true;
+            this.roaButton.Click += new System.EventHandler(this.roaButton_Click);
             // 
             // messagesButton
             // 
-            this.messagesButton.Enabled = false;
             this.messagesButton.Location = new System.Drawing.Point(7, 15);
             this.messagesButton.Name = "messagesButton";
             this.messagesButton.Size = new System.Drawing.Size(154, 23);
             this.messagesButton.TabIndex = 0;
             this.messagesButton.Text = "Messages [F4]";
             this.messagesButton.UseVisualStyleBackColor = true;
+            this.messagesButton.Click += new System.EventHandler(this.messagesButton_Click);
             // 
             // groupBox3
             // 

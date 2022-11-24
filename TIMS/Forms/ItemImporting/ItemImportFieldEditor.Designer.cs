@@ -33,11 +33,12 @@
             this.csvHeaderTB = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.skipButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // acceptButton
             // 
-            this.acceptButton.Location = new System.Drawing.Point(97, 78);
+            this.acceptButton.Location = new System.Drawing.Point(190, 78);
             this.acceptButton.Name = "acceptButton";
             this.acceptButton.Size = new System.Drawing.Size(75, 23);
             this.acceptButton.TabIndex = 0;
@@ -80,12 +81,23 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "Item Data";
             // 
+            // skipButton
+            // 
+            this.skipButton.Location = new System.Drawing.Point(12, 78);
+            this.skipButton.Name = "skipButton";
+            this.skipButton.Size = new System.Drawing.Size(75, 23);
+            this.skipButton.TabIndex = 6;
+            this.skipButton.Text = "Skip";
+            this.skipButton.UseVisualStyleBackColor = true;
+            this.skipButton.Click += new System.EventHandler(this.skipButton_Click);
+            // 
             // ItemImportFieldEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(277, 113);
             this.ControlBox = false;
+            this.Controls.Add(this.skipButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.csvHeaderTB);
@@ -109,5 +121,6 @@
         private System.Windows.Forms.TextBox csvHeaderTB;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button skipButton;
     }
 }

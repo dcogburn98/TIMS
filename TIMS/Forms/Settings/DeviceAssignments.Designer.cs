@@ -34,29 +34,25 @@
             this.terminalsLB = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.deleteLineDisplay = new System.Windows.Forms.Button();
             this.addLineDisplay = new System.Windows.Forms.Button();
             this.chooseLineDisplay = new System.Windows.Forms.Button();
             this.lineDisplaysLB = new System.Windows.Forms.ListBox();
-            this.lineDisplayUSB = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.deleteCardReader = new System.Windows.Forms.Button();
             this.addCardReader = new System.Windows.Forms.Button();
             this.chooseCardReader = new System.Windows.Forms.Button();
             this.cardReadersLB = new System.Windows.Forms.ListBox();
-            this.cardReaderUSB = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.deleteInvoicePrinter = new System.Windows.Forms.Button();
             this.addInvoicePrinter = new System.Windows.Forms.Button();
             this.chooseInvoicePrinter = new System.Windows.Forms.Button();
             this.invoicePrintersLB = new System.Windows.Forms.ListBox();
-            this.invoicePrinterUSB = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.deleteReceiptPrinter = new System.Windows.Forms.Button();
             this.addReceiptPrinter = new System.Windows.Forms.Button();
             this.chooseReceiptPrinter = new System.Windows.Forms.Button();
             this.receiptPrintersLB = new System.Windows.Forms.ListBox();
-            this.receiptPrinterUSB = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -102,6 +98,7 @@
             this.terminalsLB.Name = "terminalsLB";
             this.terminalsLB.Size = new System.Drawing.Size(391, 563);
             this.terminalsLB.TabIndex = 0;
+            this.terminalsLB.SelectedIndexChanged += new System.EventHandler(this.terminalsLB_SelectedIndexChanged);
             // 
             // groupBox2
             // 
@@ -118,17 +115,25 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.button4);
+            this.groupBox6.Controls.Add(this.deleteLineDisplay);
             this.groupBox6.Controls.Add(this.addLineDisplay);
             this.groupBox6.Controls.Add(this.chooseLineDisplay);
             this.groupBox6.Controls.Add(this.lineDisplaysLB);
-            this.groupBox6.Controls.Add(this.lineDisplayUSB);
             this.groupBox6.Location = new System.Drawing.Point(320, 318);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(307, 294);
             this.groupBox6.TabIndex = 3;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Line Displays";
+            // 
+            // deleteLineDisplay
+            // 
+            this.deleteLineDisplay.Location = new System.Drawing.Point(6, 260);
+            this.deleteLineDisplay.Name = "deleteLineDisplay";
+            this.deleteLineDisplay.Size = new System.Drawing.Size(92, 23);
+            this.deleteLineDisplay.TabIndex = 5;
+            this.deleteLineDisplay.Text = "Delete Device";
+            this.deleteLineDisplay.UseVisualStyleBackColor = true;
             // 
             // addLineDisplay
             // 
@@ -138,6 +143,7 @@
             this.addLineDisplay.TabIndex = 4;
             this.addLineDisplay.Text = "Add Device";
             this.addLineDisplay.UseVisualStyleBackColor = true;
+            this.addLineDisplay.Click += new System.EventHandler(this.addLineDisplay_Click);
             // 
             // chooseLineDisplay
             // 
@@ -150,35 +156,35 @@
             // 
             // lineDisplaysLB
             // 
+            this.lineDisplaysLB.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.lineDisplaysLB.FormattingEnabled = true;
-            this.lineDisplaysLB.Location = new System.Drawing.Point(6, 42);
+            this.lineDisplaysLB.Location = new System.Drawing.Point(6, 16);
             this.lineDisplaysLB.Name = "lineDisplaysLB";
-            this.lineDisplaysLB.Size = new System.Drawing.Size(296, 212);
+            this.lineDisplaysLB.Size = new System.Drawing.Size(296, 238);
             this.lineDisplaysLB.TabIndex = 2;
-            // 
-            // lineDisplayUSB
-            // 
-            this.lineDisplayUSB.AutoSize = true;
-            this.lineDisplayUSB.Location = new System.Drawing.Point(6, 19);
-            this.lineDisplayUSB.Name = "lineDisplayUSB";
-            this.lineDisplayUSB.Size = new System.Drawing.Size(94, 17);
-            this.lineDisplayUSB.TabIndex = 1;
-            this.lineDisplayUSB.Text = "USB Attached";
-            this.lineDisplayUSB.UseVisualStyleBackColor = true;
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.button3);
+            this.groupBox5.Controls.Add(this.deleteCardReader);
             this.groupBox5.Controls.Add(this.addCardReader);
             this.groupBox5.Controls.Add(this.chooseCardReader);
             this.groupBox5.Controls.Add(this.cardReadersLB);
-            this.groupBox5.Controls.Add(this.cardReaderUSB);
             this.groupBox5.Location = new System.Drawing.Point(6, 318);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(308, 294);
             this.groupBox5.TabIndex = 2;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Card Readers";
+            // 
+            // deleteCardReader
+            // 
+            this.deleteCardReader.Location = new System.Drawing.Point(6, 260);
+            this.deleteCardReader.Name = "deleteCardReader";
+            this.deleteCardReader.Size = new System.Drawing.Size(92, 23);
+            this.deleteCardReader.TabIndex = 5;
+            this.deleteCardReader.Text = "Delete Device";
+            this.deleteCardReader.UseVisualStyleBackColor = true;
+            this.deleteCardReader.Click += new System.EventHandler(this.deleteCardReader_Click);
             // 
             // addCardReader
             // 
@@ -188,6 +194,7 @@
             this.addCardReader.TabIndex = 4;
             this.addCardReader.Text = "Add Device";
             this.addCardReader.UseVisualStyleBackColor = true;
+            this.addCardReader.Click += new System.EventHandler(this.addCardReader_Click);
             // 
             // chooseCardReader
             // 
@@ -197,38 +204,40 @@
             this.chooseCardReader.TabIndex = 3;
             this.chooseCardReader.Text = "Choose Device";
             this.chooseCardReader.UseVisualStyleBackColor = true;
+            this.chooseCardReader.Click += new System.EventHandler(this.chooseCardReader_Click);
             // 
             // cardReadersLB
             // 
+            this.cardReadersLB.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cardReadersLB.FormattingEnabled = true;
-            this.cardReadersLB.Location = new System.Drawing.Point(6, 42);
+            this.cardReadersLB.Location = new System.Drawing.Point(6, 16);
             this.cardReadersLB.Name = "cardReadersLB";
-            this.cardReadersLB.Size = new System.Drawing.Size(296, 212);
+            this.cardReadersLB.Size = new System.Drawing.Size(296, 238);
             this.cardReadersLB.TabIndex = 2;
-            // 
-            // cardReaderUSB
-            // 
-            this.cardReaderUSB.AutoSize = true;
-            this.cardReaderUSB.Location = new System.Drawing.Point(6, 19);
-            this.cardReaderUSB.Name = "cardReaderUSB";
-            this.cardReaderUSB.Size = new System.Drawing.Size(94, 17);
-            this.cardReaderUSB.TabIndex = 1;
-            this.cardReaderUSB.Text = "USB Attached";
-            this.cardReaderUSB.UseVisualStyleBackColor = true;
+            this.cardReadersLB.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cardReadersLB_DrawItem);
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.button2);
+            this.groupBox4.Controls.Add(this.deleteInvoicePrinter);
             this.groupBox4.Controls.Add(this.addInvoicePrinter);
             this.groupBox4.Controls.Add(this.chooseInvoicePrinter);
             this.groupBox4.Controls.Add(this.invoicePrintersLB);
-            this.groupBox4.Controls.Add(this.invoicePrinterUSB);
             this.groupBox4.Location = new System.Drawing.Point(320, 19);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(308, 293);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Invoice Printers";
+            // 
+            // deleteInvoicePrinter
+            // 
+            this.deleteInvoicePrinter.Location = new System.Drawing.Point(6, 260);
+            this.deleteInvoicePrinter.Name = "deleteInvoicePrinter";
+            this.deleteInvoicePrinter.Size = new System.Drawing.Size(92, 23);
+            this.deleteInvoicePrinter.TabIndex = 5;
+            this.deleteInvoicePrinter.Text = "Delete Device";
+            this.deleteInvoicePrinter.UseVisualStyleBackColor = true;
+            this.deleteInvoicePrinter.Click += new System.EventHandler(this.deleteInvoicePrinter_Click);
             // 
             // addInvoicePrinter
             // 
@@ -238,6 +247,7 @@
             this.addInvoicePrinter.TabIndex = 4;
             this.addInvoicePrinter.Text = "Add Device";
             this.addInvoicePrinter.UseVisualStyleBackColor = true;
+            this.addInvoicePrinter.Click += new System.EventHandler(this.addInvoicePrinter_Click);
             // 
             // chooseInvoicePrinter
             // 
@@ -247,38 +257,40 @@
             this.chooseInvoicePrinter.TabIndex = 3;
             this.chooseInvoicePrinter.Text = "Choose Device";
             this.chooseInvoicePrinter.UseVisualStyleBackColor = true;
+            this.chooseInvoicePrinter.Click += new System.EventHandler(this.chooseInvoicePrinter_Click);
             // 
             // invoicePrintersLB
             // 
+            this.invoicePrintersLB.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.invoicePrintersLB.FormattingEnabled = true;
-            this.invoicePrintersLB.Location = new System.Drawing.Point(6, 42);
+            this.invoicePrintersLB.Location = new System.Drawing.Point(6, 16);
             this.invoicePrintersLB.Name = "invoicePrintersLB";
-            this.invoicePrintersLB.Size = new System.Drawing.Size(296, 212);
+            this.invoicePrintersLB.Size = new System.Drawing.Size(296, 238);
             this.invoicePrintersLB.TabIndex = 2;
-            // 
-            // invoicePrinterUSB
-            // 
-            this.invoicePrinterUSB.AutoSize = true;
-            this.invoicePrinterUSB.Location = new System.Drawing.Point(6, 19);
-            this.invoicePrinterUSB.Name = "invoicePrinterUSB";
-            this.invoicePrinterUSB.Size = new System.Drawing.Size(94, 17);
-            this.invoicePrinterUSB.TabIndex = 1;
-            this.invoicePrinterUSB.Text = "USB Attached";
-            this.invoicePrinterUSB.UseVisualStyleBackColor = true;
+            this.invoicePrintersLB.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.invoicePrintersLB_DrawItem);
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.button1);
+            this.groupBox3.Controls.Add(this.deleteReceiptPrinter);
             this.groupBox3.Controls.Add(this.addReceiptPrinter);
             this.groupBox3.Controls.Add(this.chooseReceiptPrinter);
             this.groupBox3.Controls.Add(this.receiptPrintersLB);
-            this.groupBox3.Controls.Add(this.receiptPrinterUSB);
             this.groupBox3.Location = new System.Drawing.Point(6, 19);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(308, 293);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Receipt Printers";
+            // 
+            // deleteReceiptPrinter
+            // 
+            this.deleteReceiptPrinter.Location = new System.Drawing.Point(8, 260);
+            this.deleteReceiptPrinter.Name = "deleteReceiptPrinter";
+            this.deleteReceiptPrinter.Size = new System.Drawing.Size(92, 23);
+            this.deleteReceiptPrinter.TabIndex = 4;
+            this.deleteReceiptPrinter.Text = "Delete Device";
+            this.deleteReceiptPrinter.UseVisualStyleBackColor = true;
+            this.deleteReceiptPrinter.Click += new System.EventHandler(this.deleteReceiptPrinter_Click);
             // 
             // addReceiptPrinter
             // 
@@ -304,58 +316,11 @@
             // 
             this.receiptPrintersLB.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.receiptPrintersLB.FormattingEnabled = true;
-            this.receiptPrintersLB.Location = new System.Drawing.Point(6, 42);
+            this.receiptPrintersLB.Location = new System.Drawing.Point(6, 16);
             this.receiptPrintersLB.Name = "receiptPrintersLB";
-            this.receiptPrintersLB.Size = new System.Drawing.Size(296, 212);
+            this.receiptPrintersLB.Size = new System.Drawing.Size(296, 238);
             this.receiptPrintersLB.TabIndex = 1;
             this.receiptPrintersLB.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.receiptPrintersLB_DrawItem);
-            // 
-            // receiptPrinterUSB
-            // 
-            this.receiptPrinterUSB.AutoSize = true;
-            this.receiptPrinterUSB.Location = new System.Drawing.Point(6, 19);
-            this.receiptPrinterUSB.Name = "receiptPrinterUSB";
-            this.receiptPrinterUSB.Size = new System.Drawing.Size(94, 17);
-            this.receiptPrinterUSB.TabIndex = 0;
-            this.receiptPrinterUSB.Text = "USB Attached";
-            this.receiptPrinterUSB.UseVisualStyleBackColor = true;
-            this.receiptPrinterUSB.CheckedChanged += new System.EventHandler(this.receiptPrinterUSB_CheckedChanged);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(8, 260);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(92, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Delete Device";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(6, 260);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(92, 23);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Delete Device";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(6, 260);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(92, 23);
-            this.button3.TabIndex = 5;
-            this.button3.Text = "Delete Device";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(6, 260);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(92, 23);
-            this.button4.TabIndex = 5;
-            this.button4.Text = "Delete Device";
-            this.button4.UseVisualStyleBackColor = true;
             // 
             // DeviceAssignments
             // 
@@ -369,13 +334,9 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -393,23 +354,19 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button chooseLineDisplay;
         private System.Windows.Forms.ListBox lineDisplaysLB;
-        private System.Windows.Forms.CheckBox lineDisplayUSB;
         private System.Windows.Forms.Button chooseCardReader;
         private System.Windows.Forms.ListBox cardReadersLB;
-        private System.Windows.Forms.CheckBox cardReaderUSB;
         private System.Windows.Forms.Button chooseInvoicePrinter;
         private System.Windows.Forms.ListBox invoicePrintersLB;
-        private System.Windows.Forms.CheckBox invoicePrinterUSB;
         private System.Windows.Forms.Button chooseReceiptPrinter;
         private System.Windows.Forms.ListBox receiptPrintersLB;
-        private System.Windows.Forms.CheckBox receiptPrinterUSB;
         private System.Windows.Forms.Button addLineDisplay;
         private System.Windows.Forms.Button addCardReader;
         private System.Windows.Forms.Button addInvoicePrinter;
         private System.Windows.Forms.Button addReceiptPrinter;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button deleteLineDisplay;
+        private System.Windows.Forms.Button deleteCardReader;
+        private System.Windows.Forms.Button deleteInvoicePrinter;
+        private System.Windows.Forms.Button deleteReceiptPrinter;
     }
 }

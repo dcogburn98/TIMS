@@ -55,30 +55,51 @@ namespace TIMS.Forms
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");
                 int row = 0;
+                List<int> skipped = new List<int>();
                 while (!parser.EndOfData)
                 {
                     string[] fields = parser.ReadFields();
                     if (row == 0)
+                    {
+                        int fieldIndex = 0;
                         foreach (string header in fields)
                         {
                             if (!remainingHeaders.Contains(header))
                             {
                                 ItemImportFieldEditor editor = new ItemImportFieldEditor(header, remainingHeaders);
                                 editor.ShowDialog();
-                                remainingHeaders.Remove(editor.selectedHeader);
-                                dataGridView1.Columns.Add(editor.selectedHeader, editor.selectedHeader);
+                                if (editor.selectedHeader != String.Empty)
+                                {
+                                    remainingHeaders.Remove(editor.selectedHeader);
+                                    dataGridView1.Columns.Add(editor.selectedHeader, editor.selectedHeader);
+                                    fieldIndex++;
+                                }
+                                else
+                                {
+                                    skipped.Add(fieldIndex);
+                                    fieldIndex++;
+                                }
                             }
                             else
                             {
+                                //Automatically add the column to the fields intead of prompting the user for input on which table column it should apply to
                                 remainingHeaders.Remove(header);
                                 dataGridView1.Columns.Add(header, header);
+                                fieldIndex++;
                             }
                         }
+                    }
                     else
                     {
                         int gridRow = dataGridView1.Rows.Add();
+                        int skipCount = 0;
                         for (int i = 0; i != fields.Length; i++)
-                            dataGridView1.Rows[gridRow].Cells[i].Value = fields[i];
+                        {
+                            if (!skipped.Contains(i))
+                                dataGridView1.Rows[gridRow].Cells[i - skipCount].Value = fields[i];
+                            else
+                                skipCount++;
+                        }
                     }
                     row++;
                 }

@@ -37,7 +37,7 @@ namespace TIMS.Forms
                     accounts.Find(el => el.ID == t.creditAccount).Name;
                 int row = AddRow();
                 dataGridView1.Rows[row].Cells[0].Value = t.date.ToString("MM/dd/yyyy");
-                dataGridView1.Rows[row].Cells[1].Value = t.ID;
+                dataGridView1.Rows[row].Cells[1].Value = t.referenceNumber;
                 dataGridView1.Rows[row].Cells[2].Value = t.memo;
                 dataGridView1.Rows[row].Cells[3].Value = transactionAccount;
                 dataGridView1.Rows[row].Cells[4].Value =
