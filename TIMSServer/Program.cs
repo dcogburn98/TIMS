@@ -1146,7 +1146,7 @@ namespace TIMSServer
 	            ""LocationCode""  INTEGER,
 	            ""Serialized""    INTEGER,
 	            ""Category""  TEXT,
-	            ""SKU""   TEXT,
+	            ""UPC""   TEXT,
 	            ""LastLabelDate"" TEXT,
 	            ""LastLabelPrice""    REAL,
                 ""DateLastSale""    TEXT,
@@ -1156,7 +1156,7 @@ namespace TIMSServer
                 command.ExecuteNonQuery();
 
                 command.CommandText =
-                    @"INSERT INTO Items (""ProductLine"", ""ItemNumber"", ""ItemName"", ""LongDescription"", ""Supplier"", ""GroupCode"", ""VelocityCode"", ""PreviousYearVelocityCode"", ""ItemsPerContainer"", ""StandardPackage"", ""DateStocked"", ""DateLastReceipt"", ""Minimum"", ""Maximum"", ""OnHandQuantity"", ""WIPQuantity"", ""OnOrderQuantity"", ""BackorderQuantity"", ""DaysOnOrder"", ""DaysOnBackOrder"", ""ListPrice"", ""RedPrice"", ""YellowPrice"", ""GreenPrice"", ""PinkPrice"", ""BluePrice"", ""ReplacementCost"", ""AverageCost"", ""Taxed"", ""AgeRestricted"", ""MinimumAge"", ""LocationCode"", ""Serialized"", ""Category"", ""SKU"", ""LastLabelDate"", ""LastLabelPrice"", ""DateLastSale"", ""ManufacturerNumber"", ""LastSalePrice"") 
+                    @"INSERT INTO Items (""ProductLine"", ""ItemNumber"", ""ItemName"", ""LongDescription"", ""Supplier"", ""GroupCode"", ""VelocityCode"", ""PreviousYearVelocityCode"", ""ItemsPerContainer"", ""StandardPackage"", ""DateStocked"", ""DateLastReceipt"", ""Minimum"", ""Maximum"", ""OnHandQuantity"", ""WIPQuantity"", ""OnOrderQuantity"", ""BackorderQuantity"", ""DaysOnOrder"", ""DaysOnBackOrder"", ""ListPrice"", ""RedPrice"", ""YellowPrice"", ""GreenPrice"", ""PinkPrice"", ""BluePrice"", ""ReplacementCost"", ""AverageCost"", ""Taxed"", ""AgeRestricted"", ""MinimumAge"", ""LocationCode"", ""Serialized"", ""Category"", ""UPC"", ""LastLabelDate"", ""LastLabelPrice"", ""DateLastSale"", ""ManufacturerNumber"", ""LastSalePrice"") 
                     VALUES ('XXX', 'XXX', 'xxx', 'xxx', 'Default', '0', '0', '0', '0', '0', '6/11/2022 7:43:28 PM', '6/11/2022 7:43:28 PM', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0', '0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '1', '0', '0', '0', '0', 'Etc', 'xxx', '', '', '', '', '');";
                 command.ExecuteNonQuery();
             }

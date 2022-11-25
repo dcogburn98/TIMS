@@ -523,18 +523,14 @@ namespace TIMS.Forms
             finalized = true;
             saveInvoiceBtn.Enabled = false;
 
-            invoice.finalized = true;
-            invoice.savedInvoice = false;
-            invoice.invoiceFinalizedTime = DateTime.Now;
-            invoice.invoiceNumber = Communication.RetrieveNextInvoiceNumber();
-            invoice.totalPayments = invoice.total;
-
             foreach (InvoiceItem invItem in invoice.items)
             {
                 Item newItem = Communication.RetrieveItem(invItem.itemNumber, invItem.productLine);
                 newItem.onHandQty -= invItem.quantity;
                 invItem.cost = newItem.replacementCost;
                 invoice.cost += invItem.cost;
+                if (invoice.savedInvoice)
+                    newItem.WIPQty -= invItem.quantity;
                 Communication.UpdateItem(newItem);
             }
 
@@ -547,6 +543,11 @@ namespace TIMS.Forms
                 }
             }
 
+            invoice.finalized = true;
+            invoice.savedInvoice = false;
+            invoice.invoiceFinalizedTime = DateTime.Now;
+            invoice.invoiceNumber = Communication.RetrieveNextInvoiceNumber();
+            invoice.totalPayments = invoice.total;
             invoice.profit = invoice.subtotal - invoice.cost;
             Communication.SaveInvoice(invoice);
 
@@ -563,7 +564,7 @@ namespace TIMS.Forms
                     {
                         if (p.paymentAmount > 0)
                         {
-                            salesTransactions.Add(new Transaction(2, 10, p.paymentAmount) //2 - Checking Account  5 - Cash Sales Account
+                            salesTransactions.Add(new Transaction(2, 10, p.paymentAmount - Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2)) //2 - Checking Account  5 - Cash Sales Account
                             {
                                 transactionID = Communication.RetrieveNextTransactionNumber(),
                                 referenceNumber = invoice.invoiceNumber,
@@ -578,7 +579,7 @@ namespace TIMS.Forms
                         }
                         else
                         {
-                            salesTransactions.Add(new Transaction(10, 2, Math.Abs(p.paymentAmount)) //2 - Checking Account  5 - Cash Sales Account
+                            salesTransactions.Add(new Transaction(10, 2, Math.Abs(p.paymentAmount) - Math.Abs(Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2))) //2 - Checking Account  5 - Cash Sales Account
                             {
                                 transactionID = Communication.RetrieveNextTransactionNumber(),
                                 referenceNumber = invoice.invoiceNumber,
@@ -596,7 +597,7 @@ namespace TIMS.Forms
                     {
                         if (p.paymentAmount > 0)
                         {
-                            salesTransactions.Add(new Transaction(11, 6, p.paymentAmount) //11 - A/R Account  6 - Credit Sales Account
+                            salesTransactions.Add(new Transaction(11, 6, p.paymentAmount - Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2)) //11 - A/R Account  6 - Credit Sales Account
                             {
                                 transactionID = Communication.RetrieveNextTransactionNumber(),
                                 referenceNumber = invoice.invoiceNumber,
@@ -611,7 +612,7 @@ namespace TIMS.Forms
                         }
                         else
                         {
-                            salesTransactions.Add(new Transaction(6, 11, Math.Abs(p.paymentAmount)) //11 - A/R Account  6 - Credit Sales Account
+                            salesTransactions.Add(new Transaction(6, 11, Math.Abs(p.paymentAmount) - Math.Abs(Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2))) //11 - A/R Account  6 - Credit Sales Account
                             {
                                 transactionID = Communication.RetrieveNextTransactionNumber(),
                                 referenceNumber = invoice.invoiceNumber,
@@ -629,7 +630,7 @@ namespace TIMS.Forms
                     {
                         if (p.paymentAmount > 0)
                         {
-                            salesTransactions.Add(new Transaction(14, 5, p.paymentAmount) //14 - Cash Drawer Account  5 - Cash Sales Account
+                            salesTransactions.Add(new Transaction(14, 5, p.paymentAmount - Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2)) //14 - Cash Drawer Account  5 - Cash Sales Account
                             {
                                 transactionID = Communication.RetrieveNextTransactionNumber(),
                                 referenceNumber = invoice.invoiceNumber,
@@ -644,7 +645,7 @@ namespace TIMS.Forms
                         }
                         else
                         {
-                            salesTransactions.Add(new Transaction(5, 14, Math.Abs(p.paymentAmount)) //14 - Cash Drawer Account  5 - Cash Sales Account
+                            salesTransactions.Add(new Transaction(5, 14, Math.Abs(p.paymentAmount) - Math.Abs(Math.Round((p.paymentAmount / invoice.total) * invoice.taxAmount, 2))) //14 - Cash Drawer Account  5 - Cash Sales Account
                             {
                                 transactionID = Communication.RetrieveNextTransactionNumber(),
                                 referenceNumber = invoice.invoiceNumber,
@@ -675,7 +676,7 @@ namespace TIMS.Forms
                 {
                     transactionID = Communication.RetrieveNextTransactionNumber(),
                     referenceNumber = invoice.invoiceNumber,
-                    memo = "Inventory transaction"
+                    memo = "Inventory return transaction"
                 };
             }
 
@@ -695,7 +696,7 @@ namespace TIMS.Forms
                 if (invoice.cost != 0)
                     Communication.SaveTransaction(inventoryTransaction);
             }
-            
+
             #endregion
 
             ReportViewer viewer = new ReportViewer(invoice);
@@ -722,6 +723,12 @@ namespace TIMS.Forms
 
             if (MessageBox.Show("Do you want to save this invoice for later?", "Save Invoice", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
+                foreach (InvoiceItem item in invoice.items)
+                {
+                    Item itemm = Communication.RetrieveItem(item.itemNumber, item.productLine);
+                    itemm.WIPQty += item.quantity;
+                    Communication.UpdateItem(itemm);
+                }
                 invoice.savedInvoice = true;
                 invoice.savedInvoiceTime = DateTime.Now;
                 invoice.attentionLine = attentionTB.Text;

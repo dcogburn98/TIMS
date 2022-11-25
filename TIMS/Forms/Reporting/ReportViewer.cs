@@ -8,6 +8,8 @@ using System.Windows.Forms;
 using TIMS.Server;
 using TIMSServerModel;
 
+using TIMS.Rendering;
+
 namespace TIMS.Forms
 {
     public partial class ReportViewer : Form
@@ -34,7 +36,8 @@ namespace TIMS.Forms
             inv.currentPage = 1;
             pagePreview1.Zoom = PdfSharp.Forms.Zoom.BestFit;
             pagePreview1.PageSize = PageSizeConverter.ToSize(PageSize.Letter);
-            pagePreview1.SetRenderFunction(inv.RenderPage);
+            Renderer.invoice = inv;
+            pagePreview1.SetRenderFunction(Renderer.RenderInvoice);
         }
 
         public ReportViewer(Report reportData)
@@ -127,7 +130,7 @@ namespace TIMS.Forms
             
             if (inv != null)
             {
-                inv.RenderPage(gfx);
+                Renderer.RenderInvoice(gfx);
 
                 if (inv.currentPage != inv.invoicePages)
                 {

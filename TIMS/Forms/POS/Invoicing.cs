@@ -99,10 +99,6 @@ namespace TIMS.Forms
 
         public void CancelInvoice()
         {
-            if (currentInvoice.savedInvoice)
-            {
-                Communication.DeleteSavedInvoice(currentInvoice);
-            }
             currentInvoice = null;
             addingItems = null;
             workingItem = null;
@@ -449,16 +445,21 @@ namespace TIMS.Forms
 
         private void extraFunctionsDropBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (extraFunctionsDropBox.SelectedIndex == 1)
+            if (extraFunctionsDropBox.SelectedIndex == 1 && (currentInvoice != null) && (currentState != State.CancellingInvoice))
             {
+                currentState = State.CancellingInvoice;
                 DialogResult ans = MessageBox.Show("Are you sure you want to cancel this invoice?", "Warning", MessageBoxButtons.YesNo);
                 if (ans == DialogResult.No)
                 {
                     extraFunctionsDropBox.SelectedIndex = 0;
                     return;
                 }
-                currentState = State.CancellingInvoice;
+
                 dataGridView1.Rows.Clear();
+                if (currentInvoice?.savedInvoice == true)
+                {
+                    Communication.DeleteSavedInvoice(currentInvoice);
+                }
                 CancelInvoice();
             }
             extraFunctionsDropBox.SelectedIndex = 0;

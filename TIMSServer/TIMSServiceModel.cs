@@ -901,7 +901,7 @@ namespace TIMSServer
                 "BLUEPRICE = $BLUE, REPLACEMENTCOST = $COST, AVERAGECOST = $AVERAGECOST, " +
                 "TAXED = $TAXED, AGERESTRICTED = $RESTRICTED, MINIMUMAGE = $MINAGE, LOCATIONCODE = $LOCATION, " +
                 "SERIALIZED = $SERIALIZED, CATEGORY = $CATEGORY, DATELASTSALE = $LASTSALEDATE, MANUFACTURERNUMBER = $MANUFACTURERNO, " +
-                "SKU = $SKU, LASTLABELDATE = $LABELDATE, LASTLABELPRICE = $LABELPRICE, LASTSALEPRICE = $LASTSALEPRICE " +
+                "UPC = $SKU, LASTLABELDATE = $LABELDATE, LASTLABELPRICE = $LABELPRICE, LASTSALEPRICE = $LASTSALEPRICE " +
                 "WHERE (ITEMNUMBER = $ITEMNUMBER AND PRODUCTLINE = $PRODUCTLINE)";
 
             command.Parameters.Add(new SqliteParameter("$ITEMNAME", newItem.itemName));
@@ -940,7 +940,7 @@ namespace TIMSServer
             command.Parameters.Add(new SqliteParameter("$CATEGORY", newItem.category));
             command.Parameters.Add(new SqliteParameter("$LASTSALEDATE", newItem.dateLastSale.ToString("MM/dd/yyyy")));
             command.Parameters.Add(new SqliteParameter("$MANUFACTURERNO", newItem.manufacturerNumber == null ? DBNull.Value : newItem.manufacturerNumber));
-            command.Parameters.Add(new SqliteParameter("$SKU", newItem.SKU == null ? DBNull.Value : newItem.SKU));
+            command.Parameters.Add(new SqliteParameter("$SKU", newItem.UPC == null ? DBNull.Value : newItem.UPC));
             command.Parameters.Add(new SqliteParameter("$LABELDATE", newItem.lastLabelDate.ToString("MM/dd/yyyy")));
             command.Parameters.Add(new SqliteParameter("$LABELPRICE", newItem.lastLabelPrice));
             command.Parameters.Add(new SqliteParameter("$LASTSALEPRICE", newItem.lastSalePrice));
@@ -991,7 +991,7 @@ namespace TIMSServer
                 "ITEMSPERCONTAINER, STANDARDPACKAGE, DATESTOCKED, DATELASTRECEIPT, MINIMUM, MAXIMUM, ONHANDQUANTITY, WIPQUANTITY, " +
                 "ONORDERQUANTITY, BACKORDERQUANTITY, DAYSONORDER, DAYSONBACKORDER, LISTPRICE, REDPRICE, YELLOWPRICE, GREENPRICE, " +
                 "PINKPRICE, BLUEPRICE, REPLACEMENTCOST, AVERAGECOST, TAXED, AGERESTRICTED, MINIMUMAGE, LOCATIONCODE, SERIALIZED, " +
-                "CATEGORY, SKU, LASTLABELDATE, LASTLABELPRICE, DATELASTSALE, MANUFACTURERNUMBER, LASTSALEPRICE) " +
+                "CATEGORY, UPC, LASTLABELDATE, LASTLABELPRICE, DATELASTSALE, MANUFACTURERNUMBER, LASTSALEPRICE) " +
 
                 "VALUES ($PRODUCTLINE, $ITEMNUMBER, $ITEMNAME, $DESCRIPTION, $SUPPLIER, $GROUP, $VELOCITY, $PREVIOUSVELOCITY, " +
                 "$ITEMSPERCONTAINER, $STDPKG, $DATESTOCKED, $DATELASTRECEIPT, $MIN, $MAX, $ONHAND, $WIPQUANTITY, " +

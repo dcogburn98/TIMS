@@ -55,7 +55,7 @@ namespace TIMS.Forms.Orders
             }
             OrderCreator creator = new OrderCreator(supplier, criteria);
             creator.Show();
-            //Close(); //Comment this line for testing, uncomment for release
+            Close(); //Comment this line for testing, uncomment for release
         }
     }
 }
