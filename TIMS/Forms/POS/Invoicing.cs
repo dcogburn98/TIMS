@@ -168,6 +168,9 @@ namespace TIMS.Forms
             currentInvoice.employee = Program.currentEmployee;
             currentInvoice.invoiceCreationTime = DateTime.Now;
 
+            if (c.invoiceMessage != "")
+                MessageBox.Show(c.invoiceMessage);
+
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 (row.Tag as InvoiceItem).price = currentInvoice.customer.inStorePricingProfile.CalculatePrice(Communication.RetrieveItem(row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString()));

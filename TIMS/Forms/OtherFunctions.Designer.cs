@@ -47,7 +47,6 @@ namespace TIMS.Forms
             this.startEODToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eODMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inventoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.purchaseOrdersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createOrderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.editOrderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,7 +82,6 @@ namespace TIMS.Forms
             this.coreTrackingMaintenanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accountingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generalJournalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.accountsListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.expensesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.incomeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.equityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -158,12 +156,12 @@ namespace TIMS.Forms
             this.reportCreatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.developerFunctionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.testIngenicoDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.virtualStoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.layoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.itemExclusionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.developerFunctionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testIngenicoDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -314,7 +312,6 @@ namespace TIMS.Forms
             // inventoryToolStripMenuItem
             // 
             this.inventoryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.purchaseOrdersToolStripMenuItem,
             this.orderingToolStripMenuItem,
             this.maintenanceToolStripMenuItem,
             this.adjustmentsToolStripMenuItem,
@@ -333,12 +330,6 @@ namespace TIMS.Forms
             this.inventoryToolStripMenuItem.Name = "inventoryToolStripMenuItem";
             this.inventoryToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
             this.inventoryToolStripMenuItem.Text = "Inventory";
-            // 
-            // purchaseOrdersToolStripMenuItem
-            // 
-            this.purchaseOrdersToolStripMenuItem.Name = "purchaseOrdersToolStripMenuItem";
-            this.purchaseOrdersToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
-            this.purchaseOrdersToolStripMenuItem.Text = "Purchase Orders";
             // 
             // orderingToolStripMenuItem
             // 
@@ -424,28 +415,31 @@ namespace TIMS.Forms
             this.buyoutPOToolStripMenuItem.Name = "buyoutPOToolStripMenuItem";
             this.buyoutPOToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
             this.buyoutPOToolStripMenuItem.Text = "Buyout PO";
+            this.buyoutPOToolStripMenuItem.Visible = false;
             // 
             // maintainOrderSelectionGroupToolStripMenuItem1
             // 
             this.maintainOrderSelectionGroupToolStripMenuItem1.Name = "maintainOrderSelectionGroupToolStripMenuItem1";
             this.maintainOrderSelectionGroupToolStripMenuItem1.Size = new System.Drawing.Size(250, 22);
             this.maintainOrderSelectionGroupToolStripMenuItem1.Text = "Maintain Order Selection Group";
+            this.maintainOrderSelectionGroupToolStripMenuItem1.Visible = false;
             // 
             // factoryOrderTablesToolStripMenuItem1
             // 
             this.factoryOrderTablesToolStripMenuItem1.Name = "factoryOrderTablesToolStripMenuItem1";
             this.factoryOrderTablesToolStripMenuItem1.Size = new System.Drawing.Size(250, 22);
             this.factoryOrderTablesToolStripMenuItem1.Text = "Factory Order Tables";
+            this.factoryOrderTablesToolStripMenuItem1.Visible = false;
             // 
             // maintenanceToolStripMenuItem
             // 
             this.maintenanceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itemMaintenanceToolStripMenuItem,
+            this.massImportItemsToolStripMenuItem,
             this.notesToolStripMenuItem,
             this.supersedesToolStripMenuItem,
             this.certificationTypesToolStripMenuItem,
-            this.miscellaneousChagesToolStripMenuItem,
-            this.massImportItemsToolStripMenuItem,
-            this.itemMaintenanceToolStripMenuItem});
+            this.miscellaneousChagesToolStripMenuItem});
             this.maintenanceToolStripMenuItem.Name = "maintenanceToolStripMenuItem";
             this.maintenanceToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.maintenanceToolStripMenuItem.Text = "Maintenance";
@@ -514,14 +508,12 @@ namespace TIMS.Forms
             this.minMaxReviewToolStripMenuItem.Name = "minMaxReviewToolStripMenuItem";
             this.minMaxReviewToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.minMaxReviewToolStripMenuItem.Text = "Min/Max Review";
-            this.minMaxReviewToolStripMenuItem.Visible = false;
             // 
             // inventoryReviewToolStripMenuItem
             // 
             this.inventoryReviewToolStripMenuItem.Name = "inventoryReviewToolStripMenuItem";
             this.inventoryReviewToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.inventoryReviewToolStripMenuItem.Text = "Inventory Review";
-            this.inventoryReviewToolStripMenuItem.Visible = false;
             // 
             // lIFOToolStripMenuItem
             // 
@@ -556,6 +548,7 @@ namespace TIMS.Forms
             this.planogramToolStripMenuItem.Name = "planogramToolStripMenuItem";
             this.planogramToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.planogramToolStripMenuItem.Text = "Planogram";
+            this.planogramToolStripMenuItem.Visible = false;
             // 
             // writeOffToolStripMenuItem
             // 
@@ -568,24 +561,25 @@ namespace TIMS.Forms
             this.returnedDefectivesCoresToolStripMenuItem.Name = "returnedDefectivesCoresToolStripMenuItem";
             this.returnedDefectivesCoresToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.returnedDefectivesCoresToolStripMenuItem.Text = "Returned Defectives/Cores";
+            this.returnedDefectivesCoresToolStripMenuItem.Visible = false;
             // 
             // coreTrackingMaintenanceToolStripMenuItem
             // 
             this.coreTrackingMaintenanceToolStripMenuItem.Name = "coreTrackingMaintenanceToolStripMenuItem";
             this.coreTrackingMaintenanceToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.coreTrackingMaintenanceToolStripMenuItem.Text = "Core Tracking Maintenance";
+            this.coreTrackingMaintenanceToolStripMenuItem.Visible = false;
             // 
             // accountingMenuItem
             // 
             this.accountingMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.generalJournalToolStripMenuItem,
-            this.accountsListToolStripMenuItem,
-            this.expensesToolStripMenuItem,
+            this.chartOfAccountsToolStripMenuItem,
             this.incomeToolStripMenuItem,
-            this.equityToolStripMenuItem,
+            this.expensesToolStripMenuItem,
             this.assetsToolStripMenuItem,
-            this.liabiltiesToolStripMenuItem,
-            this.chartOfAccountsToolStripMenuItem});
+            this.equityToolStripMenuItem,
+            this.liabiltiesToolStripMenuItem});
             this.accountingMenuItem.Name = "accountingMenuItem";
             this.accountingMenuItem.Size = new System.Drawing.Size(81, 20);
             this.accountingMenuItem.Text = "Accounting";
@@ -593,50 +587,44 @@ namespace TIMS.Forms
             // generalJournalToolStripMenuItem
             // 
             this.generalJournalToolStripMenuItem.Name = "generalJournalToolStripMenuItem";
-            this.generalJournalToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.generalJournalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.generalJournalToolStripMenuItem.Text = "General Journal";
             this.generalJournalToolStripMenuItem.Click += new System.EventHandler(this.generalJournalToolStripMenuItem_Click);
-            // 
-            // accountsListToolStripMenuItem
-            // 
-            this.accountsListToolStripMenuItem.Name = "accountsListToolStripMenuItem";
-            this.accountsListToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.accountsListToolStripMenuItem.Text = "Accounts List";
             // 
             // expensesToolStripMenuItem
             // 
             this.expensesToolStripMenuItem.Name = "expensesToolStripMenuItem";
-            this.expensesToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.expensesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.expensesToolStripMenuItem.Text = "Expenses";
             // 
             // incomeToolStripMenuItem
             // 
             this.incomeToolStripMenuItem.Name = "incomeToolStripMenuItem";
-            this.incomeToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.incomeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.incomeToolStripMenuItem.Text = "Income";
             // 
             // equityToolStripMenuItem
             // 
             this.equityToolStripMenuItem.Name = "equityToolStripMenuItem";
-            this.equityToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.equityToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.equityToolStripMenuItem.Text = "Equity";
             // 
             // assetsToolStripMenuItem
             // 
             this.assetsToolStripMenuItem.Name = "assetsToolStripMenuItem";
-            this.assetsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.assetsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.assetsToolStripMenuItem.Text = "Assets";
             // 
             // liabiltiesToolStripMenuItem
             // 
             this.liabiltiesToolStripMenuItem.Name = "liabiltiesToolStripMenuItem";
-            this.liabiltiesToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.liabiltiesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.liabiltiesToolStripMenuItem.Text = "Liabilties";
             // 
             // chartOfAccountsToolStripMenuItem
             // 
             this.chartOfAccountsToolStripMenuItem.Name = "chartOfAccountsToolStripMenuItem";
-            this.chartOfAccountsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.chartOfAccountsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.chartOfAccountsToolStripMenuItem.Text = "Chart Of Accounts";
             this.chartOfAccountsToolStripMenuItem.Click += new System.EventHandler(this.chartOfAccountsToolStripMenuItem_Click);
             // 
@@ -676,18 +664,21 @@ namespace TIMS.Forms
             this.branchTransactionsToolStripMenuItem.Name = "branchTransactionsToolStripMenuItem";
             this.branchTransactionsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.branchTransactionsToolStripMenuItem.Text = "Branch Transactions";
+            this.branchTransactionsToolStripMenuItem.Visible = false;
             // 
             // branchTransmissionToolStripMenuItem
             // 
             this.branchTransmissionToolStripMenuItem.Name = "branchTransmissionToolStripMenuItem";
             this.branchTransmissionToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.branchTransmissionToolStripMenuItem.Text = "Branch Transmission";
+            this.branchTransmissionToolStripMenuItem.Visible = false;
             // 
             // aRUpdateToBranchToolStripMenuItem
             // 
             this.aRUpdateToBranchToolStripMenuItem.Name = "aRUpdateToBranchToolStripMenuItem";
             this.aRUpdateToBranchToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.aRUpdateToBranchToolStripMenuItem.Text = "A/R Update to Branch";
+            this.aRUpdateToBranchToolStripMenuItem.Visible = false;
             // 
             // customerStatementsToolStripMenuItem
             // 
@@ -707,12 +698,14 @@ namespace TIMS.Forms
             this.pricingProfileInformationToolStripMenuItem.Name = "pricingProfileInformationToolStripMenuItem";
             this.pricingProfileInformationToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.pricingProfileInformationToolStripMenuItem.Text = "Pricing Profile Information";
+            this.pricingProfileInformationToolStripMenuItem.Visible = false;
             // 
             // customerNotesToolStripMenuItem
             // 
             this.customerNotesToolStripMenuItem.Name = "customerNotesToolStripMenuItem";
             this.customerNotesToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.customerNotesToolStripMenuItem.Text = "Customer Notes";
+            this.customerNotesToolStripMenuItem.Visible = false;
             // 
             // aRTermsToolStripMenuItem
             // 
@@ -732,6 +725,7 @@ namespace TIMS.Forms
             this.customerCustomerPricingToolStripMenuItem.Name = "customerCustomerPricingToolStripMenuItem";
             this.customerCustomerPricingToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.customerCustomerPricingToolStripMenuItem.Text = "Customer Customer Pricing";
+            this.customerCustomerPricingToolStripMenuItem.Visible = false;
             // 
             // systemManagementToolStripMenuItem
             // 
@@ -766,13 +760,13 @@ namespace TIMS.Forms
             // aRControlsToolStripMenuItem
             // 
             this.aRControlsToolStripMenuItem.Name = "aRControlsToolStripMenuItem";
-            this.aRControlsToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.aRControlsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aRControlsToolStripMenuItem.Text = "A/R Controls";
             // 
             // storeCategoriesToolStripMenuItem
             // 
             this.storeCategoriesToolStripMenuItem.Name = "storeCategoriesToolStripMenuItem";
-            this.storeCategoriesToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.storeCategoriesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.storeCategoriesToolStripMenuItem.Text = "Store Categories";
             // 
             // classificationToolStripMenuItem1
@@ -804,6 +798,7 @@ namespace TIMS.Forms
             this.gLCodesToolStripMenuItem.Name = "gLCodesToolStripMenuItem";
             this.gLCodesToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.gLCodesToolStripMenuItem.Text = "G/L Codes";
+            this.gLCodesToolStripMenuItem.Visible = false;
             // 
             // inventoryToolStripMenuItem1
             // 
@@ -834,6 +829,7 @@ namespace TIMS.Forms
             this.minMaxControlsToolStripMenuItem.Name = "minMaxControlsToolStripMenuItem";
             this.minMaxControlsToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
             this.minMaxControlsToolStripMenuItem.Text = "Min/Max Controls";
+            this.minMaxControlsToolStripMenuItem.Visible = false;
             // 
             // physicalInventoryControlsToolStripMenuItem
             // 
@@ -846,6 +842,7 @@ namespace TIMS.Forms
             this.buyoutPOToolStripMenuItem1.Name = "buyoutPOToolStripMenuItem1";
             this.buyoutPOToolStripMenuItem1.Size = new System.Drawing.Size(246, 22);
             this.buyoutPOToolStripMenuItem1.Text = "Buyout PO";
+            this.buyoutPOToolStripMenuItem1.Visible = false;
             // 
             // invoicingToolStripMenuItem1
             // 
@@ -880,6 +877,7 @@ namespace TIMS.Forms
             this.protobaseControlsToolStripMenuItem.Name = "protobaseControlsToolStripMenuItem";
             this.protobaseControlsToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.protobaseControlsToolStripMenuItem.Text = "Protobase Controls";
+            this.protobaseControlsToolStripMenuItem.Visible = false;
             // 
             // tenderTypeControlsToolStripMenuItem
             // 
@@ -892,24 +890,28 @@ namespace TIMS.Forms
             this.roundingTablesToolStripMenuItem.Name = "roundingTablesToolStripMenuItem";
             this.roundingTablesToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.roundingTablesToolStripMenuItem.Text = "Rounding Tables";
+            this.roundingTablesToolStripMenuItem.Visible = false;
             // 
             // taxTableToolStripMenuItem
             // 
             this.taxTableToolStripMenuItem.Name = "taxTableToolStripMenuItem";
             this.taxTableToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.taxTableToolStripMenuItem.Text = "Tax Table";
+            this.taxTableToolStripMenuItem.Visible = false;
             // 
             // deliveryCodesToolStripMenuItem
             // 
             this.deliveryCodesToolStripMenuItem.Name = "deliveryCodesToolStripMenuItem";
             this.deliveryCodesToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.deliveryCodesToolStripMenuItem.Text = "Delivery Codes";
+            this.deliveryCodesToolStripMenuItem.Visible = false;
             // 
             // storePUGPToolStripMenuItem
             // 
             this.storePUGPToolStripMenuItem.Name = "storePUGPToolStripMenuItem";
             this.storePUGPToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.storePUGPToolStripMenuItem.Text = "Store PU GP";
+            this.storePUGPToolStripMenuItem.Visible = false;
             // 
             // cashJournalControlsToolStripMenuItem
             // 
@@ -922,12 +924,14 @@ namespace TIMS.Forms
             this.rGNControlsToolStripMenuItem.Name = "rGNControlsToolStripMenuItem";
             this.rGNControlsToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.rGNControlsToolStripMenuItem.Text = "RGN Controls";
+            this.rGNControlsToolStripMenuItem.Visible = false;
             // 
             // phoneRoomMaintenanceToolStripMenuItem
             // 
             this.phoneRoomMaintenanceToolStripMenuItem.Name = "phoneRoomMaintenanceToolStripMenuItem";
             this.phoneRoomMaintenanceToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.phoneRoomMaintenanceToolStripMenuItem.Text = "Phone Room Maintenance";
+            this.phoneRoomMaintenanceToolStripMenuItem.Visible = false;
             // 
             // storeToolStripMenuItem
             // 
@@ -941,13 +945,13 @@ namespace TIMS.Forms
             // sotreControlsToolStripMenuItem
             // 
             this.sotreControlsToolStripMenuItem.Name = "sotreControlsToolStripMenuItem";
-            this.sotreControlsToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-            this.sotreControlsToolStripMenuItem.Text = "Sotre Controls";
+            this.sotreControlsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sotreControlsToolStripMenuItem.Text = "Store Controls";
             // 
             // companyControlsToolStripMenuItem
             // 
             this.companyControlsToolStripMenuItem.Name = "companyControlsToolStripMenuItem";
-            this.companyControlsToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.companyControlsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.companyControlsToolStripMenuItem.Text = "Company Controls";
             this.companyControlsToolStripMenuItem.Click += new System.EventHandler(this.companyControlsToolStripMenuItem_Click);
             // 
@@ -968,6 +972,7 @@ namespace TIMS.Forms
             this.catalogUpdateToolStripMenuItem.Name = "catalogUpdateToolStripMenuItem";
             this.catalogUpdateToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.catalogUpdateToolStripMenuItem.Text = "Catalog Update";
+            this.catalogUpdateToolStripMenuItem.Visible = false;
             // 
             // softwareUpdateToolStripMenuItem
             // 
@@ -986,7 +991,7 @@ namespace TIMS.Forms
             // 
             this.setDateTimeToolStripMenuItem.Name = "setDateTimeToolStripMenuItem";
             this.setDateTimeToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.setDateTimeToolStripMenuItem.Text = "Set Date & Time";
+            this.setDateTimeToolStripMenuItem.Text = "Set Date/Time";
             // 
             // backupShutDownTIMSToolStripMenuItem
             // 
@@ -1072,44 +1077,44 @@ namespace TIMS.Forms
             // reportManagerToolStripMenuItem
             // 
             this.reportManagerToolStripMenuItem.Name = "reportManagerToolStripMenuItem";
-            this.reportManagerToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.reportManagerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reportManagerToolStripMenuItem.Text = "Report Manager";
             this.reportManagerToolStripMenuItem.Click += new System.EventHandler(this.reportManagerToolStripMenuItem_Click);
             // 
             // reprintReportToolStripMenuItem
             // 
             this.reprintReportToolStripMenuItem.Name = "reprintReportToolStripMenuItem";
-            this.reprintReportToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.reprintReportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reprintReportToolStripMenuItem.Text = "Reprint Report";
             // 
             // archiveToolStripMenuItem
             // 
             this.archiveToolStripMenuItem.Name = "archiveToolStripMenuItem";
-            this.archiveToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.archiveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.archiveToolStripMenuItem.Text = "Archive";
             // 
             // resortToolStripMenuItem
             // 
             this.resortToolStripMenuItem.Name = "resortToolStripMenuItem";
-            this.resortToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.resortToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.resortToolStripMenuItem.Text = "Resort";
             // 
             // dataReviewToolStripMenuItem
             // 
             this.dataReviewToolStripMenuItem.Name = "dataReviewToolStripMenuItem";
-            this.dataReviewToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.dataReviewToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.dataReviewToolStripMenuItem.Text = "Data Review";
             // 
             // reportingToolStripMenuItem
             // 
             this.reportingToolStripMenuItem.Name = "reportingToolStripMenuItem";
-            this.reportingToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.reportingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reportingToolStripMenuItem.Text = "Reporting";
             // 
             // reportCreatorToolStripMenuItem
             // 
             this.reportCreatorToolStripMenuItem.Name = "reportCreatorToolStripMenuItem";
-            this.reportCreatorToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.reportCreatorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reportCreatorToolStripMenuItem.Text = "Report Creator";
             this.reportCreatorToolStripMenuItem.Click += new System.EventHandler(this.reportCreatorToolStripMenuItem_Click);
             // 
@@ -1124,21 +1129,6 @@ namespace TIMS.Forms
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // developerFunctionsToolStripMenuItem
-            // 
-            this.developerFunctionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.testIngenicoDeviceToolStripMenuItem});
-            this.developerFunctionsToolStripMenuItem.Name = "developerFunctionsToolStripMenuItem";
-            this.developerFunctionsToolStripMenuItem.Size = new System.Drawing.Size(127, 20);
-            this.developerFunctionsToolStripMenuItem.Text = "Developer Functions";
-            // 
-            // testIngenicoDeviceToolStripMenuItem
-            // 
-            this.testIngenicoDeviceToolStripMenuItem.Name = "testIngenicoDeviceToolStripMenuItem";
-            this.testIngenicoDeviceToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.testIngenicoDeviceToolStripMenuItem.Text = "Test Ingenico Device";
-            this.testIngenicoDeviceToolStripMenuItem.Click += new System.EventHandler(this.testIngenicoDeviceToolStripMenuItem_Click);
             // 
             // virtualStoreToolStripMenuItem
             // 
@@ -1167,6 +1157,21 @@ namespace TIMS.Forms
             this.itemExclusionsToolStripMenuItem.Name = "itemExclusionsToolStripMenuItem";
             this.itemExclusionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.itemExclusionsToolStripMenuItem.Text = "Item Exclusions";
+            // 
+            // developerFunctionsToolStripMenuItem
+            // 
+            this.developerFunctionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testIngenicoDeviceToolStripMenuItem});
+            this.developerFunctionsToolStripMenuItem.Name = "developerFunctionsToolStripMenuItem";
+            this.developerFunctionsToolStripMenuItem.Size = new System.Drawing.Size(127, 20);
+            this.developerFunctionsToolStripMenuItem.Text = "Developer Functions";
+            // 
+            // testIngenicoDeviceToolStripMenuItem
+            // 
+            this.testIngenicoDeviceToolStripMenuItem.Name = "testIngenicoDeviceToolStripMenuItem";
+            this.testIngenicoDeviceToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.testIngenicoDeviceToolStripMenuItem.Text = "Test Ingenico Device";
+            this.testIngenicoDeviceToolStripMenuItem.Click += new System.EventHandler(this.testIngenicoDeviceToolStripMenuItem_Click);
             // 
             // OtherFunctions
             // 
@@ -1204,7 +1209,6 @@ namespace TIMS.Forms
         private System.Windows.Forms.ToolStripMenuItem startEODToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem eODMonitorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inventoryToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem purchaseOrdersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem orderingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createOrderToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem editOrderToolStripMenuItem1;
@@ -1305,7 +1309,6 @@ namespace TIMS.Forms
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem accountingMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generalJournalToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem accountsListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem expensesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem incomeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem equityToolStripMenuItem;

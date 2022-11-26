@@ -64,15 +64,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <HarpyFiles Remove="Payments\Ingenico\Request.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <HarpyFiles Remove="Payments\Engine.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <HarpyFiles Remove="Payments\Ingenico\Response.cs" />
+    <HarpyFiles Remove="ReceiptPrinter.cs" />
   </ItemGroup>
 
 </Project>

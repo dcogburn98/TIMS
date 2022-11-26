@@ -603,7 +603,12 @@ namespace TIMSServer
                 lastOrderDate = DateTime.MinValue;
             else
                 while (reader.Read())
-                    lastOrderDate = DateTime.Parse(reader.GetString(0));
+                {
+                    if (reader.IsDBNull(0))
+                        lastOrderDate = DateTime.MinValue;
+                    else
+                        lastOrderDate = DateTime.Parse(reader.GetString(0));
+                }
 
             CloseConnection();
 
@@ -1864,14 +1869,13 @@ namespace TIMSServer
 
             while (reader.Read())
             {
-                inv.payments.Add(new Payment()
-                {
-                    ID = reader.GetGuid(1),
-                    paymentAmount = reader.GetDecimal(3),
-                    paymentType = (Payment.PaymentTypes)Enum.Parse(typeof(Payment.PaymentTypes), reader.GetString(2)),
-                    errorMessage = (Payment.CardReaderErrorMessages)Enum.Parse(typeof(Payment.CardReaderErrorMessages), reader.GetString(4)),
-                    cardResponse = new IngenicoResponse(XDocument.Parse(reader.GetString(5)))
-                });
+                Payment p = new Payment();
+                p.ID = reader.GetGuid(1);
+                p.paymentAmount = reader.GetDecimal(3);
+                p.paymentType = (Payment.PaymentTypes)Enum.Parse(typeof(Payment.PaymentTypes), reader.GetString(2));
+                p.errorMessage = (Payment.CardReaderErrorMessages)Enum.Parse(typeof(Payment.CardReaderErrorMessages), reader.GetString(4));
+                p.cardResponse = reader.IsDBNull(5) ? null : new IngenicoResponse(XDocument.Parse(reader.GetString(5)));
+                inv.payments.Add(p);
             }
 
             reader.Close();
@@ -1919,7 +1923,7 @@ namespace TIMSServer
             OpenConnection();
 
             SqliteCommand command = sqlite_conn.CreateCommand();
-            command.CommandText = "SELECT INVOICENUMBER FROM INVOICES";
+            command.CommandText = "SELECT INVOICENUMBER FROM INVOICES WHERE SAVEDINVOICE = 0";
             SqliteDataReader reader = command.ExecuteReader();
 
             if (!reader.HasRows)
@@ -2189,7 +2193,6 @@ namespace TIMSServer
             CloseConnection();
             return invNo;
         }
-        
         
         #endregion
 
@@ -3354,6 +3357,30 @@ namespace TIMSServer
                 container.Data = "INVALID";
                 return container;
             }
+        }
+        
+        public AuthContainer<object> TestPrintReceipt(Device device, AuthKey key)
+        {
+            AuthContainer<object> container = CheckAuthorization<object>(key);
+            if (!container.Key.Success)
+                return container;
+
+            IPAddress ip = IPAddress.Parse(GetClientAddress());
+            List<Device> terminals = RetrieveTerminals();
+            Device terminal = terminals.First(el => el.address.Address.Equals(ip));
+            try
+            {
+                Device device = terminal.AssignedDevices.First(el => el.Type == Device.DeviceType.CardReader);
+                container.Data = Payments.Engine.SendRawRequest(device, request);
+                return container;
+            }
+            catch
+            {
+                container.Data = "INVALID";
+                return container;
+            }
+
+            return container;
         }
         #endregion
 

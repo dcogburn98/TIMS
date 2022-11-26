@@ -90,7 +90,7 @@ namespace TIMS.Forms.Orders
                         dataGridView1.Rows[row].Cells[0].Value = workingItem.itemNumber;
                         dataGridView1.Rows[row].Cells[1].Value = workingItem.productLine;
                         dataGridView1.Rows[row].Cells[2].Value = workingItem.itemName;
-                        dataGridView1.Rows[row].Cells[3].Value = 1;
+                        dataGridView1.Rows[row].Cells[3].Value = item.onHandQty < 0 ? item.minimum : item.minimum - item.onHandQty;
                         dataGridView1.Rows[row].Cells[4].Value = item.minimum;
                         dataGridView1.Rows[row].Cells[5].Value = item.maximum;
                         dataGridView1.Rows[row].Cells[6].Value = item.onHandQty;
@@ -127,7 +127,7 @@ namespace TIMS.Forms.Orders
                         dataGridView1.Rows[row].Cells[0].Value = workingItem.itemNumber;
                         dataGridView1.Rows[row].Cells[1].Value = workingItem.productLine;
                         dataGridView1.Rows[row].Cells[2].Value = workingItem.itemName;
-                        dataGridView1.Rows[row].Cells[3].Value = 1;
+                        dataGridView1.Rows[row].Cells[3].Value = item.onHandQty < 0 ? item.maximum : item.maximum - item.onHandQty;
                         dataGridView1.Rows[row].Cells[4].Value = item.minimum;
                         dataGridView1.Rows[row].Cells[5].Value = item.maximum;
                         dataGridView1.Rows[row].Cells[6].Value = item.onHandQty;
