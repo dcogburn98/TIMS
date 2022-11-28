@@ -71,4 +71,12 @@
     <HarpyFiles Remove="ReceiptPrinter.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <HarpyFiles Remove="Servers\WebServerEngine.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <HarpyFiles Remove="Clock.cs" />
+  </ItemGroup>
+
 </Project>

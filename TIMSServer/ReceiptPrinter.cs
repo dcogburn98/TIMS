@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using ESCPOS_NET;
@@ -27,9 +28,10 @@ namespace TIMSServer
             { ConnectionString = dev.address.Address.ToString() + ":" + dev.address.Port.ToString(), PrinterName = dev.Nickname });
             printer?.Write(e.Initialize());
             printer?.Write(e.Enable());
+            
             List<byte[]> ReceiptPreamble = new List<byte[]>() {
                 e.CenterAlign(),
-                e.PrintLine(),
+                e.PrintLine(inv.invoiceNumber.ToString()),
                 e.SetBarcodeHeightInDots(360),
                 e.SetBarWidth(BarWidth.Default),
                 e.SetBarLabelPosition(BarLabelPrintPosition.None),
@@ -44,34 +46,100 @@ namespace TIMSServer
                 e.SetStyles(PrintStyle.None),
                 e.PrintLine(),
                 e.LeftAlign(),
-                e.PrintLine("Order: " + inv.invoiceNumber + " | Date: " + inv.invoiceCreationTime.ToString("MM/dd/yyyy h:mm tt")),
+                e.PrintLine("Order: " + inv.invoiceNumber + " | Date: " + inv.invoiceFinalizedTime.ToString("MM/dd/yyyy h:mm tt")),
+                e.PrintLine("PO#:   " + inv.PONumber),
+                e.PrintLine("Attn:  " + inv.attentionLine),
                 e.PrintLine(),
-                e.PrintLine()
+                e.PrintLine(),
+                e.PrintLine("QTY---------------DESCRIPTION--------------PRICE"),
             };
-            List<byte[]> ReceiptBody = new List<byte[]>() {
-                e.SetStyles(PrintStyle.FontB),
-                e.PrintLine("1   TRITON LOW-NOISE IN-LINE MICROPHONE PREAMP"),
-                e.PrintLine("    TRFETHEAD/FETHEAD                        89.95         89.95"),
-                e.PrintLine("----------------------------------------------------------------"),
-                e.RightAlign()
-            };
+            
+            List<byte[]> ReceiptBody = new List<byte[]>() { e.SetStyles(PrintStyle.FontB) };
+            foreach (InvoiceItem item in inv.items)
+            {
+                //ReceiptBody.Add(e.PrintLine(item.quantity + "   " + item.itemName + "     " + item.price.ToString("C")));
+                ReceiptBody.Add(e.LeftAlign());
+                ReceiptBody.Add(e.PrintLine(item.quantity + "   " + item.itemName ));
+                ReceiptBody.Add(e.RightAlign());
+                ReceiptBody.Add(e.PrintLine(item.price.ToString("C").Trim('$')));
+                //ReceiptBody.Add(e.PrintLine("    TRFETHEAD/FETHEAD                        89.95         89.95"));
+                ReceiptBody.Add(e.PrintLine("----------------------------------------------------------------"));
+            }
+
             List<byte[]> ReceiptTail = new List<byte[]>() {
-                e.PrintLine("SUBTOTAL         " + inv.subtotal.ToString("C")),
-                e.PrintLine("Total Order:         " + inv.taxAmount.ToString("C") + " @ " + inv.taxRate.ToString("P")),
-                e.PrintLine("Total Payment:         89.95"),
+                e.RightAlign(),
+                e.PrintLine("SUBTOTAL      "),
+                e.PrintLine(inv.subtotal.ToString("C").Trim('$')),
+
+                e.PrintLine("TAX " + "(" + inv.taxRate.ToString("P") + ")      "),
+                e.PrintLine(Math.Round(inv.taxAmount, 2).ToString("C").Trim('$')),
+
+                e.PrintLine("TOTAL      "),
+                e.PrintLine(inv.total.ToString("C").Trim('$')),
                 e.PrintLine(),
-                e.LeftAlign(),
+                e.PrintLine("----------------------------PAYMENTS----------------------------"),
+                e.PrintLine(),
+            };
+
+            foreach (Payment pay in inv.payments)
+            {
+                ReceiptTail.Add(e.CenterAlign());
+                ReceiptTail.Add(e.PrintLine("PAYMENT TYPE"));
+                ReceiptTail.Add(e.RightAlign());
+                ReceiptTail.Add(e.PrintLine(Enum.GetName(typeof(Payment.PaymentTypes), pay.paymentType)));
+                ReceiptTail.Add(e.CenterAlign());
+                ReceiptTail.Add(e.PrintLine("PAYMENT AMOUNT"));
+                ReceiptTail.Add(e.RightAlign());
+                ReceiptTail.Add(e.PrintLine(pay.paymentAmount.ToString("C").Trim('$')));
+                if (pay.paymentType == Payment.PaymentTypes.PaymentCard && pay.cardResponse != null)
+                {
+                    ReceiptTail.Add(e.CenterAlign());
+                    ReceiptTail.Add(e.PrintLine("CARD DETAILS"));
+                    ReceiptTail.Add(e.LeftAlign());
+                    ReceiptTail.Add(e.PrintLine("MASKED CARD #: " + pay.cardResponse?.MaskedCardNumber));
+                    ReceiptTail.Add(e.PrintLine("NAME ON CARD:  " + pay.cardResponse?.FirstName + " " + pay.cardResponse.LastName));
+                    ReceiptTail.Add(e.PrintLine("APP LABEL:     " + pay.cardResponse?.AppLabel));
+                    ReceiptTail.Add(e.PrintLine("TVR:           " + pay.cardResponse?.TVR));
+                    ReceiptTail.Add(e.PrintLine("AID:           " + pay.cardResponse?.AID));
+                    ReceiptTail.Add(e.PrintLine("TSI:           " + pay.cardResponse?.TSI));
+                    if (pay.cardResponse?.Signature != null)
+                    {
+                        ReceiptTail.Add(e.CenterAlign());
+                        ReceiptTail.Add(e.PrintImage(Convert.FromBase64String(pay.cardResponse?.Signature), false));
+                    }
+                }
+                ReceiptTail.Add(e.PrintLine("----------------------------------------------------------------"));
+            }
+
+            ReceiptTail.AddRange(new byte[][] {
+                //e.PrintLine("----------------------------------------------------------------"),
+                e.CenterAlign(),
+                e.PrintLine("TOTAL PAYMENTS"),
+                e.RightAlign(),
+                e.PrintLine(inv.totalPayments.ToString()),
+                e.PrintLine(),
+                e.CenterAlign(),
                 e.SetStyles(PrintStyle.Bold | PrintStyle.FontB),
-                e.PrintLine("SOLD TO:                        SHIP TO:"),
+                e.PrintLine("----------------------------------------------------------------"),
+                e.PrintLine("CUSTOMER INFO"),
+                e.PrintLine("----------------------------------------------------------------"),
                 e.SetStyles(PrintStyle.FontB),
-                e.PrintLine("  LUKE PAIREEPINART               LUKE PAIREEPINART"),
-                e.PrintLine("  123 FAKE ST.                    123 FAKE ST."),
-                e.PrintLine("  DECATUR, IL 12345               DECATUR, IL 12345"),
-                e.PrintLine("  (123)456-7890                   (123)456-7890"),
-                e.PrintLine("  CUST: 87654321"),
+                e.LeftAlign(),
+                e.PrintLine("CUSTOMER NUMBER: " + inv.customer.customerNumber),
+                e.PrintLine(inv.customer.customerName),
+                e.PrintLine(inv.customer.billingAddress.Split(',')[0]),
+                e.PrintLine(inv.customer.billingAddress.Split(',')[1].Trim() + inv.customer.billingAddress.Split(',')[2].Trim()),
+                e.PrintLine(inv.customer.phoneNumber),
+                e.PrintLine(),
+                e.SetStyles(PrintStyle.None),
+                e.CenterAlign(),
+                e.PrintLine("THANKS FOR SHOPPING WITH US!"),
+                e.LeftAlign(),
+                e.Print("TIMS - Total Inventory Management System"),
                 e.PrintLine(),
                 e.PrintLine()
-                };
+            });
+
             printer?.Write(ReceiptPreamble.ToArray());
             printer?.Write(ReceiptBody.ToArray());
             printer?.Write(ReceiptTail.ToArray());

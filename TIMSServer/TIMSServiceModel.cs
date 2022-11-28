@@ -3306,7 +3306,7 @@ namespace TIMSServer
             try
             {
                 Device device = terminal.AssignedDevices.First(el => el.Type == Device.DeviceType.CardReader);
-                container.Data = Payments.Engine.InitiatePayment(device, paymentAmount, 0, 0, 0, 0, false);
+                container.Data = Payments.Engine.InitiatePayment(device, paymentAmount, 0, 0, 0, 0, true);
                 return container;
             }
             catch
@@ -3359,7 +3359,7 @@ namespace TIMSServer
             }
         }
         
-        public AuthContainer<object> TestPrintReceipt(Device device, AuthKey key)
+        public AuthContainer<object> PrintReceipt(Invoice inv, AuthKey key)
         {
             AuthContainer<object> container = CheckAuthorization<object>(key);
             if (!container.Key.Success)
@@ -3370,8 +3370,8 @@ namespace TIMSServer
             Device terminal = terminals.First(el => el.address.Address.Equals(ip));
             try
             {
-                Device device = terminal.AssignedDevices.First(el => el.Type == Device.DeviceType.CardReader);
-                container.Data = Payments.Engine.SendRawRequest(device, request);
+                Device device = terminal.AssignedDevices.First(el => el.Type == Device.DeviceType.ThermalPrinter);
+                ReceiptPrinter.PrintReceipt(inv, device, this);
                 return container;
             }
             catch
@@ -3379,8 +3379,6 @@ namespace TIMSServer
                 container.Data = "INVALID";
                 return container;
             }
-
-            return container;
         }
         #endregion
 

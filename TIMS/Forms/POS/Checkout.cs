@@ -699,6 +699,7 @@ namespace TIMS.Forms
 
             #endregion
 
+            Communication.PrintReceipt(invoice);
             ReportViewer viewer = new ReportViewer(invoice);
             viewer.ShowDialog();
             DialogResult = DialogResult.OK;

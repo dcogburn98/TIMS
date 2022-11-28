@@ -201,6 +201,8 @@ namespace TIMSServerModel
         AuthContainer<Payment> InitiateRefund(decimal refundAmount, AuthKey key);
         [OperationContract]
         AuthContainer<string> RequestSignature(AuthKey key);
+        [OperationContract]
+        AuthContainer<object> PrintReceipt(Invoice inv, AuthKey key);
         #endregion
     }
 }

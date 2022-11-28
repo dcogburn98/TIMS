@@ -34,6 +34,14 @@ namespace TIMSServerModel
         public string ID;
         [DataMember]
         public string Signature;
+        [DataMember]
+        public string AppLabel;
+        [DataMember]
+        public string TVR;
+        [DataMember]
+        public string AID;
+        [DataMember]
+        public string TSI;
 
         public IngenicoResponse(XDocument responseData)
         {
@@ -61,6 +69,14 @@ namespace TIMSServerModel
                     ID = el.Value;
                 if (el.Name == "SIGNATURE")
                     Signature = el.Value;
+                if (el.Name == "SI_EMV_APP_LABEL")
+                    AppLabel = el.Value;
+                if (el.Name == "SI_EMV_TVR")
+                    TVR = el.Value;
+                if (el.Name == "SI_EMV_AID")
+                    AID = el.Value;
+                if (el.Name == "SI_EMV_TSI")
+                    TSI = el.Value;
             }
         }
     }

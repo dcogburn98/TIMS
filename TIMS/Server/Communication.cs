@@ -623,6 +623,15 @@ namespace TIMS.Server
                 return null;
             }
         }
+
+        public static void PrintReceipt(Invoice inv)
+        {
+            AuthContainer<object> container = proxy.PrintReceipt(inv, currentKey);
+            if (container.Key.Success)
+                currentKey.Regenerate();
+            else
+                MessageBox.Show("Access Denied.");
+        }
         #endregion
     }
 }

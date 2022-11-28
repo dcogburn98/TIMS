@@ -14,7 +14,9 @@ using Microsoft.Web.Administration;
 using System.IO;
 using System.Threading.Tasks;
 
+using TIMSServerModel;
 using TIMSServer.Payments;
+using TIMSServer.Servers;
 
 namespace TIMSServer
 {
@@ -22,6 +24,7 @@ namespace TIMSServer
     {
         public static int alertLevel = 3;
         public static string regName = string.Empty;
+        public int skippedDays = 0;
 
         #region legacy code
         /* Legacy Code
@@ -279,97 +282,15 @@ namespace TIMSServer
             CloseConnection();
             CreateDatabase();
             TIMSServiceModel.Init();
-            //Console.WriteLine(Engine.InitiatePayment(15, 20, 3, 244210101, 6400).paymentAmount);
-            //Console.WriteLine(Engine.InitiateSignatureCapture());
 
             using (ServiceHost host = new ServiceHost(typeof(TIMSServiceModel)))
             {
                 host.Open();
+
                 #region Web Host
-                //string path = @"C:\\Users\\Blake\\source\\repos\\dcogburn98\\TIMS\\TIMSServerManager\\";
-                //string name = "TIMSServer";
-
-                //char[] invalid = SiteCollection.InvalidSiteNameCharacters();
-                //if (name.IndexOfAny(invalid) > -1)
-                //{
-                //    Console.WriteLine("Invalid site name: {0}", name);
-                //}
-
-                //if (!Directory.Exists(path))
-                //{
-                //    Directory.CreateDirectory(path);
-                //}
-
-                //ServerManager manager = new ServerManager();
-
-                //if (manager.Sites.Count > 0)
-                //    manager.Sites.Clear();
-                //Site managerSite = manager.Sites.Add(name + "Manager", "http", "*:80:", path);
-                ////Site shoppingSite = manager.Sites.Add(name + "Website", "http", "*:8080:*", path);
-
-                //managerSite.Applications.Clear();
-                //Application managerApplication = managerSite.Applications.Add("/", "C:\\Users\\Blake\\source\\repos\\dcogburn98\\TIMS\\TIMSServerManager\\");
-                //managerSite.SetAttributeValue("defaultDocument", "default.aspx");
-
-                //managerSite.ServerAutoStart = false;
-                //manager.CommitChanges();
-                //Console.WriteLine("Site " + name + " added to ApplicationHost.config file.");
-                //managerSite.Start();
+                //Task.Run(WebServerEngine.StartWebServer);
                 #endregion
                 
-
-                // Ethernet or WiFi (This uses an Immediate Printer, no live paper status events, but is easier to use)
-                ICommandEmitter e = new EPSON();
-                BasePrinter printer = new NetworkPrinter(new NetworkPrinterSettings()
-                    { ConnectionString = $"192.168.254.75:9100", PrinterName = "TestPrinter" });
-                printer = null; //Uncomment to disable printer
-                printer?.Write(e.Initialize());
-                printer?.Write(e.Enable());
-                byte[][] Receipt() => new byte[][] {
-                    e.CenterAlign(),
-                    e.PrintLine(),
-                    e.SetBarcodeHeightInDots(360),
-                    e.SetBarWidth(BarWidth.Default),
-                    e.SetBarLabelPosition(BarLabelPrintPosition.None),
-                    e.PrintBarcode(BarcodeType.ITF, "0123456789"),
-                    e.PrintLine(),
-                    e.PrintLine("B&H PHOTO & VIDEO"),
-                    e.PrintLine("420 NINTH AVE."),
-                    e.PrintLine("NEW YORK, NY 10001"),
-                    e.PrintLine("(212) 502-6380 - (800)947-9975"),
-                    e.SetStyles(PrintStyle.Underline),
-                    e.PrintLine("www.bhphotovideo.com"),
-                    e.SetStyles(PrintStyle.None),
-                    e.PrintLine(),
-                    e.LeftAlign(),
-                    e.PrintLine("Order: 123456789        Date: 02/01/19"),
-                    e.PrintLine(),
-                    e.PrintLine(),
-                    e.SetStyles(PrintStyle.FontB),
-                    e.PrintLine("1   TRITON LOW-NOISE IN-LINE MICROPHONE PREAMP"),
-                    e.PrintLine("    TRFETHEAD/FETHEAD                        89.95         89.95"),
-                    e.PrintLine("----------------------------------------------------------------"),
-                    e.RightAlign(),
-                    e.PrintLine("SUBTOTAL         89.95"),
-                    e.PrintLine("Total Order:         89.95"),
-                    e.PrintLine("Total Payment:         89.95"),
-                    e.PrintLine(),
-                    e.LeftAlign(),
-                    e.SetStyles(PrintStyle.Bold | PrintStyle.FontB),
-                    e.PrintLine("SOLD TO:                        SHIP TO:"),
-                    e.SetStyles(PrintStyle.FontB),
-                    e.PrintLine("  LUKE PAIREEPINART               LUKE PAIREEPINART"),
-                    e.PrintLine("  123 FAKE ST.                    123 FAKE ST."),
-                    e.PrintLine("  DECATUR, IL 12345               DECATUR, IL 12345"),
-                    e.PrintLine("  (123)456-7890                   (123)456-7890"),
-                    e.PrintLine("  CUST: 87654321"),
-                    e.PrintLine(),
-                    e.PrintLine()
-                };
-                printer?.Write(Receipt());
-                printer?.Write(e.FeedLines(2));
-                printer?.Write(e.FullCut());
-
                 Console.WriteLine("Server is open for connections.");
                 Console.WriteLine(GetLocalIPAddress());
                 Console.WriteLine("Press a key to close.");
@@ -696,6 +617,21 @@ namespace TIMSServer
 	            ""OpenEditing""   INTEGER,
 	            PRIMARY KEY(""CheckinNumber"" AUTOINCREMENT)
                 )";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "CustomerBalances"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""CustomerBalances"" (
+                ""GUID""  INTEGER NOT NULL,
+	            ""CustomerNumber""    INTEGER NOT NULL,
+	            ""InvoiceNumber"" INTEGER NOT NULL,
+	            ""DaysDue""   INTEGER NOT NULL,
+	            ""DateOfOrigin""  TEXT NOT NULL,
+	            ""Balance""   REAL NOT NULL,
+	            PRIMARY KEY(""GUID"")
+                ); ";
                 command.ExecuteNonQuery();
             }
 
@@ -1448,31 +1384,6 @@ namespace TIMSServer
             }
         }
 
-        public static void GetTiers()
-        {
-            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create("https://psapi.cardknox.com/boarding/v1/GetTierNames");
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Method = "POST";
-
-            using (StreamWriter streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                string json =
-                  @"{
-                        ""apiKey"": ""revitacomdevbaa4881ad5524244b867e76344f10645""
-                    }";
-
-                streamWriter.Write(json);
-            }
-
-            string result = String.Empty;
-            HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (StreamReader streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                result = streamReader.ReadToEnd();
-            }
-            Console.WriteLine(result);
-        }
-
         public static bool IsAlphanumeric(string str)
         {
             foreach (char c in str)
@@ -1504,10 +1415,7 @@ namespace TIMSServer
 
             CloseConnection();
 
-            if (value == null)
-                return null;
-            else
-                return value;
+            return value;
         }
 
         public static string GetLocalIPAddress()
@@ -1557,6 +1465,17 @@ namespace TIMSServer
                 result[i] = characterArray[value % (uint)characterArray.Length];
             }
             return new string(result);
+        }
+    
+        public async void EndOfDay(TIMSServiceModel instance)
+        {
+            List<Invoice> TodaysInvoices = instance.RetrieveInvoicesByDateRange(DateTime.Today.AddDays(-1), DateTime.Today);
+            DateTime Now = DateTime.Now;
+
+            await Task.Run(() => { 
+                Console.WriteLine("Started End of Day..."); 
+                Console.Write("C"); 
+            });
         }
     }
 }
