@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+  <MimeTypes>
+    <MimeType fileExtension=".htm" type="text/html" />
+    <MimeType fileExtension=".html" type="text/html" />
+    <MimeType fileExtension=".css" type="text/css" />
+    <MimeType fileExtension=".png" type="image/png" />
+    <MimeType fileExtension=".jpg" type="image/jpg" />
+    <MimeType fileExtension=".js" type="text/javascript" />
+    <MimeType fileExtension=".ico" type="image/vnd.microsoft.icon" />
+    <MimeType fileExtension=".eot" type="application/vnd.ms-fontobject" />
+  </MimeTypes>
+</Configuration>

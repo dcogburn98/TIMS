@@ -7,8 +7,6 @@ using System.ServiceModel;
 using System.Text;
 using PdfSharp.Drawing;
 
-using PaymentEngine.xTransaction;
-
 namespace TIMSServerModel
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IEmployeeModel" in both code and config file together.

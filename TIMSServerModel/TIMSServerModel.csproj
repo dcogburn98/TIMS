@@ -33,18 +33,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\OneDrive\Desktop\TIMS Dev Stuff\PaymentEngine\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\OneDrive\Desktop\TIMS Dev Stuff\PaymentEngine\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="PaymentEngine, Version=2.41.2208.2544, Culture=neutral, PublicKeyToken=6dd4826536094973, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\OneDrive\Desktop\TIMS Dev Stuff\PaymentEngine\PaymentEngine.dll</HintPath>
-    </Reference>
     <Reference Include="PdfSharp-gdi, Version=1.51.5185.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp-gdi.1.51.5185-beta\lib\net20\PdfSharp-gdi.dll</HintPath>
     </Reference>
@@ -56,16 +44,13 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="xCore, Version=2.41.2208.2544, Culture=neutral, PublicKeyToken=5f9517288b979455, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\OneDrive\Desktop\TIMS Dev Stuff\PaymentEngine\xCore.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
@@ -84,6 +69,7 @@
     <Compile Include="ItemShortcutMenu.cs" />
     <Compile Include="ITIMSDownstreamServiceModel.cs" />
     <Compile Include="ITIMSServiceModel.cs" />
+    <Compile Include="ITIMSWebServerModel.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Planogram\Building.cs" />
@@ -101,6 +87,7 @@
     <Compile Include="Transaction.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
