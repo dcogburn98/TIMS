@@ -26,8 +26,6 @@ namespace TIMSServer
             ICommandEmitter e = new EPSON();
             BasePrinter printer = new NetworkPrinter(new NetworkPrinterSettings()
             { ConnectionString = dev.address.Address.ToString() + ":" + dev.address.Port.ToString(), PrinterName = dev.Nickname });
-            printer?.Write(e.Initialize());
-            printer?.Write(e.Enable());
             
             List<byte[]> ReceiptPreamble = new List<byte[]>() {
                 e.CenterAlign(),
@@ -57,12 +55,10 @@ namespace TIMSServer
             List<byte[]> ReceiptBody = new List<byte[]>() { e.SetStyles(PrintStyle.FontB) };
             foreach (InvoiceItem item in inv.items)
             {
-                //ReceiptBody.Add(e.PrintLine(item.quantity + "   " + item.itemName + "     " + item.price.ToString("C")));
                 ReceiptBody.Add(e.LeftAlign());
-                ReceiptBody.Add(e.PrintLine(item.quantity + "   " + item.itemName ));
+                ReceiptBody.Add(e.PrintLine(item.quantity + "      " + item.itemNumber + " -- " + item.itemName));
                 ReceiptBody.Add(e.RightAlign());
-                ReceiptBody.Add(e.PrintLine(item.price.ToString("C").Trim('$')));
-                //ReceiptBody.Add(e.PrintLine("    TRFETHEAD/FETHEAD                        89.95         89.95"));
+                ReceiptBody.Add(e.PrintLine(item.total.ToString("C").Trim('$') + " @ " + item.price.ToString("C").Trim('$') + "/each"));
                 ReceiptBody.Add(e.PrintLine("----------------------------------------------------------------"));
             }
 
@@ -112,7 +108,6 @@ namespace TIMSServer
             }
 
             ReceiptTail.AddRange(new byte[][] {
-                //e.PrintLine("----------------------------------------------------------------"),
                 e.CenterAlign(),
                 e.PrintLine("TOTAL PAYMENTS"),
                 e.RightAlign(),
@@ -140,11 +135,13 @@ namespace TIMSServer
                 e.PrintLine()
             });
 
-            printer?.Write(ReceiptPreamble.ToArray());
-            printer?.Write(ReceiptBody.ToArray());
-            printer?.Write(ReceiptTail.ToArray());
-            printer?.Write(e.FeedLines(2));
-            printer?.Write(e.FullCut());
+            printer.Write(e.Initialize());
+            printer.Write(e.Enable());
+            printer.Write(e.FeedLines(1));
+            printer.Write(ReceiptPreamble.ToArray());
+            printer.Write(ReceiptBody.ToArray());
+            printer.Write(ReceiptTail.ToArray());
+            printer.Write(e.PartialCutAfterFeed(3));
         }
     }
 }

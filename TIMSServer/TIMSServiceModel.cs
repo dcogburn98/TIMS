@@ -2093,15 +2093,6 @@ namespace TIMSServer
                     "VALUES ($INVOICENUMBER,$ITEMNUMBER,$PRODUCTLINE,$ITEMDESCRIPTION,$PRICE,$LISTPRICE," +
                     "$QUANTITY,$TOTAL,$PRICECODE,$SERIALIZED,$AGERESTRICTED," +
                     "$MINIMUMAGE,$TAXED,$INVOICECODES,$GUID,$COST)";
-                //else
-                //    command.CommandText =
-                //      @"UPDATE INVOICES SET 
-                //        INVOICENUMBER = $INVOICENUMBER, ITEMNUMBER = $ITEMNUMBER, PRODUCTLINE = $PRODUCTLINE, 
-                //        ITEMDESCRIPTION = $ITEMDESCRIPTION, PRICE = $PRICE, LISTPRICE = $LISTPRICE, 
-                //        QUANTITY = $QUANTITY, TOTAL = $TOTAL, PRICECODE = $PRICECODE, SERIALIZED = $SERIALIZED, 
-                //        AGERESTRICTED = $AGERESTRICTED, MINIMUMAGE = $MINIMUMAGE, TAXED = $TAXED, 
-                //        INVOICECODES = $INVOICECODES, GUID = $GUID, COST = $COST 
-                //        WHERE INVOICENUMBER = $INVOICENUMBER AND GUID = $GUID";
 
                 command.Parameters.Clear();
 

@@ -6,34 +6,141 @@ using System.Net;
 using System.ServiceModel.Web;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
+using Microsoft.Data.Sqlite;
+
+using TIMSServer.WebServer;
 using TIMSServerModel;
 
 namespace TIMSServer
 {
     internal class TIMSWebServerModel : ITIMSWebServerModel
     {
+        private static SqliteConnection sqlite_conn = Program.sqlite_conn;
+        private static void OpenConnection()
+        {
+            Program.OpenConnection();
+        }
+        private static void CloseConnection()
+        {
+            Program.CloseConnection();
+        }
+
         private string basePath = null;
         private MimetypeHelper baseMimetypeHelper = null;
+        private Dictionary<string, string> FriendlyURLs;
+        private Dictionary<string, string> MediaStrings;
+
+        private Dictionary<Guid, Session> sessions;
 
         public TIMSWebServerModel()
         {
             basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot");
 
             this.baseMimetypeHelper = MimetypeHelper.GetInstance();
+
+            FriendlyURLs = new Dictionary<string, string>();
+            FriendlyURLs.Add("index", "index.html");
+            FriendlyURLs.Add("product", "productPage.html");
+
+            MediaStrings = new Dictionary<string, string>();
+            MediaStrings.Add("CompanyLogo", "Company Logo");
+
+            sessions = new Dictionary<Guid, Session>();
         }
 
         public Stream GetResource(string path)
         {
+            string[] splitPath = path.ToLower().Split('/');
             Stream resourceStream = null;
 
-            if (string.IsNullOrEmpty(path))
+            #region Session Management
+            Session currentSession = new Session();
+            string cookies = WebOperationContext.Current.IncomingRequest.Headers[HttpRequestHeader.Cookie]?.ToString();
+            if (string.IsNullOrEmpty(cookies))
+            {
+                Guid id = Guid.NewGuid();
+                WebOperationContext.Current.OutgoingResponse.Headers.Add("Set-Cookie: SessionID=" + id.ToString() + ";");
+                sessions.Add(id, new Session());
+                sessions[id].guid = id;
+                currentSession = sessions[id];
+            }
+            else
+            {
+                string[] split = cookies.Split(';');
+                foreach (string cookie in split)
+                {
+                    if (cookie.Trim().Split('=')[0] == "SessionID")
+                    {
+                        if (Guid.TryParse(cookie.Trim().Split('=')[1], out Guid id))
+                        {
+                            try
+                            {
+                                currentSession = sessions[id];
+                                break;
+                            }
+                            catch (KeyNotFoundException)
+                            {
+                                id = Guid.NewGuid();
+                                WebOperationContext.Current.OutgoingResponse.Headers.Add("Set-Cookie: SessionID=" + id.ToString() + ";");
+                                sessions.Add(id, new Session());
+                                sessions[id].guid = id;
+                                currentSession = sessions[id];
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            id = Guid.NewGuid();
+                            WebOperationContext.Current.OutgoingResponse.Headers.Add("Set-Cookie: SessionID=" + id.ToString() + ";");
+                            sessions.Add(id, new Session());
+                            sessions[id].guid = id;
+                            currentSession = sessions[id];
+                            break;
+                        }
+                    }
+                }
+            }
+            #endregion
+
+            if (string.IsNullOrEmpty(path)) //Default path (http://localhost/)
             {
                 path = "index.html";
                 WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), "text/html");
                 resourceStream = new MemoryStream(File.ReadAllBytes(Path.Combine(basePath, "index.html")));
                 return resourceStream;
+            }
+
+            if (MediaStrings.ContainsKey(path))
+            {
+                WebOperationContext.Current.OutgoingResponse.ContentType = "image/png";
+                resourceStream = new MemoryStream(RetrieveMedia(MediaStrings[path]));
+                return resourceStream;
+            }
+
+            if (FriendlyURLs.ContainsKey(splitPath[0]))
+            {
+                FriendlyURLs.TryGetValue(splitPath[0], out splitPath[0]);
+            }
+
+            if (splitPath[0] == "productPage.html")
+            {
+                if (splitPath.Length != 2)
+                {
+                    WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
+                    resourceStream = this.GetErrorResponseStream(500, "Internal Server Error");
+                    return resourceStream;
+                }
+                else
+                {
+                    currentSession.item = new Item() { itemNumber = splitPath[1] };
+                    WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
+                    string html = File.ReadAllText(Path.Combine(basePath, splitPath[0]));
+                    string parsed = ParseHTMLVariables(html, '#', currentSession);
+                    resourceStream = new MemoryStream(Encoding.ASCII.GetBytes(parsed));
+                    return resourceStream;
+                }
             }
 
             try
@@ -44,154 +151,60 @@ namespace TIMSServer
                 if (mimetype == null)
                 {
                     WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                    WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), "text/html");
-
                     resourceStream = this.GetErrorResponseStream(404, path);
 
                 }
                 else
                 {
                     WebOperationContext.Current.OutgoingResponse.ContentType = mimetype;
-                    WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), mimetype);
-
                     resourceStream = new MemoryStream(File.ReadAllBytes(Path.Combine(basePath, path)));
                 }
             }
             catch (FileNotFoundException)
             {
                 WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), "text/html");
                 resourceStream = this.GetErrorResponseStream(404, "Not Found");
             }
             catch (DirectoryNotFoundException)
             {
                 WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), "text/html");
                 resourceStream = this.GetErrorResponseStream(404, "Not Found");
             }
             catch (Exception ex)
             {
                 WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), "text/html");
                 resourceStream = this.GetErrorResponseStream(500, "Internal Server Error");
             }
 
             return resourceStream;
         }
 
-        public Stream GetCSS(string path)
+        public string FormPost(Stream testInput, string filename)
         {
-            Stream resourceStream = null;
+            StreamReader someReader = new StreamReader(testInput);
+            string theInput = someReader.ReadToEnd();
 
-            if (string.IsNullOrEmpty(path))
-            {
-                path = "index.html";
-                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), "text/html");
-                resourceStream = new MemoryStream(File.ReadAllBytes(Path.Combine(basePath, "index.html")));
-                return resourceStream;
-            }
-
-            try
-            {
-
-                string mimetype = this.baseMimetypeHelper.GetMimetype(Path.GetExtension("css/" + path));
-
-                if (mimetype == null)
-                {
-                    WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                    WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), "text/html");
-
-                    resourceStream = this.GetErrorResponseStream(404, "css/" + path);
-
-                }
-                else
-                {
-                    WebOperationContext.Current.OutgoingResponse.ContentType = mimetype;
-                    WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), mimetype);
-
-                    resourceStream = new MemoryStream(File.ReadAllBytes(Path.Combine(basePath, "css/" + path)));
-                }
-            }
-            catch (FileNotFoundException)
-            {
-                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), "text/html");
-                resourceStream = this.GetErrorResponseStream(404, "css/" + path);
-            }
-            catch (DirectoryNotFoundException)
-            {
-                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), "text/html");
-                resourceStream = this.GetErrorResponseStream(404, "css/" + path);
-            }
-            catch (Exception ex)
-            {
-                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), "text/html");
-                resourceStream = this.GetErrorResponseStream(500, "Internal Server Error");
-            }
-
-            return resourceStream;
+            // Unfortunately, various places on the internet seem to 
+            // indicate that data that you now have in your string
+            // theInput is multipart form data.  If you were willing
+            // to use ASP.NET Compatibility Mode in your Interface, 
+            // then you could have used the trick here mentioned by 
+            // Mike Atlas and Mark Gravel in [2] but let's assume
+            // you cannot use compatibilty mode.  Then you might 
+            // try a multipart parser like the one written by antscode
+            // at [3] or you can just do what I did and guess your 
+            // way through.  Since you have a simple form, you can 
+            // just guess your way through the parsing by replacing
+            // "testInput" with nothing and UrlDecoding what is left.
+            // That won't work on more complex forms but it works on 
+            // this example.  You get some more backround on this 
+            // and why UrlDecode is necessary at [4]
+            theInput = theInput.Replace("testInput=", "");
+            //theInput = HttpUtility.UrlDecode(theInput);
+            //return "Post paramether value: " + theInput;
+            WebOperationContext.Current.OutgoingResponse.Headers.Add("Set-Cookie: foo_b=bar_b;");
+            return WebOperationContext.Current.IncomingRequest.Headers[HttpRequestHeader.Cookie]?.ToString()??"FAIL";
         }
-
-        public Stream GetImage(string path)
-        {
-            Stream resourceStream = null;
-
-            if (string.IsNullOrEmpty(path))
-            {
-                path = "index.html";
-                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), "text/html");
-                resourceStream = new MemoryStream(File.ReadAllBytes(Path.Combine(basePath, "index.html")));
-                return resourceStream;
-            }
-
-            try
-            {
-
-                string mimetype = this.baseMimetypeHelper.GetMimetype(Path.GetExtension("images/" + path));
-
-                if (mimetype == null)
-                {
-                    WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                    WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), "text/html");
-
-                    resourceStream = this.GetErrorResponseStream(404, "images/" + path);
-
-                }
-                else
-                {
-                    WebOperationContext.Current.OutgoingResponse.ContentType = mimetype;
-                    WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), mimetype);
-
-                    resourceStream = new MemoryStream(File.ReadAllBytes(Path.Combine(basePath, "images/" + path)));
-                }
-            }
-            catch (FileNotFoundException)
-            {
-                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), "text/html");
-                resourceStream = this.GetErrorResponseStream(404, "images/" + path);
-            }
-            catch (DirectoryNotFoundException)
-            {
-                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), "text/html");
-                resourceStream = this.GetErrorResponseStream(404, "images/" + path);
-            }
-            catch (Exception ex)
-            {
-                WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                WebOperationContext.Current.OutgoingRequest.Headers.Add(new HttpResponseHeader(), "text/html");
-                resourceStream = this.GetErrorResponseStream(500, "Internal Server Error");
-            }
-
-            return resourceStream;
-        }
-
-        #region private
 
         private Stream GetErrorResponseStream(int errorCode, string message)
         {
@@ -210,6 +223,61 @@ namespace TIMSServer
                        (string.Format(pageFormat, errorCode, message)));
         }
 
-        #endregion
+        private string ParseHTMLVariables(string html, char delimiter, Session sesh)
+        {
+            string newHTML = "";
+            string[] split = html.Split(delimiter);
+            for (int i = 0; i != split.Length; i++)
+            {
+                if (split[i] != "")
+                    continue;
+
+                if (split.Length <= i + 2)
+                    continue;
+
+                if (split[i + 2] != "")
+                    continue;
+
+                if (!Program.IsAlphanumeric(split[i + 1]))
+                    continue;
+
+                newHTML += split[i] + GetVariableValue(split[i + 1], sesh);
+            }
+
+            return newHTML;
+        }
+
+        private string GetVariableValue(string var, Session sesh)
+        {
+            if (var == "ItemNumber")
+                return sesh.item.itemNumber;
+            else
+                return "NULL";
+        }
+
+        public byte[] RetrieveMedia(string key)
+        {
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"SELECT VALUE FROM MEDIA WHERE KEY = $KEY AND MEDIATYPE = ""Image""";
+            command.Parameters.Add(new SqliteParameter("$KEY", key));
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return new byte[0];
+            }
+
+            byte[] imgBytes = new byte[1048576];
+            while (reader.Read())
+            {
+                reader.GetBytes(0, 0, imgBytes, 0, 1048576);
+            }
+
+            CloseConnection();
+            return imgBytes;
+        }
     }
 }

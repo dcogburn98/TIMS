@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 
 using TIMSServerModel;
 using TIMSServer.Payments;
-using TIMSServer.Servers;
 
 namespace TIMSServer
 {

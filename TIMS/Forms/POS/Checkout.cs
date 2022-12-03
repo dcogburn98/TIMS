@@ -546,7 +546,7 @@ namespace TIMS.Forms
             invoice.finalized = true;
             invoice.savedInvoice = false;
             invoice.invoiceFinalizedTime = DateTime.Now;
-            invoice.invoiceNumber = Communication.RetrieveNextInvoiceNumber();
+            invoice.invoiceNumber = invoice.invoiceNumber == 0 ? Communication.RetrieveNextInvoiceNumber() : invoice.invoiceNumber;
             invoice.totalPayments = invoice.total;
             invoice.profit = invoice.subtotal - invoice.cost;
             Communication.SaveInvoice(invoice);

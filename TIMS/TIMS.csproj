@@ -237,6 +237,12 @@
     <Compile Include="Forms\Login\ServerAddressEntry.Designer.cs">
       <DependentUpon>ServerAddressEntry.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Maintenance\HTMLEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Maintenance\HTMLEditor.Designer.cs">
+      <DependentUpon>HTMLEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Maintenance\ItemMaintenance.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -480,6 +486,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Login\ServerAddressEntry.resx">
       <DependentUpon>ServerAddressEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Maintenance\HTMLEditor.resx">
+      <DependentUpon>HTMLEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Maintenance\ItemMaintenance.resx">
       <DependentUpon>ItemMaintenance.cs</DependentUpon>

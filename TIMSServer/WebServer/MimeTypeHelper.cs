@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace TIMSServer
+namespace TIMSServer.WebServer
 {
     internal class MimetypeHelper
     {
@@ -14,7 +14,7 @@ namespace TIMSServer
 
         private MimetypeHelper()
         {
-            this.baseMimetypes = new Dictionary<string, string> ();
+            baseMimetypes = new Dictionary<string, string>();
         }
 
         public static MimetypeHelper GetInstance()
@@ -39,7 +39,7 @@ namespace TIMSServer
                 string extension = mimetype.Attribute("fileExtension").Value;
                 string type = mimetype.Attribute("type").Value;
 
-                this.baseMimetypes.Add(extension, type);
+                baseMimetypes.Add(extension, type);
             }
         }
 
@@ -47,9 +47,9 @@ namespace TIMSServer
         {
             string value = null;
 
-            if (this.baseMimetypes.ContainsKey(fileExtension))
+            if (baseMimetypes.ContainsKey(fileExtension))
             {
-                value = this.baseMimetypes[fileExtension];
+                value = baseMimetypes[fileExtension];
             }
 
             return value;

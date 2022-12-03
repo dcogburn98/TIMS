@@ -6,6 +6,7 @@
     <MimeType fileExtension=".css" type="text/css" />
     <MimeType fileExtension=".png" type="image/png" />
     <MimeType fileExtension=".jpg" type="image/jpg" />
+    <MimeType fileExtension=".bmp" type="image/bmp" />
     <MimeType fileExtension=".js" type="text/javascript" />
     <MimeType fileExtension=".ico" type="image/vnd.microsoft.icon" />
     <MimeType fileExtension=".eot" type="application/vnd.ms-fontobject" />

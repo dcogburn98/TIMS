@@ -57,10 +57,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <HarpyFiles Remove="PaymentCard.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <HarpyFiles Remove="Payments\HTTP.cs" />
   </ItemGroup>
 
@@ -70,10 +66,6 @@
 
   <ItemGroup>
     <HarpyFiles Remove="ReceiptPrinter.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <HarpyFiles Remove="Servers\WebServerEngine.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -104,6 +96,10 @@
     <Content Include="MIMETypes.XML">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <HarpyFiles Remove="WebServer\Session.cs" />
   </ItemGroup>
 
 </Project>

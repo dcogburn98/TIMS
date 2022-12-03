@@ -18,12 +18,8 @@ namespace TIMSServerModel
         [WebGet(UriTemplate = "{*filename}")]
         Stream GetResource(string filename);
 
-        //[OperationContract]
-        //[WebGet(UriTemplate = "css/{filename}")]
-        //Stream GetCSS(string filename);
-
-        //[OperationContract]
-        //[WebGet(UriTemplate = "images/{filename}")]
-        //Stream GetImage(string filename);
+        [OperationContract]
+        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Xml, UriTemplate = "{*filename}")]
+        string FormPost(Stream testInput, string filename);
     }
 }
