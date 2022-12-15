@@ -29,6 +29,8 @@ namespace TIMSServerModel
         [DataMember]
         public decimal RequestedAmount;
         [DataMember]
+        public bool SignatureRequired;
+        [DataMember]
         public decimal CapturedAmount;
         [DataMember]
         public string ID;
@@ -77,6 +79,13 @@ namespace TIMSServerModel
                     AID = el.Value;
                 if (el.Name == "SI_EMV_TSI")
                     TSI = el.Value;
+                if (el.Name == "SI_SIGNATURE_REQUIRED")
+                {
+                    if (el.Value == "Y")
+                        SignatureRequired = true;
+                    else
+                        SignatureRequired = false;
+                }
             }
         }
     }

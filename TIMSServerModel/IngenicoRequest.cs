@@ -88,11 +88,12 @@ namespace TIMSServerModel
         }
 
         public IngenicoRequest(TRAN_TYPE_TYPES TransactionType, decimal? TransactionAmount = null, 
-            int? AccountNumber = null, long? BatchID = null, decimal? CashBackAmount = null, decimal? ConvenienceFee = null, bool SignatureRequired = false)
+            int? AccountNumber = null, long? BatchID = null, long? TranNBR = null, decimal? CashBackAmount = null, decimal? ConvenienceFee = null)
         {
             string amount = null;
             string accountnbr = null;
             string batchid = null;
+            string transactionNumber = null;
             string cashbkamt = null;
             string conveniencefee = null;
 
@@ -114,6 +115,10 @@ namespace TIMSServerModel
             if (BatchID != null)
                 batchid = BatchID.ToString();
 
+            if (TranNBR != null)
+                transactionNumber = TranNBR.ToString();
+
+
             if (CashBackAmount != null)
             {
                 cashbkamt = Math.Round((double)CashBackAmount, 2).ToString("C");
@@ -132,12 +137,12 @@ namespace TIMSServerModel
                 xml.Element("DETAIL").Add(new XElement("ACCOUNT_NBR", accountnbr));
             if (batchid != null)
                 xml.Element("DETAIL").Add(new XElement("BATCH_ID", batchid));
+            if (transactionNumber != null)
+                xml.Element("DETAIL").Add(new XElement("TRAN_NBR", transactionNumber));
             if (cashbkamt != null)
                 xml.Element("DETAIL").Add(new XElement("CASH_BK_AMT", cashbkamt));
             if (conveniencefee != null)
                 xml.Element("DETAIL").Add(new XElement("CONVENIENCE_FEE", conveniencefee));
-            if (SignatureRequired == true || TransactionType == TRAN_TYPE_TYPES.CCRA)
-                xml.Element("DETAIL").Add(new XElement("SI_SIGNATURE_REQUIRED", "Y"));
 
             RawXMLRequest = xml.ToString();
         }

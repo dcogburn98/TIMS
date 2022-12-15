@@ -210,6 +210,12 @@ namespace TIMS.Forms
                     descriptionTB.Enabled = false;
                     descriptionTB.Text = workingItem.itemName;
 
+                    if (invItem.invalid)
+                    {
+                        productLineDropBox.Text = invItem.productLine;
+                        return;
+                    }
+
                     qtyTB.Enabled = true;
                     qtyTB.Text = workingItem.quantity.ToString();
                     qtyTB.Focus();

@@ -30,7 +30,8 @@ namespace TIMSServerModel
             NoAttachedDevice,
             CustomerCancelled,
             Declined,
-            PartialAuthorization
+            PartialAuthorization,
+            Timeout
         }
         [DataMember]
         public CardReaderErrorMessages errorMessage = CardReaderErrorMessages.None;
@@ -39,6 +40,8 @@ namespace TIMSServerModel
         public decimal paymentAmount;
         [DataMember]
         public IngenicoResponse cardResponse;
+        [DataMember]
+        public IngenicoRequest cardRequest;
 
         [DataMember]
         public Guid ID = Guid.NewGuid();

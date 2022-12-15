@@ -24,13 +24,29 @@ namespace TIMS.Forms.Login
             }
             catch
             {
-                MessageBox.Show("Server did not respond. Please enter the IP address of your TIMS server.");
-                ServerAddressEntry entry = new ServerAddressEntry();
-                if (entry.ShowDialog() == DialogResult.Cancel)
-                    Environment.Exit(0);
+                System.Threading.Thread.Sleep(5000);
+                try
+                {
+                    Communication.CheckEmployee("12ascxd900xed");
+                }
+                catch
+                {
+                    System.Threading.Thread.Sleep(5000);
+                    try
+                    {
+                        Communication.CheckEmployee("12ascxd900xed");
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Server did not respond. Please enter the IP address of your TIMS server.");
+                        ServerAddressEntry entry = new ServerAddressEntry();
+                        if (entry.ShowDialog() == DialogResult.Cancel)
+                            Environment.Exit(0);
+                    }
+                }
             }
 
-            
+
             InitializeComponent();
             companyLogo.Image = Communication.RetrieveCompanyLogo() ?? new Bitmap(600, 600);
             badLoginLabel.Visible = false;

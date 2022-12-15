@@ -67,6 +67,7 @@ namespace TIMS.Forms
             this.supersedesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.certificationTypesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.miscellaneousChagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.barcodesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.adjustmentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.binLabelsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.physicalInventoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -147,9 +148,14 @@ namespace TIMS.Forms
             this.payPeriodProfileMaintenanceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timeCardExceptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.virtualStoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.layoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.itemExclusionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.layoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.developerFunctionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testIngenicoDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -162,11 +168,6 @@ namespace TIMS.Forms
             this.reportCreatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -444,7 +445,8 @@ namespace TIMS.Forms
             this.notesToolStripMenuItem,
             this.supersedesToolStripMenuItem,
             this.certificationTypesToolStripMenuItem,
-            this.miscellaneousChagesToolStripMenuItem});
+            this.miscellaneousChagesToolStripMenuItem,
+            this.barcodesToolStripMenuItem});
             this.maintenanceToolStripMenuItem.Name = "maintenanceToolStripMenuItem";
             this.maintenanceToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.maintenanceToolStripMenuItem.Text = "Maintenance";
@@ -487,6 +489,13 @@ namespace TIMS.Forms
             this.miscellaneousChagesToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.miscellaneousChagesToolStripMenuItem.Text = "Miscellaneous Chages";
             // 
+            // barcodesToolStripMenuItem
+            // 
+            this.barcodesToolStripMenuItem.Name = "barcodesToolStripMenuItem";
+            this.barcodesToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.barcodesToolStripMenuItem.Text = "Barcodes";
+            this.barcodesToolStripMenuItem.Click += new System.EventHandler(this.barcodesToolStripMenuItem_Click);
+            // 
             // adjustmentsToolStripMenuItem
             // 
             this.adjustmentsToolStripMenuItem.Name = "adjustmentsToolStripMenuItem";
@@ -513,6 +522,7 @@ namespace TIMS.Forms
             this.minMaxReviewToolStripMenuItem.Name = "minMaxReviewToolStripMenuItem";
             this.minMaxReviewToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.minMaxReviewToolStripMenuItem.Text = "Min/Max Review";
+            this.minMaxReviewToolStripMenuItem.Click += new System.EventHandler(this.minMaxReviewToolStripMenuItem_Click);
             // 
             // inventoryReviewToolStripMenuItem
             // 
@@ -1080,12 +1090,6 @@ namespace TIMS.Forms
             this.virtualStoreToolStripMenuItem.Size = new System.Drawing.Size(112, 20);
             this.virtualStoreToolStripMenuItem.Text = "Web/Virtual Store";
             // 
-            // layoutToolStripMenuItem
-            // 
-            this.layoutToolStripMenuItem.Name = "layoutToolStripMenuItem";
-            this.layoutToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.layoutToolStripMenuItem.Text = "Virtual Store Layout";
-            // 
             // globalSettingsToolStripMenuItem
             // 
             this.globalSettingsToolStripMenuItem.Name = "globalSettingsToolStripMenuItem";
@@ -1097,6 +1101,41 @@ namespace TIMS.Forms
             this.itemExclusionsToolStripMenuItem.Name = "itemExclusionsToolStripMenuItem";
             this.itemExclusionsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.itemExclusionsToolStripMenuItem.Text = "Item Exclusions";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(188, 6);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(191, 22);
+            this.toolStripMenuItem3.Text = "Web Shop Page Editor";
+            this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(191, 22);
+            this.toolStripMenuItem2.Text = "Web Shop Settings";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(188, 6);
+            // 
+            // layoutToolStripMenuItem
+            // 
+            this.layoutToolStripMenuItem.Name = "layoutToolStripMenuItem";
+            this.layoutToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.layoutToolStripMenuItem.Text = "Virtual Store Layout";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(191, 22);
+            this.toolStripMenuItem1.Text = "Virtual Store Settings";
             // 
             // developerFunctionsToolStripMenuItem
             // 
@@ -1182,34 +1221,6 @@ namespace TIMS.Forms
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(188, 6);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(191, 22);
-            this.toolStripMenuItem1.Text = "Virtual Store Settings";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(191, 22);
-            this.toolStripMenuItem2.Text = "Web Shop Settings";
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(188, 6);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(191, 22);
-            this.toolStripMenuItem3.Text = "Web Shop Page Editor";
             // 
             // OtherFunctions
             // 
@@ -1368,5 +1379,6 @@ namespace TIMS.Forms
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem barcodesToolStripMenuItem;
     }
 }

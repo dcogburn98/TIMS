@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Data.Sqlite;
+
 using TIMSServerModel;
 
 namespace TIMSServer.Payments
@@ -20,12 +22,11 @@ namespace TIMSServer.Payments
             return resp;
         }
 
-        public static Payment InitiatePayment(Device device, decimal amount, decimal cashBackAmount, decimal convenienceFee, int batchID, int customerNumber, bool signatureRequired)
+        public static Payment InitiatePayment(Device device, decimal amount, decimal cashBackAmount, decimal convenienceFee, int customerNumber)
         {
             bool amountProvided = false;
             bool cashBackAmountProvided = false;
             bool convenienceFeeProvided = false;
-            bool batchIDProvided = false;
             bool customerNumberProvided = false;
 
             if (amount != 0)
@@ -34,42 +35,112 @@ namespace TIMSServer.Payments
                 cashBackAmountProvided = true;
             if (convenienceFee != 0)
                 convenienceFeeProvided = true;
-            if (batchID != 0)
-                batchIDProvided = true;
             if (customerNumber != 0)
                 customerNumberProvided = true;
+            int transactionID = 1;
+            int batchID = 1;
 
-            IngenicoResponse resp = SendRequest(
-                new IngenicoRequest(
-                    IngenicoRequest.TRAN_TYPE_TYPES.CCR1,
-                    amountProvided ? (amount as decimal?) : null,
-                    customerNumberProvided ? (customerNumber as int?) : null,
-                    batchIDProvided ? (batchID as int?) : null,
-                    cashBackAmountProvided ? (cashBackAmount as decimal?) : null,
-                    convenienceFeeProvided ? (convenienceFee as decimal?) : null,
-                    signatureRequired
-                    ),
-                device);
+            Program.OpenConnection();
 
+            SqliteCommand command = Program.sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = ""Current Transaction Number"" ";
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+                transactionID = 1;
+            else
+                while (reader.Read())
+                {
+                    transactionID = reader.GetInt32(0);
+                }
+            reader.Close();
+            command.CommandText =
+                @"UPDATE GLOBALPROPERTIES SET VALUE = $TID WHERE KEY = ""Current Transaction Number""";
+            command.Parameters.Add(new SqliteParameter("$TID", transactionID + 1));
+            command.ExecuteNonQuery();
+            command.Parameters.Clear();
+
+            command.CommandText =
+                @"SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = ""Current Batch Number"" ";
+            reader = command.ExecuteReader();
+            if (!reader.HasRows)
+                batchID = 1;
+            else
+                while (reader.Read())
+                {
+                    batchID = reader.GetInt32(0);
+                }
+            reader.Close();
+            Program.CloseConnection();
+
+            IngenicoRequest req = new IngenicoRequest(
+                    TransactionType:    IngenicoRequest.TRAN_TYPE_TYPES.CCR1,
+                    TransactionAmount:  amountProvided ? (amount as decimal?) : null,
+                    TranNBR:            transactionID,
+                    BatchID:            batchID,
+                    AccountNumber:      customerNumberProvided ? (customerNumber as int?) : null,
+                    CashBackAmount:     cashBackAmountProvided ? (cashBackAmount as decimal?) : null,
+                    ConvenienceFee:     convenienceFeeProvided ? (convenienceFee as decimal?) : null
+                    );
+
+            IngenicoResponse resp = SendRequest(req, device);
             Payment payment = new Payment()
             {
+                cardRequest = req,
                 cardResponse = resp,
                 paymentAmount = resp.CapturedAmount,
-                paymentType = Payment.PaymentTypes.PaymentCard
+                paymentType = Payment.PaymentTypes.PaymentCard,
             };
             return payment;
         }
 
         public static Payment InitiateRefund(Device device, decimal amount)
         {
-            IngenicoResponse resp = SendRequest(
-                new IngenicoRequest(
-                    IngenicoRequest.TRAN_TYPE_TYPES.CCRA,
-                    amount),
-                device);
+            int transactionID = 1;
+            int batchID = 1;
+            Program.OpenConnection();
 
+            SqliteCommand command = Program.sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = ""Current Transaction Number"" ";
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+                transactionID = 1;
+            else
+                while (reader.Read())
+                {
+                    transactionID = reader.GetInt32(0);
+                }
+            reader.Close();
+            command.CommandText =
+                @"UPDATE GLOBALPROPERTIES SET VALUE = $TID WHERE KEY = ""Current Transaction Number""";
+            command.Parameters.Add(new SqliteParameter("$TID", transactionID + 1));
+            command.ExecuteNonQuery();
+
+            command.Parameters.Clear();
+            command.CommandText =
+                @"SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = ""Current Batch Number"" ";
+            reader = command.ExecuteReader();
+            if (!reader.HasRows)
+                batchID = 1;
+            else
+                while (reader.Read())
+                {
+                    batchID = reader.GetInt32(0);
+                }
+            reader.Close();
+
+            Program.CloseConnection();
+            IngenicoRequest req = new IngenicoRequest(
+                TransactionType:    IngenicoRequest.TRAN_TYPE_TYPES.CCR9, 
+                TransactionAmount:  amount,
+                TranNBR:            transactionID,
+                BatchID:            batchID);
+
+            IngenicoResponse resp = SendRequest(req, device);
             Payment payment = new Payment()
             {
+                cardRequest = req,
                 cardResponse = resp,
                 paymentAmount = 0 - resp.CapturedAmount,
                 paymentType = Payment.PaymentTypes.PaymentCard
@@ -85,29 +156,6 @@ namespace TIMSServer.Payments
                 device);
 
             return resp.Signature;
-        }
-
-        public static string VoidPayment(decimal payment)
-        {
-            XDocument Sendingxml = new XDocument(
-                new XElement("DETAIL",
-                    new XElement("TRAN_TYPE", "CCRX"),
-                    new XElement("AMOUNT", payment)
-                    ));
-
-            XDocument doc = XDocument.Parse(HTTP.postXMLData("http://192.168.254.84:6200", Sendingxml));
-            return doc.ToString();
-        }
-
-        public static string AbortPayment()
-        {
-            XDocument Sendingxml = new XDocument(
-                new XElement("DETAIL",
-                    new XElement("ABORT", "1")
-                    ));
-
-            XDocument doc = XDocument.Parse(HTTP.postXMLData("http://192.168.254.84:6200", Sendingxml));
-            return doc.ToString();
         }
 
         internal static string SendRawRequest(Device device, IngenicoRequest request)

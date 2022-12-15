@@ -166,5 +166,23 @@ namespace TIMS.Forms
             IngenicoTest test = new IngenicoTest();
             test.Show();
         }
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            HTMLEditor editor = new HTMLEditor();
+            editor.Show();
+        }
+
+        private void barcodesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BarcodeMaintenance barcodes = new BarcodeMaintenance();
+            barcodes.Show();
+        }
+
+        private void minMaxReviewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MinMaxMaintenance minmax = new MinMaxMaintenance();
+            minmax.Show();
+        }
     }
 }

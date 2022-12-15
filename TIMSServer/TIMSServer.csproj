@@ -30,8 +30,12 @@
     <PackageReference Include="EmbedIO" Version="3.5.2" />
     <PackageReference Include="ESCPOS_NET" Version="3.0.0" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="PDFsharp-gdi" Version="1.51.5185-beta" />
+    <PackageReference Include="Quartz" Version="3.5.0" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlcipher" Version="2.1.1" />
+    <PackageReference Include="SSH.NET.Fork" Version="2022.5.13" />
     <PackageReference Include="Stub.System.Data.SQLite.SEE" Version="1.0.116.1" />
     <PackageReference Include="UriTemplate" Version="1.0.0" />
   </ItemGroup>
@@ -100,6 +104,10 @@
 
   <ItemGroup>
     <HarpyFiles Remove="WebServer\Session.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <HarpyFiles Remove="EOD.cs" />
   </ItemGroup>
 
 </Project>

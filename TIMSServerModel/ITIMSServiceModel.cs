@@ -50,13 +50,19 @@ namespace TIMSServerModel
         [OperationContract]
         Item RetrieveItem(string itemNumber, string productLine, bool connectionOpened = false);
         [OperationContract]
-        void UpdateItem(Item newItem);
+        void UpdateItem(Item newItem, bool connectionOpened = false);
         [OperationContract]
         List<string> RetrieveItemSerialNumbers(string productLine, string itemNumber);
         [OperationContract]
         bool AddItem(Item item);
         [OperationContract]
         List<Item> RetrieveLabelOutOfDateItems();
+        [OperationContract]
+        AuthContainer<List<string>> RetrieveProductCategories(AuthKey key);
+        [OperationContract]
+        AuthContainer<List<string>> RetrieveProductDepartments(AuthKey key);
+        [OperationContract]
+        AuthContainer<List<string>> RetrieveProductSubdepartments(string department, AuthKey key);
         #endregion
 
         #region Invoices
@@ -119,6 +125,8 @@ namespace TIMSServerModel
         void AddBarcode(string itemnumber, string productline, string barcode, decimal quantity);
         [OperationContract]
         List<string> RetrieveBarcode(Item item);
+        [OperationContract]
+        AuthContainer<object> UpdateBarcode(string barcode, InvoiceItem data, AuthKey key);
         #endregion
 
         #region Reports

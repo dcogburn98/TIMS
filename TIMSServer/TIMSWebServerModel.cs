@@ -27,18 +27,18 @@ namespace TIMSServer
             Program.CloseConnection();
         }
 
-        private string basePath = null;
-        private MimetypeHelper baseMimetypeHelper = null;
-        private Dictionary<string, string> FriendlyURLs;
-        private Dictionary<string, string> MediaStrings;
+        private static string basePath = null;
+        private static MimetypeHelper baseMimetypeHelper = null;
+        private static Dictionary<string, string> FriendlyURLs;
+        private static Dictionary<string, string> MediaStrings;
 
-        private Dictionary<Guid, Session> sessions;
-
-        public TIMSWebServerModel()
+        private static Dictionary<Guid, Session> sessions;
+        
+        public static void Init()
         {
             basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot");
 
-            this.baseMimetypeHelper = MimetypeHelper.GetInstance();
+            baseMimetypeHelper = MimetypeHelper.GetInstance();
 
             FriendlyURLs = new Dictionary<string, string>();
             FriendlyURLs.Add("index", "index.html");
@@ -48,6 +48,11 @@ namespace TIMSServer
             MediaStrings.Add("CompanyLogo", "Company Logo");
 
             sessions = new Dictionary<Guid, Session>();
+        }
+
+        public TIMSWebServerModel()
+        {
+            
         }
 
         public Stream GetResource(string path)
@@ -146,7 +151,7 @@ namespace TIMSServer
             try
             {
 
-                string mimetype = this.baseMimetypeHelper.GetMimetype(Path.GetExtension(path));
+                string mimetype = baseMimetypeHelper.GetMimetype(Path.GetExtension(path));
 
                 if (mimetype == null)
                 {

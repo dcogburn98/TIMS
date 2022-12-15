@@ -1,21 +1,19 @@
 ﻿using System;
-using Microsoft.Data.Sqlite;
-using System.ServiceModel;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
-using System.Text;
-using System.Linq;
-using System.Net.Http;
-using ESCPOS_NET;
-using ESCPOS_NET.Emitters;
-using System.Collections.Generic;
-using Microsoft.Web.Administration;
-using System.IO;
+using System.ServiceModel;
 using System.Threading.Tasks;
 
+using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Logging;
+
 using TIMSServerModel;
-using TIMSServer.Payments;
+
+using Quartz;
+using Quartz.Impl;
 
 namespace TIMSServer
 {
@@ -27,7 +25,7 @@ namespace TIMSServer
 
         public static SqliteConnection sqlite_conn;
 
-        static void Main()
+        static async Task Main()
         {
             sqlite_conn = new SqliteConnection(
               @"Data Source=database.db; 
@@ -39,17 +37,64 @@ namespace TIMSServer
             CreateDatabase();
             TIMSServiceModel.Init();
 
-            ServiceHost host = new ServiceHost(typeof(TIMSServiceModel));
+            string externalIpString = new WebClient().DownloadString("http://icanhazip.com").Replace("\\r\\n", "").Replace("\\n", "").Trim();
+            IPAddress externalIp = IPAddress.Parse(externalIpString);
+
+            #region Client Server Initialization
             Console.WriteLine("Starting TIMS client service model (Step 1)...");
+            ServiceHost host = new ServiceHost(typeof(TIMSServiceModel));
             host.Open();
             Console.WriteLine("Server is open for connections from TIMS clients.");
-            Console.WriteLine(GetLocalIPAddress());
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Internal IP: " + GetLocalIPAddress());
+            Console.WriteLine("External IP: " + externalIp.ToString());
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
+            #endregion
 
-            ServiceHost webhost = new ServiceHost(typeof(TIMSWebServerModel));
-            Console.WriteLine("Starting TIMS web server (Step 2)...");
-            webhost.Open();
-            Console.WriteLine("Web server open for external connections.");
-            //Console.WriteLine(host.BaseAddresses[0]);
+            #region Web Server Initialization
+            //Console.WriteLine("Starting TIMS web server (Step 2)...");
+            //ServiceHost webhost = new ServiceHost(typeof(TIMSWebServerModel));
+            //webhost.Open();
+            //TIMSWebServerModel.Init();
+            //Console.Write("Web server now serving web pages on ");
+            //Console.ForegroundColor = ConsoleColor.Green;
+            //Console.WriteLine(externalIp.ToString());
+            //Console.ForegroundColor = ConsoleColor.White;
+            #endregion
+
+            #region EOD Scheduling
+            string EODTime = "12am";
+            DateTime EODStartTime = DateTime.Parse(EODTime).AddDays(1);
+            if (EODStartTime - DateTime.Now > TimeSpan.FromDays(1))
+                EODStartTime = EODStartTime.AddDays(-1);
+
+            Console.Write("\nScheduling End of Day task.\nEOD currently set to run at ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(EODStartTime.ToString());
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("You can change this in the store settings in the TIMS interface.");
+
+            EOD.instance = new TIMSServiceModel();
+            IJobDetail job = JobBuilder.Create<EOD>()
+                .WithIdentity("EOD", "Daily")
+                .Build();
+
+            StdSchedulerFactory factory = new StdSchedulerFactory();
+            IScheduler TaskScheduler = await factory.GetScheduler();
+
+            ITrigger EODtrigger = TriggerBuilder.Create()
+                .WithIdentity("EODTimeTrigger", "DailyTimeTriggers")
+                .StartAt(EODStartTime)
+                .WithSimpleSchedule(x => x
+                    .WithIntervalInHours(24)
+                    .RepeatForever())
+                .Build();
+
+            // Tell Quartz to schedule the job using our trigger
+            await TaskScheduler.ScheduleJob(job, EODtrigger);
+            await TaskScheduler.Start();
+            #endregion
 
             while (true)
             {
@@ -66,7 +111,7 @@ namespace TIMSServer
                             Console.WriteLine("Terminating TIMS client server model...");
                             host.Close();
                             Console.WriteLine("Shutting down micro web server model...");
-                            webhost.Close();
+                            //webhost.Close();
                             Console.WriteLine("Shutting down TIMS server application...");
                             Environment.Exit(0);
                         }
@@ -196,6 +241,8 @@ namespace TIMSServer
                     }
                 }
             }
+
+            
         }
 
         public static void OpenConnection()
@@ -211,6 +258,7 @@ namespace TIMSServer
         public static void CreateDatabase()
         {
             OpenConnection();
+
 
             SqliteCommand command = sqlite_conn.CreateCommand();
             if (!TableExists(sqlite_conn, "AccountTransactions"))
@@ -254,6 +302,17 @@ namespace TIMSServer
 	            ""ScannedItemNumber"" TEXT NOT NULL,
 	            ""ScannedProductLine""    TEXT NOT NULL,
 	            ""ScannedQuantity""   REAL NOT NULL,
+	            PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "Categories"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Categories"" (
+                ""ID"" INTEGER NOT NULL,
+                ""CategoryName""    TEXT NOT NULL
 	            PRIMARY KEY(""ID"" AUTOINCREMENT)
                 )";
                 command.ExecuteNonQuery();
@@ -665,6 +724,17 @@ namespace TIMSServer
                 command.ExecuteNonQuery();
             }
 
+            if (!TableExists(sqlite_conn, "Departments"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Departments"" (
+                ""ID"" INTEGER NOT NULL,
+                ""Department""    TEXT NOT NULL
+	            PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+            }
+
             if (!TableExists(sqlite_conn, "Devices"))
             {
                 command.CommandText =
@@ -744,9 +814,12 @@ namespace TIMSServer
                 INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Store Fax Number', '');
                 INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Store Website Number', '');
                 INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Store Email Number', '');
-                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Integrated Card Payments', '1');
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Integrated Card Payments', '0');
                 INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Server Relationship Key', '" + APIKey + @"');
-                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Charge Override Password', 'paul');";
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Charge Override Password', 'paul');
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Current Transaction Number', '1');
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Current Batch Number', '1');
+                INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Signature Minimum', '100');";
                 command.ExecuteNonQuery();
             }
 
@@ -888,6 +961,7 @@ namespace TIMSServer
 	            ""PaymentAmount"" REAL NOT NULL,
                 ""CardReaderErrorMessage"" TEXT NOT NULL,
                 ""IngenicoResponse"" TEXT, 
+                ""IngenicoRequest"" TEXT, 
 	            PRIMARY KEY(""ID"")
                 )";
                 command.ExecuteNonQuery();
@@ -1112,6 +1186,18 @@ namespace TIMSServer
                 command.ExecuteNonQuery();
             }
 
+            if (!TableExists(sqlite_conn, "Subdepartments"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Subdepartments"" (
+                ""ID"" INTEGER NOT NULL,
+                ""Subdepartment""  TEXT NOT NULL,
+	            ""ParentDepartment"" TEXT,
+	            PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+            }
+
             if (!TableExists(sqlite_conn, "Suppliers"))
             {
                 command.CommandText =
@@ -1228,17 +1314,6 @@ namespace TIMSServer
                 result[i] = characterArray[value % (uint)characterArray.Length];
             }
             return new string(result);
-        }
-    
-        public async void EndOfDay(TIMSServiceModel instance)
-        {
-            List<Invoice> TodaysInvoices = instance.RetrieveInvoicesByDateRange(DateTime.Today.AddDays(-1), DateTime.Today);
-            DateTime Now = DateTime.Now;
-
-            await Task.Run(() => { 
-                Console.WriteLine("Started End of Day..."); 
-                Console.Write("C"); 
-            });
         }
     }
 }

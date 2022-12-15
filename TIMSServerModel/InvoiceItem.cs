@@ -26,6 +26,8 @@ namespace TIMSServerModel
         public string[] codes;
         public Guid ID;
 
+        public bool invalid = false;
+
         public InvoiceItem()
         {
 

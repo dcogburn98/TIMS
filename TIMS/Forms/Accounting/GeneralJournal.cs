@@ -29,7 +29,7 @@ namespace TIMS.Forms
             List<Transaction> transactions = Communication.RetrieveAccountTransactions(viewingAccount.Name);
             transactions.Sort((x, y) => DateTime.Compare(y.date, x.date));
 
-            foreach (Transaction t in Communication.RetrieveAccountTransactions(viewingAccount.Name))
+            foreach (Transaction t in transactions)
             {
                 string transactionAccount =
                     t.creditAccount == viewingAccount.ID ?

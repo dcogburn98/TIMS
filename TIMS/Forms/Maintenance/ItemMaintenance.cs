@@ -154,6 +154,15 @@ namespace TIMS.Forms.Maintenance
             {
                 productLineComboBox.Items.Add(item.productLine);
             }
+
+            if (productLineComboBox.Items.Count == 1)
+            {
+                productLineComboBox.SelectedIndex = 0;
+                SelectProductLine();
+                itemNameTB.Focus();
+                return;
+            }
+
             productLineComboBox.DroppedDown = true;
         }
 
@@ -167,7 +176,7 @@ namespace TIMS.Forms.Maintenance
 
         private void productLineComboBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode != Keys.Enter || string.IsNullOrEmpty(productLineComboBox.Text))
+            if (e.KeyCode != Keys.Tab && e.KeyCode != Keys.Enter || string.IsNullOrEmpty(productLineComboBox.Text))
             {
                 return;
             }

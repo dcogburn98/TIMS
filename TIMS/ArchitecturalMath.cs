@@ -9,9 +9,9 @@ namespace TIMS
 {
     class ArchitecturalMath
     {
-        public static int PointsPerFoot = 3;
+        public static decimal PointsPerFoot = 3;
 
-        public static int FeetFromPoints(int points)
+        public static decimal FeetFromPoints(decimal points)
         {
             return points / PointsPerFoot;
         }

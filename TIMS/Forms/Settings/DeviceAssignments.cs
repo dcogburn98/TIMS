@@ -200,6 +200,9 @@ namespace TIMS.Forms.Settings
 
         private void deleteCardReader_Click(object sender, EventArgs e)
         {
+            if (cardReadersLB.SelectedIndex < 0)
+                return;
+
             if (MessageBox.Show("Are you sure you want to remove this device?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 Device device = (Device)cardReadersLB.Items[cardReadersLB.SelectedIndex];

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 using TIMS.Server;
 using TIMSServerModel;
 
 using TIMS.Forms.POS;
-
-using PaymentEngine.xTransaction;
 
 namespace TIMS.Forms
 {
@@ -16,6 +15,7 @@ namespace TIMS.Forms
         Invoice invoice;
         Invoicing parentWindow;
         bool containsAgeRestrictedItems;
+        int minimumAge = 0;
         public bool finalized = false;
         public bool printed = false;
 
@@ -71,7 +71,6 @@ namespace TIMS.Forms
         {
             int itemCount = 0;
             containsAgeRestrictedItems = false;
-            int minimumAge = 0;
             invoice.taxableTotal = 0;
             foreach (InvoiceItem item in invoice.items)
             {
@@ -214,6 +213,15 @@ namespace TIMS.Forms
                                 break;
                             }
                         }
+
+                        if (
+                            payment.cardResponse?.SignatureRequired == true ||
+                            invoice.total >= decimal.Parse(Communication.RetrieveProperty("Signature Minimum")) ||
+                            invoice.total < 0)
+                        {
+                            payment.cardResponse.Signature = Communication.RequestSignature();
+                        }
+
                         if (payment.cardResponse.CapturedAmount == 0)
                         {
                             MessageBox.Show("An error has occurred.");
@@ -304,7 +312,7 @@ namespace TIMS.Forms
         {
             if (containsAgeRestrictedItems)
             {
-                if ((DateTime.Today - customerBirthdaySelector.Value).Days >= 7670) //21 years including leap days
+                if ((DateTime.Today - customerBirthdaySelector.Value).Days >= (minimumAge * 365) + (minimumAge / 4)) //21 years including leap days
                 {
                     customerBirthdaySelector.Enabled = false;
                     attentionTB.Enabled = false;
@@ -491,8 +499,8 @@ namespace TIMS.Forms
             if (parsedLine[0].Contains("Charge"))
                 type = Payment.PaymentTypes.Charge;
 
-            invoice.payments.Remove(invoice.payments.Find(el => el.paymentAmount == decimal.Parse(parsedLine[1]) && el.paymentType == type));
-            invoice.totalPayments -= decimal.Parse(parsedLine[1]);
+            invoice.payments.Remove(invoice.payments.Find(el => el.paymentAmount == decimal.Parse(parsedLine[1].Trim('$').Trim(')')) && el.paymentType == type));
+            invoice.totalPayments -= decimal.Parse(parsedLine[1].Trim('$').Trim(')'));
             paymentsLB.Items.Remove(paymentsLB.SelectedItem);
             if (invoice.total >= invoice.totalPayments)
             {
@@ -527,10 +535,10 @@ namespace TIMS.Forms
             {
                 Item newItem = Communication.RetrieveItem(invItem.itemNumber, invItem.productLine);
                 newItem.onHandQty -= invItem.quantity;
+                newItem.dateLastSale = DateTime.Now;
+                newItem.lastSalePrice = invItem.price;
                 invItem.cost = newItem.replacementCost;
-                invoice.cost += invItem.cost;
-                if (invoice.savedInvoice)
-                    newItem.WIPQty -= invItem.quantity;
+                invoice.cost += invItem.cost * invItem.quantity;
                 Communication.UpdateItem(newItem);
             }
 
@@ -661,7 +669,7 @@ namespace TIMS.Forms
                     }
                 }
 
-            if (invoice.cost < 0)
+            if (invoice.cost > 0)
             {
                 inventoryTransaction = new Transaction(8, 1, invoice.cost)
                 {
@@ -672,7 +680,7 @@ namespace TIMS.Forms
             }
             else
             {
-                inventoryTransaction = new Transaction(1, 8, invoice.cost)
+                inventoryTransaction = new Transaction(1, 8, Math.Abs(invoice.cost))
                 {
                     transactionID = Communication.RetrieveNextTransactionNumber(),
                     referenceNumber = invoice.invoiceNumber,
@@ -734,7 +742,7 @@ namespace TIMS.Forms
                 invoice.savedInvoiceTime = DateTime.Now;
                 invoice.attentionLine = attentionTB.Text;
                 invoice.PONumber = poTB.Text;
-                invoice.invoiceNumber = Communication.RetrieveNextInvoiceNumber();
+                invoice.invoiceNumber = invoice.invoiceNumber == 0 ? Communication.RetrieveNextInvoiceNumber() : invoice.invoiceNumber;
                 Communication.SaveInvoice(invoice);
                 DialogResult = DialogResult.OK;
                 Close();

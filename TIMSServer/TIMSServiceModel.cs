@@ -36,6 +36,7 @@ namespace TIMSServer
         public static void Init()
         {
             Keys.Add(BypassKey);
+            ReceiptPrinter.Init(new TIMSServiceModel());
         }
 
         private static AuthContainer<DataType> CheckAuthorization<DataType>(AuthKey key)
@@ -51,7 +52,7 @@ namespace TIMSServer
             }
             else
             {
-                Console.WriteLine("Key Match");
+                //Console.WriteLine("Key Match");
                 container.Key = key;
                 container.Key.Success = true;
                 localKey.Regenerate();
@@ -80,8 +81,8 @@ namespace TIMSServer
                 input = "'" + input + "'";
             string value = null;
             Program.OpenConnection();
-            SqliteCommand command = sqlite_conn.CreateCommand();
 
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT FULLNAME " +
                 "FROM EMPLOYEES " +
@@ -691,104 +692,7 @@ namespace TIMSServer
 
             CloseConnection();
         }
-        public Item RetrieveItemFromBarcode(string scannedBarcode)
-        {
-            OpenConnection();
-            Item item = null;
-            string barcodeType = "UPCA";
-            string barcodeData = String.Empty;
-
-            if (scannedBarcode.Substring(0, 1) == "@")
-            {
-                if (scannedBarcode.Substring(1, 1).ToLower() == "c")
-                {
-                    barcodeType = "UPCA";
-                    barcodeData = scannedBarcode.Substring(2);
-                }
-            }
-            else
-            {
-                barcodeData = scannedBarcode;
-            }
-
-            SqliteCommand command = sqlite_conn.CreateCommand();
-            command.CommandText =
-                "SELECT SCANNEDITEMNUMBER,SCANNEDPRODUCTLINE,SCANNEDQUANTITY FROM BARCODES " +
-                "WHERE (BARCODETYPE = $TYPE AND BARCODEVALUE = $VALUE)";
-            SqliteParameter p1 = new SqliteParameter("$TYPE", barcodeType);
-            SqliteParameter p2 = new SqliteParameter("$VALUE", barcodeData);
-            command.Parameters.Add(p1);
-            command.Parameters.Add(p2);
-
-            SqliteDataReader reader = command.ExecuteReader();
-
-            if (!reader.HasRows)
-            {
-                CloseConnection();
-                return null;
-            }
-
-            while (reader.Read())
-            {
-                string d1 = reader.GetString(0);
-                string d2 = reader.GetString(1);
-                decimal d3 = reader.GetDecimal(2);
-                List<Item> itemMatches = CheckItemNumber(d1, true, BypassKey).Data;
-                item = itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower());
-            }
-
-            CloseConnection();
-            return item;
-        }
-        public InvoiceItem RetrieveInvoiceItemFromBarcode(string scannedBarcode)
-        {
-            OpenConnection();
-            InvoiceItem item = null;
-            string barcodeType = "UPCA";
-            string barcodeData = String.Empty;
-
-            if (scannedBarcode.Substring(0, 1) == "@")
-            {
-                if (scannedBarcode.Substring(1, 1).ToLower() == "c")
-                {
-                    barcodeType = "UPCA";
-                    barcodeData = scannedBarcode.Substring(2);
-                }
-            }
-            else
-            {
-                barcodeData = scannedBarcode;
-            }
-
-            SqliteCommand command = sqlite_conn.CreateCommand();
-            command.CommandText =
-                "SELECT SCANNEDITEMNUMBER,SCANNEDPRODUCTLINE,SCANNEDQUANTITY FROM BARCODES " +
-                "WHERE (BARCODETYPE = $TYPE AND BARCODEVALUE = $VALUE)";
-            SqliteParameter p1 = new SqliteParameter("$TYPE", barcodeType);
-            SqliteParameter p2 = new SqliteParameter("$VALUE", barcodeData);
-            command.Parameters.Add(p1);
-            command.Parameters.Add(p2);
-
-            SqliteDataReader reader = command.ExecuteReader();
-
-            if (!reader.HasRows)
-            {
-                CloseConnection();
-                return null;
-            }
-
-            while (reader.Read())
-            {
-                string d1 = reader.GetString(0);
-                string d2 = reader.GetString(1);
-                decimal d3 = reader.GetDecimal(2);
-                List<Item> itemMatches = CheckItemNumber(d1, true, BypassKey).Data;
-                item = new InvoiceItem(itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower()));
-            }
-
-            CloseConnection();
-            return item;
-        }
+        
         public Item RetrieveItem(string itemNumber, string productLine, bool connectionOpened = false)
         {
             string fixedIN = string.Empty;
@@ -870,6 +774,7 @@ namespace TIMSServer
             reader.Dispose();
 
             if (!connectionOpened)
+                
                 CloseConnection();
 
             string fixedPLE = string.Empty;
@@ -882,14 +787,16 @@ namespace TIMSServer
 
             return item;
         }
-        public void UpdateItem(Item newItem)
+        public void UpdateItem(Item newItem, bool connectionOpened = false)
         {
-            if (RetrieveItem(newItem.itemNumber, newItem.productLine) == null)
+            if (RetrieveItem(newItem.itemNumber, newItem.productLine, connectionOpened) == null)
             {
                 AddItem(newItem);
                 return;
             }
-            OpenConnection();
+
+            if (!connectionOpened)
+                OpenConnection();
 
             SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
@@ -952,7 +859,9 @@ namespace TIMSServer
 
             command.ExecuteNonQuery();
 
-            CloseConnection();
+            if (!connectionOpened)
+                CloseConnection();
+
             return;
         }
         public List<string> RetrieveItemSerialNumbers(string productLine, string itemNumber)
@@ -984,6 +893,11 @@ namespace TIMSServer
         }
         public bool AddItem(Item item)
         {
+            if (!CheckProductLine(item.productLine))
+            {
+                AddProductLine(item.productLine);
+            }
+
             if (RetrieveItem(item.itemNumber, item.productLine) != null)
                 return false;
 
@@ -1038,7 +952,7 @@ namespace TIMSServer
             SqliteParameter p32 = new SqliteParameter("$LOCATION", item.locationCode);
             SqliteParameter p33 = new SqliteParameter("$SERIALIZED", item.serialized);
             SqliteParameter p34 = new SqliteParameter("$CATEGORY", item.category);
-            SqliteParameter p35 = new SqliteParameter("$SKU", item.UPC);
+            SqliteParameter p35 = new SqliteParameter("$SKU", item.UPC ?? "");
             SqliteParameter p36 = new SqliteParameter("$LABELDATE", item.lastLabelDate.ToString("MM/dd/yyyy"));
             SqliteParameter p37 = new SqliteParameter("$LABELPRICE", item.lastLabelPrice);
             SqliteParameter p38 = new SqliteParameter("$SALEDATE", item.dateLastSale.ToString("MM/dd/yyyy"));
@@ -1098,7 +1012,8 @@ namespace TIMSServer
 
             SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
-                "SELECT PRODUCTLINE, ITEMNUMBER FROM ITEMS WHERE LASTLABELPRICE != GREENPRICE";
+                "SELECT PRODUCTLINE, ITEMNUMBER FROM ITEMS WHERE LASTLABELPRICE != GREENPRICE OR LASTLABELDATE < $DATE";
+            command.Parameters.Add(new SqliteParameter("$DATE", DateTime.Now));
             SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
@@ -1117,6 +1032,144 @@ namespace TIMSServer
             return items;
         }
         
+        public AuthContainer<List<string>> RetrieveProductCategories(AuthKey key)
+        {
+            AuthContainer<List<string>> container = CheckAuthorization<List<string>>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new List<string>();
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"SELECT * FROM CATEGORIES";
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                container.Data = null;
+                return container;
+            }
+            while (reader.Read())
+            {
+                container.Data.Add(reader.GetString(1));
+            }
+
+            CloseConnection();
+            return container;
+        }
+        public AuthContainer<List<string>> RetrieveProductDepartments(AuthKey key)
+        {
+            AuthContainer<List<string>> container = CheckAuthorization<List<string>>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new List<string>();
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"SELECT * FROM DEPARTMENTS";
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                container.Data = null;
+                return container;
+            }
+            while (reader.Read())
+            {
+                container.Data.Add(reader.GetString(1));
+            }
+
+            CloseConnection();
+            return container;
+        }
+        public AuthContainer<List<string>> RetrieveProductSubdepartments(string department, AuthKey key)
+        {
+            AuthContainer<List<string>> container = CheckAuthorization<List<string>>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new List<string>();
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"SELECT * FROM SUBDEPARTMENTS WHERE PARTENTDEPARTMENT = $DEPARTMENT";
+            command.Parameters.Add(new SqliteParameter("$DEPARTMENT", department));
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                container.Data = null;
+                return container;
+            }
+            while (reader.Read())
+            {
+                container.Data.Add(reader.GetString(1));
+            }
+
+            CloseConnection();
+            return container;
+        }
+        public AuthContainer<object> AddProductCategory(string category, AuthKey key)
+        {
+            AuthContainer<object> container = CheckAuthorization<object>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new object();
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"INSERT INTO CATEGORIES (CATEGORY) VALUES ($CATEGORY)";
+            command.Parameters.Add(new SqliteParameter("$CATEGORY", category));
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+            return container;
+        }
+        public AuthContainer<object> AddProductDepartment(string department, AuthKey key)
+        {
+            AuthContainer<object> container = CheckAuthorization<object>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new object();
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"INSERT INTO DEPARTMENTS (CATEGORY) VALUES ($DEPARTMENT)";
+            command.Parameters.Add(new SqliteParameter("$DEPARTMENT", department));
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+            return container;
+        }
+        public AuthContainer<object> AddProductSubdepartment(string parentDepartment, string subdepartment, AuthKey key)
+        {
+            AuthContainer<object> container = CheckAuthorization<object>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new object();
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"INSERT INTO SUBDEPARTMENTS (SUBDEPARTMENT, PARENTDEPARTMENT) VALUES ($SUBDEPARTMENT, $PARENT)";
+            command.Parameters.Add(new SqliteParameter("$SUBDEPARTMENT", subdepartment));
+            command.Parameters.Add(new SqliteParameter("$PARENT", parentDepartment));
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+            return container;
+        }
+
         #endregion
 
         #region Customers
@@ -1875,6 +1928,7 @@ namespace TIMSServer
                 p.paymentType = (Payment.PaymentTypes)Enum.Parse(typeof(Payment.PaymentTypes), reader.GetString(2));
                 p.errorMessage = (Payment.CardReaderErrorMessages)Enum.Parse(typeof(Payment.CardReaderErrorMessages), reader.GetString(4));
                 p.cardResponse = reader.IsDBNull(5) ? null : new IngenicoResponse(XDocument.Parse(reader.GetString(5)));
+                p.cardRequest = reader.IsDBNull(6) ? null : new IngenicoRequest(reader.GetString(6));
                 inv.payments.Add(p);
             }
 
@@ -2006,6 +2060,13 @@ namespace TIMSServer
                 @"DELETE FROM INVOICEITEMS WHERE INVOICENUMBER = $INVNO";
             command.ExecuteNonQuery();
 
+            foreach (InvoiceItem invitem in inv.items)
+            {
+                Item item = RetrieveItem(invitem.itemNumber, invitem.productLine);
+                item.WIPQty -= invitem.quantity;
+                UpdateItem(item);
+            }
+
             CloseConnection();
             return container;
         }
@@ -2078,9 +2139,34 @@ namespace TIMSServer
             foreach (InvoiceItem item in inv.items)
             {
                 command.CommandText =
-                    @"DELETE FROM INVOICEITEMS WHERE INVOICENUMBER = $INVOICENUMBER";
+                    @"SELECT PRODUCTLINE, ITEMNUMBER, QUANTITY FROM INVOICEITEMS WHERE INVOICENUMBER = $INVOICENUMBER";
                 command.Parameters.Clear();
                 command.Parameters.Add(new SqliteParameter("$INVOICENUMBER", inv.invoiceNumber));
+                reader = command.ExecuteReader();
+                List<InvoiceItem> items = new List<InvoiceItem>();
+                if (!reader.HasRows)
+                    reader.Close();
+                else
+                {
+                    while (reader.Read())
+                    {
+                        InvoiceItem itemm = new InvoiceItem();
+                        itemm.productLine = reader.GetString(0);
+                        itemm.itemNumber = reader.GetString(1);
+                        itemm.quantity = reader.GetDecimal(2);
+                        items.Add(itemm);
+                    }
+                }
+                reader.Close();
+                foreach (InvoiceItem itemm in items)
+                {
+                    Item itemmm = RetrieveItem(itemm.itemNumber, itemm.productLine, true);
+                    itemmm.WIPQty -= itemm.quantity;
+                    UpdateItem(itemmm, true);
+                }
+
+                command.CommandText =
+                    @"DELETE FROM INVOICEITEMS WHERE INVOICENUMBER = $INVOICENUMBER";
                 command.ExecuteNonQuery();
 
                 command.CommandText =
@@ -2140,9 +2226,9 @@ namespace TIMSServer
                 command.CommandText =
                     "INSERT INTO PAYMENTS (" +
 
-                    "INVOICENUMBER,ID,PAYMENTTYPE,PAYMENTAMOUNT,CARDREADERERRORMESSAGE,INGENICORESPONSE) " +
+                    "INVOICENUMBER,ID,PAYMENTTYPE,PAYMENTAMOUNT,CARDREADERERRORMESSAGE,INGENICORESPONSE,INGENICOREQUEST) " +
 
-                    "VALUES ($INVOICENUMBER,$ID,$PAYMENTTYPE,$PAYMENTAMOUNT,$ERROR,$INGENICO)";
+                    "VALUES ($INVOICENUMBER,$ID,$PAYMENTTYPE,$PAYMENTAMOUNT,$ERROR,$INGENICO,$REQ)";
 
                 command.Parameters.Clear();
 
@@ -2152,7 +2238,7 @@ namespace TIMSServer
                 command.Parameters.Add(new SqliteParameter("$PAYMENTAMOUNT", pay.paymentAmount));
                 command.Parameters.Add(new SqliteParameter("$ERROR", Enum.GetName(typeof(Payment.CardReaderErrorMessages), pay.errorMessage)));
                 command.Parameters.Add(new SqliteParameter("$INGENICO", pay.cardResponse == null ? DBNull.Value : pay.cardResponse.RawXMLResponse));
-
+                command.Parameters.Add(new SqliteParameter("$REQ", pay.cardRequest == null ? DBNull.Value : pay.cardRequest.RawXMLRequest));
                 command.ExecuteNonQuery();
             }
             #endregion
@@ -2390,6 +2476,127 @@ namespace TIMSServer
 
             CloseConnection();
             return barcodes;
+        }
+        public Item RetrieveItemFromBarcode(string scannedBarcode)
+        {
+            OpenConnection();
+            Item item = null;
+            string barcodeType = "UPCA";
+            string barcodeData = String.Empty;
+
+            if (scannedBarcode.Substring(0, 1) == "@")
+            {
+                if (scannedBarcode.Substring(1, 1).ToLower() == "c")
+                {
+                    barcodeType = "UPCA";
+                    barcodeData = scannedBarcode.Substring(2);
+                }
+            }
+            else
+            {
+                barcodeData = scannedBarcode;
+            }
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT SCANNEDITEMNUMBER,SCANNEDPRODUCTLINE,SCANNEDQUANTITY FROM BARCODES " +
+                "WHERE (BARCODETYPE = $TYPE AND BARCODEVALUE = $VALUE)";
+            SqliteParameter p1 = new SqliteParameter("$TYPE", barcodeType);
+            SqliteParameter p2 = new SqliteParameter("$VALUE", barcodeData);
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+
+            SqliteDataReader reader = command.ExecuteReader();
+
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                string d1 = reader.GetString(0);
+                string d2 = reader.GetString(1);
+                decimal d3 = reader.GetDecimal(2);
+                List<Item> itemMatches = CheckItemNumber(d1, true, BypassKey).Data;
+                item = itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower());
+            }
+
+            CloseConnection();
+            return item;
+        }
+        public InvoiceItem RetrieveInvoiceItemFromBarcode(string scannedBarcode)
+        {
+            OpenConnection();
+            InvoiceItem item = null;
+            string barcodeType = "UPCA";
+            string barcodeData = String.Empty;
+
+            if (scannedBarcode.Substring(0, 1) == "@")
+                barcodeData = scannedBarcode.Substring(1);
+            else
+                barcodeData = scannedBarcode;
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT SCANNEDITEMNUMBER,SCANNEDPRODUCTLINE,SCANNEDQUANTITY FROM BARCODES " +
+                "WHERE (BARCODETYPE = $TYPE AND BARCODEVALUE = $VALUE)";
+            SqliteParameter p1 = new SqliteParameter("$TYPE", barcodeType);
+            SqliteParameter p2 = new SqliteParameter("$VALUE", barcodeData);
+            command.Parameters.Add(p1);
+            command.Parameters.Add(p2);
+
+            SqliteDataReader reader = command.ExecuteReader();
+
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return null;
+            }
+
+            while (reader.Read())
+            {
+                string d1 = reader.GetString(0);
+                string d2 = reader.GetString(1);
+                decimal d3 = reader.GetDecimal(2);
+                List<Item> itemMatches = CheckItemNumber(d1, true, BypassKey).Data;
+                Item match = itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower());
+                if (match != null)
+                    item = new InvoiceItem(itemMatches.Find(el => el.productLine.ToLower() == d2.ToLower()));
+                else
+                {
+                    item = new InvoiceItem() { invalid = true, itemNumber = d1, productLine = d2, quantity = d3 };
+                }
+                item.quantity = d3;
+            }
+
+            CloseConnection();
+            return item;
+        }
+        public AuthContainer<object> UpdateBarcode(string barcode, InvoiceItem data, AuthKey key)
+        {
+            AuthContainer<object> container = CheckAuthorization<object>(key);
+            if (!container.Key.Success)
+                return container;
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+              @"UPDATE BARCODES SET 
+                SCANNEDITEMNUMBER =     $ITEMNO, 
+                SCANNEDPRODUCTLINE =    $PRODUCTLINE, 
+                SCANNEDQUANTITY =       $QTY 
+              WHERE BARCODEVALUE = $BARCODE";
+            command.Parameters.Add(new SqliteParameter("$ITEMNO", data.itemNumber));
+            command.Parameters.Add(new SqliteParameter("$PRODUCTLINE", data.productLine));
+            command.Parameters.Add(new SqliteParameter("$QTY", data.quantity));
+            command.Parameters.Add(new SqliteParameter("$BARCODE", barcode));
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+            return container;
         }
         #endregion
 
@@ -3204,6 +3411,9 @@ namespace TIMSServer
 
             CloseConnection();
 
+            if (device.Type == Device.DeviceType.ThermalPrinter)
+                ReceiptPrinter.AddPrinter(device);
+
             return true;
         }
         public bool DeleteDevice(Device device)
@@ -3224,6 +3434,9 @@ namespace TIMSServer
             }
 
             CloseConnection();
+
+            if (device.Type == Device.DeviceType.ThermalPrinter)
+                ReceiptPrinter.RemovePrinter(device);
             return true;
         }
         
@@ -3275,7 +3488,12 @@ namespace TIMSServer
             Device terminal = terminals.First(el => el.address.Address.Equals(ip));
             try
             {
-                Device device = terminal.AssignedDevices.First(el => el.Type == Device.DeviceType.CardReader);
+                Device device = terminal.AssignedDevices.FirstOrDefault(el => el.Type == Device.DeviceType.CardReader);
+                if (device == default(Device))
+                {
+                    container.Data = "NO ATTACHED DEVICE";
+                    return container;
+                }
                 container.Data = Payments.Engine.SendRawRequest(device, request);
                 return container;
             }
@@ -3296,8 +3514,13 @@ namespace TIMSServer
             Device terminal = terminals.First(el => el.address.Address.Equals(ip));
             try
             {
-                Device device = terminal.AssignedDevices.First(el => el.Type == Device.DeviceType.CardReader);
-                container.Data = Payments.Engine.InitiatePayment(device, paymentAmount, 0, 0, 0, 0, true);
+                Device device = terminal.AssignedDevices.FirstOrDefault(el => el.Type == Device.DeviceType.CardReader);
+                if (device == default(Device))
+                {
+                    container.Data = new Payment() { errorMessage = Payment.CardReaderErrorMessages.NoAttachedDevice };
+                    return container;
+                }
+                container.Data = Payments.Engine.InitiatePayment(device, paymentAmount, 0, 0, 0);
                 return container;
             }
             catch
@@ -3318,13 +3541,19 @@ namespace TIMSServer
             Device terminal = terminals.First(el => el.address.Address.Equals(ip));
             try
             {
-                Device device = terminal.AssignedDevices.First(el => el.Type == Device.DeviceType.CardReader);
+                Device device = terminal.AssignedDevices.FirstOrDefault(el => el.Type == Device.DeviceType.CardReader);
+                if (device == default(Device))
+                {
+                    container.Data = new Payment() { errorMessage = Payment.CardReaderErrorMessages.NoAttachedDevice };
+                    return container;
+                }
                 container.Data = Payments.Engine.InitiateRefund(device, refundAmount);
                 return container;
             }
-            catch
+            catch (TimeoutException)
             {
-                container.Data.errorMessage = Payment.CardReaderErrorMessages.NoAttachedDevice;
+                container.Data = new Payment();
+                container.Data.errorMessage = Payment.CardReaderErrorMessages.Timeout;
                 return container;
             }
         }
@@ -3339,7 +3568,12 @@ namespace TIMSServer
             Device terminal = terminals.First(el => el.address.Address.Equals(ip));
             try
             {
-                Device device = terminal.AssignedDevices.First(el => el.Type == Device.DeviceType.CardReader);
+                Device device = terminal.AssignedDevices.FirstOrDefault(el => el.Type == Device.DeviceType.CardReader);
+                if (device == default(Device))
+                {
+                    container.Data = "NO ATTACHED DEVICE";
+                    return container;
+                }
                 container.Data = Payments.Engine.InitiateSignatureCapture(device);
                 return container;
             }
@@ -3358,11 +3592,16 @@ namespace TIMSServer
 
             IPAddress ip = IPAddress.Parse(GetClientAddress());
             List<Device> terminals = RetrieveTerminals();
-            Device terminal = terminals.First(el => el.address.Address.Equals(ip));
+            Device terminal = terminals.FirstOrDefault(el => el.address.Address.Equals(ip));
             try
             {
-                Device device = terminal.AssignedDevices.First(el => el.Type == Device.DeviceType.ThermalPrinter);
-                ReceiptPrinter.PrintReceipt(inv, device, this);
+                Device device = terminal.AssignedDevices.FirstOrDefault(el => el.Type == Device.DeviceType.ThermalPrinter);
+                if (device == default(Device))
+                {
+                    container.Data = "NO ATTACHED DEVICE";
+                    return container;
+                }
+                ReceiptPrinter.PrintReceipt(inv, device);
                 return container;
             }
             catch

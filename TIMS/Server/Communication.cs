@@ -6,8 +6,6 @@ using System.Drawing;
 
 using PdfSharp.Drawing;
 
-using PaymentEngine.xTransaction;
-
 using TIMSServerModel;
 using System.Windows.Forms;
 using System.IO;
@@ -408,6 +406,15 @@ namespace TIMS.Server
         {
             return proxy.RetrieveBarcode(item);
         }
+
+        public static void UpdateBarcode(string barcode, InvoiceItem data)
+        {
+            AuthContainer<object> container = proxy.UpdateBarcode(barcode, data, currentKey);
+            if (container.Key.Success)
+                currentKey.Regenerate();
+            else
+                MessageBox.Show("Access Denied.");
+        }
         #endregion
 
         #region Reports
@@ -591,7 +598,7 @@ namespace TIMS.Server
                 return null;
             }
         }
-        public static Image RequestSignature()
+        public static string RequestSignature()
         {
             try
             {
@@ -599,18 +606,7 @@ namespace TIMS.Server
                 if (c.Key.Success)
                 {
                     currentKey.Regenerate();
-                    try
-                    {
-                        using (MemoryStream s = new MemoryStream(Convert.FromBase64String(c.Data)))
-                        {
-                            Image img = Image.FromStream(s);
-                            return img;
-                        }
-                    }
-                    catch
-                    {
-                        return null;
-                    }
+                    return c.Data;
                 }
                 else
                 {
