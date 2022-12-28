@@ -91,6 +91,8 @@
             this.lastReceiptTB = new System.Windows.Forms.TextBox();
             this.dateStockedTB = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.brandCB = new System.Windows.Forms.ComboBox();
+            this.label40 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.taxableCB = new System.Windows.Forms.CheckBox();
             this.label16 = new System.Windows.Forms.Label();
@@ -727,6 +729,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.brandCB);
+            this.groupBox1.Controls.Add(this.label40);
             this.groupBox1.Controls.Add(this.label17);
             this.groupBox1.Controls.Add(this.taxableCB);
             this.groupBox1.Controls.Add(this.label16);
@@ -764,10 +768,27 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Item Information";
             // 
+            // brandCB
+            // 
+            this.brandCB.FormattingEnabled = true;
+            this.brandCB.Location = new System.Drawing.Point(101, 230);
+            this.brandCB.Name = "brandCB";
+            this.brandCB.Size = new System.Drawing.Size(145, 21);
+            this.brandCB.TabIndex = 33;
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(61, 233);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(38, 13);
+            this.label40.TabIndex = 32;
+            this.label40.Text = "Brand:";
+            // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(3, 388);
+            this.label17.Location = new System.Drawing.Point(6, 424);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(90, 13);
             this.label17.TabIndex = 30;
@@ -776,7 +797,7 @@
             // taxableCB
             // 
             this.taxableCB.AutoSize = true;
-            this.taxableCB.Location = new System.Drawing.Point(101, 365);
+            this.taxableCB.Location = new System.Drawing.Point(101, 391);
             this.taxableCB.Name = "taxableCB";
             this.taxableCB.Size = new System.Drawing.Size(15, 14);
             this.taxableCB.TabIndex = 16;
@@ -785,7 +806,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(53, 365);
+            this.label16.Location = new System.Drawing.Point(53, 391);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(48, 13);
             this.label16.TabIndex = 28;
@@ -794,7 +815,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(72, 340);
+            this.label15.Location = new System.Drawing.Point(72, 366);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(29, 13);
             this.label15.TabIndex = 27;
@@ -803,7 +824,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(12, 314);
+            this.label14.Location = new System.Drawing.Point(12, 340);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(89, 13);
             this.label14.TabIndex = 26;
@@ -812,7 +833,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(2, 288);
+            this.label13.Location = new System.Drawing.Point(2, 314);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(99, 13);
             this.label13.TabIndex = 25;
@@ -821,7 +842,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(14, 261);
+            this.label12.Location = new System.Drawing.Point(14, 287);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(87, 13);
             this.label12.TabIndex = 24;
@@ -830,7 +851,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(36, 234);
+            this.label11.Location = new System.Drawing.Point(36, 260);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(65, 13);
             this.label11.TabIndex = 23;
@@ -892,10 +913,10 @@
             // 
             // descriptionTB
             // 
-            this.descriptionTB.Location = new System.Drawing.Point(6, 407);
+            this.descriptionTB.Location = new System.Drawing.Point(6, 440);
             this.descriptionTB.Multiline = true;
             this.descriptionTB.Name = "descriptionTB";
-            this.descriptionTB.Size = new System.Drawing.Size(246, 129);
+            this.descriptionTB.Size = new System.Drawing.Size(246, 96);
             this.descriptionTB.TabIndex = 17;
             // 
             // label4
@@ -918,7 +939,7 @@
             // 
             // unitTB
             // 
-            this.unitTB.Location = new System.Drawing.Point(101, 337);
+            this.unitTB.Location = new System.Drawing.Point(101, 363);
             this.unitTB.Name = "unitTB";
             this.unitTB.Size = new System.Drawing.Size(83, 20);
             this.unitTB.TabIndex = 15;
@@ -926,14 +947,14 @@
             // factoryStdPkgTB
             // 
             this.factoryStdPkgTB.Enabled = false;
-            this.factoryStdPkgTB.Location = new System.Drawing.Point(101, 311);
+            this.factoryStdPkgTB.Location = new System.Drawing.Point(101, 337);
             this.factoryStdPkgTB.Name = "factoryStdPkgTB";
             this.factoryStdPkgTB.Size = new System.Drawing.Size(83, 20);
             this.factoryStdPkgTB.TabIndex = 14;
             // 
             // standardPkgTB
             // 
-            this.standardPkgTB.Location = new System.Drawing.Point(101, 285);
+            this.standardPkgTB.Location = new System.Drawing.Point(101, 311);
             this.standardPkgTB.Name = "standardPkgTB";
             this.standardPkgTB.Size = new System.Drawing.Size(83, 20);
             this.standardPkgTB.TabIndex = 13;
@@ -942,7 +963,7 @@
             // 
             this.subDepartmentCB.Enabled = false;
             this.subDepartmentCB.FormattingEnabled = true;
-            this.subDepartmentCB.Location = new System.Drawing.Point(101, 258);
+            this.subDepartmentCB.Location = new System.Drawing.Point(101, 284);
             this.subDepartmentCB.Name = "subDepartmentCB";
             this.subDepartmentCB.Size = new System.Drawing.Size(145, 21);
             this.subDepartmentCB.TabIndex = 12;
@@ -951,10 +972,12 @@
             // 
             this.departmentCB.Enabled = false;
             this.departmentCB.FormattingEnabled = true;
-            this.departmentCB.Location = new System.Drawing.Point(101, 231);
+            this.departmentCB.Location = new System.Drawing.Point(101, 257);
             this.departmentCB.Name = "departmentCB";
             this.departmentCB.Size = new System.Drawing.Size(145, 21);
             this.departmentCB.TabIndex = 11;
+            this.departmentCB.SelectedIndexChanged += new System.EventHandler(this.departmentCB_SelectedIndexChanged);
+            this.departmentCB.TextChanged += new System.EventHandler(this.departmentCB_TextChanged);
             // 
             // categoryCB
             // 
@@ -1115,6 +1138,7 @@
             this.productLineComboBox.TabIndex = 11;
             this.productLineComboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.productLineComboBox_KeyDown);
             this.productLineComboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.productLineComboBox_KeyPress);
+            this.productLineComboBox.Leave += new System.EventHandler(this.productLineComboBox_Leave);
             // 
             // label1
             // 
@@ -1281,5 +1305,7 @@
         private System.Windows.Forms.ComboBox productLineComboBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox itemNumberTB;
+        private System.Windows.Forms.ComboBox brandCB;
+        private System.Windows.Forms.Label label40;
     }
 }

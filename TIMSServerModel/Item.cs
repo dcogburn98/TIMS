@@ -63,5 +63,6 @@ namespace TIMSServerModel
         public string modelPath;
         public ModelSize modelSize;
         public bool hangingItem;
+        public string brand;
     }
 }

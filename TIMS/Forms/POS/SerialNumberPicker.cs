@@ -24,9 +24,24 @@ namespace TIMS.Forms.POS
             if (!invItem.serializedItem)
                 Close();
 
-            foreach (string sn in Communication.RetrieveItemSerialNumbers(invItem.productLine, invItem.itemNumber))
+            List<string> SerialNumbers = Communication.RetrieveItemSerialNumbers(invItem.productLine, invItem.itemNumber);
+            if (SerialNumbers != null)
+                foreach (string sn in Communication.RetrieveItemSerialNumbers(invItem.productLine, invItem.itemNumber))
+                {
+                    comboBox1.Items.Add(sn);
+                }
+            else
             {
-                comboBox1.Items.Add(sn);
+                if (MessageBox.Show("No serial numbers are available for this item. Add to invoice anyway?", "Question", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    invItem.serialNumber = "NO SERIAL NUMBER";
+                    Close();
+                }
+                else
+                {
+                    invItem.serialNumber = "FALSE";
+                    Close();
+                }
             }
         }
 

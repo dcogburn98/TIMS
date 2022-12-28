@@ -184,5 +184,10 @@ namespace TIMS.Forms.POS
             else
                 nextButton.Enabled = true;
         }
+
+        private void voidButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

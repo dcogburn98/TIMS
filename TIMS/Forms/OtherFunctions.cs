@@ -184,5 +184,11 @@ namespace TIMS.Forms
             MinMaxMaintenance minmax = new MinMaxMaintenance();
             minmax.Show();
         }
+
+        private void reviewTodaysSalesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReviewTodaysInvoices viewer = new ReviewTodaysInvoices();
+            viewer.Show();
+        }
     }
 }

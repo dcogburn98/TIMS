@@ -17,6 +17,7 @@ namespace TIMSServerModel
             Income
         }
 
+        public List<Transaction> Transactions;
         public AccountTypes Type;
         public string Name;
         public string Description;
@@ -29,11 +30,13 @@ namespace TIMSServerModel
             this.Description = Description;
             this.ID = ID;
             this.Balance = Balance;
+            this.Transactions = new List<Transaction>();
         }
 
         public Account()
         {
             //Allows database handler to create a blank account to edit
+            this.Transactions = new List<Transaction>();
         }
 
         public void Debit(decimal amount)
@@ -63,29 +66,5 @@ namespace TIMSServerModel
             if (Type == AccountTypes.Equity)
                 Balance += amount;
         }
-
-        //public static void LoadAccounts()
-        //{
-        //    foreach (XElement acc in DatabaseHandler.accountsDB.Elements("Account"))
-        //    {
-        //        Account newAccount = new Account();
-        //        newAccount.Name = acc.Value;
-        //        newAccount.Description = acc.Element("Description").Value;
-        //        newAccount.ID = int.Parse(acc.Element("ID").Value);
-        //        string type = acc.Element("Type").Value;
-        //        if (type == "Asset")
-        //            newAccount.Type = AccountTypes.Asset;
-        //        else if (type == "Equity")
-        //            newAccount.Type = AccountTypes.Equity;
-        //        else if (type == "Liability")
-        //            newAccount.Type = AccountTypes.Liability;
-        //        else if (type == "Income")
-        //            newAccount.Type = AccountTypes.Income;
-        //        else if (type == "Expense")
-        //            newAccount.Type = AccountTypes.Expense;
-
-        //        Accounts.Add(newAccount);
-        //    }
-        //}
     }
 }

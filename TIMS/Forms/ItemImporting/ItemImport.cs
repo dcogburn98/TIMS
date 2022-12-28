@@ -11,6 +11,7 @@ using System.IO;
 using Microsoft.VisualBasic.FileIO;
 
 using TIMS.Forms.ItemImporting;
+using TIMS.Forms.Maintenance;
 using TIMS.Server;
 using TIMSServerModel;
 
@@ -63,7 +64,10 @@ namespace TIMS.Forms
                 dateLastReceipt = DateTime.MinValue,
                 taxed = true,
                 ageRestricted = false,
-                serialized = false
+                serialized = false,
+                brand = "Default",
+                department = "Default",
+                subDepartment = "Default"
             };
         }
 
@@ -185,6 +189,7 @@ namespace TIMS.Forms
                 }
 
             int rowsCompleted = 0;
+            List<Item> itemsAdded = new List<Item>();
             List<DataGridViewRow> skippedRows = new List<DataGridViewRow>();
             progressBar1.Value = 0;
             progressBar1.Minimum = 0;
@@ -230,7 +235,10 @@ namespace TIMS.Forms
                     dateLastReceipt = defaultItem.dateLastReceipt,
                     taxed = defaultItem.taxed,
                     ageRestricted = defaultItem.ageRestricted,
-                    serialized = defaultItem.serialized
+                    serialized = defaultItem.serialized,
+                    brand = defaultItem.brand,
+                    department = defaultItem.department,
+                    subDepartment = defaultItem.subDepartment
                 };
                 if (itemRow.Cells[0].Value == null)
                     continue;
@@ -275,7 +283,7 @@ namespace TIMS.Forms
                                 cell.Value.ToString() == "" ? defaultItem.UPC : cell.Value.ToString();
                             break;
                         case "manufacturernumber":
-                            workingItem.UPC =
+                            workingItem.manufacturerNumber =
                                 cell.Value.ToString() == "" ? defaultItem.manufacturerNumber : cell.Value.ToString();
                             break;
                         #endregion
@@ -577,7 +585,7 @@ namespace TIMS.Forms
                     continue;
                 }
 
-                if (workingItem.supplier == null || workingItem.supplier == string.Empty)
+                if (string.IsNullOrEmpty(workingItem.supplier))
                     workingItem.supplier = "Default";
 
                 if (workingItem.UPC != "")
@@ -588,25 +596,63 @@ namespace TIMS.Forms
                 }
 
                 if (!Communication.CheckProductLine(workingItem.productLine.ToUpper()))
-                {
                     Communication.AddProductLine(workingItem.productLine.ToUpper());
-                }
 
-                if (!Communication.RetrieveSuppliers().Contains(workingItem.supplier))
-                {
+                if (workingItem.supplier != null &&!Communication.RetrieveSuppliers().Contains(workingItem.supplier))
                     Communication.AddSupplier(workingItem.supplier);
-                }
+
+                if (workingItem.category != null && !Communication.RetrieveProductCategories().Contains(workingItem.category))
+                    Communication.AddProductCategory(workingItem.category);
+
+                if (workingItem.department != null && !Communication.RetrieveProductDepartments().Contains(workingItem.department))
+                    Communication.AddProductDepartment(workingItem.department);
+
+                if (workingItem.department != null && workingItem.subDepartment != null && !Communication.RetrieveProductSubdepartments(workingItem.department).Contains(workingItem.subDepartment))
+                    Communication.AddProductSubdepartment(workingItem.department, workingItem.subDepartment);
 
                 if (Communication.RetrieveItem(workingItem.itemNumber, workingItem.productLine) == null)
                 {
                     if (!Communication.AddItem(workingItem))
                         skippedRows.Add(itemRow);
+                    else
+                        itemsAdded.Add(workingItem);
                 }
                 else skippedRows.Add(itemRow);
 
                 rowsCompleted++;
                 progressBar1.PerformStep();
             }
+
+            decimal inventoryAmtAdjustment = 0;
+            foreach (Item item in itemsAdded)
+                inventoryAmtAdjustment += item.onHandQty * item.replacementCost;
+
+            if (inventoryAmtAdjustment != 0)
+            {
+                InventoryUpdateAccountPicker picker = new InventoryUpdateAccountPicker(inventoryAmtAdjustment, true);
+                while (picker.ShowDialog() != DialogResult.OK)
+                {
+                    MessageBox.Show("You must select an account to offset the inventory value\nbeing reflected by this item import session!");
+                }
+                Account adjustmentAccount = picker.selectedAccount;
+                if (inventoryAmtAdjustment > 0) //If the difference is positive, we will debit (increase) the inventory account
+                {
+                    Communication.SaveTransaction(new Transaction(1, adjustmentAccount.ID, inventoryAmtAdjustment)
+                    {
+                        transactionID = Communication.RetrieveNextTransactionNumber(),
+                        memo = "Inventory amount adjustment for item import session"
+                    });
+                }
+                else //, credit (decrease) the inventory account
+                {
+                    Communication.SaveTransaction(new Transaction(adjustmentAccount.ID, 1, Math.Abs(inventoryAmtAdjustment))
+                    {
+                        transactionID = Communication.RetrieveNextTransactionNumber(),
+                        memo = "Inventory amount adjustment for item import session"
+                    });
+                }
+            }
+
             MessageBox.Show("Items Added!\nItems skipped: " + skippedRows.Count + "\n\n" +
                 "Skipped items will be displayed in the import window.");
 

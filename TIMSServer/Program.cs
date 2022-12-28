@@ -273,6 +273,7 @@ namespace TIMSServer
 	                ""DebitAccount""	INTEGER NOT NULL,
 	                ""Amount""	REAL NOT NULL,
 	                ""ReferenceNumber""	INTEGER,
+                    ""Void"" INTEGER,
 	                PRIMARY KEY(""UID"" AUTOINCREMENT)
                     )";
                 command.ExecuteNonQuery();
@@ -288,47 +289,6 @@ namespace TIMSServer
 	            ""Description""   TEXT NOT NULL,
 	            ""CurrentBalance""    REAL NOT NULL,
 	            PRIMARY KEY(""ID"" AUTOINCREMENT)
-                )";
-                command.ExecuteNonQuery();
-            }
-
-            if (!TableExists(sqlite_conn, "Barcodes"))
-            {
-                command.CommandText =
-                @"CREATE TABLE ""Barcodes"" (
-                ""ID""    INTEGER NOT NULL,
-	            ""BarcodeType""   TEXT NOT NULL,
-	            ""BarcodeValue""  TEXT NOT NULL,
-	            ""ScannedItemNumber"" TEXT NOT NULL,
-	            ""ScannedProductLine""    TEXT NOT NULL,
-	            ""ScannedQuantity""   REAL NOT NULL,
-	            PRIMARY KEY(""ID"" AUTOINCREMENT)
-                )";
-                command.ExecuteNonQuery();
-            }
-
-            if (!TableExists(sqlite_conn, "Categories"))
-            {
-                command.CommandText =
-                @"CREATE TABLE ""Categories"" (
-                ""ID"" INTEGER NOT NULL,
-                ""CategoryName""    TEXT NOT NULL
-	            PRIMARY KEY(""ID"" AUTOINCREMENT)
-                )";
-                command.ExecuteNonQuery();
-            }
-
-            if (!TableExists(sqlite_conn, "CheckinItems"))
-            {
-                command.CommandText =
-                @"CREATE TABLE ""CheckinItems"" (
-                ""CheckinNumber"" INTEGER NOT NULL,
-	            ""ProductLine""   TEXT NOT NULL,
-	            ""ItemNumber""    TEXT NOT NULL,
-	            ""OrderedQty""    REAL NOT NULL,
-	            ""ShippedQty""    REAL NOT NULL,
-	            ""ReceivedQty""   REAL NOT NULL,
-	            ""DamagedQty""    REAL NOT NULL
                 )";
                 command.ExecuteNonQuery();
 
@@ -427,7 +387,80 @@ namespace TIMSServer
                 @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
                 VALUES ('19', 'Liability', 'Accounts Payable', 'Accounts Payable', '0.0');";
                 command.ExecuteNonQuery();
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('20', 'Asset', 'Imbalance', 'Imbalance', '0.0');";
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('21', 'Income', 'Positive Adjustment', 'Positive Adjustment', '0.0');";
+
+                command.CommandText =
+                @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
+                VALUES ('22', 'Expense', 'Negative Adjustment', 'Negative Adjustment', '0.0');";
+                command.ExecuteNonQuery();
                 #endregion
+            }
+
+            if (!TableExists(sqlite_conn, "Barcodes"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Barcodes"" (
+                ""ID""    INTEGER NOT NULL,
+	            ""BarcodeType""   TEXT NOT NULL,
+	            ""BarcodeValue""  TEXT NOT NULL,
+	            ""ScannedItemNumber"" TEXT NOT NULL,
+	            ""ScannedProductLine""    TEXT NOT NULL,
+	            ""ScannedQuantity""   REAL NOT NULL,
+	            PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "Brands"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Brands"" (
+                ""ID"" INTEGER NOT NULL,
+                ""BrandName""    TEXT NOT NULL,
+	            PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+
+                command.CommandText = "INSERT INTO BRANDS (BRANDNAME) VALUES ('Default')";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "Categories"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Categories"" (
+                ""ID"" INTEGER NOT NULL,
+                ""CategoryName""    TEXT NOT NULL,
+	            PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+
+                command.CommandText = "INSERT INTO CATEGORIES (CATEGORYNAME) VALUES ('Default')";
+                command.ExecuteNonQuery();
+            }
+
+            if (!TableExists(sqlite_conn, "CheckinItems"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""CheckinItems"" (
+                ""CheckinNumber"" INTEGER NOT NULL,
+	            ""ProductLine""   TEXT NOT NULL,
+	            ""ItemNumber""    TEXT NOT NULL,
+	            ""OrderedQty""    REAL NOT NULL,
+	            ""ShippedQty""    REAL NOT NULL,
+	            ""ReceivedQty""   REAL NOT NULL,
+	            ""DamagedQty""    REAL NOT NULL
+                )";
+                command.ExecuteNonQuery();
+
+                
             }
 
             if (!TableExists(sqlite_conn, "Checkins"))
@@ -729,9 +762,16 @@ namespace TIMSServer
                 command.CommandText =
                 @"CREATE TABLE ""Departments"" (
                 ""ID"" INTEGER NOT NULL,
-                ""Department""    TEXT NOT NULL
+                ""Department""    TEXT NOT NULL,
+                ""ParentDepartment"" TEXT,
 	            PRIMARY KEY(""ID"" AUTOINCREMENT)
                 )";
+                command.ExecuteNonQuery();
+
+                command.CommandText = "INSERT INTO DEPARTMENTS (DEPARTMENT) VALUES ('Default')";
+                command.ExecuteNonQuery();
+
+                command.CommandText = "INSERT INTO DEPARTMENTS (DEPARTMENT, PARENTDEPARTMENT) VALUES ('Default')";
                 command.ExecuteNonQuery();
             }
 
@@ -892,6 +932,9 @@ namespace TIMSServer
 	            ""GroupCode"" INTEGER,
 	            ""VelocityCode""  INTEGER,
 	            ""PreviousYearVelocityCode""  INTEGER,
+	            ""Brand""  INTEGER,
+	            ""Department""  INTEGER,
+	            ""Subdepartment""  INTEGER,
 	            ""ItemsPerContainer"" INTEGER,
 	            ""StandardPackage""   INTEGER,
 	            ""DateStocked""   TEXT,
@@ -923,13 +966,16 @@ namespace TIMSServer
 	            ""LastLabelPrice""    REAL,
                 ""DateLastSale""    TEXT,
                 ""ManufacturerNumber""  TEXT,
-                ""LastSalePrice""   TEXT
+                ""LastSalePrice""   REAL,
+                ""Brand""   TEXT,
+                ""Department""  TEXT,
+                ""Subdepartment""   TEXT
                 )";
                 command.ExecuteNonQuery();
 
                 command.CommandText =
-                    @"INSERT INTO Items (""ProductLine"", ""ItemNumber"", ""ItemName"", ""LongDescription"", ""Supplier"", ""GroupCode"", ""VelocityCode"", ""PreviousYearVelocityCode"", ""ItemsPerContainer"", ""StandardPackage"", ""DateStocked"", ""DateLastReceipt"", ""Minimum"", ""Maximum"", ""OnHandQuantity"", ""WIPQuantity"", ""OnOrderQuantity"", ""BackorderQuantity"", ""DaysOnOrder"", ""DaysOnBackOrder"", ""ListPrice"", ""RedPrice"", ""YellowPrice"", ""GreenPrice"", ""PinkPrice"", ""BluePrice"", ""ReplacementCost"", ""AverageCost"", ""Taxed"", ""AgeRestricted"", ""MinimumAge"", ""LocationCode"", ""Serialized"", ""Category"", ""UPC"", ""LastLabelDate"", ""LastLabelPrice"", ""DateLastSale"", ""ManufacturerNumber"", ""LastSalePrice"") 
-                    VALUES ('XXX', 'XXX', 'xxx', 'xxx', 'Default', '0', '0', '0', '0', '0', '6/11/2022 7:43:28 PM', '6/11/2022 7:43:28 PM', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0', '0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '1', '0', '0', '0', '0', 'Etc', 'xxx', '', '', '', '', '');";
+                    @"INSERT INTO Items (""ProductLine"", ""ItemNumber"", ""ItemName"", ""LongDescription"", ""Supplier"", ""GroupCode"", ""VelocityCode"", ""PreviousYearVelocityCode"", ""Brand"", ""Department"", ""Subdepartment"", ""ItemsPerContainer"", ""StandardPackage"", ""DateStocked"", ""DateLastReceipt"", ""Minimum"", ""Maximum"", ""OnHandQuantity"", ""WIPQuantity"", ""OnOrderQuantity"", ""BackorderQuantity"", ""DaysOnOrder"", ""DaysOnBackOrder"", ""ListPrice"", ""RedPrice"", ""YellowPrice"", ""GreenPrice"", ""PinkPrice"", ""BluePrice"", ""ReplacementCost"", ""AverageCost"", ""Taxed"", ""AgeRestricted"", ""MinimumAge"", ""LocationCode"", ""Serialized"", ""Category"", ""UPC"", ""LastLabelDate"", ""LastLabelPrice"", ""DateLastSale"", ""ManufacturerNumber"", ""LastSalePrice"", ""Brand"", ""Department"", ""Subdepartment"") 
+                    VALUES ('XXX', 'XXX', 'XXX', 'XXX', 'Default', '0', '0', '0', 'Default', 'Default', 'Default', '0', '0', '6/11/2022 7:43:28 PM', '6/11/2022 7:43:28 PM', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0', '0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '1', '0', '0', '0', '0', 'Etc', 'xxx', '', '', '', '', '', 'Default', 'Default', 'Default');";
                 command.ExecuteNonQuery();
             }
 
@@ -1186,18 +1232,6 @@ namespace TIMSServer
                 command.ExecuteNonQuery();
             }
 
-            if (!TableExists(sqlite_conn, "Subdepartments"))
-            {
-                command.CommandText =
-                @"CREATE TABLE ""Subdepartments"" (
-                ""ID"" INTEGER NOT NULL,
-                ""Subdepartment""  TEXT NOT NULL,
-	            ""ParentDepartment"" TEXT,
-	            PRIMARY KEY(""ID"" AUTOINCREMENT)
-                )";
-                command.ExecuteNonQuery();
-            }
-
             if (!TableExists(sqlite_conn, "Suppliers"))
             {
                 command.CommandText =
@@ -1314,6 +1348,26 @@ namespace TIMSServer
                 result[i] = characterArray[value % (uint)characterArray.Length];
             }
             return new string(result);
+        }
+    
+        public static string GetProperty(string key)
+        {
+            string value;
+            OpenConnection();
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText = "SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = $KEY";
+            command.Parameters.Add(new SqliteParameter("$KEY", key));
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+                return "";
+            else
+            {
+                reader.Read();
+                value = reader.GetString(0);
+            }
+            reader.Close();
+            CloseConnection();
+            return value;
         }
     }
 }

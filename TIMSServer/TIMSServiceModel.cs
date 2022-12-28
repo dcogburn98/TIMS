@@ -767,6 +767,14 @@ namespace TIMSServer
                 item.serialized = reader.GetBoolean(32);
                 item.category = reader.GetValue(33).ToString();
                 item.UPC = reader.GetValue(34).ToString();
+                item.lastLabelDate = reader.GetDateTime(35);
+                item.lastLabelPrice = reader.GetDecimal(36);
+                item.dateLastSale = reader.GetDateTime(37);
+                item.manufacturerNumber = reader.GetString(38);
+                item.lastSalePrice = reader.GetDecimal(39);
+                item.brand = reader.GetString(40);
+                item.department = reader.GetString(41);
+                item.subDepartment = reader.GetString(42);
                 if (fixedPL == fixedIN)
                     break;
             }
@@ -813,6 +821,7 @@ namespace TIMSServer
                 "BLUEPRICE = $BLUE, REPLACEMENTCOST = $COST, AVERAGECOST = $AVERAGECOST, " +
                 "TAXED = $TAXED, AGERESTRICTED = $RESTRICTED, MINIMUMAGE = $MINAGE, LOCATIONCODE = $LOCATION, " +
                 "SERIALIZED = $SERIALIZED, CATEGORY = $CATEGORY, DATELASTSALE = $LASTSALEDATE, MANUFACTURERNUMBER = $MANUFACTURERNO, " +
+                "BRAND = $BRAND, DEPARTMENT = $DEPARTMENT, SUBDEPARTMENT = $SUBDEPARTMENT, " + 
                 "UPC = $SKU, LASTLABELDATE = $LABELDATE, LASTLABELPRICE = $LABELPRICE, LASTSALEPRICE = $LASTSALEPRICE " +
                 "WHERE (ITEMNUMBER = $ITEMNUMBER AND PRODUCTLINE = $PRODUCTLINE)";
 
@@ -856,6 +865,9 @@ namespace TIMSServer
             command.Parameters.Add(new SqliteParameter("$LABELDATE", newItem.lastLabelDate.ToString("MM/dd/yyyy")));
             command.Parameters.Add(new SqliteParameter("$LABELPRICE", newItem.lastLabelPrice));
             command.Parameters.Add(new SqliteParameter("$LASTSALEPRICE", newItem.lastSalePrice));
+            command.Parameters.Add(new SqliteParameter("$BRAND", newItem.brand));
+            command.Parameters.Add(new SqliteParameter("$DEPARTMENT", newItem.department));
+            command.Parameters.Add(new SqliteParameter("$SUBDEPARTMENT", newItem.subDepartment));
 
             command.ExecuteNonQuery();
 
@@ -910,13 +922,13 @@ namespace TIMSServer
                 "ITEMSPERCONTAINER, STANDARDPACKAGE, DATESTOCKED, DATELASTRECEIPT, MINIMUM, MAXIMUM, ONHANDQUANTITY, WIPQUANTITY, " +
                 "ONORDERQUANTITY, BACKORDERQUANTITY, DAYSONORDER, DAYSONBACKORDER, LISTPRICE, REDPRICE, YELLOWPRICE, GREENPRICE, " +
                 "PINKPRICE, BLUEPRICE, REPLACEMENTCOST, AVERAGECOST, TAXED, AGERESTRICTED, MINIMUMAGE, LOCATIONCODE, SERIALIZED, " +
-                "CATEGORY, UPC, LASTLABELDATE, LASTLABELPRICE, DATELASTSALE, MANUFACTURERNUMBER, LASTSALEPRICE) " +
+                "CATEGORY, BRAND, DEPARTMENT, SUBDEPARTMENT, UPC, LASTLABELDATE, LASTLABELPRICE, DATELASTSALE, MANUFACTURERNUMBER, LASTSALEPRICE) " +
 
                 "VALUES ($PRODUCTLINE, $ITEMNUMBER, $ITEMNAME, $DESCRIPTION, $SUPPLIER, $GROUP, $VELOCITY, $PREVIOUSVELOCITY, " +
                 "$ITEMSPERCONTAINER, $STDPKG, $DATESTOCKED, $DATELASTRECEIPT, $MIN, $MAX, $ONHAND, $WIPQUANTITY, " +
                 "$ONORDERQTY, $BACKORDERQTY, $DAYSONORDER, $DAYSONBACKORDER, $LIST, $RED, $YELLOW, $GREEN, " +
-                "$PINK, $BLUE, $COST, $AVERAGECOST, $TAXED, $AGERESTRICTED, $MINAGE, $LOCATION, $SERIALIZED, $CATEGORY, $SKU," +
-                "$LABELDATE, $LABELPRICE, $SALEDATE, $MANUFACTURERNUMBER, $SALEPRICE)";
+                "$PINK, $BLUE, $COST, $AVERAGECOST, $TAXED, $AGERESTRICTED, $MINAGE, $LOCATION, $SERIALIZED, $CATEGORY, " +
+                "$BRAND, $DEPARTMENT, $SUBDEPARTMENT, $SKU, $LABELDATE, $LABELPRICE, $SALEDATE, $MANUFACTURERNUMBER, $SALEPRICE)";
 
             SqliteParameter p1 = new SqliteParameter("$PRODUCTLINE", item.productLine);
             SqliteParameter p2 = new SqliteParameter("$ITEMNUMBER", item.itemNumber);
@@ -958,6 +970,9 @@ namespace TIMSServer
             SqliteParameter p38 = new SqliteParameter("$SALEDATE", item.dateLastSale.ToString("MM/dd/yyyy"));
             SqliteParameter p39 = new SqliteParameter("$MANUFACTURERNUMBER", item.manufacturerNumber == null ? DBNull.Value : item.manufacturerNumber);
             SqliteParameter p40 = new SqliteParameter("$SALEPRICE", item.lastSalePrice);
+            SqliteParameter p41 = new SqliteParameter("$BRAND", item.brand);
+            SqliteParameter p42 = new SqliteParameter("$DEPARTMENT", item.department);
+            SqliteParameter p43 = new SqliteParameter("$SUBDEPARTMENT", item.subDepartment);
 
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
@@ -999,6 +1014,9 @@ namespace TIMSServer
             command.Parameters.Add(p38);
             command.Parameters.Add(p39);
             command.Parameters.Add(p40);
+            command.Parameters.Add(p41);
+            command.Parameters.Add(p42);
+            command.Parameters.Add(p43);
 
             command.ExecuteNonQuery();
 
@@ -1031,7 +1049,36 @@ namespace TIMSServer
             CloseConnection();
             return items;
         }
-        
+        #endregion
+
+        #region Categorization
+
+        public AuthContainer<List<string>> RetrieveProductBrands(AuthKey key)
+        {
+            AuthContainer<List<string>> container = CheckAuthorization<List<string>>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new List<string>();
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"SELECT * FROM BRANDS";
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return container;
+            }
+            while (reader.Read())
+            {
+                container.Data.Add(reader.GetString(1));
+            }
+
+            CloseConnection();
+            return container;
+        }
         public AuthContainer<List<string>> RetrieveProductCategories(AuthKey key)
         {
             AuthContainer<List<string>> container = CheckAuthorization<List<string>>(key);
@@ -1048,7 +1095,6 @@ namespace TIMSServer
             if (!reader.HasRows)
             {
                 CloseConnection();
-                container.Data = null;
                 return container;
             }
             while (reader.Read())
@@ -1075,7 +1121,6 @@ namespace TIMSServer
             if (!reader.HasRows)
             {
                 CloseConnection();
-                container.Data = null;
                 return container;
             }
             while (reader.Read())
@@ -1097,19 +1142,36 @@ namespace TIMSServer
 
             SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
-                @"SELECT * FROM SUBDEPARTMENTS WHERE PARTENTDEPARTMENT = $DEPARTMENT";
+                @"SELECT * FROM SUBDEPARTMENTS WHERE PARENTDEPARTMENT = $DEPARTMENT";
             command.Parameters.Add(new SqliteParameter("$DEPARTMENT", department));
             SqliteDataReader reader = command.ExecuteReader();
             if (!reader.HasRows)
             {
                 CloseConnection();
-                container.Data = null;
                 return container;
             }
             while (reader.Read())
             {
                 container.Data.Add(reader.GetString(1));
             }
+
+            CloseConnection();
+            return container;
+        }
+        public AuthContainer<object> AddProductBrand(string brand, AuthKey key)
+        {
+            AuthContainer<object> container = CheckAuthorization<object>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new object();
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                @"INSERT INTO BRANDS (BRANDNAME) VALUES ($BRAND)";
+            command.Parameters.Add(new SqliteParameter("$BRAND", brand));
+            command.ExecuteNonQuery();
 
             CloseConnection();
             return container;
@@ -1125,7 +1187,7 @@ namespace TIMSServer
 
             SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
-                @"INSERT INTO CATEGORIES (CATEGORY) VALUES ($CATEGORY)";
+                @"INSERT INTO CATEGORIES (CATEGORYNAME) VALUES ($CATEGORY)";
             command.Parameters.Add(new SqliteParameter("$CATEGORY", category));
             command.ExecuteNonQuery();
 
@@ -1143,7 +1205,7 @@ namespace TIMSServer
 
             SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
-                @"INSERT INTO DEPARTMENTS (CATEGORY) VALUES ($DEPARTMENT)";
+                @"INSERT INTO DEPARTMENTS (DEPARTMENT) VALUES ($DEPARTMENT)";
             command.Parameters.Add(new SqliteParameter("$DEPARTMENT", department));
             command.ExecuteNonQuery();
 
@@ -1959,7 +2021,7 @@ namespace TIMSServer
                     cost = reader.GetDecimal(16)
                 };
 
-                if (item.serializedItem)
+                if (item.serializedItem && !reader.IsDBNull(10))
                     item.serialNumber = reader.GetString(10);
 
                 inv.items.Add(item);
@@ -2173,11 +2235,11 @@ namespace TIMSServer
                     "INSERT INTO INVOICEITEMS (" +
 
                     "INVOICENUMBER,ITEMNUMBER,PRODUCTLINE,ITEMDESCRIPTION,PRICE,LISTPRICE," +
-                    "QUANTITY,TOTAL,PRICECODE,SERIALIZED,AGERESTRICTED," +
+                    "QUANTITY,TOTAL,PRICECODE,SERIALIZED,SERIALNUMBER,AGERESTRICTED," +
                     "MINIMUMAGE,TAXED,INVOICECODES,GUID,COST) " +
 
                     "VALUES ($INVOICENUMBER,$ITEMNUMBER,$PRODUCTLINE,$ITEMDESCRIPTION,$PRICE,$LISTPRICE," +
-                    "$QUANTITY,$TOTAL,$PRICECODE,$SERIALIZED,$AGERESTRICTED," +
+                    "$QUANTITY,$TOTAL,$PRICECODE,$SERIALIZED,$SERIALNUMBER,$AGERESTRICTED," +
                     "$MINIMUMAGE,$TAXED,$INVOICECODES,$GUID,$COST)";
 
                 command.Parameters.Clear();
@@ -2192,7 +2254,7 @@ namespace TIMSServer
                 command.Parameters.Add(new SqliteParameter("$TOTAL", item.total));
                 command.Parameters.Add(new SqliteParameter("$PRICECODE", item.pricingCode));
                 command.Parameters.Add(new SqliteParameter("$SERIALIZED", item.serializedItem));
-                //command.Parameters.Add(new SqliteParameter("$SERIALNUMBER", item.serialNumber));
+                command.Parameters.Add(new SqliteParameter("$SERIALNUMBER", string.IsNullOrEmpty(item.serialNumber) ? "" : item.serialNumber));
                 command.Parameters.Add(new SqliteParameter("$AGERESTRICTED", item.ageRestricted));
                 command.Parameters.Add(new SqliteParameter("$MINIMUMAGE", item.minimumAge));
                 command.Parameters.Add(new SqliteParameter("$TAXED", item.taxed));
@@ -3198,7 +3260,83 @@ namespace TIMSServer
                 accounts.Add(acct);
             }
             CloseConnection();
+
+            foreach (Account acct in accounts)
+            {
+                acct.Transactions = RetrieveAccountTransactions(acct.ID);
+                acct.Transactions.Sort((d1, d2) => DateTime.Compare(d1.date, d2.date));
+                foreach (Transaction t in acct.Transactions)
+                {
+                    if (acct.ID == t.creditAccount)
+                    {
+                        switch (acct.Type)
+                        {
+                            case Account.AccountTypes.Asset:
+                            case Account.AccountTypes.Expense:
+                                acct.Balance -= t.amount;
+                                break;
+
+                            case Account.AccountTypes.Equity:
+                            case Account.AccountTypes.Liability:
+                            case Account.AccountTypes.Income:
+                                acct.Balance += t.amount;
+                                break;
+                        }
+                    }
+                    if (acct.ID == t.debitAccount)
+                    {
+                        switch (acct.Type)
+                        {
+                            case Account.AccountTypes.Asset:
+                            case Account.AccountTypes.Expense:
+                                acct.Balance += t.amount;
+                                break;
+
+                            case Account.AccountTypes.Equity:
+                            case Account.AccountTypes.Liability:
+                            case Account.AccountTypes.Income:
+                                acct.Balance -= t.amount;
+                                break;
+                        }
+                    }
+                }
+            }
             return accounts;
+        }
+        private List<Transaction> RetrieveAccountTransactions(int accountID)
+        {
+            List<Transaction> transactions = new List<Transaction>();
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "SELECT * FROM ACCOUNTTRANSACTIONS WHERE CREDITACCOUNT = $ACCT OR DEBITACCOUNT = $ACCT";
+            command.Parameters.Add(new SqliteParameter("$ACCT", accountID));
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return transactions;
+            }
+
+            while (reader.Read())
+            {
+                int creditAccount = reader.GetInt32(4);
+                int debitAccount = reader.GetInt32(5);
+                decimal amount = reader.GetDecimal(6);
+                transactions.Add(new Transaction(debitAccount, creditAccount, amount)
+                {
+                    ID = reader.GetInt32(0),
+                    transactionID = reader.GetInt32(1),
+                    date = DateTime.Parse(reader.GetString(2)),
+                    memo = reader.GetString(3),
+                    referenceNumber = reader.GetInt32(7),
+                    _void = reader.GetBoolean(8),
+                });
+            }
+
+            CloseConnection();
+            return transactions;
         }
         public List<Transaction> RetrieveAccountTransactions(string accountName)
         {
@@ -3228,7 +3366,8 @@ namespace TIMSServer
                     transactionID = reader.GetInt32(1),
                     date = DateTime.Parse(reader.GetString(2)),
                     memo = reader.GetString(3),
-                    referenceNumber = reader.GetInt32(7)
+                    referenceNumber = reader.GetInt32(7),
+                    _void = reader.GetBoolean(8),
                 });
             }
 
@@ -3265,15 +3404,16 @@ namespace TIMSServer
 
             SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
-                "INSERT INTO ACCOUNTTRANSACTIONS (TRANSACTIONID, DATE, MEMO, CREDITACCOUNT, DEBITACCOUNT, AMOUNT, REFERENCENUMBER)" +
-                "VALUES ($TID, $DATE, $MEMO, $CA, $DA, $AMT, $REF)";
+                "INSERT INTO ACCOUNTTRANSACTIONS (TRANSACTIONID, DATE, MEMO, CREDITACCOUNT, DEBITACCOUNT, AMOUNT, REFERENCENUMBER, VOID)" +
+                "VALUES ($TID, $DATE, $MEMO, $CA, $DA, $AMT, $REF, $VOID)";
             command.Parameters.Add(new SqliteParameter("$TID", tID));
-            command.Parameters.Add(new SqliteParameter("$DATE", t.date.ToString("MM/dd/yyyy")));
+            command.Parameters.Add(new SqliteParameter("$DATE", t.date.ToString("MM/dd/yyyy h:mm tt")));
             command.Parameters.Add(new SqliteParameter("$MEMO", t.memo));
             command.Parameters.Add(new SqliteParameter("$CA", t.creditAccount));
             command.Parameters.Add(new SqliteParameter("$DA", t.debitAccount));
             command.Parameters.Add(new SqliteParameter("$AMT", t.amount));
             command.Parameters.Add(new SqliteParameter("$REF", t.referenceNumber));
+            command.Parameters.Add(new SqliteParameter("$VOID", t._void));
             command.ExecuteNonQuery();
 
             CloseConnection();
@@ -3291,6 +3431,23 @@ namespace TIMSServer
 
             CloseConnection();
         }
+        public AuthContainer<object> VoidTransaction(int TransactionID, AuthKey key)
+        {
+            AuthContainer<object> container = CheckAuthorization<object>(key);
+            if (!container.Key.Success)
+                return container;
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText = "UPDATE ACCOUNTTRANSACTIONS SET (VOID = 1) WHERE (TRANSACTIONID = $TID)";
+            command.Parameters.Add(new SqliteParameter("$TID", TransactionID));
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+            return container;
+        }
+        
         #endregion
 
         #region Devices

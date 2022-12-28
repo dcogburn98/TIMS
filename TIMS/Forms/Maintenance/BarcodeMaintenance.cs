@@ -22,7 +22,7 @@ namespace TIMS.Forms.Maintenance
             CancelButton = closeButton;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void AddBarcode()
         {
             if (string.IsNullOrEmpty(barcodeTB.Text))
             {
@@ -58,30 +58,80 @@ namespace TIMS.Forms.Maintenance
             }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            AddBarcode();
+        }
+
         private void barcodeTB_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Enter)
             {
                 return;
             }
-            
 
+            barcodeTB.Text = barcodeTB.Text.Trim('@');
+            
             InvoiceItem scannedItem = Communication.RetrieveInvoiceItemFromBarcode(barcodeTB.Text.Trim('@'));
             if (scannedItem != null)
             {
                 productLineTB.Text = scannedItem.productLine;
                 itemNumberTB.Text = scannedItem.itemNumber;
                 qtyTB.Text = scannedItem.quantity.ToString();
+                barcodeTB.SelectAll();
             }
             else
             {
+                productLineTB.Text = "";
+                itemNumberTB.Text = "";
                 productLineTB.Focus();
+                qtyTB.Text = "1";
             }
         }
 
         private void closeButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void productLineTB_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsLetter(e.KeyChar))
+            {
+                e.KeyChar = char.ToUpper(e.KeyChar);
+            }
+        }
+
+        private void itemNumberTB_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsLetter(e.KeyChar))
+            {
+                e.KeyChar = char.ToUpper(e.KeyChar);
+            }
+        }
+
+        private void qtyTB_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                AddBarcode();
+            }
+        }
+
+        private void productLineTB_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                itemNumberTB.Focus();
+            }
+        }
+
+        private void itemNumberTB_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                qtyTB.Focus();
+            }
         }
     }
 }

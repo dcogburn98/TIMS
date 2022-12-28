@@ -902,6 +902,7 @@
             this.voidButton.TabIndex = 15;
             this.voidButton.Text = "Void";
             this.voidButton.UseVisualStyleBackColor = true;
+            this.voidButton.Click += new System.EventHandler(this.voidButton_Click);
             // 
             // prevButton
             // 

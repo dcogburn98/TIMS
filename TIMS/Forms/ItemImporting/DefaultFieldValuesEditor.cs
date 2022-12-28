@@ -86,7 +86,10 @@ namespace TIMS.Forms.ItemImporting
                 dateLastReceipt = DateTime.TryParse(dateLastReceived.Text, out g)   == false ? DateTime.MinValue : g,
                 taxed = taxed.Checked,
                 ageRestricted = ageRestricted.Checked,
-                serialized = serialized.Checked
+                serialized = serialized.Checked,
+                brand = "Default",
+                department = "Default",
+                subDepartment = "Default"
             };
             DialogResult = DialogResult.OK;
             Close();

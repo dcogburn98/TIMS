@@ -244,6 +244,7 @@ namespace TIMS.Forms
             this.reviewTodaysSalesToolStripMenuItem.Name = "reviewTodaysSalesToolStripMenuItem";
             this.reviewTodaysSalesToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
             this.reviewTodaysSalesToolStripMenuItem.Text = "Review Today\'s Sales";
+            this.reviewTodaysSalesToolStripMenuItem.Click += new System.EventHandler(this.reviewTodaysSalesToolStripMenuItem_Click);
             // 
             // reviewTodaysInvoiceCostsToolStripMenuItem
             // 

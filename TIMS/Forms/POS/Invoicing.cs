@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Linq;
 
@@ -88,13 +89,43 @@ namespace TIMS.Forms
             stockCheckButton.Enabled = true;
             invoiceAttentionTB.Enabled = true;
             openCoresButton.Enabled = true;
-            customerNoteTB.Enabled = true;
+            customerNoteTB.BackColor = Color.Yellow;
             dataGridView1.Enabled = true;
             itemNoTB.Enabled = true;
             extraFunctionsDropBox.Enabled = true;
             enterBarcodeButton.Enabled = true;
             messagesButton.Enabled = true;
             roaButton.Enabled = true;
+
+            faxNoLabel.Visible = true;
+            phoneNoLabel.Visible = true;
+            billingTypeLabel.Visible = true;
+            availableCreditLabel.Visible = true;
+            creditLimitLabel.Visible = true;
+            primaryTaxLabel.Visible = true;
+            secondaryTaxLabel.Visible = true;
+            primaryTaxLocationLabel.Visible = true;
+            secondaryTaxLocationLabel.Visible = true;
+
+            faxNoLabel.Text = currentInvoice.customer.faxNumber;
+            phoneNoLabel.Text = currentInvoice.customer.phoneNumber;
+            billingTypeLabel.Text = currentInvoice.customer.billingType;
+            availableCreditLabel.Text = (currentInvoice.customer.creditLimit - currentInvoice.customer.accountBalance).ToString();
+            creditLimitLabel.Text = currentInvoice.customer.creditLimit.ToString();
+            primaryTaxLabel.Text = currentInvoice.customer.primaryTaxStatus;
+            secondaryTaxLabel.Text = currentInvoice.customer.secondaryTaxStatus;
+            primaryTaxLocationLabel.Text = currentInvoice.customer.primaryTaxExemptionNumber;
+            secondaryTaxLocationLabel.Text = currentInvoice.customer.secondaryTaxExemptionNumber;
+
+            customerInfoLB.Text += currentInvoice.customer.customerNumber + "\n";
+            customerInfoLB.Text += currentInvoice.customer.customerName + "\n";
+            customerInfoLB.Text += currentInvoice.customer.billingAddress + "\n";
+            customerInfoLB.Text += currentInvoice.customer.phoneNumber + "\n";
+
+            foreach (string buyer in currentInvoice.customer.authorizedBuyers.Split(','))
+            {
+                authorizedBuyerDropBox.Items.Add(buyer);
+            }
         }
 
         public void CancelInvoice()
@@ -112,6 +143,13 @@ namespace TIMS.Forms
             priceTB.Clear();
             taxedCB.Checked = false;
             dataGridView1.Rows.Clear();
+            customerInfoLB.Items.Clear();
+            subtotalLabel.Text = "$0.00";
+            authorizedBuyerDropBox.SelectedIndex = -1;
+            authorizedBuyerDropBox.Items.Clear();
+            customerNoteTB.Text = "";
+            customerInfoLB.Text = "";
+            customerNoteTB.BackColor = Color.LightGray;
 
             productLineDropBox.Enabled = false;
             qtyTB.Enabled = false;
@@ -125,7 +163,6 @@ namespace TIMS.Forms
             stockCheckButton.Enabled = false;
             invoiceAttentionTB.Enabled = false;
             openCoresButton.Enabled = false;
-            customerNoteTB.Enabled = false;
             dataGridView1.Enabled = false;
             itemNoTB.Enabled = false;
             extraFunctionsDropBox.Enabled = false;
@@ -133,9 +170,17 @@ namespace TIMS.Forms
             messagesButton.Enabled = true;
             roaButton.Enabled = true;
             savedInvoiceButton.Enabled = true;
-            customerInfoLB.Items.Clear();
-            subtotalLabel.Text = "$0.00";
 
+            faxNoLabel.Visible = false;
+            phoneNoLabel.Visible = false;
+            billingTypeLabel.Visible = false;
+            availableCreditLabel.Visible = false;
+            creditLimitLabel.Visible = false;
+            primaryTaxLabel.Visible = false;
+            secondaryTaxLabel.Visible = false;
+            primaryTaxLocationLabel.Visible = false;
+            secondaryTaxLocationLabel.Visible = false;
+            
             customerNoTB.Clear();
             customerNoTB.Focus();
 
@@ -169,7 +214,10 @@ namespace TIMS.Forms
             currentInvoice.invoiceCreationTime = DateTime.Now;
 
             if (c.invoiceMessage != "")
+            {
+                customerNoteTB.Text = c.invoiceMessage;
                 MessageBox.Show(c.invoiceMessage);
+            }
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
@@ -334,7 +382,13 @@ namespace TIMS.Forms
             if (workingItem.serializedItem)
             {
                 SerialNumberPicker picker = new SerialNumberPicker(workingItem);
-                picker.ShowDialog();
+                if (workingItem.serialNumber == "FALSE")
+                {
+                    addingLine = false;
+                    return;
+                }
+                else if (workingItem.serialNumber != "NO SERIAL NUMBER")
+                    picker.ShowDialog();
             }
 
             workingItem.quantity = decimal.Parse(qtyTB.Text);
@@ -449,7 +503,10 @@ namespace TIMS.Forms
                 customerNoTB.Focus();
                 zeroPriceAck = false;
             }
-            
+            else
+            {
+                invoiceAttentionTB.Text = currentInvoice.attentionLine;
+            }
         }
 
         private void extraFunctionsDropBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -707,6 +764,8 @@ namespace TIMS.Forms
             }
             if (currentState == State.EditingLineItem)
             {
+                if (MessageBox.Show("Are you sure you want to remove this line item?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
+                    return;
                 lineDeleted = true;
                 currentInvoice.items.Remove(currentInvoice.items.Find(el => el.ID == (Guid)dataGridView1.SelectedRows[0].Cells["guid"].Value));
                 dataGridView1.Rows.Remove(dataGridView1.SelectedRows[0]);

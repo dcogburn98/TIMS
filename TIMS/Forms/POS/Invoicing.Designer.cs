@@ -379,6 +379,7 @@
             this.faxNoLabel.Size = new System.Drawing.Size(79, 13);
             this.faxNoLabel.TabIndex = 3;
             this.faxNoLabel.Text = "(000) 000-0000";
+            this.faxNoLabel.Visible = false;
             // 
             // faxLabel
             // 
@@ -398,6 +399,7 @@
             this.phoneNoLabel.Size = new System.Drawing.Size(79, 13);
             this.phoneNoLabel.TabIndex = 1;
             this.phoneNoLabel.Text = "(000) 000-0000";
+            this.phoneNoLabel.Visible = false;
             // 
             // phoneLabel
             // 
@@ -433,6 +435,7 @@
             this.creditLimitLabel.Size = new System.Drawing.Size(25, 13);
             this.creditLimitLabel.TabIndex = 4;
             this.creditLimitLabel.Text = "250";
+            this.creditLimitLabel.Visible = false;
             // 
             // limitLabel
             // 
@@ -461,6 +464,7 @@
             this.availableCreditLabel.Size = new System.Drawing.Size(25, 13);
             this.availableCreditLabel.TabIndex = 1;
             this.availableCreditLabel.Text = "250";
+            this.availableCreditLabel.Visible = false;
             // 
             // billingTypeLabel
             // 
@@ -471,6 +475,7 @@
             this.billingTypeLabel.Size = new System.Drawing.Size(55, 13);
             this.billingTypeLabel.TabIndex = 0;
             this.billingTypeLabel.Text = "Cash Only";
+            this.billingTypeLabel.Visible = false;
             // 
             // groupBox6
             // 
@@ -497,6 +502,7 @@
             this.secondaryTaxLocationLabel.Size = new System.Drawing.Size(22, 13);
             this.secondaryTaxLocationLabel.TabIndex = 5;
             this.secondaryTaxLocationLabel.Text = "AR";
+            this.secondaryTaxLocationLabel.Visible = false;
             // 
             // primaryTaxLocationLabel
             // 
@@ -507,6 +513,7 @@
             this.primaryTaxLocationLabel.Size = new System.Drawing.Size(22, 13);
             this.primaryTaxLocationLabel.TabIndex = 4;
             this.primaryTaxLocationLabel.Text = "AR";
+            this.primaryTaxLocationLabel.Visible = false;
             // 
             // secondaryTaxLabel
             // 
@@ -517,6 +524,7 @@
             this.secondaryTaxLabel.Size = new System.Drawing.Size(40, 13);
             this.secondaryTaxLabel.TabIndex = 3;
             this.secondaryTaxLabel.Text = "Always";
+            this.secondaryTaxLabel.Visible = false;
             // 
             // primaryTaxLabel
             // 
@@ -527,6 +535,7 @@
             this.primaryTaxLabel.Size = new System.Drawing.Size(40, 13);
             this.primaryTaxLabel.TabIndex = 2;
             this.primaryTaxLabel.Text = "Always";
+            this.primaryTaxLabel.Visible = false;
             // 
             // secondaryLabel
             // 

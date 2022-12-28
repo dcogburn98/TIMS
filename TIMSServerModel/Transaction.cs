@@ -28,6 +28,8 @@ namespace TIMSServerModel
         public int creditAccount;
         [DataMember]
         public int debitAccount;
+        [DataMember]
+        public bool _void;
 
         public Transaction(int debitAccount, int creditAccount, decimal amount)
         {

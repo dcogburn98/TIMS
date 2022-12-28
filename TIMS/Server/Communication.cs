@@ -34,7 +34,7 @@ namespace TIMS.Server
             return proxy.CheckEmployee(input);
         }
 
-        public static Employee Login(string user, byte[] pass)
+        public static Employee Login(string user, byte[] pass) //AuthContainer'd
         {
             Employee e = proxy.Login(user, pass);
             if (e != null)
@@ -70,8 +70,7 @@ namespace TIMS.Server
                 MessageBox.Show("Access Denied.");
                 return null;
             }
-        }
-
+        } //AuthContainer'd
         public static List<Item> CheckItemNumberFromSupplier(string itemNumber, string supplier)
         {
             AuthContainer<List<Item>> c = proxy.CheckItemNumberFromSupplier(itemNumber, supplier, currentKey);
@@ -85,8 +84,7 @@ namespace TIMS.Server
                 MessageBox.Show("Access Denied.");
                 return null;
             }
-        }
-
+        } //AuthContainer'd
         public static List<Item> RetrieveItemsFromSupplier(string supplier)
         {
             AuthContainer<List<Item>> c = proxy.RetrieveItemsFromSupplier(supplier, currentKey);
@@ -100,68 +98,55 @@ namespace TIMS.Server
                 MessageBox.Show("Access Denied.");
                 return null;
             }
-        }
-
+        } //AuthContainer'd
         public static List<Item> RetrieveItemsFromSupplierBelowMin(string supplier)
         {
             return proxy.RetrieveItemsFromSupplierBelowMin(supplier);
         }
-
         public static List<Item> RetrieveItemsFromSupplierBelowMax(string supplier)
         {
             return proxy.RetrieveItemsFromSupplierBelowMax(supplier);
         }
-
         public static List<InvoiceItem> RetrieveItemsFromSupplierSoldAfterLastOrderDate(string supplier)
         {
             return proxy.RetrieveItemsFromSupplierSoldAfterLastOrderDate(supplier);
         }
-        
         public static List<string> RetrieveSuppliers()
         {
             return proxy.RetrieveSuppliers();
         }
-
         public static void AddSupplier(string supplier)
         {
             proxy.AddSupplier(supplier);
         }
-
         public static bool CheckProductLine(string productLine)
         {
             return proxy.CheckProductLine(productLine);
         }
-
         public static void AddProductLine(string productLine)
         {
             proxy.AddProductLine(productLine);
         }
-
         public static Item RetrieveItemFromBarcode(string scannedBarcode)
         {
             return proxy.RetrieveItemFromBarcode(scannedBarcode);
         }
-        
         public static InvoiceItem RetrieveInvoiceItemFromBarcode(string scannedBarcode)
         {
             return proxy.RetrieveInvoiceItemFromBarcode(scannedBarcode);
         }
-
         public static Item RetrieveItem(string itemNumber, string productLine, bool connectionOpened = false)
         {
             return proxy.RetrieveItem(itemNumber, productLine, connectionOpened);
         }
-
         public static void UpdateItem(Item newItem)
         {
             proxy.UpdateItem(newItem);
         }
-        
         public static List<string> RetrieveItemSerialNumbers(string productLine, string itemNumber)
         {
             return proxy.RetrieveItemSerialNumbers(productLine, itemNumber);
         }
-
         public static bool AddItem(Item item)
         {
             return proxy.AddItem(item);
@@ -171,6 +156,98 @@ namespace TIMS.Server
             return proxy.RetrieveLabelOutOfDateItems();
         }
 
+        #endregion
+
+        #region Categorization
+        public static List<string> RetrieveProductBrands()
+        {
+            AuthContainer<List<string>> c = proxy.RetrieveProductBrands(currentKey);
+            if (c.Key.Success)
+            {
+                currentKey.Regenerate();
+                return c.Data;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
+        } //AuthContainer'd
+        public static List<string> RetrieveProductCategories()
+        {
+            AuthContainer<List<string>> c = proxy.RetrieveProductCategories(currentKey);
+            if (c.Key.Success)
+            {
+                currentKey.Regenerate();
+                return c.Data;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
+        } //AuthContainer'd
+        public static List<string> RetrieveProductDepartments()
+        {
+            AuthContainer<List<string>> c = proxy.RetrieveProductDepartments(currentKey);
+            if (c.Key.Success)
+            {
+                currentKey.Regenerate();
+                return c.Data;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
+        } //AuthContainer'd
+        public static List<string> RetrieveProductSubdepartments(string department)
+        {
+            AuthContainer<List<string>> c = proxy.RetrieveProductSubdepartments(department, currentKey);
+            if (c.Key.Success)
+            {
+                currentKey.Regenerate();
+                return c.Data;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
+        } //AuthContainer'd
+
+        public static void AddProductBrand(string brand)
+        {
+            AuthContainer<object> container = proxy.AddProductBrand(brand, currentKey);
+            if (container.Key.Success)
+                currentKey.Regenerate();
+            else
+                MessageBox.Show("Access Denied.");
+        } //AuthContainer'd
+        public static void AddProductCategory(string category)
+        {
+            AuthContainer<object> container = proxy.AddProductCategory(category, currentKey);
+            if (container.Key.Success)
+                currentKey.Regenerate();
+            else
+                MessageBox.Show("Access Denied.");
+        } //AuthContainer'd
+        public static void AddProductDepartment(string department)
+        {
+            AuthContainer<object> container = proxy.AddProductDepartment(department, currentKey);
+            if (container.Key.Success)
+                currentKey.Regenerate();
+            else
+                MessageBox.Show("Access Denied.");
+        } //AuthContainer'd
+        public static void AddProductSubdepartment(string parentDepartment, string subDepartment)
+        {
+            AuthContainer<object> container = proxy.AddProductSubdepartment(parentDepartment, subDepartment, currentKey);
+            if (container.Key.Success)
+                currentKey.Regenerate();
+            else
+                MessageBox.Show("Access Denied.");
+        } //AuthContainer'd
         #endregion
 
         #region Customers
@@ -191,7 +268,7 @@ namespace TIMS.Server
                 MessageBox.Show("Access Denied.");
                 return null;
             }
-        }
+        } //AuthContainer'd
         public static List<Customer> GetCustomers()
         {
             AuthContainer<List<Customer>> c = proxy.GetCustomers(currentKey);
@@ -205,7 +282,7 @@ namespace TIMS.Server
                 MessageBox.Show("Access Denied.");
                 return null;
             }
-        }
+        } //AuthContainer'd
         public static void UpdateCustomer(Customer customer)
         {
             AuthContainer<object> container = proxy.UpdateCustomer(customer, currentKey);
@@ -213,7 +290,7 @@ namespace TIMS.Server
                 currentKey.Regenerate();
             else
                 MessageBox.Show("Access Denied.");
-        }
+        } //AuthContainer'd
         public static void AddCustomer(Customer customer)
         {
             AuthContainer<object> container = proxy.AddCustomer(customer, currentKey);
@@ -221,7 +298,7 @@ namespace TIMS.Server
                 currentKey.Regenerate();
             else
                 MessageBox.Show("Access Denied.");
-        }
+        } //AuthContainer'd
 
         #endregion
 
@@ -240,7 +317,7 @@ namespace TIMS.Server
                 MessageBox.Show("Access Denied.");
                 return null;
             }
-        }
+        } //AuthContainer'd
         public static void UpdatePricingProfile(PricingProfile profile)
         {
             AuthContainer<object> container = proxy.UpdatePricingProfile(profile, currentKey);
@@ -248,7 +325,7 @@ namespace TIMS.Server
                 currentKey.Regenerate();
             else
                 MessageBox.Show("Access Denied.");
-        }
+        } //AuthContainer'd
         public static int RetrieveNextPricingProfileID()
         {
             AuthContainer<int> container = proxy.RetrieveNextPricingProfileID(currentKey);
@@ -262,7 +339,7 @@ namespace TIMS.Server
                 MessageBox.Show("Access Denied.");
                 return 0;
             }
-        }
+        } //AuthContainer'd
         public static void AddPricingProfile(PricingProfile profile)
         {
             AuthContainer<object> container = proxy.AddPricingProfile(profile, currentKey);
@@ -270,7 +347,7 @@ namespace TIMS.Server
                 currentKey.Regenerate();
             else
                 MessageBox.Show("Access Denied.");
-        }
+        } //AuthContainer'd
         #endregion
 
         #region Invoices
@@ -302,7 +379,7 @@ namespace TIMS.Server
                 MessageBox.Show("Access Denied.");
                 return null;
             }
-        }
+        } //AuthContainer'd
 
         public static void DeleteSavedInvoice(Invoice inv)
         {
@@ -311,7 +388,7 @@ namespace TIMS.Server
                 currentKey.Regenerate();
             else
                 MessageBox.Show("Access Denied.");
-        }
+        } //AuthContainer'd
 
         public static void SaveInvoice(Invoice inv)
         {
@@ -338,7 +415,7 @@ namespace TIMS.Server
                 MessageBox.Show("Access Denied.");
                 return "";
             }
-        }
+        } //AuthContainer'd
         public static void SetImage(string key, Image img)
         {
             MemoryStream ms = new MemoryStream();
@@ -349,7 +426,7 @@ namespace TIMS.Server
                 currentKey.Regenerate();
             else
                 MessageBox.Show("Access Denied.");
-        }
+        } //AuthContainer'd
         public static Image RetrieveImage(string key)
         {
             AuthContainer<byte[]> container = proxy.RetrieveImage(key, currentKey);
@@ -373,7 +450,7 @@ namespace TIMS.Server
                 MessageBox.Show("Access Denied.");
                 return null;
             }
-        }
+        } //AuthContainer'd
         public static Image RetrieveCompanyLogo()
         {
             MemoryStream ms = new MemoryStream(proxy.RetrieveCompanyLogo());
@@ -390,7 +467,7 @@ namespace TIMS.Server
         #endregion
 
         #region Item Shortcut Menus
-        internal static List<ItemShortcutMenu> RetrieveShortcutMenus()
+        public static List<ItemShortcutMenu> RetrieveShortcutMenus()
         {
             return proxy.RetrieveShortcutMenus();
         }
@@ -414,7 +491,7 @@ namespace TIMS.Server
                 currentKey.Regenerate();
             else
                 MessageBox.Show("Access Denied.");
-        }
+        } //AuthContainer'd
         #endregion
 
         #region Reports
@@ -516,6 +593,14 @@ namespace TIMS.Server
         {
             proxy.UpdateAccountBalance(accountID, newBalance);
         }
+        public static void VoidTransaction(int TransactionID)
+        {
+            AuthContainer<object> container = proxy.VoidTransaction(TransactionID, currentKey);
+            if (container.Key.Success)
+                currentKey.Regenerate();
+            else
+                MessageBox.Show("Access Denied.");
+        } //AuthContainer'd
         #endregion
 
         #region Devices
@@ -569,7 +654,7 @@ namespace TIMS.Server
                 currentKey.Regenerate();
                 return "Timeout";
             }
-        }
+        } //AuthContainer'd
         public static Payment InitiatePayment(decimal paymentAmount)
         {
             AuthContainer<Payment> c = proxy.InitiatePayment(paymentAmount, currentKey);
@@ -583,7 +668,7 @@ namespace TIMS.Server
                 MessageBox.Show("Access Denied.");
                 return null;
             }
-        }
+        } //AuthContainer'd
         public static Payment InitiateRefund(decimal refundAmount)
         {
             AuthContainer<Payment> c = proxy.InitiateRefund(refundAmount, currentKey);
@@ -597,7 +682,7 @@ namespace TIMS.Server
                 MessageBox.Show("Access Denied.");
                 return null;
             }
-        }
+        } //AuthContainer'd
         public static string RequestSignature()
         {
             try
@@ -618,7 +703,7 @@ namespace TIMS.Server
             {
                 return null;
             }
-        }
+        } //AuthContainer'd
 
         public static void PrintReceipt(Invoice inv)
         {
@@ -627,7 +712,7 @@ namespace TIMS.Server
                 currentKey.Regenerate();
             else
                 MessageBox.Show("Access Denied.");
-        }
+        } //AuthContainer'd
         #endregion
     }
 }

@@ -291,6 +291,12 @@
     <Compile Include="Forms\Maintenance\HTMLEditor.Designer.cs">
       <DependentUpon>HTMLEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Maintenance\InventoryUpdateAccountPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Maintenance\InventoryUpdateAccountPicker.Designer.cs">
+      <DependentUpon>InventoryUpdateAccountPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Maintenance\ItemMaintenance.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -386,6 +392,12 @@
     </Compile>
     <Compile Include="Forms\POS\ReviewInvoices.Designer.cs">
       <DependentUpon>ReviewInvoices.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\POS\ReviewTodaysInvoices.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\POS\ReviewTodaysInvoices.Designer.cs">
+      <DependentUpon>ReviewTodaysInvoices.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\POS\SavedInvoicesPicker.cs">
       <SubType>Form</SubType>
@@ -547,6 +559,9 @@
     <EmbeddedResource Include="Forms\Maintenance\HTMLEditor.resx">
       <DependentUpon>HTMLEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Maintenance\InventoryUpdateAccountPicker.resx">
+      <DependentUpon>InventoryUpdateAccountPicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Maintenance\ItemMaintenance.resx">
       <DependentUpon>ItemMaintenance.cs</DependentUpon>
     </EmbeddedResource>
@@ -606,6 +621,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\POS\ReviewInvoices.resx">
       <DependentUpon>ReviewInvoices.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\POS\ReviewTodaysInvoices.resx">
+      <DependentUpon>ReviewTodaysInvoices.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\POS\SavedInvoicesPicker.resx">
       <DependentUpon>SavedInvoicesPicker.cs</DependentUpon>

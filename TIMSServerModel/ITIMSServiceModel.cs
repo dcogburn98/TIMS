@@ -57,12 +57,25 @@ namespace TIMSServerModel
         bool AddItem(Item item);
         [OperationContract]
         List<Item> RetrieveLabelOutOfDateItems();
+        #endregion
+
+        #region Categorization
+        [OperationContract]
+        AuthContainer<List<string>> RetrieveProductBrands(AuthKey key);
         [OperationContract]
         AuthContainer<List<string>> RetrieveProductCategories(AuthKey key);
         [OperationContract]
         AuthContainer<List<string>> RetrieveProductDepartments(AuthKey key);
         [OperationContract]
         AuthContainer<List<string>> RetrieveProductSubdepartments(string department, AuthKey key);
+        [OperationContract]
+        AuthContainer<object> AddProductBrand(string brand, AuthKey key);
+        [OperationContract]
+        AuthContainer<object> AddProductCategory(string category, AuthKey key);
+        [OperationContract]
+        AuthContainer<object> AddProductDepartment(string department, AuthKey key);
+        [OperationContract]
+        AuthContainer<object> AddProductSubdepartment(string parentDepartment, string subdepartment, AuthKey key);
         #endregion
 
         #region Invoices
@@ -182,6 +195,8 @@ namespace TIMSServerModel
         void SaveTransaction(Transaction t);
         [OperationContract]
         void UpdateAccountBalance(int accountID, decimal newBalance);
+        [OperationContract]
+        AuthContainer<object> VoidTransaction(int TransactionID, AuthKey key);
         #endregion
 
         #region Devices
@@ -209,6 +224,7 @@ namespace TIMSServerModel
         AuthContainer<string> RequestSignature(AuthKey key);
         [OperationContract]
         AuthContainer<object> PrintReceipt(Invoice inv, AuthKey key);
+        
         #endregion
     }
 }

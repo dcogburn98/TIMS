@@ -31,14 +31,14 @@
             this.barcodeTB = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.productLineTB = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.itemNumberTB = new System.Windows.Forms.TextBox();
+            this.closeButton = new System.Windows.Forms.Button();
+            this.saveButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.qtyTB = new System.Windows.Forms.TextBox();
-            this.saveButton = new System.Windows.Forms.Button();
-            this.closeButton = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.itemNumberTB = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.productLineTB = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -76,37 +76,25 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Barcode Information";
             // 
-            // label2
+            // closeButton
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(34, 32);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(70, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Product Line:";
+            this.closeButton.Location = new System.Drawing.Point(6, 118);
+            this.closeButton.Name = "closeButton";
+            this.closeButton.Size = new System.Drawing.Size(75, 23);
+            this.closeButton.TabIndex = 9;
+            this.closeButton.Text = "Close";
+            this.closeButton.UseVisualStyleBackColor = true;
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
-            // productLineTB
+            // saveButton
             // 
-            this.productLineTB.Location = new System.Drawing.Point(110, 29);
-            this.productLineTB.Name = "productLineTB";
-            this.productLineTB.Size = new System.Drawing.Size(123, 20);
-            this.productLineTB.TabIndex = 2;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(34, 58);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(70, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Item Number:";
-            // 
-            // itemNumberTB
-            // 
-            this.itemNumberTB.Location = new System.Drawing.Point(110, 55);
-            this.itemNumberTB.Name = "itemNumberTB";
-            this.itemNumberTB.Size = new System.Drawing.Size(123, 20);
-            this.itemNumberTB.TabIndex = 4;
+            this.saveButton.Location = new System.Drawing.Point(202, 118);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(75, 23);
+            this.saveButton.TabIndex = 8;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // label4
             // 
@@ -123,26 +111,43 @@
             this.qtyTB.Name = "qtyTB";
             this.qtyTB.Size = new System.Drawing.Size(123, 20);
             this.qtyTB.TabIndex = 6;
+            this.qtyTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.qtyTB_KeyDown);
             // 
-            // saveButton
+            // label3
             // 
-            this.saveButton.Location = new System.Drawing.Point(202, 118);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(75, 23);
-            this.saveButton.TabIndex = 8;
-            this.saveButton.Text = "Save";
-            this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.button1_Click);
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(34, 58);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(70, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Item Number:";
             // 
-            // closeButton
+            // itemNumberTB
             // 
-            this.closeButton.Location = new System.Drawing.Point(6, 118);
-            this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(75, 23);
-            this.closeButton.TabIndex = 9;
-            this.closeButton.Text = "Close";
-            this.closeButton.UseVisualStyleBackColor = true;
-            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+            this.itemNumberTB.Location = new System.Drawing.Point(110, 55);
+            this.itemNumberTB.Name = "itemNumberTB";
+            this.itemNumberTB.Size = new System.Drawing.Size(123, 20);
+            this.itemNumberTB.TabIndex = 4;
+            this.itemNumberTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.itemNumberTB_KeyDown);
+            this.itemNumberTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.itemNumberTB_KeyPress);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(34, 32);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(70, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Product Line:";
+            // 
+            // productLineTB
+            // 
+            this.productLineTB.Location = new System.Drawing.Point(110, 29);
+            this.productLineTB.Name = "productLineTB";
+            this.productLineTB.Size = new System.Drawing.Size(123, 20);
+            this.productLineTB.TabIndex = 2;
+            this.productLineTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.productLineTB_KeyDown);
+            this.productLineTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.productLineTB_KeyPress);
             // 
             // BarcodeMaintenance
             // 
