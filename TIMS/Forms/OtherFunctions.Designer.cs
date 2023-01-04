@@ -84,11 +84,8 @@ namespace TIMS.Forms
             this.accountingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generalJournalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chartOfAccountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.incomeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.expensesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.assetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.equityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.liabiltiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accountsReceivableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.paymentProcessingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.customerARActivityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -168,6 +165,7 @@ namespace TIMS.Forms
             this.reportCreatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.onlineBankingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -274,12 +272,14 @@ namespace TIMS.Forms
             this.archiveTransactionsToolStripMenuItem.Name = "archiveTransactionsToolStripMenuItem";
             this.archiveTransactionsToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.archiveTransactionsToolStripMenuItem.Text = "Archive Transactions";
+            this.archiveTransactionsToolStripMenuItem.Visible = false;
             // 
             // restoreTransactionsToolStripMenuItem
             // 
             this.restoreTransactionsToolStripMenuItem.Name = "restoreTransactionsToolStripMenuItem";
             this.restoreTransactionsToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.restoreTransactionsToolStripMenuItem.Text = "Restore Transactions";
+            this.restoreTransactionsToolStripMenuItem.Visible = false;
             // 
             // cashReceivedJournalToolStripMenuItem
             // 
@@ -409,12 +409,14 @@ namespace TIMS.Forms
             this.partContainedInPurchaseOrderToolStripMenuItem1.Name = "partContainedInPurchaseOrderToolStripMenuItem1";
             this.partContainedInPurchaseOrderToolStripMenuItem1.Size = new System.Drawing.Size(250, 22);
             this.partContainedInPurchaseOrderToolStripMenuItem1.Text = "Part Contained in Purchase Order";
+            this.partContainedInPurchaseOrderToolStripMenuItem1.Visible = false;
             // 
             // orderOgToolStripMenuItem
             // 
             this.orderOgToolStripMenuItem.Name = "orderOgToolStripMenuItem";
             this.orderOgToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
             this.orderOgToolStripMenuItem.Text = "Order Log";
+            this.orderOgToolStripMenuItem.Visible = false;
             this.orderOgToolStripMenuItem.Click += new System.EventHandler(this.orderOgToolStripMenuItem_Click);
             // 
             // buyoutPOToolStripMenuItem
@@ -471,6 +473,7 @@ namespace TIMS.Forms
             this.notesToolStripMenuItem.Name = "notesToolStripMenuItem";
             this.notesToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.notesToolStripMenuItem.Text = "Notes";
+            this.notesToolStripMenuItem.Visible = false;
             // 
             // supersedesToolStripMenuItem
             // 
@@ -483,12 +486,14 @@ namespace TIMS.Forms
             this.certificationTypesToolStripMenuItem.Name = "certificationTypesToolStripMenuItem";
             this.certificationTypesToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.certificationTypesToolStripMenuItem.Text = "Certification Types";
+            this.certificationTypesToolStripMenuItem.Visible = false;
             // 
             // miscellaneousChagesToolStripMenuItem
             // 
             this.miscellaneousChagesToolStripMenuItem.Name = "miscellaneousChagesToolStripMenuItem";
             this.miscellaneousChagesToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.miscellaneousChagesToolStripMenuItem.Text = "Miscellaneous Chages";
+            this.miscellaneousChagesToolStripMenuItem.Visible = false;
             // 
             // barcodesToolStripMenuItem
             // 
@@ -571,6 +576,7 @@ namespace TIMS.Forms
             this.writeOffToolStripMenuItem.Name = "writeOffToolStripMenuItem";
             this.writeOffToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
             this.writeOffToolStripMenuItem.Text = "Write-Off";
+            this.writeOffToolStripMenuItem.Visible = false;
             // 
             // returnedDefectivesCoresToolStripMenuItem
             // 
@@ -591,11 +597,9 @@ namespace TIMS.Forms
             this.accountingMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.generalJournalToolStripMenuItem,
             this.chartOfAccountsToolStripMenuItem,
-            this.incomeToolStripMenuItem,
             this.expensesToolStripMenuItem,
             this.assetsToolStripMenuItem,
-            this.equityToolStripMenuItem,
-            this.liabiltiesToolStripMenuItem});
+            this.onlineBankingToolStripMenuItem});
             this.accountingMenuItem.Name = "accountingMenuItem";
             this.accountingMenuItem.Size = new System.Drawing.Size(81, 20);
             this.accountingMenuItem.Text = "Accounting";
@@ -603,46 +607,28 @@ namespace TIMS.Forms
             // generalJournalToolStripMenuItem
             // 
             this.generalJournalToolStripMenuItem.Name = "generalJournalToolStripMenuItem";
-            this.generalJournalToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.generalJournalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.generalJournalToolStripMenuItem.Text = "General Journal";
             this.generalJournalToolStripMenuItem.Click += new System.EventHandler(this.generalJournalToolStripMenuItem_Click);
             // 
             // chartOfAccountsToolStripMenuItem
             // 
             this.chartOfAccountsToolStripMenuItem.Name = "chartOfAccountsToolStripMenuItem";
-            this.chartOfAccountsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.chartOfAccountsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.chartOfAccountsToolStripMenuItem.Text = "Chart Of Accounts";
             this.chartOfAccountsToolStripMenuItem.Click += new System.EventHandler(this.chartOfAccountsToolStripMenuItem_Click);
-            // 
-            // incomeToolStripMenuItem
-            // 
-            this.incomeToolStripMenuItem.Name = "incomeToolStripMenuItem";
-            this.incomeToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.incomeToolStripMenuItem.Text = "Income";
             // 
             // expensesToolStripMenuItem
             // 
             this.expensesToolStripMenuItem.Name = "expensesToolStripMenuItem";
-            this.expensesToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.expensesToolStripMenuItem.Text = "Expenses";
+            this.expensesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.expensesToolStripMenuItem.Text = "Add Expense";
             // 
             // assetsToolStripMenuItem
             // 
             this.assetsToolStripMenuItem.Name = "assetsToolStripMenuItem";
-            this.assetsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.assetsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.assetsToolStripMenuItem.Text = "Assets";
-            // 
-            // equityToolStripMenuItem
-            // 
-            this.equityToolStripMenuItem.Name = "equityToolStripMenuItem";
-            this.equityToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.equityToolStripMenuItem.Text = "Equity";
-            // 
-            // liabiltiesToolStripMenuItem
-            // 
-            this.liabiltiesToolStripMenuItem.Name = "liabiltiesToolStripMenuItem";
-            this.liabiltiesToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.liabiltiesToolStripMenuItem.Text = "Liabilties";
             // 
             // accountsReceivableToolStripMenuItem
             // 
@@ -668,12 +654,14 @@ namespace TIMS.Forms
             this.paymentProcessingToolStripMenuItem.Name = "paymentProcessingToolStripMenuItem";
             this.paymentProcessingToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.paymentProcessingToolStripMenuItem.Text = "Payment Processing";
+            this.paymentProcessingToolStripMenuItem.Visible = false;
             // 
             // customerARActivityToolStripMenuItem
             // 
             this.customerARActivityToolStripMenuItem.Name = "customerARActivityToolStripMenuItem";
             this.customerARActivityToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.customerARActivityToolStripMenuItem.Text = "Customer A/R Activity";
+            this.customerARActivityToolStripMenuItem.Visible = false;
             // 
             // branchTransactionsToolStripMenuItem
             // 
@@ -728,6 +716,7 @@ namespace TIMS.Forms
             this.aRTermsToolStripMenuItem.Name = "aRTermsToolStripMenuItem";
             this.aRTermsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.aRTermsToolStripMenuItem.Text = "A/R Terms";
+            this.aRTermsToolStripMenuItem.Visible = false;
             // 
             // pricingProfileToolStripMenuItem
             // 
@@ -776,13 +765,13 @@ namespace TIMS.Forms
             // aRControlsToolStripMenuItem
             // 
             this.aRControlsToolStripMenuItem.Name = "aRControlsToolStripMenuItem";
-            this.aRControlsToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.aRControlsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aRControlsToolStripMenuItem.Text = "A/R Controls";
             // 
             // storeCategoriesToolStripMenuItem
             // 
             this.storeCategoriesToolStripMenuItem.Name = "storeCategoriesToolStripMenuItem";
-            this.storeCategoriesToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.storeCategoriesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.storeCategoriesToolStripMenuItem.Text = "Store Categories";
             // 
             // classificationToolStripMenuItem1
@@ -1223,6 +1212,12 @@ namespace TIMS.Forms
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
+            // onlineBankingToolStripMenuItem
+            // 
+            this.onlineBankingToolStripMenuItem.Name = "onlineBankingToolStripMenuItem";
+            this.onlineBankingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.onlineBankingToolStripMenuItem.Text = "Online Banking";
+            // 
             // OtherFunctions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1360,10 +1355,7 @@ namespace TIMS.Forms
         private System.Windows.Forms.ToolStripMenuItem accountingMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generalJournalToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem expensesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem incomeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem equityToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem assetsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem liabiltiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem chartOfAccountsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportCreatorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem massImportItemsToolStripMenuItem;
@@ -1381,5 +1373,6 @@ namespace TIMS.Forms
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem barcodesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem onlineBankingToolStripMenuItem;
     }
 }

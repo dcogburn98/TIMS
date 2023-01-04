@@ -156,6 +156,35 @@ namespace TIMS.Server
             return proxy.RetrieveLabelOutOfDateItems();
         }
 
+        public static List<Item> RetrieveItemsFromSubdepartment(string subdepartment, string parentDepartment)
+        {
+            AuthContainer<List<Item>> c = proxy.RetrieveItemsFromSubdepartment(subdepartment, parentDepartment, currentKey);
+            if (c.Key.Success)
+            {
+                currentKey.Regenerate();
+                return c.Data;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
+        } //AuthContainer'd
+        
+        public static List<Item> SearchItemsByQuery(string query)
+        {
+            AuthContainer<List<Item>> c = proxy.SearchItemsByQuery(query, currentKey);
+            if (c.Key.Success)
+            {
+                currentKey.Regenerate();
+                return c.Data;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
+        } //AuthContainer'd
         #endregion
 
         #region Categorization

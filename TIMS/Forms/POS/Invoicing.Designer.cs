@@ -303,6 +303,7 @@
             this.catalogButton.TabIndex = 3;
             this.catalogButton.Text = "Catalog [F9]";
             this.catalogButton.UseVisualStyleBackColor = true;
+            this.catalogButton.Click += new System.EventHandler(this.catalogButton_Click);
             // 
             // savedInvoiceButton
             // 

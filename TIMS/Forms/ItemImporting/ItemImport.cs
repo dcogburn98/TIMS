@@ -191,6 +191,7 @@ namespace TIMS.Forms
             int rowsCompleted = 0;
             List<Item> itemsAdded = new List<Item>();
             List<DataGridViewRow> skippedRows = new List<DataGridViewRow>();
+            List<string> skippedRowReasons = new List<string>();
             progressBar1.Value = 0;
             progressBar1.Minimum = 0;
             progressBar1.Maximum = dataGridView1.Rows.Count;
@@ -243,6 +244,7 @@ namespace TIMS.Forms
                 if (itemRow.Cells[0].Value == null)
                     continue;
                 bool skipped = false;
+                string skippedReason = "";
 
                 foreach (DataGridViewCell cell in itemRow.Cells)
                 {
@@ -253,6 +255,9 @@ namespace TIMS.Forms
                     bool b;
                     switch (cell.OwningColumn.Name.ToLower())
                     {
+                        case "SkippedReason":
+                            break;
+
                         #region String Operations
                         case "productline":
                             workingItem.productLine =
@@ -286,86 +291,128 @@ namespace TIMS.Forms
                             workingItem.manufacturerNumber =
                                 cell.Value.ToString() == "" ? defaultItem.manufacturerNumber : cell.Value.ToString();
                             break;
+                        case "department":
+                            workingItem.department =
+                                cell.Value.ToString() == "" ? defaultItem.department : cell.Value.ToString();
+                            break;
+                        case "subdepartment":
+                            workingItem.subDepartment =
+                                cell.Value.ToString() == "" ? defaultItem.subDepartment : cell.Value.ToString();
+                            break;
+                        case "brand":
+                            workingItem.brand =
+                                cell.Value.ToString() == "" ? defaultItem.brand : cell.Value.ToString();
+                            break;
                         #endregion
 
                         #region Decimal Operations
 
                         #region Price Operations
                         case "listprice":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString().Trim('$'), out d) == false)
                             {
+                                skippedReason = "Invalid List Price";
                                 skipped = true;
                                 break;
                             }
                             workingItem.listPrice = cell.Value.ToString() == "" ? defaultItem.listPrice : d;
                             break;
                         case "redprice":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString().Trim('$'), out d) == false)
                             {
+                                skippedReason = "Invalid Red Price";
                                 skipped = true;
                                 break;
                             }
                             workingItem.redPrice = cell.Value.ToString() == "" ? defaultItem.redPrice : d;
                             break;
                         case "yellowprice":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString().Trim('$'), out d) == false)
                             {
+                                skippedReason = "Invalid Yellow Price";
                                 skipped = true;
                                 break;
                             }
                             workingItem.yellowPrice = cell.Value.ToString() == "" ? defaultItem.yellowPrice : d;
                             break;
                         case "greenprice":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString().Trim('$'), out d) == false)
                             {
+                                skippedReason = "Invalid Green Price";
                                 skipped = true;
                                 break;
                             }
                             workingItem.greenPrice = cell.Value.ToString() == "" ? defaultItem.greenPrice : d;
                             break;
                         case "pinkprice":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString().Trim('$'), out d) == false)
                             {
+                                skippedReason = "Invalid Pink Price";
                                 skipped = true;
                                 break;
                             }
                             workingItem.pinkPrice = cell.Value.ToString() == "" ? defaultItem.pinkPrice : d;
                             break;
                         case "blueprice":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString().Trim('$'), out d) == false)
                             {
+                                skippedReason = "Invalid Blue Price";
                                 skipped = true;
                                 break;
                             }
                             workingItem.bluePrice = cell.Value.ToString() == "" ? defaultItem.bluePrice : d;
                             break;
                         case "replacementcost":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString().Trim('$'), out d) == false)
                             {
+                                skippedReason = "Invalid Replacement Cost";
                                 skipped = true;
                                 break;
                             }
                             workingItem.replacementCost = cell.Value.ToString() == "" ? defaultItem.replacementCost : d;
                             break;
                         case "averagecost":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString().Trim('$'), out d) == false)
                             {
+                                skippedReason = "Invalid Average Cost";
                                 skipped = true;
                                 break;
                             }
                             workingItem.averageCost = cell.Value.ToString() == "" ? defaultItem.averageCost : d;
                             break;
                         case "lastlabelprice":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString().Trim('$'), out d) == false)
                             {
+                                skippedReason = "Invalid Last Label Price";
                                 skipped = true;
                                 break;
                             }
                             workingItem.lastLabelPrice = cell.Value.ToString() == "" ? defaultItem.lastLabelPrice : d;
                             break;
                         case "lastsaleprice":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString().Trim('$'), out d) == false)
                             {
+                                skippedReason = "Invalid Last Sale Price";
                                 skipped = true;
                                 break;
                             }
@@ -374,48 +421,66 @@ namespace TIMS.Forms
                         #endregion
 
                         case "minimum":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString(), out d) == false)
                             {
+                                skippedReason = "Invalid Minimum";
                                 skipped = true;
                                 break;
                             }
                             workingItem.minimum = cell.Value.ToString() == "" ? defaultItem.minimum : d;
                             break;
                         case "maximum":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString(), out d) == false)
                             {
+                                skippedReason = "Invalid Maximum";
                                 skipped = true;
                                 break;
                             }
                             workingItem.maximum = cell.Value.ToString() == "" ? defaultItem.maximum : d;
                             break;
                         case "onhandquantity":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString(), out d) == false)
                             {
+                                skippedReason = "Invalid On Hand Quantity";
                                 skipped = true;
                                 break;
                             }
                             workingItem.onHandQty = cell.Value.ToString() == "" ? defaultItem.onHandQty : d;
                             break;
                         case "wipquantity":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString(), out d) == false)
                             {
+                                skippedReason = "Invalid WIP Quantity";
                                 skipped = true;
                                 break;
                             }
                             workingItem.WIPQty = cell.Value.ToString() == "" ? defaultItem.WIPQty : d;
                             break;
                         case "onorderquantity":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString(), out d) == false)
                             {
+                                skippedReason = "Invalid On Order Quantity";
                                 skipped = true;
                                 break;
                             }
                             workingItem.onOrderQty = cell.Value.ToString() == "" ? defaultItem.onOrderQty : d;
                             break;
                         case "backorderquantity":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (decimal.TryParse(cell.Value.ToString(), out d) == false)
                             {
+                                skippedReason = "Invalid Backorder Quantity";
                                 skipped = true;
                                 break;
                             }
@@ -426,8 +491,11 @@ namespace TIMS.Forms
 
                         #region Int Operations
                         case "groupcode":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (int.TryParse(cell.Value.ToString(), out i) == false)
                             {
+                                skippedReason = "Invalid Group Code";
                                 skipped = true;
                                 break;
                             }
@@ -435,8 +503,11 @@ namespace TIMS.Forms
                                 cell.Value.ToString() == "" ? defaultItem.groupCode : i;
                             break;
                         case "velocitycode":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (int.TryParse(cell.Value.ToString(), out i) == false)
                             {
+                                skippedReason = "Invalid Velocity Code";
                                 skipped = true;
                                 break;
                             }
@@ -444,8 +515,11 @@ namespace TIMS.Forms
                                 cell.Value.ToString() == "" ? defaultItem.velocityCode : i;
                             break;
                         case "previousyearvelocitycode":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (int.TryParse(cell.Value.ToString(), out i) == false)
                             {
+                                skippedReason = "Invalid Previous Year Velocity Code";
                                 skipped = true;
                                 break;
                             }
@@ -453,8 +527,11 @@ namespace TIMS.Forms
                                 cell.Value.ToString() == "" ? defaultItem.previousYearVelocityCode : i;
                             break;
                         case "itemspercontainer":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 1;
                             if (int.TryParse(cell.Value.ToString(), out i) == false)
                             {
+                                skippedReason = "Invalid Items Per Container";
                                 skipped = true;
                                 break;
                             }
@@ -462,8 +539,11 @@ namespace TIMS.Forms
                                 cell.Value.ToString() == "" ? defaultItem.itemsPerContainer : i;
                             break;
                         case "standardpackage":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 1;
                             if (int.TryParse(cell.Value.ToString(), out i) == false)
                             {
+                                skippedReason = "Invalid Standard Package";
                                 skipped = true;
                                 break;
                             }
@@ -471,8 +551,11 @@ namespace TIMS.Forms
                                 cell.Value.ToString() == "" ? defaultItem.standardPackage : i;
                             break;
                         case "daysonorder":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (int.TryParse(cell.Value.ToString(), out i) == false)
                             {
+                                skippedReason = "Invalid Days On Order";
                                 skipped = true;
                                 break;
                             }
@@ -480,8 +563,11 @@ namespace TIMS.Forms
                                 cell.Value.ToString() == "" ? defaultItem.daysOnOrder : i;
                             break;
                         case "daysonbackorder":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (int.TryParse(cell.Value.ToString(), out i) == false)
                             {
+                                skippedReason = "Invalid Days On Backorder";
                                 skipped = true;
                                 break;
                             }
@@ -489,8 +575,11 @@ namespace TIMS.Forms
                                 cell.Value.ToString() == "" ? defaultItem.daysOnBackorder : i;
                             break;
                         case "minimumage":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (int.TryParse(cell.Value.ToString(), out i) == false)
                             {
+                                skippedReason = "Invalid Minimum Age";
                                 skipped = true;
                                 break;
                             }
@@ -498,8 +587,11 @@ namespace TIMS.Forms
                                 cell.Value.ToString() == "" ? defaultItem.minimumAge : i;
                             break;
                         case "locationcode":
+                            if (string.IsNullOrEmpty(cell.Value.ToString()))
+                                cell.Value = 0;
                             if (int.TryParse(cell.Value.ToString(), out i) == false)
                             {
+                                skippedReason = "Invalid Location Code";
                                 skipped = true;
                                 break;
                             }
@@ -511,7 +603,7 @@ namespace TIMS.Forms
                         #region Boolean Operations
                         case "taxed":
                             txt = cell.Value.ToString();
-                            if (txt.ToLower() == "true" || txt == "1")
+                            if (txt.ToLower() == "true" || txt == "1" || txt.ToLower() == "y" || txt.ToLower() == "yes")
                                 b = true;
                             else
                                 b = false;
@@ -519,7 +611,7 @@ namespace TIMS.Forms
                             break;
                         case "agerestricted":
                             txt = cell.Value.ToString();
-                            if (txt.ToLower() == "true" || txt == "1")
+                            if (txt.ToLower() == "true" || txt == "1" || txt.ToLower() == "y" || txt.ToLower() == "yes")
                                 b = true;
                             else
                                 b = false;
@@ -527,7 +619,7 @@ namespace TIMS.Forms
                             break;
                         case "serialized":
                             txt = cell.Value.ToString();
-                            if (txt.ToLower() == "true" || txt == "1")
+                            if (txt.ToLower() == "true" || txt == "1" || txt.ToLower() == "y" || txt.ToLower() == "yes")
                                 b = true;
                             else
                                 b = false;
@@ -539,6 +631,7 @@ namespace TIMS.Forms
                         case "datestocked":
                             if (DateTime.TryParse(cell.Value.ToString(), out t) == false)
                             {
+                                skippedReason = "Invalid Date Stocked";
                                 skipped = true;
                                 break;
                             }
@@ -548,6 +641,7 @@ namespace TIMS.Forms
                         case "datelastreceipt":
                             if (DateTime.TryParse(cell.Value.ToString(), out t) == false)
                             {
+                                skippedReason = "Invalid Date Last Receipt";
                                 skipped = true;
                                 break;
                             }
@@ -557,6 +651,7 @@ namespace TIMS.Forms
                         case "lastlabeldate":
                             if (DateTime.TryParse(cell.Value.ToString(), out t) == false)
                             {
+                                skippedReason = "Invalid Last Label Date";
                                 skipped = true;
                                 break;
                             }
@@ -566,6 +661,7 @@ namespace TIMS.Forms
                         case "datelastsale":
                             if (DateTime.TryParse(cell.Value.ToString(), out t) == false)
                             {
+                                skippedReason = "Invalid Date Last Sale";
                                 skipped = true;
                                 break;
                             }
@@ -579,6 +675,7 @@ namespace TIMS.Forms
                 if (skipped)
                 {
                     skippedRows.Add(itemRow);
+                    skippedRowReasons.Add(skippedReason);
                     skipped = false;
                     rowsCompleted++;
                     progressBar1.PerformStep();
@@ -613,11 +710,18 @@ namespace TIMS.Forms
                 if (Communication.RetrieveItem(workingItem.itemNumber, workingItem.productLine) == null)
                 {
                     if (!Communication.AddItem(workingItem))
+                    {
                         skippedRows.Add(itemRow);
+                        skippedRowReasons.Add("Unknown error adding the item to the database");
+                    }
                     else
                         itemsAdded.Add(workingItem);
                 }
-                else skippedRows.Add(itemRow);
+                else
+                {
+                    skippedRowReasons.Add("Item already exists in database");
+                    skippedRows.Add(itemRow);
+                }
 
                 rowsCompleted++;
                 progressBar1.PerformStep();
@@ -654,12 +758,15 @@ namespace TIMS.Forms
             }
 
             MessageBox.Show("Items Added!\nItems skipped: " + skippedRows.Count + "\n\n" +
-                "Skipped items will be displayed in the import window.");
+                "Skipped items will be displayed in the import window.\n" +
+                "The reason for the item being skipped is in the last column of the table for each item.");
 
             dataGridView1.Rows.Clear();
+            dataGridView1.Columns.Add("SkippedReason", "SkippedReason");
             foreach (DataGridViewRow row in skippedRows)
             {
-                dataGridView1.Rows.Add(row);
+                int rowIndex = dataGridView1.Rows.Add(row);
+                dataGridView1.Rows[rowIndex].Cells["SkippedReason"].Value = skippedRowReasons[rowIndex];
             }
 
             progressBar1.Value = 0;

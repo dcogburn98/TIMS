@@ -22,7 +22,6 @@ namespace TIMS.Forms
             InitializeComponent();
 
             tabletInvoicingToolStripMenuItem.Visible = false;
-
         }
 
         #region Toolbar Item Click Methods and Other Form Handlers

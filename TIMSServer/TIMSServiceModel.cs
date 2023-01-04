@@ -681,6 +681,9 @@ namespace TIMSServer
         }
         public void AddProductLine(string productLine)
         {
+            if (CheckProductLine(productLine))
+                return;
+
             OpenConnection();
 
             SqliteCommand command = sqlite_conn.CreateCommand();
@@ -693,6 +696,57 @@ namespace TIMSServer
             CloseConnection();
         }
         
+        public AuthContainer<List<Item>> SearchItemsByQuery(string query, AuthKey key)
+        {
+            AuthContainer<List<Item>> container = CheckAuthorization<List<Item>>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new List<Item>();
+            List<Item> results = new List<Item>();
+            string[] elements = query.Split(' ');
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.Parameters.Clear();
+            command.CommandText = "SELECT PRODUCTLINE, ITEMNUMBER FROM ITEMS WHERE ITEMNUMBER LIKE $QUERY";
+            command.Parameters.Add(new SqliteParameter("$QUERY", "%" + query + "%"));
+            SqliteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                if (results.Where(el => el.itemNumber == reader.GetString(1) && el.productLine == reader.GetString(0)).Count() <= 0)
+                    results.Add(new Item() { productLine = reader.GetString(0), itemNumber = reader.GetString(1) });
+            }
+            reader.Close();
+
+            command.CommandText = "SELECT PRODUCTLINE, ITEMNUMBER FROM ITEMS WHERE (";
+            foreach (string el in elements)
+            {
+                string element = el.Replace('*', '%');
+                command.CommandText += "ITEMNAME LIKE '%" + element + "%' AND ";
+            }
+            command.CommandText = command.CommandText.Trim().Trim('D').Trim('N').Trim('A').Trim() + ")";
+            command.Parameters.Clear();
+            
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                if (results.Where(el => el.itemNumber == reader.GetString(1) && el.productLine == reader.GetString(0)).Count() <= 0)
+                    results.Add(new Item() { productLine = reader.GetString(0), itemNumber = reader.GetString(1) });
+            }
+            reader.Close();
+
+            CloseConnection();
+            if (results.Count > 0)
+            {
+                foreach (Item item in results)
+                {
+                    container.Data.Add(RetrieveItem(item.itemNumber, item.productLine));
+                }
+            }
+
+            return container;
+        }
         public Item RetrieveItem(string itemNumber, string productLine, bool connectionOpened = false)
         {
             string fixedIN = string.Empty;
@@ -1049,6 +1103,40 @@ namespace TIMSServer
             CloseConnection();
             return items;
         }
+        
+        public AuthContainer<List<Item>> RetrieveItemsFromSubdepartment(string subdepartment, string parentDepartment, AuthKey key)
+        {
+            AuthContainer<List<Item>> container = CheckAuthorization<List<Item>>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new List<Item>();
+
+            OpenConnection();
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText = "SELECT ITEMNUMBER, PRODUCTLINE FROM ITEMS WHERE (SUBDEPARTMENT = $SUB AND DEPARTMENT = $DEP)";
+            command.Parameters.Add(new SqliteParameter("$SUB", subdepartment));
+            command.Parameters.Add(new SqliteParameter("$DEP", parentDepartment));
+            SqliteDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                CloseConnection();
+                return container;
+            }
+            List<Item> items = new List<Item>();
+            while (reader.Read())
+            {
+                items.Add(new Item() { itemNumber = reader.GetString(0), productLine = reader.GetString(1) });
+            }
+            CloseConnection();
+
+            foreach (Item item in items)
+            {
+                container.Data.Add(RetrieveItem(item.itemNumber, item.productLine));
+            }
+            return container;
+        }
+        
+        
         #endregion
 
         #region Categorization
@@ -1223,7 +1311,7 @@ namespace TIMSServer
 
             SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
-                @"INSERT INTO SUBDEPARTMENTS (SUBDEPARTMENT, PARENTDEPARTMENT) VALUES ($SUBDEPARTMENT, $PARENT)";
+                @"INSERT INTO SUBDEPARTMENTS (DEPARTMENT, PARENTDEPARTMENT) VALUES ($SUBDEPARTMENT, $PARENT)";
             command.Parameters.Add(new SqliteParameter("$SUBDEPARTMENT", subdepartment));
             command.Parameters.Add(new SqliteParameter("$PARENT", parentDepartment));
             command.ExecuteNonQuery();

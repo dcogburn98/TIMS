@@ -259,9 +259,8 @@ namespace TIMSServer
         {
             OpenConnection();
 
-
             SqliteCommand command = sqlite_conn.CreateCommand();
-            if (!TableExists(sqlite_conn, "AccountTransactions"))
+            if (!TableExists("AccountTransactions"))
             {
                 command.CommandText =
                     @"CREATE TABLE ""AccountTransactions"" (
@@ -278,8 +277,12 @@ namespace TIMSServer
                     )";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "Accounts"))
+            }
+
+            if (!TableExists("Accounts"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""Accounts"" (
@@ -391,10 +394,12 @@ namespace TIMSServer
                 command.CommandText =
                 @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
                 VALUES ('20', 'Asset', 'Imbalance', 'Imbalance', '0.0');";
+                command.ExecuteNonQuery();
 
                 command.CommandText =
                 @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
                 VALUES ('21', 'Income', 'Positive Adjustment', 'Positive Adjustment', '0.0');";
+                command.ExecuteNonQuery();
 
                 command.CommandText =
                 @"INSERT INTO Accounts (ID, Type, Name, Description, CurrentBalance) 
@@ -402,8 +407,12 @@ namespace TIMSServer
                 command.ExecuteNonQuery();
                 #endregion
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "Barcodes"))
+            }
+
+            if (!TableExists("Barcodes"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""Barcodes"" (
@@ -417,8 +426,12 @@ namespace TIMSServer
                 )";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "Brands"))
+            }
+
+            if (!TableExists("Brands"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""Brands"" (
@@ -431,8 +444,12 @@ namespace TIMSServer
                 command.CommandText = "INSERT INTO BRANDS (BRANDNAME) VALUES ('Default')";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "Categories"))
+            }
+
+            if (!TableExists("Categories"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""Categories"" (
@@ -445,8 +462,12 @@ namespace TIMSServer
                 command.CommandText = "INSERT INTO CATEGORIES (CATEGORYNAME) VALUES ('Default')";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "CheckinItems"))
+            }
+
+            if (!TableExists("CheckinItems"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""CheckinItems"" (
@@ -462,8 +483,12 @@ namespace TIMSServer
 
                 
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "Checkins"))
+            }
+
+            if (!TableExists("Checkins"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""Checkins"" (
@@ -474,8 +499,12 @@ namespace TIMSServer
                 )";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "CustomerBalances"))
+            }
+
+            if (!TableExists("CustomerBalances"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""CustomerBalances"" (
@@ -489,8 +518,12 @@ namespace TIMSServer
                 ); ";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "Customers"))
+            }
+
+            if (!TableExists("Customers"))
             {
                 command.CommandText =
                     @"CREATE TABLE ""Customers""(
@@ -756,26 +789,30 @@ namespace TIMSServer
                 );";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "Departments"))
+            }
+
+            if (!TableExists("Departments"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""Departments"" (
                 ""ID"" INTEGER NOT NULL,
                 ""Department""    TEXT NOT NULL,
-                ""ParentDepartment"" TEXT,
 	            PRIMARY KEY(""ID"" AUTOINCREMENT)
                 )";
                 command.ExecuteNonQuery();
 
                 command.CommandText = "INSERT INTO DEPARTMENTS (DEPARTMENT) VALUES ('Default')";
                 command.ExecuteNonQuery();
+            }
+            else
+            {
 
-                command.CommandText = "INSERT INTO DEPARTMENTS (DEPARTMENT, PARENTDEPARTMENT) VALUES ('Default')";
-                command.ExecuteNonQuery();
             }
 
-            if (!TableExists(sqlite_conn, "Devices"))
+            if (!TableExists("Devices"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""Devices"" (
@@ -791,8 +828,12 @@ namespace TIMSServer
                     "INSERT INTO DEVICES (DEVICETYPE, IPADDRESS, NICKNAME) VALUES ('TERMINAL', '::1', 'SERVER')";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "DeviceAssignments"))
+            }
+
+            if (!TableExists("DeviceAssignments"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""DeviceAssignments"" (
@@ -803,8 +844,12 @@ namespace TIMSServer
                 ); ";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "Employees"))
+            }
+
+            if (!TableExists("Employees"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""Employees"" (
@@ -832,8 +877,12 @@ namespace TIMSServer
                 VALUES ('0', 'Administrator', 'admin', 'Administrator', '01/01/1979', '01/01/1979', '', 'ALL', '0', '0', '', '0', '', '0', X'5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9');";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "GlobalProperties"))
+            }
+
+            if (!TableExists("GlobalProperties"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""GlobalProperties"" (
@@ -862,8 +911,12 @@ namespace TIMSServer
                 INSERT INTO ""main"".""GlobalProperties"" (""Key"", ""Value"") VALUES ('Signature Minimum', '100');";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "InvoiceItems"))
+            }
+
+            if (!TableExists("InvoiceItems"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""InvoiceItems"" (
@@ -888,8 +941,12 @@ namespace TIMSServer
                 )";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "Invoices"))
+            }
+
+            if (!TableExists("Invoices"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""Invoices"" (
@@ -919,8 +976,12 @@ namespace TIMSServer
                 )";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "Items"))
+            }
+
+            if (!TableExists("Items"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""Items"" (
@@ -932,9 +993,6 @@ namespace TIMSServer
 	            ""GroupCode"" INTEGER,
 	            ""VelocityCode""  INTEGER,
 	            ""PreviousYearVelocityCode""  INTEGER,
-	            ""Brand""  INTEGER,
-	            ""Department""  INTEGER,
-	            ""Subdepartment""  INTEGER,
 	            ""ItemsPerContainer"" INTEGER,
 	            ""StandardPackage""   INTEGER,
 	            ""DateStocked""   TEXT,
@@ -974,12 +1032,16 @@ namespace TIMSServer
                 command.ExecuteNonQuery();
 
                 command.CommandText =
-                    @"INSERT INTO Items (""ProductLine"", ""ItemNumber"", ""ItemName"", ""LongDescription"", ""Supplier"", ""GroupCode"", ""VelocityCode"", ""PreviousYearVelocityCode"", ""Brand"", ""Department"", ""Subdepartment"", ""ItemsPerContainer"", ""StandardPackage"", ""DateStocked"", ""DateLastReceipt"", ""Minimum"", ""Maximum"", ""OnHandQuantity"", ""WIPQuantity"", ""OnOrderQuantity"", ""BackorderQuantity"", ""DaysOnOrder"", ""DaysOnBackOrder"", ""ListPrice"", ""RedPrice"", ""YellowPrice"", ""GreenPrice"", ""PinkPrice"", ""BluePrice"", ""ReplacementCost"", ""AverageCost"", ""Taxed"", ""AgeRestricted"", ""MinimumAge"", ""LocationCode"", ""Serialized"", ""Category"", ""UPC"", ""LastLabelDate"", ""LastLabelPrice"", ""DateLastSale"", ""ManufacturerNumber"", ""LastSalePrice"", ""Brand"", ""Department"", ""Subdepartment"") 
-                    VALUES ('XXX', 'XXX', 'XXX', 'XXX', 'Default', '0', '0', '0', 'Default', 'Default', 'Default', '0', '0', '6/11/2022 7:43:28 PM', '6/11/2022 7:43:28 PM', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0', '0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '1', '0', '0', '0', '0', 'Etc', 'xxx', '', '', '', '', '', 'Default', 'Default', 'Default');";
+                    @"INSERT INTO Items (""ProductLine"", ""ItemNumber"", ""ItemName"", ""LongDescription"", ""Supplier"", ""GroupCode"", ""VelocityCode"", ""PreviousYearVelocityCode"", ""ItemsPerContainer"", ""StandardPackage"", ""DateStocked"", ""DateLastReceipt"", ""Minimum"", ""Maximum"", ""OnHandQuantity"", ""WIPQuantity"", ""OnOrderQuantity"", ""BackorderQuantity"", ""DaysOnOrder"", ""DaysOnBackOrder"", ""ListPrice"", ""RedPrice"", ""YellowPrice"", ""GreenPrice"", ""PinkPrice"", ""BluePrice"", ""ReplacementCost"", ""AverageCost"", ""Taxed"", ""AgeRestricted"", ""MinimumAge"", ""LocationCode"", ""Serialized"", ""Category"", ""UPC"", ""LastLabelDate"", ""LastLabelPrice"", ""DateLastSale"", ""ManufacturerNumber"", ""LastSalePrice"", ""Brand"", ""Department"", ""Subdepartment"") 
+                    VALUES ('XXX', 'XXX', 'XXX', 'XXX', 'Default', '0', '0', '0', '0', '0', '6/11/2022 7:43:28 PM', '6/11/2022 7:43:28 PM', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0', '0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '1', '0', '0', '0', '0', 'Etc', 'xxx', '01/01/0001 12:00 AM', '0', '01/01/0001 12:00 AM', 'XXX', '0', 'Default', 'Default', 'Default');";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "Media"))
+            }
+
+            if (!TableExists("Media"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""Media"" (
@@ -996,8 +1058,12 @@ namespace TIMSServer
                     VALUES ('Company Logo', 'Image', '');";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "Payments"))
+            }
+
+            if (!TableExists("Payments"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""Payments"" (
@@ -1012,8 +1078,12 @@ namespace TIMSServer
                 )";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "ProductLines"))
+            }
+
+            if (!TableExists("ProductLines"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""ProductLines"" (
@@ -1028,8 +1098,12 @@ namespace TIMSServer
                 @"INSERT INTO ProductLines (""ProductLine"", ""ID"", ""DefaultGroupCode"") VALUES ('XXX', '14', '');";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "PricingProfiles"))
+            }
+
+            if (!TableExists("PricingProfiles"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""PricingProfiles"" (
@@ -1043,8 +1117,12 @@ namespace TIMSServer
                     @"INSERT INTO PRICINGPROFILES (PROFILEID, PROFILENAME) VALUES ('0', 'Default Profile')";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "PricingProfileElements"))
+            }
+
+            if (!TableExists("PricingProfileElements"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""PricingProfileElements"" (
@@ -1082,8 +1160,12 @@ namespace TIMSServer
                     '')";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "PurchaseOrderItems"))
+            }
+
+            if (!TableExists("PurchaseOrderItems"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""PurchaseOrderItems"" (
@@ -1098,8 +1180,12 @@ namespace TIMSServer
                 )";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "PurchaseOrders"))
+            }
+
+            if (!TableExists("PurchaseOrders"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""PurchaseOrders"" (
@@ -1114,8 +1200,12 @@ namespace TIMSServer
                 )";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "Reports"))
+            }
+
+            if (!TableExists("Reports"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""Reports"" (
@@ -1192,8 +1282,12 @@ namespace TIMSServer
                 command.ExecuteNonQuery();
                 #endregion
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "SerialNumbers"))
+            }
+
+            if (!TableExists("SerialNumbers"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""SerialNumbers"" (
@@ -1205,8 +1299,12 @@ namespace TIMSServer
                 )";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "ServerRelationships"))
+            }
+
+            if (!TableExists("ServerRelationships"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""ServerRelationships"" (
@@ -1218,8 +1316,12 @@ namespace TIMSServer
                 )";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "ShortcutMenus"))
+            }
+
+            if (!TableExists("ShortcutMenus"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""ShortcutMenus"" (
@@ -1231,8 +1333,12 @@ namespace TIMSServer
                 )";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
-            if (!TableExists(sqlite_conn, "Suppliers"))
+            }
+
+            if (!TableExists("Suppliers"))
             {
                 command.CommandText =
                 @"CREATE TABLE ""Suppliers"" (
@@ -1242,18 +1348,39 @@ namespace TIMSServer
                 )";
                 command.ExecuteNonQuery();
             }
+            else
+            {
 
+            }
+
+            if (!TableExists("Subdepartments"))
+            {
+                command.CommandText =
+                @"CREATE TABLE ""Subdepartments"" (
+                ""ID"" INTEGER NOT NULL,
+                ""Department""    TEXT NOT NULL,
+                ""ParentDepartment"" TEXT NOT NULL,
+	            PRIMARY KEY(""ID"" AUTOINCREMENT)
+                )";
+                command.ExecuteNonQuery();
+
+                command.CommandText = "INSERT INTO SUBDEPARTMENTS (DEPARTMENT, PARENTDEPARTMENT) VALUES ('Default', 'Default')";
+                command.ExecuteNonQuery();
+            }
+            else
+            {
+
+            }
 
             CloseConnection();
         }
 
-        public static bool TableExists(SqliteConnection openConnection, string tableName)
+        public static bool TableExists(string tableName)
         {
-            var sql =
-            "SELECT name FROM sqlite_master WHERE type='table' AND name='" + tableName + "';";
-            if (openConnection.State == System.Data.ConnectionState.Open)
+            if (sqlite_conn.State == System.Data.ConnectionState.Open)
             {
-                SqliteCommand command = new SqliteCommand(sql, openConnection);
+                SqliteCommand command = sqlite_conn.CreateCommand();
+                command.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name='" + tableName + "';";
                 SqliteDataReader reader = command.ExecuteReader();
                 if (reader.HasRows)
                 {
@@ -1265,6 +1392,25 @@ namespace TIMSServer
             {
                 throw new System.ArgumentException("Data.ConnectionState must be open");
             }
+        }
+
+        public void AddColumnToTable(string tableName, string fieldName, string dataType, string defaultValue = "")
+        {
+            OpenConnection();
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText = "SELECT " + fieldName + " FROM " + tableName + " LIMIT 1";
+            try
+            {
+                command.ExecuteReader();
+            }
+            catch
+            {
+                command.CommandText = "ALTER TABLE " + tableName + " ADD " + fieldName + " " + dataType + ";";
+                command.ExecuteNonQuery();
+                command.CommandText = "UPDATE " + tableName + " SET " + fieldName + " = " + defaultValue;
+                command.ExecuteNonQuery();
+            }
+            CloseConnection();
         }
 
         public static bool IsAlphanumeric(string str)

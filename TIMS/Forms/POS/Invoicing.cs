@@ -15,6 +15,7 @@ namespace TIMS.Forms
         public Invoice currentInvoice;
         public List<Item> addingItems;
         public InvoiceItem workingItem;
+        public ProductCatalog catalog;
 
         bool addingLine;
         bool lineDeleted;
@@ -69,6 +70,19 @@ namespace TIMS.Forms
         {
             string[] plAndIn = (sender as ToolStripMenuItem).Text.Split('-')[0].Trim().Split('|');
             InvoiceItem item = new InvoiceItem(Communication.RetrieveItem(plAndIn[1], plAndIn[0]));
+            itemNoTB.Text = item.itemNumber;
+            EnterItemNumber();
+            if (!singleProductLine)
+            {
+                productLineDropBox.Text = item.productLine;
+                SelectProductLine();
+                return;
+            }
+            singleProductLine = false;
+        }
+
+        public void AddItemFromCatalog(InvoiceItem item)
+        {
             itemNoTB.Text = item.itemNumber;
             EnterItemNumber();
             if (!singleProductLine)
@@ -185,6 +199,13 @@ namespace TIMS.Forms
             customerNoTB.Focus();
 
             shortcutsToolStripMenuItem.Enabled = false;
+
+            if (catalog != null && catalog.Visible)
+            {
+                catalog.Close();
+                catalog = null;
+                catalogButton.Enabled = false;
+            }
 
             currentState = State.NoCustomer;
         }
@@ -634,6 +655,10 @@ namespace TIMS.Forms
             priceCodeTB.Enabled = true;
             priceTB.Enabled = true;
             taxedCB.Enabled = true;
+            availabilityLabel.Visible = true;
+            velocityCodeLabel.Visible = true;
+            availabilityLabel.Text = "Available: " + Communication.RetrieveItem(workingItem.itemNumber, workingItem.productLine).onHandQty.ToString();
+            velocityCodeLabel.Text = "Velocity: " + Communication.RetrieveItem(workingItem.itemNumber, workingItem.productLine).velocityCode.ToString();
             qtyTB.Focus();
             qtyTB.SelectAll();
             acceptItemButton.Enabled = true;
@@ -761,6 +786,8 @@ namespace TIMS.Forms
                 itemNoTB.Focus();
                 itemNoTB.ReadOnly = false;
                 itemNoTB.Clear();
+                availabilityLabel.Visible = false;
+                velocityCodeLabel.Visible = false;
             }
             if (currentState == State.EditingLineItem)
             {
@@ -786,6 +813,8 @@ namespace TIMS.Forms
                 itemNoTB.Focus();
                 itemNoTB.ReadOnly = false;
                 itemNoTB.Clear();
+                availabilityLabel.Visible = false;
+                velocityCodeLabel.Visible = false;
 
                 decimal total = 0.00m;
                 foreach (InvoiceItem i in currentInvoice.items)
@@ -925,6 +954,19 @@ namespace TIMS.Forms
         {
             Mail mail = new Mail();
             mail.Show();
+        }
+
+        private void catalogButton_Click(object sender, EventArgs e)
+        {
+            ProductCatalog catalog = new ProductCatalog(this);
+            catalog.Show();
+            catalogButton.Enabled = false;
+            this.catalog = catalog;
+
+            catalog.FormClosed += delegate
+            {
+                catalogButton.Enabled = true;
+            };
         }
     }
 }

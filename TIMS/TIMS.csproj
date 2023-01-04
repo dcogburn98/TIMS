@@ -381,6 +381,12 @@
     <Compile Include="Forms\POS\Invoicing.Designer.cs">
       <DependentUpon>Invoicing.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\POS\ProductCatalog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\POS\ProductCatalog.Designer.cs">
+      <DependentUpon>ProductCatalog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\POS\ReceiveOnAccount.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -615,6 +621,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Mail.resx">
       <DependentUpon>Mail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\POS\ProductCatalog.resx">
+      <DependentUpon>ProductCatalog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\POS\ReceiveOnAccount.resx">
       <DependentUpon>ReceiveOnAccount.cs</DependentUpon>

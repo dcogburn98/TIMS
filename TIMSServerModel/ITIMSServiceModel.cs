@@ -57,6 +57,10 @@ namespace TIMSServerModel
         bool AddItem(Item item);
         [OperationContract]
         List<Item> RetrieveLabelOutOfDateItems();
+        [OperationContract]
+        AuthContainer<List<Item>> RetrieveItemsFromSubdepartment(string subdepartment, string parentDepartment, AuthKey key);
+        [OperationContract]
+        AuthContainer<List<Item>> SearchItemsByQuery(string query, AuthKey key);
         #endregion
 
         #region Categorization
