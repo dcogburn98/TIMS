@@ -303,6 +303,25 @@ namespace TIMS.Forms
                             workingItem.brand =
                                 cell.Value.ToString() == "" ? defaultItem.brand : cell.Value.ToString();
                             break;
+                        case "imagepaths":
+                            List<string> validPaths = new List<string>();
+                            string[] paths = cell.Value.ToString().Split(';');
+                            if (paths.Length > 0)
+                            {
+                                foreach (string path in paths)
+                                {
+                                    if (Uri.IsWellFormedUriString("file:///" + path, UriKind.Absolute))
+                                    {
+                                        validPaths.Add(path);
+                                    }
+                                    else if (Uri.IsWellFormedUriString(path, UriKind.Absolute))
+                                    {
+                                        validPaths.Add(path);
+                                    }
+                                }
+                            }
+                            workingItem.itemPicturePaths = validPaths;
+                            break;
                         #endregion
 
                         #region Decimal Operations
@@ -671,6 +690,8 @@ namespace TIMS.Forms
                         #endregion
                     }
                 }
+                if (Communication.RetrieveItem(workingItem.itemNumber, workingItem.productLine) != null)
+                    skipped = true;
 
                 if (skipped)
                 {
@@ -707,21 +728,13 @@ namespace TIMS.Forms
                 if (workingItem.department != null && workingItem.subDepartment != null && !Communication.RetrieveProductSubdepartments(workingItem.department).Contains(workingItem.subDepartment))
                     Communication.AddProductSubdepartment(workingItem.department, workingItem.subDepartment);
 
-                if (Communication.RetrieveItem(workingItem.itemNumber, workingItem.productLine) == null)
+                if (!Communication.AddItem(workingItem))
                 {
-                    if (!Communication.AddItem(workingItem))
-                    {
-                        skippedRows.Add(itemRow);
-                        skippedRowReasons.Add("Unknown error adding the item to the database");
-                    }
-                    else
-                        itemsAdded.Add(workingItem);
+                    skippedRows.Add(itemRow);
+                    skippedRowReasons.Add("Unknown error adding the item to the database");
                 }
                 else
-                {
-                    skippedRowReasons.Add("Item already exists in database");
-                    skippedRows.Add(itemRow);
-                }
+                    itemsAdded.Add(workingItem);
 
                 rowsCompleted++;
                 progressBar1.PerformStep();

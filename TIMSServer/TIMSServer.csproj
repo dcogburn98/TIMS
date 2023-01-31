@@ -38,6 +38,7 @@
     <PackageReference Include="SSH.NET.Fork" Version="2022.5.13" />
     <PackageReference Include="Stub.System.Data.SQLite.SEE" Version="1.0.116.1" />
     <PackageReference Include="UriTemplate" Version="1.0.0" />
+    <PackageReference Include="WooCommerceNET" Version="0.8.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -108,6 +109,18 @@
 
   <ItemGroup>
     <HarpyFiles Remove="EOD.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <HarpyFiles Remove="RawContentTypeMapper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <HarpyFiles Remove="WebServer\WooCommerce\WebhookHandler.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <HarpyFiles Remove="WebServer\WooCommerce\WooCommerceHandler.cs" />
   </ItemGroup>
 
 </Project>

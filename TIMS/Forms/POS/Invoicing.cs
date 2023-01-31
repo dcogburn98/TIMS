@@ -549,6 +549,16 @@ namespace TIMS.Forms
                 }
                 CancelInvoice();
             }
+            //else if (extraFunctionsDropBox.SelectedIndex == 3)
+            //{
+            //    lineDeleted = true;
+            //    InvoiceItem messageItem = new InvoiceItem() { itemNumber = "MSG", productLine = "MSG", itemName = "MESSAGE", quantity = 0 };
+            //    int msgRow = dataGridView1.Rows.Add();
+            //    dataGridView1.Rows[msgRow].Cells[0].Value = messageItem.itemNumber;
+            //    dataGridView1.Rows[msgRow].Cells[2].Value = messageItem.itemName;
+            //    dataGridView1.Rows[msgRow].Tag = messageItem;
+            //    currentInvoice.items.Add(messageItem);
+            //}
             extraFunctionsDropBox.SelectedIndex = 0;
         }
 
@@ -678,6 +688,8 @@ namespace TIMS.Forms
 
         private void Invoicing_FormClosed(object sender, FormClosedEventArgs e)
         {
+            if (catalog != null)
+                catalog.Close();
             Program.OpenForms.Remove(this);
             Program.CheckOpenForms();
         }

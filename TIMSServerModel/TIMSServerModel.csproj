@@ -85,10 +85,30 @@
     <Compile Include="PurchaseOrder.cs" />
     <Compile Include="Report.cs" />
     <Compile Include="Transaction.cs" />
+    <Compile Include="WooCommerce\Orders\BillingAddress.cs" />
+    <Compile Include="WooCommerce\Orders\CouponLine.cs" />
+    <Compile Include="WooCommerce\Orders\FeeLine.cs" />
+    <Compile Include="WooCommerce\Orders\LineItem.cs" />
+    <Compile Include="WooCommerce\Metadata.cs" />
+    <Compile Include="WooCommerce\Orders\Order.cs" />
+    <Compile Include="WooCommerce\Orders\Refund.cs" />
+    <Compile Include="WooCommerce\Orders\ShippingAddress.cs" />
+    <Compile Include="WooCommerce\Orders\ShippingLine.cs" />
+    <Compile Include="WooCommerce\Orders\Tax.cs" />
+    <Compile Include="WooCommerce\Orders\TaxLine.cs" />
+    <Compile Include="WooCommerce\Products\Attribute.cs" />
+    <Compile Include="WooCommerce\Products\Category.cs" />
+    <Compile Include="WooCommerce\Products\DefaultAttribute.cs" />
+    <Compile Include="WooCommerce\Products\Dimension.cs" />
+    <Compile Include="WooCommerce\Products\Download.cs" />
+    <Compile Include="WooCommerce\Products\Image.cs" />
+    <Compile Include="WooCommerce\Products\Product.cs" />
+    <Compile Include="WooCommerce\Products\Tag.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -19,7 +19,8 @@ namespace TIMSServerModel
         Stream GetResource(string filename);
 
         [OperationContract]
-        [WebInvoke(Method = "POST", ResponseFormat = WebMessageFormat.Xml, UriTemplate = "{*filename}")]
-        string FormPost(Stream testInput, string filename);
+        [WebInvoke(Method = "POST", BodyStyle = WebMessageBodyStyle.Bare, ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json, UriTemplate = "")]
+        string FormPost(Stream testInput);
+
     }
 }

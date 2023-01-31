@@ -86,6 +86,7 @@ namespace TIMS.Forms
             this.chartOfAccountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.expensesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.assetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.onlineBankingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accountsReceivableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.paymentProcessingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.customerARActivityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -165,7 +166,6 @@ namespace TIMS.Forms
             this.reportCreatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.onlineBankingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -607,28 +607,34 @@ namespace TIMS.Forms
             // generalJournalToolStripMenuItem
             // 
             this.generalJournalToolStripMenuItem.Name = "generalJournalToolStripMenuItem";
-            this.generalJournalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.generalJournalToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.generalJournalToolStripMenuItem.Text = "General Journal";
             this.generalJournalToolStripMenuItem.Click += new System.EventHandler(this.generalJournalToolStripMenuItem_Click);
             // 
             // chartOfAccountsToolStripMenuItem
             // 
             this.chartOfAccountsToolStripMenuItem.Name = "chartOfAccountsToolStripMenuItem";
-            this.chartOfAccountsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.chartOfAccountsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.chartOfAccountsToolStripMenuItem.Text = "Chart Of Accounts";
             this.chartOfAccountsToolStripMenuItem.Click += new System.EventHandler(this.chartOfAccountsToolStripMenuItem_Click);
             // 
             // expensesToolStripMenuItem
             // 
             this.expensesToolStripMenuItem.Name = "expensesToolStripMenuItem";
-            this.expensesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.expensesToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.expensesToolStripMenuItem.Text = "Add Expense";
             // 
             // assetsToolStripMenuItem
             // 
             this.assetsToolStripMenuItem.Name = "assetsToolStripMenuItem";
-            this.assetsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.assetsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.assetsToolStripMenuItem.Text = "Assets";
+            // 
+            // onlineBankingToolStripMenuItem
+            // 
+            this.onlineBankingToolStripMenuItem.Name = "onlineBankingToolStripMenuItem";
+            this.onlineBankingToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.onlineBankingToolStripMenuItem.Text = "Online Banking";
             // 
             // accountsReceivableToolStripMenuItem
             // 
@@ -765,13 +771,13 @@ namespace TIMS.Forms
             // aRControlsToolStripMenuItem
             // 
             this.aRControlsToolStripMenuItem.Name = "aRControlsToolStripMenuItem";
-            this.aRControlsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aRControlsToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.aRControlsToolStripMenuItem.Text = "A/R Controls";
             // 
             // storeCategoriesToolStripMenuItem
             // 
             this.storeCategoriesToolStripMenuItem.Name = "storeCategoriesToolStripMenuItem";
-            this.storeCategoriesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.storeCategoriesToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.storeCategoriesToolStripMenuItem.Text = "Store Categories";
             // 
             // classificationToolStripMenuItem1
@@ -1109,6 +1115,7 @@ namespace TIMS.Forms
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(191, 22);
             this.toolStripMenuItem2.Text = "Web Shop Settings";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // toolStripSeparator2
             // 
@@ -1120,6 +1127,7 @@ namespace TIMS.Forms
             this.layoutToolStripMenuItem.Name = "layoutToolStripMenuItem";
             this.layoutToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.layoutToolStripMenuItem.Text = "Virtual Store Layout";
+            this.layoutToolStripMenuItem.Click += new System.EventHandler(this.layoutToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -1211,12 +1219,6 @@ namespace TIMS.Forms
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // onlineBankingToolStripMenuItem
-            // 
-            this.onlineBankingToolStripMenuItem.Name = "onlineBankingToolStripMenuItem";
-            this.onlineBankingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.onlineBankingToolStripMenuItem.Text = "Online Banking";
             // 
             // OtherFunctions
             // 

@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.treeView2 = new System.Windows.Forms.TreeView();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -56,6 +57,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.treeView1);
             this.groupBox1.Location = new System.Drawing.Point(12, 39);
             this.groupBox1.Name = "groupBox1";
@@ -64,14 +66,25 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filters";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(0, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(238, 13);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Double-click a filter to apply or remove it";
+            // 
             // treeView1
             // 
             this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.treeView1.Location = new System.Drawing.Point(6, 19);
+            this.treeView1.Location = new System.Drawing.Point(6, 32);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(226, 504);
+            this.treeView1.Size = new System.Drawing.Size(226, 491);
             this.treeView1.TabIndex = 0;
+            this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
             // 
             // treeView2
             // 
@@ -119,6 +132,9 @@
             // 
             // tabControl1
             // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(256, 39);
@@ -153,8 +169,12 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridView1.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -172,6 +192,7 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(694, 485);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseDoubleClick);
             // 
             // productLine
@@ -223,6 +244,7 @@
             this.Name = "ProductCatalog";
             this.Text = "ProductCatalog";
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -238,7 +260,6 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.TreeView treeView2;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
@@ -250,5 +271,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn onHandQty;
         private System.Windows.Forms.DataGridViewTextBoxColumn itemPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn itemUPC;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TreeView treeView1;
     }
 }

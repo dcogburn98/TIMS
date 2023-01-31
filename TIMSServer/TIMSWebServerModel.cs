@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.ServiceModel.Web;
 using System.Text;
@@ -11,6 +12,7 @@ using System.Web;
 using Microsoft.Data.Sqlite;
 
 using TIMSServer.WebServer;
+using TIMSServer.WebServer.WooCommerce;
 using TIMSServerModel;
 
 namespace TIMSServer
@@ -184,25 +186,23 @@ namespace TIMSServer
             return resourceStream;
         }
 
-        public string FormPost(Stream testInput, string filename)
+        public string FormPost(Stream testInput)
         {
+            if (WebOperationContext.Current.IncomingRequest.Headers.AllKeys.FirstOrDefault(el => el.ToLower().Contains("x-wc-webhook-topic")) != default(string))
+            {
+                WebhookHandler.HandleWebhook(WebOperationContext.Current.IncomingRequest.Headers, testInput);
+            }
+
             StreamReader someReader = new StreamReader(testInput);
             string theInput = someReader.ReadToEnd();
 
-            // Unfortunately, various places on the internet seem to 
-            // indicate that data that you now have in your string
-            // theInput is multipart form data.  If you were willing
-            // to use ASP.NET Compatibility Mode in your Interface, 
-            // then you could have used the trick here mentioned by 
-            // Mike Atlas and Mark Gravel in [2] but let's assume
-            // you cannot use compatibilty mode.  Then you might 
-            // try a multipart parser like the one written by antscode
-            // at [3] or you can just do what I did and guess your 
-            // way through.  Since you have a simple form, you can 
-            // just guess your way through the parsing by replacing
-            // "testInput" with nothing and UrlDecoding what is left.
-            // That won't work on more complex forms but it works on 
-            // this example.  You get some more backround on this 
+            // Unfortunately, various places on the internet seem to indicate that data that you now have in your string
+            // theInput is multipart form data.  If you were willingto use ASP.NET Compatibility Mode in your Interface, 
+            // then you could have used the trick here mentioned by Mike Atlas and Mark Gravel in [2] but let's assume
+            // you cannot use compatibilty mode.  Then you might try a multipart parser like the one written by antscode
+            // at [3] or you can just do what I did and guess your way through.  Since you have a simple form, you can 
+            // just guess your way through the parsing by replacing "testInput" with nothing and UrlDecoding what is left.
+            // That won't work on more complex forms but it works on this example.  You get some more backround on this 
             // and why UrlDecode is necessary at [4]
             theInput = theInput.Replace("testInput=", "");
             //theInput = HttpUtility.UrlDecode(theInput);

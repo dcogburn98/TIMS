@@ -11,6 +11,11 @@ using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
 
 using TIMSServerModel;
+using TIMSServer.WebServer.WooCommerce;
+
+using WooCommerceNET;
+using WooCommerceNET.WooCommerce.v2;
+using WooCommerceNET.WooCommerce.v2.Extension;
 
 using Quartz;
 using Quartz.Impl;
@@ -53,14 +58,15 @@ namespace TIMSServer
             #endregion
 
             #region Web Server Initialization
-            //Console.WriteLine("Starting TIMS web server (Step 2)...");
-            //ServiceHost webhost = new ServiceHost(typeof(TIMSWebServerModel));
-            //webhost.Open();
-            //TIMSWebServerModel.Init();
-            //Console.Write("Web server now serving web pages on ");
-            //Console.ForegroundColor = ConsoleColor.Green;
-            //Console.WriteLine(externalIp.ToString());
-            //Console.ForegroundColor = ConsoleColor.White;
+            
+            Console.WriteLine("Starting TIMS web server (Step 2)...");
+            ServiceHost webhost = new ServiceHost(typeof(TIMSWebServerModel));
+            webhost.Open();
+            TIMSWebServerModel.Init();
+            Console.Write("Web server now serving web pages on ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(externalIp.ToString());
+            Console.ForegroundColor = ConsoleColor.White;
             #endregion
 
             #region EOD Scheduling
@@ -96,6 +102,29 @@ namespace TIMSServer
             await TaskScheduler.Start();
             #endregion
 
+            #region WooCommerce
+            List<Product> products = await WooCommerceHandler.WC.Product.GetAll();
+
+            foreach (Product p in products)
+            {
+                //Console.WriteLine(p.name);
+            }
+
+            List<Webhook> webhooks = await WooCommerceHandler.WC.Webhook.GetAll();
+            foreach (Webhook wh in webhooks)
+            {
+                //Console.Write($"A webhook for {wh.topic} exists for this website.");
+                
+            }
+            List<WooCommerce.NET.WordPress.v2.Posts> posts = WooCommerceHandler.WP.Post.GetAll().Result;
+            foreach (WooCommerce.NET.WordPress.v2.Posts post in posts)
+            {
+                Console.WriteLine(post.title);
+            }
+            //WooCommerceHandler.MatchProducts();
+            
+            #endregion
+
             while (true)
             {
                 Console.Write("TIMS@" + GetLocalIPAddress() + ">");
@@ -111,7 +140,7 @@ namespace TIMSServer
                             Console.WriteLine("Terminating TIMS client server model...");
                             host.Close();
                             Console.WriteLine("Shutting down micro web server model...");
-                            //webhost.Close();
+                            webhost.Close();
                             Console.WriteLine("Shutting down TIMS server application...");
                             Environment.Exit(0);
                         }
@@ -1027,13 +1056,15 @@ namespace TIMSServer
                 ""LastSalePrice""   REAL,
                 ""Brand""   TEXT,
                 ""Department""  TEXT,
-                ""Subdepartment""   TEXT
+                ""Subdepartment""   TEXT,
+                ""ImagePaths""  TEXT,
+                ""WooCommerceID"" INTEGER
                 )";
                 command.ExecuteNonQuery();
 
                 command.CommandText =
-                    @"INSERT INTO Items (""ProductLine"", ""ItemNumber"", ""ItemName"", ""LongDescription"", ""Supplier"", ""GroupCode"", ""VelocityCode"", ""PreviousYearVelocityCode"", ""ItemsPerContainer"", ""StandardPackage"", ""DateStocked"", ""DateLastReceipt"", ""Minimum"", ""Maximum"", ""OnHandQuantity"", ""WIPQuantity"", ""OnOrderQuantity"", ""BackorderQuantity"", ""DaysOnOrder"", ""DaysOnBackOrder"", ""ListPrice"", ""RedPrice"", ""YellowPrice"", ""GreenPrice"", ""PinkPrice"", ""BluePrice"", ""ReplacementCost"", ""AverageCost"", ""Taxed"", ""AgeRestricted"", ""MinimumAge"", ""LocationCode"", ""Serialized"", ""Category"", ""UPC"", ""LastLabelDate"", ""LastLabelPrice"", ""DateLastSale"", ""ManufacturerNumber"", ""LastSalePrice"", ""Brand"", ""Department"", ""Subdepartment"") 
-                    VALUES ('XXX', 'XXX', 'XXX', 'XXX', 'Default', '0', '0', '0', '0', '0', '6/11/2022 7:43:28 PM', '6/11/2022 7:43:28 PM', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0', '0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '1', '0', '0', '0', '0', 'Etc', 'xxx', '01/01/0001 12:00 AM', '0', '01/01/0001 12:00 AM', 'XXX', '0', 'Default', 'Default', 'Default');";
+                    @"INSERT INTO Items (""ProductLine"", ""ItemNumber"", ""ItemName"", ""LongDescription"", ""Supplier"", ""GroupCode"", ""VelocityCode"", ""PreviousYearVelocityCode"", ""ItemsPerContainer"", ""StandardPackage"", ""DateStocked"", ""DateLastReceipt"", ""Minimum"", ""Maximum"", ""OnHandQuantity"", ""WIPQuantity"", ""OnOrderQuantity"", ""BackorderQuantity"", ""DaysOnOrder"", ""DaysOnBackOrder"", ""ListPrice"", ""RedPrice"", ""YellowPrice"", ""GreenPrice"", ""PinkPrice"", ""BluePrice"", ""ReplacementCost"", ""AverageCost"", ""Taxed"", ""AgeRestricted"", ""MinimumAge"", ""LocationCode"", ""Serialized"", ""Category"", ""UPC"", ""LastLabelDate"", ""LastLabelPrice"", ""DateLastSale"", ""ManufacturerNumber"", ""LastSalePrice"", ""Brand"", ""Department"", ""Subdepartment"", ""ImagePaths"", ""WooCommerceID"") 
+                    VALUES ('XXX', 'XXX', 'XXX', 'XXX', 'Default', '0', '0', '0', '0', '0', '6/11/2022 7:43:28 PM', '6/11/2022 7:43:28 PM', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0', '0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '1', '0', '0', '0', '0', 'Etc', 'xxx', '01/01/0001 12:00 AM', '0', '01/01/0001 12:00 AM', 'XXX', '0', 'Default', 'Default', 'Default', '', '0');";
                 command.ExecuteNonQuery();
             }
             else

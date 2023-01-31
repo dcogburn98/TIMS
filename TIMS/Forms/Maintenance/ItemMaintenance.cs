@@ -29,12 +29,14 @@ namespace TIMS.Forms.Maintenance
         {
             workingItem = Communication.RetrieveItem(itemNumberTB.Text, productLineComboBox.Text);
             PopulateItemInfoFields();
+            saveItemButton.Enabled = true;
         }
 
         private void ClearAllItemFields()
         {
             workingItem = null;
             itemDescriptionTB.Text = string.Empty;
+            saveItemButton.Enabled = false;
 
             productLineTBField.Text = string.Empty;
             itemNumberTBField.Text = string.Empty;
@@ -326,6 +328,10 @@ namespace TIMS.Forms.Maintenance
 
         private void saveItemButton_Click(object sender, EventArgs e)
         {
+            if (workingItem == null)
+            {
+                return;
+            }
             if (ageRestrictedCB.Checked && minimumAgeTB.Text == "")
             {
                 MessageBox.Show("Minimum age is required for age restricted items!");
@@ -347,8 +353,8 @@ namespace TIMS.Forms.Maintenance
             newItem.brand = brandCB.Text;
             newItem.standardPackage = int.TryParse(standardPkgTB.Text, out i) == false ? 0 : i;
             newItem.taxed = taxableCB.Checked;
-            newItem.dateStocked = DateTime.Parse(dateStockedTB.Text);
-            newItem.dateLastReceipt = DateTime.Parse(lastReceiptTB.Text);
+            newItem.dateStocked = DateTime.TryParse(dateStockedTB.Text, out DateTime date) == false ? DateTime.MinValue : date;
+            newItem.dateLastReceipt = DateTime.TryParse(lastReceiptTB.Text, out date) == false ? DateTime.MinValue : date;
             newItem.minimum = decimal.TryParse(minTB.Text, out decimal j) == false ? 0 : j;
             newItem.maximum = decimal.TryParse(maxTB.Text, out j) == false ? 0 : j;
             newItem.onHandQty = decimal.TryParse(onHandTB.Text, out j) == false ? 0 : j;
@@ -504,6 +510,7 @@ namespace TIMS.Forms.Maintenance
                         workingItem = new Item() { itemNumber = itemNo, productLine = pl, taxed = true };
                         PopulateItemInfoFields();
                         productLineComboBox.Text = pl;
+                        saveItemButton.Enabled = true;
                     }
                 }
             }

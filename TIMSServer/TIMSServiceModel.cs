@@ -35,6 +35,7 @@ namespace TIMSServer
 
         public static void Init()
         {
+            sqlite_conn = Program.sqlite_conn;
             Keys.Add(BypassKey);
             ReceiptPrinter.Init(new TIMSServiceModel());
         }
@@ -408,7 +409,7 @@ namespace TIMSServer
             sqlite_cmd = Program.sqlite_conn.CreateCommand();
 
             sqlite_cmd.CommandText =
-              @"SELECT * 
+              @"SELECT PRODUCTLINE, ITEMNUMBER 
                 FROM ITEMS 
                 WHERE SUPPLIER == $SUPPLIER";
 
@@ -416,44 +417,49 @@ namespace TIMSServer
             sqlite_cmd.Parameters.Add(supplierParam);
             SqliteDataReader reader = sqlite_cmd.ExecuteReader();
 
+            List<Item> results = new List<Item>();
             while (reader.Read())
             {
                 Item item = new Item();
                 item.productLine = reader.GetString(0);
                 item.itemNumber = reader.GetString(1);
-                item.itemName = reader.GetString(2);
-                item.longDescription = reader.GetValue(3).ToString();
-                item.supplier = reader.GetString(4);
-                item.groupCode = reader.GetInt32(5);
-                item.velocityCode = reader.GetInt32(6);
-                item.previousYearVelocityCode = reader.GetInt32(7);
-                item.itemsPerContainer = reader.GetInt32(8);
-                item.standardPackage = reader.GetInt32(9);
-                item.dateStocked = DateTime.Parse(reader.GetString(10));
-                item.dateLastReceipt = DateTime.Parse(reader.GetString(11));
-                item.minimum = reader.GetDecimal(12);
-                item.maximum = reader.GetDecimal(13);
-                item.onHandQty = reader.GetDecimal(14);
-                item.WIPQty = reader.GetDecimal(15);
-                item.onOrderQty = reader.GetDecimal(16);
-                item.onBackorderQty = reader.GetDecimal(17);
-                item.daysOnOrder = reader.GetInt32(18);
-                item.daysOnBackorder = reader.GetInt32(19);
-                item.listPrice = reader.GetDecimal(20);
-                item.redPrice = reader.GetDecimal(21);
-                item.yellowPrice = reader.GetDecimal(22);
-                item.greenPrice = reader.GetDecimal(23);
-                item.pinkPrice = reader.GetDecimal(24);
-                item.bluePrice = reader.GetDecimal(25);
-                item.replacementCost = reader.GetDecimal(26);
-                item.averageCost = reader.GetDecimal(27);
-                item.taxed = reader.GetBoolean(28);
-                item.ageRestricted = reader.GetBoolean(29);
-                item.minimumAge = reader.GetInt32(30);
-                item.locationCode = reader.GetInt32(31);
-                item.serialized = reader.GetBoolean(32);
-                container.Data.Add(item);
+                results.Add(item);
+                //item.itemName = reader.GetString(2);
+                //item.longDescription = reader.GetValue(3).ToString();
+                //item.supplier = reader.GetString(4);
+                //item.groupCode = reader.GetInt32(5);
+                //item.velocityCode = reader.GetInt32(6);
+                //item.previousYearVelocityCode = reader.GetInt32(7);
+                //item.itemsPerContainer = reader.GetInt32(8);
+                //item.standardPackage = reader.GetInt32(9);
+                //item.dateStocked = DateTime.Parse(reader.GetString(10));
+                //item.dateLastReceipt = DateTime.Parse(reader.GetString(11));
+                //item.minimum = reader.GetDecimal(12);
+                //item.maximum = reader.GetDecimal(13);
+                //item.onHandQty = reader.GetDecimal(14);
+                //item.WIPQty = reader.GetDecimal(15);
+                //item.onOrderQty = reader.GetDecimal(16);
+                //item.onBackorderQty = reader.GetDecimal(17);
+                //item.daysOnOrder = reader.GetInt32(18);
+                //item.daysOnBackorder = reader.GetInt32(19);
+                //item.listPrice = reader.GetDecimal(20);
+                //item.redPrice = reader.GetDecimal(21);
+                //item.yellowPrice = reader.GetDecimal(22);
+                //item.greenPrice = reader.GetDecimal(23);
+                //item.pinkPrice = reader.GetDecimal(24);
+                //item.bluePrice = reader.GetDecimal(25);
+                //item.replacementCost = reader.GetDecimal(26);
+                //item.averageCost = reader.GetDecimal(27);
+                //item.taxed = reader.GetBoolean(28);
+                //item.ageRestricted = reader.GetBoolean(29);
+                //item.minimumAge = reader.GetInt32(30);
+                //item.locationCode = reader.GetInt32(31);
+                //item.serialized = reader.GetBoolean(32);
+                //container.Data.Add(item);
             }
+            reader.Close();
+            foreach (Item item in results)
+                container.Data.Add(RetrieveItem(item.itemNumber, item.productLine, true));
 
             Program.CloseConnection();
             //if (container.Data.Count == 0)
@@ -829,6 +835,18 @@ namespace TIMSServer
                 item.brand = reader.GetString(40);
                 item.department = reader.GetString(41);
                 item.subDepartment = reader.GetString(42);
+                item.itemPicturePaths = new List<string>();
+                foreach (string path in reader.GetString(43).Split(';'))
+                {
+                    if (File.Exists(path))
+                    {
+                        item.itemPicturePaths.Add(path);
+                    }
+                    else if (Uri.IsWellFormedUriString(path, UriKind.Absolute))
+                    {
+                        item.itemPicturePaths.Add(path);
+                    }
+                }
                 if (fixedPL == fixedIN)
                     break;
             }
@@ -875,7 +893,7 @@ namespace TIMSServer
                 "BLUEPRICE = $BLUE, REPLACEMENTCOST = $COST, AVERAGECOST = $AVERAGECOST, " +
                 "TAXED = $TAXED, AGERESTRICTED = $RESTRICTED, MINIMUMAGE = $MINAGE, LOCATIONCODE = $LOCATION, " +
                 "SERIALIZED = $SERIALIZED, CATEGORY = $CATEGORY, DATELASTSALE = $LASTSALEDATE, MANUFACTURERNUMBER = $MANUFACTURERNO, " +
-                "BRAND = $BRAND, DEPARTMENT = $DEPARTMENT, SUBDEPARTMENT = $SUBDEPARTMENT, " + 
+                "BRAND = $BRAND, DEPARTMENT = $DEPARTMENT, SUBDEPARTMENT = $SUBDEPARTMENT, IMAGEPATHS = $IMAGES, " + 
                 "UPC = $SKU, LASTLABELDATE = $LABELDATE, LASTLABELPRICE = $LABELPRICE, LASTSALEPRICE = $LASTSALEPRICE " +
                 "WHERE (ITEMNUMBER = $ITEMNUMBER AND PRODUCTLINE = $PRODUCTLINE)";
 
@@ -922,6 +940,20 @@ namespace TIMSServer
             command.Parameters.Add(new SqliteParameter("$BRAND", newItem.brand));
             command.Parameters.Add(new SqliteParameter("$DEPARTMENT", newItem.department));
             command.Parameters.Add(new SqliteParameter("$SUBDEPARTMENT", newItem.subDepartment));
+            string paths = "";
+            foreach (string path in newItem.itemPicturePaths)
+            {
+                if (File.Exists(path))
+                {
+                    paths += path + ";";
+                }
+                else if (Uri.IsWellFormedUriString(path, UriKind.Absolute))
+                {
+                    paths += path + ";";
+                }
+            }
+            paths = paths.Trim(';');
+            command.Parameters.Add(new SqliteParameter("$IMAGES", paths));
 
             command.ExecuteNonQuery();
 
@@ -976,13 +1008,15 @@ namespace TIMSServer
                 "ITEMSPERCONTAINER, STANDARDPACKAGE, DATESTOCKED, DATELASTRECEIPT, MINIMUM, MAXIMUM, ONHANDQUANTITY, WIPQUANTITY, " +
                 "ONORDERQUANTITY, BACKORDERQUANTITY, DAYSONORDER, DAYSONBACKORDER, LISTPRICE, REDPRICE, YELLOWPRICE, GREENPRICE, " +
                 "PINKPRICE, BLUEPRICE, REPLACEMENTCOST, AVERAGECOST, TAXED, AGERESTRICTED, MINIMUMAGE, LOCATIONCODE, SERIALIZED, " +
-                "CATEGORY, BRAND, DEPARTMENT, SUBDEPARTMENT, UPC, LASTLABELDATE, LASTLABELPRICE, DATELASTSALE, MANUFACTURERNUMBER, LASTSALEPRICE) " +
+                "CATEGORY, BRAND, DEPARTMENT, SUBDEPARTMENT, UPC, LASTLABELDATE, LASTLABELPRICE, DATELASTSALE, MANUFACTURERNUMBER, LASTSALEPRICE, " +
+                "IMAGEPATHS) " +
 
                 "VALUES ($PRODUCTLINE, $ITEMNUMBER, $ITEMNAME, $DESCRIPTION, $SUPPLIER, $GROUP, $VELOCITY, $PREVIOUSVELOCITY, " +
                 "$ITEMSPERCONTAINER, $STDPKG, $DATESTOCKED, $DATELASTRECEIPT, $MIN, $MAX, $ONHAND, $WIPQUANTITY, " +
                 "$ONORDERQTY, $BACKORDERQTY, $DAYSONORDER, $DAYSONBACKORDER, $LIST, $RED, $YELLOW, $GREEN, " +
                 "$PINK, $BLUE, $COST, $AVERAGECOST, $TAXED, $AGERESTRICTED, $MINAGE, $LOCATION, $SERIALIZED, $CATEGORY, " +
-                "$BRAND, $DEPARTMENT, $SUBDEPARTMENT, $SKU, $LABELDATE, $LABELPRICE, $SALEDATE, $MANUFACTURERNUMBER, $SALEPRICE)";
+                "$BRAND, $DEPARTMENT, $SUBDEPARTMENT, $SKU, $LABELDATE, $LABELPRICE, $SALEDATE, $MANUFACTURERNUMBER, $SALEPRICE, " +
+                "$IMAGES)";
 
             SqliteParameter p1 = new SqliteParameter("$PRODUCTLINE", item.productLine);
             SqliteParameter p2 = new SqliteParameter("$ITEMNUMBER", item.itemNumber);
@@ -1027,6 +1061,21 @@ namespace TIMSServer
             SqliteParameter p41 = new SqliteParameter("$BRAND", item.brand);
             SqliteParameter p42 = new SqliteParameter("$DEPARTMENT", item.department);
             SqliteParameter p43 = new SqliteParameter("$SUBDEPARTMENT", item.subDepartment);
+            string paths = "";
+            foreach (string path in item.itemPicturePaths)
+            {
+                if (File.Exists(path))
+                {
+                    paths += path + ";";
+                }
+                else if (Uri.IsWellFormedUriString(path, UriKind.Absolute))
+                {
+                    paths += path + ";";
+                }
+            }
+            paths = paths.Trim(';');
+            SqliteParameter p44 = new SqliteParameter("$IMAGES", paths);
+
 
             command.Parameters.Add(p1);
             command.Parameters.Add(p2);
@@ -1071,6 +1120,7 @@ namespace TIMSServer
             command.Parameters.Add(p41);
             command.Parameters.Add(p42);
             command.Parameters.Add(p43);
+            command.Parameters.Add(p44);
 
             command.ExecuteNonQuery();
 
@@ -1135,7 +1185,6 @@ namespace TIMSServer
             }
             return container;
         }
-        
         
         #endregion
 
@@ -2449,7 +2498,6 @@ namespace TIMSServer
             CloseConnection();
             return container;
         }
-        
         public AuthContainer<object> SetImage(string key, byte[] imgBytes, AuthKey authkey)
         {
             AuthContainer<object> container = CheckAuthorization<object>(authkey);
@@ -2539,6 +2587,36 @@ namespace TIMSServer
             CloseConnection();
             return imgBytes;
         }
+        public AuthContainer<byte[]> RetrieveProductImage(string path, AuthKey authkey)
+        {
+            AuthContainer<byte[]> container = CheckAuthorization<byte[]>(authkey);
+            if (!container.Key.Success)
+                return container;
+
+            if (File.Exists(path))
+            {
+                Image bitmap = Image.FromFile(path);
+                MemoryStream ms = new MemoryStream();
+                bitmap.Save(ms, ImageFormat.Png);
+                container.Data = ms.ToArray();
+            }
+            else if (Uri.IsWellFormedUriString(path, UriKind.Absolute))
+            {
+                WebClient client = new WebClient();
+                Stream stream = client.OpenRead(path);
+                Bitmap bitmap = new Bitmap(stream);
+                MemoryStream ms = new MemoryStream();
+                bitmap.Save(ms, ImageFormat.Png);
+                container.Data = ms.ToArray();
+
+                stream.Flush();
+                stream.Close();
+                client.Dispose();
+            }
+
+            return container;
+        }
+        
         #endregion
 
         #region Shortcut Menus
@@ -3600,7 +3678,7 @@ namespace TIMSServer
             List<Device> devices = new List<Device>();
             OpenConnection();
 
-            SqliteCommand command = sqlite_conn.CreateCommand();
+            SqliteCommand command = Program.sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT NICKNAME, IPADDRESS, DEVICETYPE, ID FROM DEVICES WHERE DEVICETYPE != 'TERMINAL'";
             SqliteDataReader reader = command.ExecuteReader();
@@ -3857,6 +3935,9 @@ namespace TIMSServer
         }
         #endregion
 
-
+        public void WooCommerceOrderCreate()
+        {
+            Console.WriteLine("This actually worked? Order has been created.");
+        }
     }
 }

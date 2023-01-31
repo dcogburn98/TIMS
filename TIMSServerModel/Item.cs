@@ -59,7 +59,7 @@ namespace TIMSServerModel
 
         public int locationCode;
 
-        public List<string> itemPicturePaths;
+        public List<string> itemPicturePaths = new List<string>();
         public string modelPath;
         public ModelSize modelSize;
         public bool hangingItem;

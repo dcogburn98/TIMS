@@ -493,6 +493,31 @@ namespace TIMS.Server
                 return null;
             }
         }
+        public static Image RetrieveProductImage(string path) //AuthContainer'd
+        {
+            AuthContainer<byte[]> container = proxy.RetrieveProductImage(path, currentKey);
+            if (container.Key.Success)
+            {
+                currentKey.Regenerate();
+
+                MemoryStream ms = new MemoryStream(container.Data);
+                try
+                {
+                    Image img = Image.FromStream(ms);
+                    return img;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
+        }
+
         #endregion
 
         #region Item Shortcut Menus

@@ -74,6 +74,15 @@
       <HintPath>..\packages\Microsoft.Extensions.Primitives.6.0.0\lib\net461\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.1518.46, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.1518.46\lib\net45\Microsoft.Web.WebView2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.WinForms, Version=1.0.1518.46, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.1518.46\lib\net45\Microsoft.Web.WebView2.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.Wpf, Version=1.0.1518.46, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.WebView2.1.0.1518.46\lib\net45\Microsoft.Web.WebView2.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\OneDrive\Desktop\TIMS Dev Stuff\PaymentEngine\Newtonsoft.Json.dll</HintPath>
@@ -185,6 +194,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WooCommerce.NET, Version=0.8.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WooCommerceNET.0.8.5\lib\netstandard2.0\WooCommerce.NET.dll</HintPath>
+    </Reference>
     <Reference Include="xCore, Version=2.41.2208.2544, Culture=neutral, PublicKeyToken=5f9517288b979455, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\OneDrive\Desktop\TIMS Dev Stuff\PaymentEngine\xCore.dll</HintPath>
@@ -381,6 +393,12 @@
     <Compile Include="Forms\POS\Invoicing.Designer.cs">
       <DependentUpon>Invoicing.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\POS\ItemInformation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\POS\ItemInformation.Designer.cs">
+      <DependentUpon>ItemInformation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\POS\ProductCatalog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -485,6 +503,18 @@
     </Compile>
     <Compile Include="Forms\Settings\ReceiptCreator.Designer.cs">
       <DependentUpon>ReceiptCreator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\WooCommerce\WebStoreSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\WooCommerce\WebStoreSettings.Designer.cs">
+      <DependentUpon>WebStoreSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\WooCommerce\WordpressAuthorization.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\WooCommerce\WordpressAuthorization.Designer.cs">
+      <DependentUpon>WordpressAuthorization.cs</DependentUpon>
     </Compile>
     <Compile Include="POs\CheckIn.cs" />
     <Compile Include="POs\PurchaseOrder.cs" />
@@ -622,6 +652,9 @@
     <EmbeddedResource Include="Forms\Mail.resx">
       <DependentUpon>Mail.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\POS\ItemInformation.resx">
+      <DependentUpon>ItemInformation.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\POS\ProductCatalog.resx">
       <DependentUpon>ProductCatalog.cs</DependentUpon>
     </EmbeddedResource>
@@ -672,6 +705,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Settings\ReceiptCreator.resx">
       <DependentUpon>ReceiptCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\WooCommerce\WebStoreSettings.resx">
+      <DependentUpon>WebStoreSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\WooCommerce\WordpressAuthorization.resx">
+      <DependentUpon>WordpressAuthorization.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -733,10 +772,12 @@
     <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.2\build\Microsoft.Extensions.Logging.Abstractions.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.2\build\Microsoft.Extensions.Logging.Abstractions.targets'))" />
     <Error Condition="!Exists('..\packages\System.Text.Json.6.0.4\build\System.Text.Json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Text.Json.6.0.4\build\System.Text.Json.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Web.WebView2.1.0.1518.46\build\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Web.WebView2.1.0.1518.46\build\Microsoft.Web.WebView2.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <Import Project="..\packages\StereoKit.0.3.6\build\StereoKit.targets" Condition="Exists('..\packages\StereoKit.0.3.6\build\StereoKit.targets')" />
   <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
   <Import Project="..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.2\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.2\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
   <Import Project="..\packages\System.Text.Json.6.0.4\build\System.Text.Json.targets" Condition="Exists('..\packages\System.Text.Json.6.0.4\build\System.Text.Json.targets')" />
+  <Import Project="..\packages\Microsoft.Web.WebView2.1.0.1518.46\build\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.1518.46\build\Microsoft.Web.WebView2.targets')" />
 </Project>

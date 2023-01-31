@@ -16,6 +16,7 @@ namespace TIMS.Forms.POS
     public partial class ProductCatalog : Form
     {
         Invoicing parentForm;
+        List<Item> searchResults;
 
         public ProductCatalog(Invoicing invoiceForm)
         {
@@ -28,6 +29,44 @@ namespace TIMS.Forms.POS
                 TreeNode departmentNode = treeView2.Nodes.Add(department);
                 TreeNode tempNode = departmentNode.Nodes.Add("Loading...");
                 tempNode.Name = "temp";
+            }
+        }
+
+        private void Search()
+        {
+            treeView1.Nodes.Clear();
+            TreeNode departmentsFilterNode = treeView1.Nodes.Add("Departments");
+            departmentsFilterNode.Name = "departments";
+            TreeNode categoriesFilterNode = treeView1.Nodes.Add("Categories");
+            categoriesFilterNode.Name = "categories";
+            TreeNode suppliersFilterNode = treeView1.Nodes.Add("Suppliers");
+            suppliersFilterNode.Name = "suppliers";
+
+            tabControl1.SelectedIndex = 1;
+            dataGridView1.Rows.Clear();
+            searchResults = Communication.SearchItemsByQuery(textBox1.Text);
+            foreach (Item item in searchResults)
+            {
+                int row = dataGridView1.Rows.Add();
+                dataGridView1.Rows[row].Cells[0].Value = item.productLine;
+                dataGridView1.Rows[row].Cells[1].Value = item.itemNumber;
+                dataGridView1.Rows[row].Cells[2].Value = item.itemName;
+                dataGridView1.Rows[row].Cells[3].Value = item.onHandQty.ToString();
+                dataGridView1.Rows[row].Cells[4].Value = parentForm.currentInvoice.customer.inStorePricingProfile.CalculatePrice(item).ToString("C");
+                dataGridView1.Rows[row].Cells[5].Value = item.UPC;
+                dataGridView1.Rows[row].Tag = item;
+                if (departmentsFilterNode.Nodes.Find(item.department, false).Length == 0)
+                {
+                    departmentsFilterNode.Nodes.Add(item.department).Name = item.department;
+                }
+                if (categoriesFilterNode.Nodes.Find(item.category, false).Length == 0)
+                {
+                    categoriesFilterNode.Nodes.Add(item.category).Name = item.category;
+                }
+                if (suppliersFilterNode.Nodes.Find(item.supplier, false).Length == 0)
+                {
+                    suppliersFilterNode.Nodes.Add(item.supplier).Name = item.supplier;
+                }
             }
         }
 
@@ -83,19 +122,7 @@ namespace TIMS.Forms.POS
             if (string.IsNullOrEmpty(textBox1.Text))
                 return;
 
-            tabControl1.SelectedIndex = 1;
-            dataGridView1.Rows.Clear();
-            foreach (Item item in Communication.SearchItemsByQuery(textBox1.Text))
-            {
-                int row = dataGridView1.Rows.Add();
-                dataGridView1.Rows[row].Cells[0].Value = item.productLine;
-                dataGridView1.Rows[row].Cells[1].Value = item.itemNumber;
-                dataGridView1.Rows[row].Cells[2].Value = item.itemName;
-                dataGridView1.Rows[row].Cells[3].Value = item.onHandQty.ToString();
-                dataGridView1.Rows[row].Cells[4].Value = parentForm.currentInvoice.customer.inStorePricingProfile.CalculatePrice(item).ToString("C");
-                dataGridView1.Rows[row].Cells[5].Value = item.UPC;
-                dataGridView1.Rows[row].Tag = item;
-            }
+            Search();
         }
 
         private void dataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -111,19 +138,68 @@ namespace TIMS.Forms.POS
             if (e.KeyCode != Keys.Enter || string.IsNullOrEmpty(textBox1.Text))
                 return;
 
-            tabControl1.SelectedIndex = 1;
-            dataGridView1.Rows.Clear();
-            foreach (Item item in Communication.SearchItemsByQuery(textBox1.Text))
+            Search();
+        }
+
+        private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.Parent == null)
             {
-                int row = dataGridView1.Rows.Add();
-                dataGridView1.Rows[row].Cells[0].Value = item.productLine;
-                dataGridView1.Rows[row].Cells[1].Value = item.itemNumber;
-                dataGridView1.Rows[row].Cells[2].Value = item.itemName;
-                dataGridView1.Rows[row].Cells[3].Value = item.onHandQty.ToString();
-                dataGridView1.Rows[row].Cells[4].Value = parentForm.currentInvoice.customer.inStorePricingProfile.CalculatePrice(item).ToString("C");
-                dataGridView1.Rows[row].Cells[5].Value = item.UPC;
-                dataGridView1.Rows[row].Tag = item;
+                if ((bool)e.Node.Tag == true)
+                {
+
+                }
             }
+            else
+            {
+                string filter = e.Node.Text;
+                string filterType = e.Node.Parent.Text;
+                TreeNode parentNode = e.Node.Parent;
+                parentNode.Nodes.Clear();
+                parentNode.Text = parentNode.Text + " (" + filter + ")";
+                parentNode.Tag = true;
+
+                dataGridView1.Rows.Clear();
+                foreach (Item item in searchResults)
+                {
+                    bool addItem = false;
+                    switch (filterType.ToLower())
+                    {
+                        case "departments":
+                            if (item.department == filter)
+                                addItem = true;
+                            break;
+                        case "categories":
+                            if (item.category == filter)
+                                addItem = true;
+                            break;
+                        case "suppliers":
+                            if (item.supplier == filter)
+                                addItem = true;
+                            break;
+                    }
+                    if (addItem)
+                    {
+                        int row = dataGridView1.Rows.Add();
+                        dataGridView1.Rows[row].Cells[0].Value = item.productLine;
+                        dataGridView1.Rows[row].Cells[1].Value = item.itemNumber;
+                        dataGridView1.Rows[row].Cells[2].Value = item.itemName;
+                        dataGridView1.Rows[row].Cells[3].Value = item.onHandQty.ToString();
+                        dataGridView1.Rows[row].Cells[4].Value = parentForm.currentInvoice.customer.inStorePricingProfile.CalculatePrice(item).ToString("C");
+                        dataGridView1.Rows[row].Cells[5].Value = item.UPC;
+                        dataGridView1.Rows[row].Tag = item;
+                    }
+                }
+            }
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count != 1)
+                return;
+
+            ItemInformation info = new ItemInformation(dataGridView1.SelectedRows[0].Tag as Item);
+            info.Show();
         }
     }
 }

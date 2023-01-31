@@ -9,6 +9,8 @@ using TIMS.Forms.Settings;
 using TIMS.Forms.Customers;
 using TIMS.Forms.Maintenance;
 using TIMS.Forms.DeveloperTools;
+using TIMS.Forms.Planogram;
+using TIMS.Forms.WooCommerce;
 using TIMS.Server;
 using TIMSServerModel;
 
@@ -188,6 +190,18 @@ namespace TIMS.Forms
         {
             ReviewTodaysInvoices viewer = new ReviewTodaysInvoices();
             viewer.Show();
+        }
+
+        private void layoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BuildingEditor editor = new BuildingEditor();
+            editor.Show();
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            WebStoreSettings WCSettings = new WebStoreSettings();
+            WCSettings.Show();
         }
     }
 }

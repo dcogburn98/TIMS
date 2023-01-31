@@ -130,6 +130,8 @@ namespace TIMSServerModel
         AuthContainer<byte[]> RetrieveImage(string key, AuthKey authkey);
         [OperationContract]
         byte[] RetrieveCompanyLogo();
+        [OperationContract]
+        AuthContainer<byte[]> RetrieveProductImage(string path, AuthKey authkey);
         #endregion
 
         #region Item Shortcut Menus
