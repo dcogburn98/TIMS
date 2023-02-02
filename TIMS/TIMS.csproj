@@ -291,6 +291,12 @@
     <Compile Include="Forms\Login\ServerAddressEntry.Designer.cs">
       <DependentUpon>ServerAddressEntry.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Mail\Compose.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Mail\Compose.Designer.cs">
+      <DependentUpon>Compose.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Maintenance\BarcodeMaintenance.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -588,6 +594,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Login\ServerAddressEntry.resx">
       <DependentUpon>ServerAddressEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Mail\Compose.resx">
+      <DependentUpon>Compose.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Maintenance\BarcodeMaintenance.resx">
       <DependentUpon>BarcodeMaintenance.cs</DependentUpon>

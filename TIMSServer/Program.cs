@@ -14,8 +14,8 @@ using TIMSServerModel;
 using TIMSServer.WebServer.WooCommerce;
 
 using WooCommerceNET;
-using WooCommerceNET.WooCommerce.v2;
-using WooCommerceNET.WooCommerce.v2.Extension;
+using WooCommerceNET.WooCommerce.v3;
+using WooCommerceNET.WooCommerce.v3.Extension;
 
 using Quartz;
 using Quartz.Impl;
@@ -113,14 +113,18 @@ namespace TIMSServer
             List<Webhook> webhooks = await WooCommerceHandler.WC.Webhook.GetAll();
             foreach (Webhook wh in webhooks)
             {
-                //Console.Write($"A webhook for {wh.topic} exists for this website.");
+                if (wh.name.ToUpper().Contains("TIMS"))
+                {
+                    wh.delivery_url = "http://" + externalIp.ToString();
+                    await WooCommerceHandler.WC.Webhook.Update((ulong)wh.id, wh);
+                }
                 
             }
-            List<WooCommerce.NET.WordPress.v2.Posts> posts = WooCommerceHandler.WP.Post.GetAll().Result;
-            foreach (WooCommerce.NET.WordPress.v2.Posts post in posts)
-            {
-                Console.WriteLine(post.title);
-            }
+            //List<WooCommerce.NET.WordPress.v2.Posts> posts = WooCommerceHandler.WP.Post.GetAll().Result;
+            //foreach (WooCommerce.NET.WordPress.v2.Posts post in posts)
+            //{
+            //    Console.WriteLine(post.title);
+            //}
             //WooCommerceHandler.MatchProducts();
             
             #endregion
@@ -1087,6 +1091,27 @@ namespace TIMSServer
                 command.CommandText =
                 @"INSERT INTO ""main"".""Media"" (""Key"", ""MediaType"", ""Value"") 
                     VALUES ('Company Logo', 'Image', '');";
+                command.ExecuteNonQuery();
+            }
+            else
+            {
+
+            }
+
+            if (!TableExists("Messages"))
+            {
+                command.CommandText =
+                    @"CREATE TABLE ""Messages"" (
+	                ""ID""	TEXT NOT NULL UNIQUE,
+	                ""Subject""	TEXT NOT NULL,
+	                ""Body""	TEXT NOT NULL,
+	                ""Read""	INTEGER NOT NULL,
+	                ""SendDate""	TEXT NOT NULL,
+	                ""ReadDate""	TEXT NOT NULL,
+	                ""Sender""	INTEGER NOT NULL,
+                    ""Recipient"" INTEGER NOT NULL,
+	                PRIMARY KEY(""ID"")
+                    )";
                 command.ExecuteNonQuery();
             }
             else

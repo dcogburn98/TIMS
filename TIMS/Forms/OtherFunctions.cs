@@ -7,6 +7,7 @@ using TIMS.Forms.Reporting;
 using TIMS.Forms.Orders;
 using TIMS.Forms.Settings;
 using TIMS.Forms.Customers;
+using TIMS.Forms.Mail;
 using TIMS.Forms.Maintenance;
 using TIMS.Forms.DeveloperTools;
 using TIMS.Forms.Planogram;
@@ -19,15 +20,50 @@ namespace TIMS.Forms
 {
     public partial class OtherFunctions : Form
     {
+        Timer newMsgFlash;
+        bool newMessage = false;
         public OtherFunctions()
         {
             InitializeComponent();
 
+            
             tabletInvoicingToolStripMenuItem.Visible = false;
+            newMsgFlash = new Timer();
+            newMsgFlash.Tick += NewMsgFlash_Tick;
+            newMsgFlash.Interval = 1000;
+            Timer mailCheck = new Timer();
+            mailCheck.Tick += MailCheck_Tick;
+            mailCheck.Interval = 10000;
+
+            newMessageLabel.Visible = false;
+            MailCheck_Tick(this, new EventArgs());
+
+            mailCheck.Start();
+        }
+
+        private void MailCheck_Tick(object sender, EventArgs e)
+        {
+            if (Communication.GetEmployeeMessages(Program.currentEmployee.employeeNumber.ToString(), true).Count > 0)
+                newMessage = true;
+            else
+                newMessage = false;
+
+            if (newMessage)
+                newMsgFlash.Start();
+            else if (!newMessage)
+            {
+                newMessageLabel.Visible = false;
+                newMsgFlash.Stop();
+            }
+        }
+
+        private void NewMsgFlash_Tick(object sender, EventArgs e)
+        {
+            newMessageLabel.Visible = !newMessageLabel.Visible;
         }
 
         #region Toolbar Item Click Methods and Other Form Handlers
-        
+
         private void orderOgToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -202,6 +238,18 @@ namespace TIMS.Forms
         {
             WebStoreSettings WCSettings = new WebStoreSettings();
             WCSettings.Show();
+        }
+
+        private void openEmailButton_Click(object sender, EventArgs e)
+        {
+            TIMS.Mail mail = new TIMS.Mail();
+            mail.Show();
+        }
+
+        private void composeButton_Click(object sender, EventArgs e)
+        {
+            Compose compose = new Compose();
+            compose.Show();
         }
     }
 }

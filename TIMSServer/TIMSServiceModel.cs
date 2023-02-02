@@ -190,11 +190,16 @@ namespace TIMSServer
         }
         public Employee RetrieveEmployee(string employeeNumber)
         {
+            bool opened = true;
             Console.WriteLine("Information retrieved for employee: " + employeeNumber);
             Employee e = new Employee();
-            Program.OpenConnection();
-
-            SqliteCommand command = Program.sqlite_conn.CreateCommand();
+            if (sqlite_conn.State == ConnectionState.Closed)
+            {
+                OpenConnection();
+                opened = false;
+            }
+            
+            SqliteCommand command = sqlite_conn.CreateCommand();
             command.CommandText =
                 "SELECT * FROM EMPLOYEES WHERE EMPLOYEENUMBER = $NUMBER";
             SqliteParameter p1 = new SqliteParameter("$NUMBER", employeeNumber);
@@ -218,10 +223,35 @@ namespace TIMSServer
                 e.terminationDate = DateTime.TryParse(reader.GetString(6), out DateTime p) ? p : DateTime.MinValue;
             }
 
-            Program.CloseConnection();
+            if (opened)
+                CloseConnection();
             return e;
         }
-        
+        public AuthContainer<List<Employee>> RetrieveEmployees(AuthKey key)
+        {
+            AuthContainer<List<Employee>> container = CheckAuthorization<List<Employee>>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new List<Employee>();
+
+            OpenConnection();
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText = "SELECT EMPLOYEENUMBER FROM EMPLOYEES";
+            List<int> employees = new List<int>();
+
+            SqliteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+                employees.Add(reader.GetInt32(0));
+
+            CloseConnection();
+
+            foreach (int employeeNo in employees)
+            {
+                container.Data.Add(RetrieveEmployee(employeeNo.ToString()));
+            }
+
+            return container;
+        }
         #endregion
 
         #region Items
@@ -3933,11 +3963,101 @@ namespace TIMSServer
                 return container;
             }
         }
+
+        public void ServerPrintReceipt(Invoice inv)
+        {
+            List<Device> terminals = RetrieveTerminals();
+            Device terminal = terminals.FirstOrDefault(el => el.Nickname.ToLower() == "server");
+            try
+            {
+                Device device = terminal.AssignedDevices.FirstOrDefault(el => el.Type == Device.DeviceType.ThermalPrinter);
+                if (device == default(Device))
+                {
+                    return;
+                }
+                ReceiptPrinter.PrintReceipt(inv, device);
+            }
+            catch
+            {
+                return;
+            }
+        }
         #endregion
 
-        public void WooCommerceOrderCreate()
+        #region Messages
+        public AuthContainer<List<MailMessage>> GetEmployeeMessages(string employee, AuthKey key, bool justUnread = false)
         {
-            Console.WriteLine("This actually worked? Order has been created.");
+            AuthContainer<List<MailMessage>> container = CheckAuthorization<List<MailMessage>>(key);
+            if (!container.Key.Success)
+                return container;
+            container.Data = new List<MailMessage>();
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            if (justUnread)
+                command.CommandText =
+                    "SELECT * FROM MESSAGES WHERE RECIPIENT = $RECIPIENT AND READ = 0";
+            else
+                command.CommandText =
+                    "SELECT * FROM MESSAGES WHERE RECIPIENT = $RECIPIENT";
+            command.Parameters.Add(new SqliteParameter("$RECIPIENT", employee));
+
+            using (SqliteDataReader reader = command.ExecuteReader())
+            {
+                if (!reader.HasRows)
+                {
+                    CloseConnection();
+                    return container;
+                }
+                while (reader.Read())
+                {
+                    MailMessage message = new MailMessage(
+                        reader.GetString(1), reader.GetString(2),
+                        new Employee() { employeeNumber = int.Parse(reader.GetString(6)) },
+                        new Employee() { employeeNumber = int.Parse(reader.GetString(7)) });
+                    message.ID = reader.GetGuid(0);
+                    message.Read = reader.GetBoolean(3);
+                    message.SendDate = reader.GetDateTime(4);
+                    message.ReadDate = reader.GetDateTime(5);
+
+                    container.Data.Add(message);
+                }
+            }
+
+            CloseConnection();
+            return container;
         }
+        public AuthContainer<object> SendMessage(List<MailMessage> messages, AuthKey key)
+        {
+            AuthContainer<object> container = CheckAuthorization<object>(key);
+            if (!container.Key.Success)
+                return container;
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText =
+                "INSERT INTO MESSAGES " +
+                "(ID, SUBJECT, BODY, READ, READDATE, SENDDATE, SENDER, RECIPIENT) " +
+                "VALUES ($UID, $SUBJ, $BODY, $READ, $READDATE, $SENDDATE, $SENDER, $RECIPIENT)";
+            foreach (MailMessage msg in messages)
+            {
+                command.Parameters.Clear();
+                command.Parameters.Add(new SqliteParameter("$UID", msg.ID));
+                command.Parameters.Add(new SqliteParameter("$SUBJ", msg.Subject));
+                command.Parameters.Add(new SqliteParameter("$BODY", msg.MessageBody));
+                command.Parameters.Add(new SqliteParameter("$READ", false));
+                command.Parameters.Add(new SqliteParameter("$READDATE", DateTime.MinValue));
+                command.Parameters.Add(new SqliteParameter("$SENDDATE", DateTime.Now));
+                command.Parameters.Add(new SqliteParameter("$SENDER", msg.Sender.employeeNumber));
+                command.Parameters.Add(new SqliteParameter("$RECIPIENT", msg.Recipient.employeeNumber));
+                command.ExecuteNonQuery();
+            }
+
+            CloseConnection();
+            return container;
+        }
+        #endregion
     }
 }

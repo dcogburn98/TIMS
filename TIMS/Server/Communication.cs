@@ -768,5 +768,36 @@ namespace TIMS.Server
                 MessageBox.Show("Access Denied.");
         } //AuthContainer'd
         #endregion
+
+        #region Messages
+        public static List<MailMessage> GetEmployeeMessages(string employee, bool justUnread = false)
+        {
+            AuthContainer<List<MailMessage>> c = proxy.GetEmployeeMessages(employee, currentKey, justUnread);
+            if (c.Key.Success)
+            {
+                currentKey.Regenerate();
+                foreach (MailMessage msg in c.Data)
+                {
+                    msg.Sender = RetrieveEmployee(msg.Sender.employeeNumber.ToString());
+                    msg.Recipient = RetrieveEmployee(msg.Recipient.employeeNumber.ToString());
+                }
+                return c.Data;
+            }
+            else
+            {
+                MessageBox.Show("Access Denied.");
+                return null;
+            }
+        }
+
+        public static void SendMessage(List<MailMessage> messages)
+        {
+            AuthContainer<object> container = proxy.SendMessage(messages, currentKey);
+            if (container.Key.Success)
+                currentKey.Regenerate();
+            else
+                MessageBox.Show("Access Denied.");
+        }
+        #endregion
     }
 }

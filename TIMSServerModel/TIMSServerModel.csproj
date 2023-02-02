@@ -70,6 +70,7 @@
     <Compile Include="ITIMSDownstreamServiceModel.cs" />
     <Compile Include="ITIMSServiceModel.cs" />
     <Compile Include="ITIMSWebServerModel.cs" />
+    <Compile Include="MailMessage.cs" />
     <Compile Include="Payment.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Planogram\Building.cs" />
@@ -85,25 +86,6 @@
     <Compile Include="PurchaseOrder.cs" />
     <Compile Include="Report.cs" />
     <Compile Include="Transaction.cs" />
-    <Compile Include="WooCommerce\Orders\BillingAddress.cs" />
-    <Compile Include="WooCommerce\Orders\CouponLine.cs" />
-    <Compile Include="WooCommerce\Orders\FeeLine.cs" />
-    <Compile Include="WooCommerce\Orders\LineItem.cs" />
-    <Compile Include="WooCommerce\Metadata.cs" />
-    <Compile Include="WooCommerce\Orders\Order.cs" />
-    <Compile Include="WooCommerce\Orders\Refund.cs" />
-    <Compile Include="WooCommerce\Orders\ShippingAddress.cs" />
-    <Compile Include="WooCommerce\Orders\ShippingLine.cs" />
-    <Compile Include="WooCommerce\Orders\Tax.cs" />
-    <Compile Include="WooCommerce\Orders\TaxLine.cs" />
-    <Compile Include="WooCommerce\Products\Attribute.cs" />
-    <Compile Include="WooCommerce\Products\Category.cs" />
-    <Compile Include="WooCommerce\Products\DefaultAttribute.cs" />
-    <Compile Include="WooCommerce\Products\Dimension.cs" />
-    <Compile Include="WooCommerce\Products\Download.cs" />
-    <Compile Include="WooCommerce\Products\Image.cs" />
-    <Compile Include="WooCommerce\Products\Product.cs" />
-    <Compile Include="WooCommerce\Products\Tag.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

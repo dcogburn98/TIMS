@@ -964,7 +964,7 @@ namespace TIMS.Forms
 
         private void messagesButton_Click(object sender, EventArgs e)
         {
-            Mail mail = new Mail();
+            TIMS.Mail mail = new TIMS.Mail();
             mail.Show();
         }
 

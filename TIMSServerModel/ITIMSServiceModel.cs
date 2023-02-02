@@ -230,7 +230,14 @@ namespace TIMSServerModel
         AuthContainer<string> RequestSignature(AuthKey key);
         [OperationContract]
         AuthContainer<object> PrintReceipt(Invoice inv, AuthKey key);
-        
+
+        #endregion
+
+        #region Messages
+        [OperationContract]
+        AuthContainer<List<MailMessage>> GetEmployeeMessages(string employee, AuthKey key, bool justUnread = false);
+        [OperationContract]
+        AuthContainer<object> SendMessage(List<MailMessage> messages, AuthKey key);
         #endregion
     }
 }

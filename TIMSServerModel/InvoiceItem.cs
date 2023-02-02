@@ -30,7 +30,7 @@ namespace TIMSServerModel
 
         public InvoiceItem()
         {
-
+            ID = Guid.NewGuid();
         }
 
         public InvoiceItem(Item item)
@@ -46,6 +46,7 @@ namespace TIMSServerModel
             taxed = item.taxed;
             serializedItem = item.serialized;
             cost = item.replacementCost;
+            ID = Guid.NewGuid();
         }
 
         public void AddCode(string code)
