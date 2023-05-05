@@ -238,6 +238,8 @@ namespace TIMSServerModel
         AuthContainer<List<MailMessage>> GetEmployeeMessages(string employee, AuthKey key, bool justUnread = false);
         [OperationContract]
         AuthContainer<object> SendMessage(List<MailMessage> messages, AuthKey key);
+        [OperationContract]
+        AuthContainer<object> ReadMessage(MailMessage msg, AuthKey key);
         #endregion
     }
 }

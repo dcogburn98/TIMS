@@ -14,6 +14,7 @@ using System.ServiceModel.Channels;
 using System.Xml.Linq;
 
 using TIMSServerModel;
+using TIMSServer.WebServer.WooCommerce;
 
 namespace TIMSServer
 {
@@ -78,7 +79,7 @@ namespace TIMSServer
         public string CheckEmployee(string input)
         {
             Console.WriteLine("Validating employee: " + input);
-            if (!int.TryParse(input, out int v))
+            if (!int.TryParse(input, out int _))
                 input = "'" + input + "'";
             string value = null;
             Program.OpenConnection();
@@ -161,27 +162,15 @@ namespace TIMSServer
                 else
                     foreach (string p in rdr.GetString(7).Split(','))
                         e.employeePermissions.Add((Employee.EmployeePermissions)Enum.Parse(typeof(Employee.EmployeePermissions), p));
-                switch (rdr.GetInt32(8))
+                e.startupScreen = rdr.GetInt32(8) switch
                 {
-                    case 0:
-                        e.startupScreen = Employee.StartupScreens.Dashboard;
-                        break;
-                    case 1:
-                        e.startupScreen = Employee.StartupScreens.Inbox;
-                        break;
-                    case 2:
-                        e.startupScreen = Employee.StartupScreens.EmployeeManagement;
-                        break;
-                    case 3:
-                        e.startupScreen = Employee.StartupScreens.InventoryManagement;
-                        break;
-                    case 4:
-                        e.startupScreen = Employee.StartupScreens.Invoicing;
-                        break;
-                    default:
-                        e.startupScreen = Employee.StartupScreens.Inbox;
-                        break;
-                }
+                    0 => Employee.StartupScreens.Dashboard,
+                    1 => Employee.StartupScreens.Inbox,
+                    2 => Employee.StartupScreens.EmployeeManagement,
+                    3 => Employee.StartupScreens.InventoryManagement,
+                    4 => Employee.StartupScreens.Invoicing,
+                    _ => Employee.StartupScreens.Inbox,
+                };
             }
 
             Program.CloseConnection();
@@ -191,7 +180,7 @@ namespace TIMSServer
         public Employee RetrieveEmployee(string employeeNumber)
         {
             bool opened = true;
-            Console.WriteLine("Information retrieved for employee: " + employeeNumber);
+            //Console.WriteLine("Information retrieved for employee: " + employeeNumber);
             Employee e = new Employee();
             if (sqlite_conn.State == ConnectionState.Closed)
             {
@@ -989,7 +978,7 @@ namespace TIMSServer
 
             if (!connectionOpened)
                 CloseConnection();
-
+            WooCommerceHandler.AddProduct(newItem);
             return;
         }
         public List<string> RetrieveItemSerialNumbers(string productLine, string itemNumber)
@@ -1155,6 +1144,7 @@ namespace TIMSServer
             command.ExecuteNonQuery();
 
             CloseConnection();
+            WooCommerceHandler.AddProduct(item);
             return true;
         }
         public List<Item> RetrieveLabelOutOfDateItems()
@@ -3718,24 +3708,14 @@ namespace TIMSServer
                 device.Nickname = reader.GetString(0);
                 string[] split = reader.GetString(1).Split(':');
                 device.address = new IPEndPoint(IPAddress.Parse(split[0]), int.Parse(split[1]));
-                switch (reader.GetString(2).ToUpper())
+                device.Type = reader.GetString(2).ToUpper() switch
                 {
-                    case ("THERMALPRINTER"):
-                        device.Type = Device.DeviceType.ThermalPrinter;
-                        break;
-                    case ("PRINTER"):
-                        device.Type = Device.DeviceType.ConventionalPrinter;
-                        break;
-                    case ("LINEDISPLAY"):
-                        device.Type = Device.DeviceType.LineDisplay;
-                        break;
-                    case ("CARDREADER"):
-                        device.Type = Device.DeviceType.CardReader;
-                        break;
-                    default:
-                        device.Type = Device.DeviceType.Other;
-                        break;
-                }
+                    ("THERMALPRINTER") => Device.DeviceType.ThermalPrinter,
+                    ("PRINTER") => Device.DeviceType.ConventionalPrinter,
+                    ("LINEDISPLAY") => Device.DeviceType.LineDisplay,
+                    ("CARDREADER") => Device.DeviceType.CardReader,
+                    _ => Device.DeviceType.Other,
+                };
                 device.ID = reader.GetInt32(3);
                 devices.Add(device);
             }
@@ -4058,6 +4038,23 @@ namespace TIMSServer
             CloseConnection();
             return container;
         }
+        public AuthContainer<object> ReadMessage(MailMessage msg, AuthKey key)
+        {
+            AuthContainer<object> container = CheckAuthorization<object>(key);
+            if (!container.Key.Success)
+                return container;
+
+            OpenConnection();
+
+            SqliteCommand command = sqlite_conn.CreateCommand();
+            command.CommandText = "UPDATE MESSAGES SET READ = 1 WHERE ID = $UID";
+            command.Parameters.Add(new SqliteParameter("$UID", msg.ID));
+            command.ExecuteNonQuery();
+
+            CloseConnection();
+            return container;
+        }
+        
         #endregion
     }
 }

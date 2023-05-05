@@ -38,14 +38,14 @@
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.physicalCityTB = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.physicalStateTB = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.physicalZipTB = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.physicalCountryTB = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.physicalZipTB = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.physicalStateTB = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.physicalCityTB = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.mailingCountryTB = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -140,9 +140,9 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(532, 38);
+            this.pictureBox1.Location = new System.Drawing.Point(398, 38);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(256, 256);
+            this.pictureBox1.Size = new System.Drawing.Size(390, 351);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
@@ -166,37 +166,21 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Physical Address";
             // 
-            // physicalCityTB
+            // physicalCountryTB
             // 
-            this.physicalCityTB.Location = new System.Drawing.Point(64, 45);
-            this.physicalCityTB.Name = "physicalCityTB";
-            this.physicalCityTB.Size = new System.Drawing.Size(291, 20);
-            this.physicalCityTB.TabIndex = 10;
+            this.physicalCountryTB.Location = new System.Drawing.Point(229, 73);
+            this.physicalCountryTB.Name = "physicalCountryTB";
+            this.physicalCountryTB.Size = new System.Drawing.Size(126, 20);
+            this.physicalCountryTB.TabIndex = 16;
             // 
-            // label5
+            // label8
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 48);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(27, 13);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "City:";
-            // 
-            // physicalStateTB
-            // 
-            this.physicalStateTB.Location = new System.Drawing.Point(42, 73);
-            this.physicalStateTB.Name = "physicalStateTB";
-            this.physicalStateTB.Size = new System.Drawing.Size(44, 20);
-            this.physicalStateTB.TabIndex = 12;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(10, 76);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(35, 13);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "State:";
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(186, 76);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(46, 13);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "Country:";
             // 
             // physicalZipTB
             // 
@@ -214,21 +198,37 @@
             this.label7.TabIndex = 13;
             this.label7.Text = "Zip:";
             // 
-            // physicalCountryTB
+            // physicalStateTB
             // 
-            this.physicalCountryTB.Location = new System.Drawing.Point(229, 73);
-            this.physicalCountryTB.Name = "physicalCountryTB";
-            this.physicalCountryTB.Size = new System.Drawing.Size(126, 20);
-            this.physicalCountryTB.TabIndex = 16;
+            this.physicalStateTB.Location = new System.Drawing.Point(42, 73);
+            this.physicalStateTB.Name = "physicalStateTB";
+            this.physicalStateTB.Size = new System.Drawing.Size(44, 20);
+            this.physicalStateTB.TabIndex = 12;
             // 
-            // label8
+            // label6
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(186, 76);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(46, 13);
-            this.label8.TabIndex = 15;
-            this.label8.Text = "Country:";
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(10, 76);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(35, 13);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "State:";
+            // 
+            // physicalCityTB
+            // 
+            this.physicalCityTB.Location = new System.Drawing.Point(64, 45);
+            this.physicalCityTB.Name = "physicalCityTB";
+            this.physicalCityTB.Size = new System.Drawing.Size(291, 20);
+            this.physicalCityTB.TabIndex = 10;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(10, 48);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(27, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "City:";
             // 
             // groupBox2
             // 
@@ -395,7 +395,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(700, 415);
+            this.button2.Location = new System.Drawing.Point(700, 395);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(88, 23);
             this.button2.TabIndex = 20;
@@ -407,7 +407,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 426);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.emailTB);
             this.Controls.Add(this.label17);

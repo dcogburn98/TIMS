@@ -70,6 +70,7 @@ namespace TIMSServer
             #endregion
 
             #region EOD Scheduling
+            "Scheduling EOD".LogServer(LogLevel.Info);
             string EODTime = "12am";
             DateTime EODStartTime = DateTime.Parse(EODTime).AddDays(1);
             if (EODStartTime - DateTime.Now > TimeSpan.FromDays(1))
@@ -80,6 +81,7 @@ namespace TIMSServer
             Console.WriteLine(EODStartTime.ToString());
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("You can change this in the store settings in the TIMS interface.");
+            "EOD currently set to run at".LogServer(LogLevel.Info);
 
             EOD.instance = new TIMSServiceModel();
             IJobDetail job = JobBuilder.Create<EOD>()
@@ -103,19 +105,13 @@ namespace TIMSServer
             #endregion
 
             #region WooCommerce
-            List<Product> products = await WooCommerceHandler.WC.Product.GetAll();
-
-            foreach (Product p in products)
-            {
-                //Console.WriteLine(p.name);
-            }
-
             List<Webhook> webhooks = await WooCommerceHandler.WC.Webhook.GetAll();
             foreach (Webhook wh in webhooks)
             {
                 if (wh.name.ToUpper().Contains("TIMS"))
                 {
                     wh.delivery_url = "http://" + externalIp.ToString();
+                    wh.status = "active";
                     await WooCommerceHandler.WC.Webhook.Update((ulong)wh.id, wh);
                 }
                 
@@ -1479,7 +1475,7 @@ namespace TIMSServer
 
         public static string SqlCheckEmployee(string input)
         {
-            if (!int.TryParse(input, out int v))
+            if (!int.TryParse(input, out int _))
                 input = "'" + input + "'";
             string value = null;
             OpenConnection();

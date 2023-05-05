@@ -238,6 +238,7 @@ namespace TIMSServer.WebServer.WooCommerce
                 InvoiceItem item = new InvoiceItem(instance.RetrieveItem(lineItem.sku.Substring(3), lineItem.sku.Substring(0, 3)));
                 item.price = (decimal)lineItem.price;
                 item.quantity = (decimal)lineItem.quantity;
+                item.total = Math.Round(item.price * item.quantity, 2);
                 inv.items.Add(item);
                 inv.subtotal += Math.Round(item.price * item.quantity, 2);
                 inv.taxableTotal += Math.Round(item.price * item.quantity, 2);
@@ -325,17 +326,13 @@ namespace TIMSServer.WebServer.WooCommerce
 
             instance.ServerPrintReceipt(inv);
 
-            XDocument body = new XDocument(new XElement("body",
+            XDocument body = new XDocument(new XElement("div",
                 new XElement("p", "An order was placed by " + order.billing.first_name + " " + order.billing.last_name + " on " + order.date_created.ToString() + "."),
                 new XElement("h4", "Order Number: " + order.id),
                 new XElement("p", "Shipping Address"),
                 new XElement("p", "----------------"),
                 new XElement("p", order.shipping.first_name + " " + order.shipping.last_name),
-                new XElement("p", order.shipping.address_1),
-                new XElement("p", order.shipping.address_2),
-                new XElement("p", order.shipping.city + ", " + order.shipping.state + " " + order.shipping.postcode + ", " + order.shipping.country),
-                new XElement("p", order.billing.phone),
-                new XElement("p", order.customer_ip_address),
+                new XElement("p", "SHIPPING_DUHDUHDUH"),
                 new XElement("ul", ""),
                 new XElement("p", "-------------------------------------------"),
                 new XElement("p", "Subtotal: " + inv.subtotal.ToString("C")),
@@ -346,13 +343,19 @@ namespace TIMSServer.WebServer.WooCommerce
             foreach (InvoiceItem item in inv.items)
             {
                 body.Root.Element("ul").Add(new XElement("li",
-                    item.productLine + " " + item.itemNumber + "<br>" +
-                    "    Quantity: " + item.quantity + " @ " + item.price.ToString("C") + " (Line Total: " + item.total + ")"));
+                    item.productLine + " " + item.itemNumber + "brbrbr" +
+                    "           Quantity: " + item.quantity + " @ " + item.price.ToString("C") + " (Line Total: " + item.total + ")"));
             }
-            
+            string bodyString = body.ToString().Replace("SHIPPING_DUHDUHDUH",
+                    order.shipping.address_1 + "<br>" +
+                    order.shipping.address_2 + "<br>" +
+                    order.shipping.city + ", " + order.shipping.state + " " + order.shipping.postcode + ", " + order.shipping.country + "<br>" +
+                    order.billing.phone + "<br>" +
+                    order.customer_ip_address).Replace("brbrbr", "<br>");
+
             MailMessage msg = new MailMessage(
                 "Online Order Received (" + order.id + ")",
-                body.ToString(),
+                bodyString,
                 instance.RetrieveEmployee("0"),
                 instance.RetrieveEmployee("0"));
             instance.SendMessage(

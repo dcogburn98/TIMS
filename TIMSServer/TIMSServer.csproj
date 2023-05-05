@@ -123,4 +123,8 @@
     <HarpyFiles Remove="WebServer\WooCommerce\WooCommerceHandler.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <HarpyFiles Remove="Logging.cs" />
+  </ItemGroup>
+
 </Project>

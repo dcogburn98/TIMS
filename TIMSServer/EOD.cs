@@ -17,15 +17,22 @@ namespace TIMSServer
 
         public async Task Execute(IJobExecutionContext context)
         {
+"EOD Begin".LogEOD(LogLevel.Info);
+            Program.OpenConnection();
+
+"Invoice Costing Begin".LogEOD(LogLevel.Info);
             List<Invoice> TodaysInvoices = instance.RetrieveInvoicesByDateRange(DateTime.Today.AddDays(-1), DateTime.Today);
-            if (TodaysInvoices != null)
+            if (TodaysInvoices != null && TodaysInvoices.Count > 0)
                 foreach (Invoice inv in TodaysInvoices)
                 {
                     Console.WriteLine(inv.invoiceNumber.ToString());
                 }
+"Invoice Costing End".LogEOD(LogLevel.Info);
 
+            #region Integrated Payments Batch Operations
+"Integrated Payments Batch Operations Begin".LogEOD(LogLevel.Info);
             int batchID = 1;
-            Program.OpenConnection();
+            
             SqliteCommand command = Program.sqlite_conn.CreateCommand();
             command.CommandText =
                 @"SELECT VALUE FROM GLOBALPROPERTIES WHERE KEY = ""Current Batch Number"" ";
@@ -42,13 +49,13 @@ namespace TIMSServer
                 "UPDATE GLOBALPROPERTIES SET VALUE = $BID WHERE KEY = \"Current Batch Number\"";
             command.Parameters.Add(new SqliteParameter("$BID", batchID + 1));
             command.ExecuteNonQuery();
+            #endregion
 
             Program.CloseConnection();
 
             await Task.Run(() => {
                 
                 Console.WriteLine("Started End of Day...");
-                Console.Write("C");
             });
         }
     }

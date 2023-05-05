@@ -33,9 +33,9 @@ namespace TIMSServer
         {
             instance = instancee;
 #if DEBUG
-            var logLevel = LogLevel.Trace;
+            var logLevel = Microsoft.Extensions.Logging.LogLevel.Trace;
 #else
-            var loglevel = LogLevel.Information;
+            var loglevel = Microsoft.Extensions.Logging.LogLevel.Information;
 #endif
             var factory = LoggerFactory.Create(b => b.AddConsole().SetMinimumLevel(logLevel));
             var logger = factory.CreateLogger<Program>();

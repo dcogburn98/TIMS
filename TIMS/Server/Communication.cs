@@ -772,7 +772,7 @@ namespace TIMS.Server
         #region Messages
         public static List<MailMessage> GetEmployeeMessages(string employee, bool justUnread = false)
         {
-            AuthContainer<List<MailMessage>> c = proxy.GetEmployeeMessages(employee, currentKey, justUnread);
+              AuthContainer<List<MailMessage>> c = proxy.GetEmployeeMessages(employee, currentKey, justUnread);
             if (c.Key.Success)
             {
                 currentKey.Regenerate();
@@ -789,10 +789,17 @@ namespace TIMS.Server
                 return null;
             }
         }
-
         public static void SendMessage(List<MailMessage> messages)
         {
             AuthContainer<object> container = proxy.SendMessage(messages, currentKey);
+            if (container.Key.Success)
+                currentKey.Regenerate();
+            else
+                MessageBox.Show("Access Denied.");
+        }
+        public static void ReadMessage(MailMessage msg)
+        {
+            AuthContainer<object> container = proxy.ReadMessage(msg, currentKey);
             if (container.Key.Success)
                 currentKey.Regenerate();
             else

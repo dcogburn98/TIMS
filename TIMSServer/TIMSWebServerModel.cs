@@ -60,7 +60,7 @@ namespace TIMSServer
         public Stream GetResource(string path)
         {
             string[] splitPath = path.ToLower().Split('/');
-            Stream resourceStream = null;
+            Stream resourceStream;
 
             #region Session Management
             Session currentSession = new Session();
