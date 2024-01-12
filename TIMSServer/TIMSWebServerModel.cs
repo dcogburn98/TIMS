@@ -180,7 +180,7 @@ namespace TIMSServer
             catch (Exception ex)
             {
                 WebOperationContext.Current.OutgoingResponse.ContentType = "text/html";
-                resourceStream = this.GetErrorResponseStream(500, "Internal Server Error");
+                resourceStream = this.GetErrorResponseStream(500, "Internal Server Error: " + ex.Message);
             }
 
             return resourceStream;

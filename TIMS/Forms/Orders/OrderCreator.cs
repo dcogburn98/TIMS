@@ -66,7 +66,7 @@ namespace TIMS.Forms.Orders
                         totalCost += decimal.Parse(roww.Cells[9].Value.ToString());
                         totalItems += decimal.Parse(roww.Cells[3].Value.ToString());
                         totalRetail += decimal.Parse(roww.Cells[10].Value.ToString());
-                        averageMargin = (totalRetail - totalCost) / totalRetail;
+                        averageMargin = totalRetail == 0 ? 0 : (totalRetail - totalCost) / totalRetail;
                     }
                     totalPotentialProfit = totalRetail - totalCost;
                     totalCostTB.Text = totalCost.ToString("C");

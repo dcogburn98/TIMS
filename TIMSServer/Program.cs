@@ -61,7 +61,7 @@ namespace TIMSServer
             
             Console.WriteLine("Starting TIMS web server (Step 2)...");
             ServiceHost webhost = new ServiceHost(typeof(TIMSWebServerModel));
-            webhost.Open();
+                webhost.Open();
             TIMSWebServerModel.Init();
             Console.Write("Web server now serving web pages on ");
             Console.ForegroundColor = ConsoleColor.Green;
@@ -134,7 +134,7 @@ namespace TIMSServer
                 {
                     case "exit":
                     {
-                        Console.WriteLine("Please type exit again to confirm termination.");
+                        Console.WriteLine("Please type 'exit' again to confirm termination. Type anything else to cancel exit.");
                         if (Console.ReadLine().ToLower() == "exit")
                         {
                             Console.WriteLine("Terminating TIMS client server model...");
